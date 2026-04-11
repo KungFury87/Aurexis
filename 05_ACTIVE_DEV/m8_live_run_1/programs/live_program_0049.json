@@ -1,0 +1,3409 @@
+{
+  "schema_version": "AUREXIS_PROGRAM_V1",
+  "saved_at": "2026-04-09T11:55:33.394729",
+  "integrity_hash": "sha256:8abbfac33bc15c6968dd79697adac98c7c28e6a00ff0a0b10f1e26bdbbbe9149",
+  "program": {
+    "source_file": "live_frame_49",
+    "frame_index": 49,
+    "evidence_tier": "real-capture",
+    "camera_metadata": {
+      "make": "SAMSUNG",
+      "model": "SM-S918B",
+      "image_timestamp": "2026-04-09T11:55:29.549958",
+      "measurement_origin": "camera-observation",
+      "source_file": "live_frame_49",
+      "image_width": 1920,
+      "image_height": 1080,
+      "is_samsung": true,
+      "is_s23_series": true,
+      "lens_id": "wide_main",
+      "exif_present": false
+    },
+    "phoxel_record": {
+      "record": {
+        "image_anchor": {
+          "pixel_coordinates": [
+            960,
+            540
+          ]
+        },
+        "world_anchor_state": {
+          "status": "unknown",
+          "world_coordinates": null,
+          "evidence_status": "image-grounded-only"
+        },
+        "photonic_signature": {
+          "pixel_data_available": true,
+          "camera_metadata": {
+            "make": "SAMSUNG",
+            "model": "SM-S918B",
+            "image_timestamp": "2026-04-09T11:55:29.549958",
+            "measurement_origin": "camera-observation",
+            "source_file": "live_frame_49",
+            "image_width": 1920,
+            "image_height": 1080,
+            "is_samsung": true,
+            "is_s23_series": true,
+            "lens_id": "wide_main",
+            "exif_present": false
+          },
+          "measurement_origin": "camera-observation"
+        },
+        "time_slice": {
+          "image_timestamp": "2026-04-09T11:55:29.549958"
+        },
+        "relation_set": [],
+        "integrity_state": {
+          "evidence_chain": [
+            "live_camera_frame_49"
+          ],
+          "synthetic": false,
+          "traceable": true
+        }
+      },
+      "schema_errors": [],
+      "schema_valid": true,
+      "evidence_tier": "real-capture"
+    },
+    "schema_valid": true,
+    "schema_errors": [],
+    "tokens": [],
+    "processing_timestamp": "2026-04-09T11:55:33.394534",
+    "ir": {
+      "root_op": "program",
+      "optimization_report": {
+        "original_node_count": 101,
+        "active_node_count": 101,
+        "pruned_node_count": 0,
+        "superseded_node_count": 0,
+        "execution_status": {
+          "descriptive": 0,
+          "estimated": 0,
+          "validated": 88,
+          "executable": 13
+        },
+        "confidence": {
+          "mean": 0.5782,
+          "min": 0.4994
+        },
+        "evidence": {
+          "tier": "real-capture",
+          "has_real_capture": true,
+          "promotion_eligible_count": 13
+        },
+        "passes_complete": {
+          "evidence_annotation": true,
+          "confidence_propagation": true,
+          "status_ladder": true,
+          "dead_branch_elimination": true,
+          "supersession_folding": true,
+          "promotion_screening": true
+        }
+      },
+      "nodes": {
+        "op": "program",
+        "args": {},
+        "children": [
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "structural_framework",
+              "value": "structural_pattern",
+              "confidence": 1.0
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 1.0,
+              "confidence_min": 1.0,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "texture_field",
+              "value": "texture_pattern",
+              "confidence": 1.0
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 1.0,
+              "confidence_min": 1.0,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "compact_feature",
+              "value": "contour_region",
+              "confidence": 0.8655350479290812
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.8655,
+              "confidence_min": 0.8655,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "compact_feature",
+              "value": "contour_region",
+              "confidence": 0.8360385705188997
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.836,
+              "confidence_min": 0.836,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.7573318753652303
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.7573,
+              "confidence_min": 0.7573,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.7305577754519768
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.7306,
+              "confidence_min": 0.7306,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.7226797420927599
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.7227,
+              "confidence_min": 0.7227,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.7212210635233337
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.7212,
+              "confidence_min": 0.7212,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.7124029994545394
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.7124,
+              "confidence_min": 0.7124,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.7110276694323233
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.711,
+              "confidence_min": 0.711,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.704286325752803
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.7043,
+              "confidence_min": 0.7043,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.7023343108812928
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.7023,
+              "confidence_min": 0.7023,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.7020817683152776
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "executable",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.7021,
+              "confidence_min": 0.7021,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": true,
+              "promotion_blocked_reasons": []
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6650218150973348
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.665,
+              "confidence_min": 0.665,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.665"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6554321941338025
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6554,
+              "confidence_min": 0.6554,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.655"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6515083149622534
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6515,
+              "confidence_min": 0.6515,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.652"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6511827750953402
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6512,
+              "confidence_min": 0.6512,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.651"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6502703177519105
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6503,
+              "confidence_min": 0.6503,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.650"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6275278079438662
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6275,
+              "confidence_min": 0.6275,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.628"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6260139914219371
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.626,
+              "confidence_min": 0.626,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.626"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6187807112701089
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6188,
+              "confidence_min": 0.6188,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.619"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6150512920194908
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6151,
+              "confidence_min": 0.6151,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.615"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.61350418288073
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6135,
+              "confidence_min": 0.6135,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.614"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6102137878305715
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6102,
+              "confidence_min": 0.6102,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.610"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.6084602040716348
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6085,
+              "confidence_min": 0.6085,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.608"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "red_primary",
+              "value": "color_region",
+              "confidence": 0.6
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6,
+              "confidence_min": 0.6,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.600"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "red_primary",
+              "value": "color_region",
+              "confidence": 0.6
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6,
+              "confidence_min": 0.6,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.600"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "red_primary",
+              "value": "color_region",
+              "confidence": 0.6
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6,
+              "confidence_min": 0.6,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.600"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "red_primary",
+              "value": "color_region",
+              "confidence": 0.6
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.6,
+              "confidence_min": 0.6,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.600"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5991722952712599
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5992,
+              "confidence_min": 0.5992,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.599"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5935762403185978
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5936,
+              "confidence_min": 0.5936,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.594"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5835913665288387
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5836,
+              "confidence_min": 0.5836,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.584"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5747370721039822
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5747,
+              "confidence_min": 0.5747,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.575"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.570443791276978
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5704,
+              "confidence_min": 0.5704,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.570"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5699530529486299
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.57,
+              "confidence_min": 0.57,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.570"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5680938817653362
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5681,
+              "confidence_min": 0.5681,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.568"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5659104985119576
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5659,
+              "confidence_min": 0.5659,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.566"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5639488470373017
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5639,
+              "confidence_min": 0.5639,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.564"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5633105478287115
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5633,
+              "confidence_min": 0.5633,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.563"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5632476832199899
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5632,
+              "confidence_min": 0.5632,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.563"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5584118032570046
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5584,
+              "confidence_min": 0.5584,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.558"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5548002501273864
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5548,
+              "confidence_min": 0.5548,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.555"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5531675699226656
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5532,
+              "confidence_min": 0.5532,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.553"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5505441077586545
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5505,
+              "confidence_min": 0.5505,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.551"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5494847753230082
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5495,
+              "confidence_min": 0.5495,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.549"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.548711907042538
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5487,
+              "confidence_min": 0.5487,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.549"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5448504605032056
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5449,
+              "confidence_min": 0.5449,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.545"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5425215539518067
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5425,
+              "confidence_min": 0.5425,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.543"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5399347666664717
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5399,
+              "confidence_min": 0.5399,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.540"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5396720703899747
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5397,
+              "confidence_min": 0.5397,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.540"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.539001409448659
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.539,
+              "confidence_min": 0.539,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.539"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5383942885103874
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5384,
+              "confidence_min": 0.5384,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.538"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5374210063855271
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5374,
+              "confidence_min": 0.5374,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.537"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5373620625944731
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5374,
+              "confidence_min": 0.5374,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.537"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5330316410265361
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.533,
+              "confidence_min": 0.533,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.533"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5321519347499889
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5322,
+              "confidence_min": 0.5322,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.532"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5319893762007263
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.532,
+              "confidence_min": 0.532,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.532"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5313090908954423
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5313,
+              "confidence_min": 0.5313,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.531"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5266612088783481
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5267,
+              "confidence_min": 0.5267,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.527"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5265569210452831
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5266,
+              "confidence_min": 0.5266,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.527"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5250057269152372
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.525,
+              "confidence_min": 0.525,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.525"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5245260370633009
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5245,
+              "confidence_min": 0.5245,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.525"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5242216694479832
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5242,
+              "confidence_min": 0.5242,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.524"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5237096743122052
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5237,
+              "confidence_min": 0.5237,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.524"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5236703087181529
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5237,
+              "confidence_min": 0.5237,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.524"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5235765466161789
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5236,
+              "confidence_min": 0.5236,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.524"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.523462431102214
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5235,
+              "confidence_min": 0.5235,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.523"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5221897071252347
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5222,
+              "confidence_min": 0.5222,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.522"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5216307340710336
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5216,
+              "confidence_min": 0.5216,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.522"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5208042987126676
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5208,
+              "confidence_min": 0.5208,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.521"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5205682664642431
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5206,
+              "confidence_min": 0.5206,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.521"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5189139147469408
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5189,
+              "confidence_min": 0.5189,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.519"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5188067471602784
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5188,
+              "confidence_min": 0.5188,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.519"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5182882522684671
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5183,
+              "confidence_min": 0.5183,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.518"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5170419989286491
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.517,
+              "confidence_min": 0.517,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.517"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5167819578841136
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5168,
+              "confidence_min": 0.5168,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.517"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5163913072866814
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5164,
+              "confidence_min": 0.5164,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.516"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5156352215893136
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5156,
+              "confidence_min": 0.5156,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.516"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5141979479130139
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5142,
+              "confidence_min": 0.5142,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.514"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5136336224458246
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5136,
+              "confidence_min": 0.5136,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.514"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5128723732384333
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5129,
+              "confidence_min": 0.5129,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.513"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5120199147396081
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.512,
+              "confidence_min": 0.512,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.512"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5112753034072303
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5113,
+              "confidence_min": 0.5113,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.511"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5090287695997918
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.509,
+              "confidence_min": 0.509,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.509"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5089466339789145
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5089,
+              "confidence_min": 0.5089,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.509"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5086777475870411
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5087,
+              "confidence_min": 0.5087,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.509"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5083806322063369
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5084,
+              "confidence_min": 0.5084,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.508"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5070778526724206
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5071,
+              "confidence_min": 0.5071,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.507"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5062648414605218
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5063,
+              "confidence_min": 0.5063,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.506"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5059481496774243
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5059,
+              "confidence_min": 0.5059,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.506"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5057110328847471
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5057,
+              "confidence_min": 0.5057,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.506"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5052948228267826
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5053,
+              "confidence_min": 0.5053,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.505"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.504839344946577
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5048,
+              "confidence_min": 0.5048,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.505"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5044179489998191
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5044,
+              "confidence_min": 0.5044,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.504"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5041950296546608
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5042,
+              "confidence_min": 0.5042,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.504"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5036204264060835
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5036,
+              "confidence_min": 0.5036,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.504"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5024627761786455
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5025,
+              "confidence_min": 0.5025,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.502"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.5015902240941995
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.5016,
+              "confidence_min": 0.5016,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.502"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.49980814315550043
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.4998,
+              "confidence_min": 0.4998,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.500"
+              ]
+            }
+          },
+          {
+            "op": "token_expr",
+            "args": {
+              "token_type": "small_feature",
+              "value": "contour_region",
+              "confidence": 0.49936583207058943
+            },
+            "children": [],
+            "opt": {
+              "execution_status": "validated",
+              "evidence_tier": "real-capture",
+              "confidence_mean": 0.4994,
+              "confidence_min": 0.4994,
+              "traceable": true,
+              "synthetic": false,
+              "phoxel_source": "unknown",
+              "phoxel_frame_index": null,
+              "pixel_coordinates": [
+                960,
+                540
+              ],
+              "world_anchor_status": "unknown",
+              "pruned": false,
+              "prune_reason": null,
+              "superseded": false,
+              "superseded_by": null,
+              "promotion_screened": true,
+              "promotion_eligible": false,
+              "promotion_blocked_reasons": [
+                "confidence_below_threshold:0.499"
+              ]
+            }
+          }
+        ],
+        "opt": {
+          "execution_status": "validated",
+          "evidence_tier": "real-capture",
+          "confidence_mean": 0.5782,
+          "confidence_min": 0.4994,
+          "traceable": true,
+          "synthetic": false,
+          "phoxel_source": "unknown",
+          "phoxel_frame_index": null,
+          "pixel_coordinates": [
+            960,
+            540
+          ],
+          "world_anchor_status": "unknown",
+          "pruned": false,
+          "prune_reason": null,
+          "superseded": false,
+          "superseded_by": null,
+          "promotion_screened": true,
+          "promotion_eligible": false,
+          "promotion_blocked_reasons": [
+            "confidence_below_threshold:0.578"
+          ]
+        }
+      }
+    }
+  }
+}

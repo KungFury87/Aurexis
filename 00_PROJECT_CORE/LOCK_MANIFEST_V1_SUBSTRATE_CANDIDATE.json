@@ -1,0 +1,204 @@
+{
+  "baseline_id": "aurexis-core-v1-substrate-candidate",
+  "accepted_label": "Aurexis Core V1 Substrate Candidate",
+  "substrate_version": "V1.0",
+  "lock_date": "2026-04-09",
+  "package_scope": "Narrow V1 law-bearing substrate candidate, not full Aurexis Core",
+  "git_tag_name": "aurexis-core-v1-substrate-candidate",
+  "git_tag_created": false,
+  "git_tag_deferred_commands": [
+    "git tag -a aurexis-core-v1-substrate-candidate -m 'Aurexis Core V1 Substrate Candidate \u2014 locked baseline, narrow law-bearing package'",
+    "git push origin aurexis-core-v1-substrate-candidate"
+  ],
+  "reproducible_test_counts": {
+    "standalone_runners": {
+      "total_assertions": 1437,
+      "total_runners": 21,
+      "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
+      "requires": "Python 3.x only, no external dependencies",
+      "breakdown": {
+        "run_v1_tests.py": 192,
+        "run_v1_parse_tests.py": 69,
+        "run_v1_executor_tests.py": 66,
+        "run_v1_stability_tests.py": 44,
+        "run_v1_temporal_tests.py": 33,
+        "run_v1_type_tests.py": 39,
+        "run_v1_composition_tests.py": 43,
+        "run_v1_calibration_tests.py": 56,
+        "run_v1_selfhost_tests.py": 49,
+        "run_v1_substrate_tests.py": 39,
+        "run_v1_raster_bridge_tests.py": 58,
+        "run_v1_capture_tolerance_tests.py": 99,
+        "run_v1_localization_tests.py": 54,
+        "run_v1_orientation_normalization_tests.py": 70,
+        "run_v1_perspective_normalization_tests.py": 53,
+        "run_v1_composed_recovery_tests.py": 72,
+        "run_v1_artifact_dispatch_tests.py": 58,
+        "run_v1_multi_artifact_layout_tests.py": 68,
+        "run_v1_artifact_set_contract_tests.py": 89,
+        "run_v1_recovered_set_signature_tests.py": 86,
+        "run_v1_recovered_set_signature_match_tests.py": 100
+      }
+    },
+    "pytest_format": {
+      "total_functions": 498,
+      "total_files": 19,
+      "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
+      "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
+    }
+  },
+  "locked_source_files": {
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/visual_grammar_v1.py": "e9aab2527c4185ee914649f7ed428d7a0d5bd41a9765829a310a35d663ed8739",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/visual_executor_v1.py": "5622929eb3071aee91e7c945354fbee14525f89754cf2b26f712114ca84ac305",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/visual_parser_v1.py": "0c85ce369cf0ee62b4e6027a903e15df287a777129f07cffc3d6f55f6e6b7cc4",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/visual_parse_rules_v1.py": "a43576edd45cdaf354fe97614cbb3a2f9366d2f85e6f59c3adb53acf01d5a7d6",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/visual_program_executor_v1.py": "cf1a30c70975585a27d6d971a92091fd4476769afefbab6bb2bf11083155ef53",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/type_system_v1.py": "44929a1252fb1cae45013930d0052da2c5caeb7ef09adc7052f2b312f2b89c54",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/composition_v1.py": "4f50123721c17129a68d43de9d3f24aa94508fc1eea0a3b84f5ffdb1516e6369",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/print_scan_stability_v1.py": "c038fe504d1b80f60a5415871f0e33a6ed8eccf6e3e5adb0bb020d7f57dd56f3",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_law_v1.py": "83d5ca8bc5538007a673b931d9aa5d1ccf160584f54ae4f492beb5ae8460361e",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/hardware_calibration_v1.py": "7859fafaf3ed52ab4ff0f722476ee02f9cd700605daf1ece6ee5f10abbb7c41f",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/self_hosting_v1.py": "051857a8f77895c60a21d389cc28f848347d4b353857fffd84f92197946c4847",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/substrate_v1.py": "c980c4a3c26139f537e33b9d8c440feb7abe88be51cfe9002565ffc3a4ace938",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/raster_law_bridge_v1.py": "633aab6f8ac6cf13e1f93eeb655dd4b64ddeae066cb04bdf6c88c863479517e7",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "eb04799a87e240bcf44c593911d3da016007de33ebfc2936bcb8dfd6f7960484",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/capture_tolerance_bridge_v1.py": "75c4e119a4c4bc2b9436dead2ae56244eeeffb4765f5ec2c33aa144b5f8b6218",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_localization_bridge_v1.py": "337d8a8255e073534482ab0e1c3808f43415eab0792f4049bf4c673eec628611",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/orientation_normalization_bridge_v1.py": "545b84011164c754bf6f25f9f766f58f99d2a558d3e6fb7197e67c86d1d4f817",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/perspective_normalization_bridge_v1.py": "f2bcbd355bc9a6ace8f817e34780edcc240037e2fbace68d1a360ff69cb1f33b",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/composed_recovery_bridge_v1.py": "1f1fe46d8cdabbdb98e6ac071f8164cf6c076399ae51895155c0be3d526115c3",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_dispatch_bridge_v1.py": "fc0347ab23378eadb6bba9397fb404ea2d960b848826922fc06b563daa4cd73e",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/multi_artifact_layout_bridge_v1.py": "d93e8fcd7ab218082412af89337a937d43713ded39034502ce39d743c202b3a8",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_set_contract_bridge_v1.py": "f3724bc9d36c02ae7f5fc13d021f21dbdd1787757cc9a09abb75847d91c84876",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_set_signature_bridge_v1.py": "eefcf59ffe10a6c60ce314d795b21f85433009aeac6a68387428df1085d3e710",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_set_signature_match_bridge_v1.py": "660db97d4cc0cdfb780ee624aa55da30ac90652a3def42066fc3b8b7fe530e07"
+  },
+  "lock_documents": [
+    "00_PROJECT_CORE/ACCEPTED_STATUS_V1_SUBSTRATE_CANDIDATE.md",
+    "00_PROJECT_CORE/BASELINE_LOCK_V1_SUBSTRATE_CANDIDATE.md",
+    "00_PROJECT_CORE/LOCK_MANIFEST_V1_SUBSTRATE_CANDIDATE.json",
+    "00_PROJECT_CORE/RELEASE_NOTES_V1_SUBSTRATE_CANDIDATE.md",
+    "00_PROJECT_CORE/RASTER_LAW_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/CAPTURE_TOLERANCE_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/ARTIFACT_LOCALIZATION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/ORIENTATION_NORMALIZATION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/PERSPECTIVE_NORMALIZATION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/COMPOSED_RECOVERY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/ARTIFACT_DISPATCH_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/MULTI_ARTIFACT_LAYOUT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/ARTIFACT_SET_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_SET_SIGNATURE_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_SET_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md"
+  ],
+  "next_lane": "TBD — Vincent decides",
+  "raster_law_bridge_v1": {
+    "status": "complete",
+    "gate": "6/6 PASS",
+    "standalone_assertions": 58,
+    "pytest_functions": 37
+  },
+  "packaging_fix": {
+    "date": "2026-04-10",
+    "fix": "__init__.py trimmed to V1-only imports (was importing ~60 legacy modules not shipped in reduced package)",
+    "root_cause": "ModuleNotFoundError on import \u2014 __init__.py referenced control_flow_state_machine and other absent modules",
+    "trimmed_tests": [
+      "test_camera_bridge.py",
+      "test_end_to_end_pipeline.py",
+      "test_gate_reverification.py",
+      "test_live_camera_pipeline.py",
+      "test_regression_bugs.py"
+    ]
+  },
+  "capture_tolerance_bridge_v1": {
+    "status": "complete",
+    "gate": "7/7 PASS",
+    "standalone_assertions": 99
+  },
+  "artifact_localization_bridge_v1": {
+    "status": "complete",
+    "gate": "8/8 PASS",
+    "standalone_assertions": 54
+  },
+  "orientation_normalization_bridge_v1": {
+    "status": "complete",
+    "gate": "8/8 PASS",
+    "standalone_assertions": 70,
+    "pytest_functions": 51,
+    "supported_angles": [0, 90, 180, 270],
+    "detection_method": "exhaustive_trial_with_color_spatial_signatures"
+  },
+  "perspective_normalization_bridge_v1": {
+    "status": "complete",
+    "gate": "10/10 PASS",
+    "standalone_assertions": 53,
+    "pytest_functions": 37,
+    "frozen_distortions": 7,
+    "max_corner_offset_px": 30,
+    "detection_method": "exhaustive_trial_with_color_spatial_signatures",
+    "warp_method": "bilinear_quad_with_newton_inverse"
+  },
+  "composed_recovery_bridge_v1": {
+    "status": "complete",
+    "gate": "10/10 PASS",
+    "standalone_assertions": 72,
+    "pytest_functions": 35,
+    "composed_transforms": ["placement", "scale", "cardinal_rotation", "keystone_distortion", "photometric_degradation"],
+    "in_bounds_cases": 10,
+    "oob_cases": 4,
+    "detection_method": "exhaustive_trial_rotation_x_distortion"
+  },
+  "artifact_dispatch_bridge_v1": {
+    "status": "complete",
+    "gate": "10/10 PASS",
+    "standalone_assertions": 58,
+    "pytest_functions": 31,
+    "frozen_families": ["adjacent_pair", "containment", "three_regions"],
+    "dispatch_method": "structural_fingerprint_with_containment_disambiguation"
+  },
+  "multi_artifact_layout_bridge_v1": {
+    "status": "complete",
+    "gate": "12/12 PASS",
+    "standalone_assertions": 68,
+    "frozen_layouts": ["two_horizontal", "two_vertical", "three_in_row", "two_horizontal_mixed", "two_vertical_reversed"],
+    "max_artifacts_per_host": 3,
+    "localization_method": "palette_pixel_clustering_with_row_band_ordering",
+    "oob_cases": 3
+  },
+  "artifact_set_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "10/10 PASS",
+    "standalone_assertions": 89,
+    "frozen_contracts": ["two_horizontal_adj_cont", "two_vertical_adj_three", "three_row_all", "two_horizontal_cont_three", "two_vertical_three_adj"],
+    "validation_method": "count_then_families_then_order",
+    "violation_modes": ["RECOVERY_FAILED", "VIOLATED_COUNT", "VIOLATED_FAMILY", "VIOLATED_ORDER"],
+    "cross_validation": "5x5_matrix_all_correct",
+    "oob_cases": 4
+  },
+  "recovered_set_signature_bridge_v1": {
+    "status": "complete",
+    "gate": "11/11 PASS",
+    "standalone_assertions": 86,
+    "signature_profile": {
+      "canonical_fields": ["contract_name", "dispatched_families", "execution_verdicts"],
+      "hash_algorithm": "sha256",
+      "version": "V1.0"
+    },
+    "in_bounds_cases": 5,
+    "oob_cases": 3,
+    "signature_method": "sha256_of_deterministic_canonical_form"
+  },
+  "recovered_set_signature_match_bridge_v1": {
+    "status": "complete",
+    "gate": "11/11 PASS",
+    "standalone_assertions": 100,
+    "expected_signature_baseline": {
+      "supported_contracts": 5,
+      "signature_format": "sha256_hex_64_chars",
+      "version": "V1.0"
+    },
+    "in_bounds_cases": 5,
+    "oob_cases": 3,
+    "unsupported_cases": 1,
+    "match_method": "computed_vs_frozen_expected_baseline"
+  }
+}

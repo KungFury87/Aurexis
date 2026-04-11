@@ -1,0 +1,214 @@
+{
+  "runner_version": "AUREXIS_GATE3_RUNNER_V1",
+  "evaluated_at": "2026-04-09T10:59:42.166749",
+  "evaluation_time_seconds": 0.2186110019683838,
+  "batch_name": "m6_enhanced",
+  "batch_stats": {
+    "files_processed": 14,
+    "total_frames": 14,
+    "has_real_capture": true,
+    "evidence_validated": true,
+    "multi_frame_consistent": true,
+    "per_file_mfc": false,
+    "cross_file_mfc": true,
+    "device_profiles": [
+      "LM-V600",
+      "Galaxy S23 Ultra"
+    ]
+  },
+  "cross_file_consistency": {
+    "multi_frame_consistent": true,
+    "lens_groups": {
+      "main": {
+        "frames_used": 8,
+        "primitives_tracked": 100,
+        "mean_consistency_score": 0.9992485440014558,
+        "promotion_eligible_count": 100,
+        "consistent": true
+      },
+      "ultrawide": {
+        "frames_used": 4,
+        "primitives_tracked": 100,
+        "mean_consistency_score": 0.9991916335721878,
+        "promotion_eligible_count": 100,
+        "consistent": true
+      },
+      "wide_main": {
+        "frames_available": 1,
+        "min_required": 3,
+        "skipped": true,
+        "reason": "too_few_frames"
+      },
+      "periscope_10x": {
+        "frames_available": 1,
+        "min_required": 3,
+        "skipped": true,
+        "reason": "too_few_frames"
+      }
+    },
+    "best_consistency_score": 0.9992485440014558,
+    "promotion_eligible_count": 200
+  },
+  "gate3_evidence_loop": {
+    "gate_3_status": "IN_PROGRESS",
+    "rules_version": "AUREXIS_GATE_3_EARNED_EVIDENCE_LOOP_RULES_V1",
+    "separation_rules_version": "AUREXIS_GATE_3_EVIDENCE_SEPARATION_RULES_V1",
+    "gate_clearance_authority": false,
+    "output_honesty_explicit": true,
+    "source_counts": {
+      "lab": 0,
+      "authored": 1,
+      "real-capture": 1,
+      "earned": 0
+    },
+    "authored_present": true,
+    "real_capture_present": true,
+    "lab_present": false,
+    "earned_present": false,
+    "evidence_validated": true,
+    "multi_frame_consistent": true,
+    "earned_candidate_ready": true,
+    "blocking_reasons": []
+  },
+  "authored_surface": {
+    "source_class": "authored_reference",
+    "evidence_tier": "authored",
+    "output_honesty_explicit": true,
+    "comparable_metrics": {
+      "primitive_density": 99.0,
+      "executable_density": 74.25,
+      "consistency_rate": 0.85,
+      "average_processing_time_seconds": 0.018
+    }
+  },
+  "real_capture_surface": {
+    "source_class": "real_capture_reference",
+    "evidence_tier": "real-capture",
+    "output_honesty_explicit": true,
+    "comparable_metrics": {
+      "primitive_density": 100.0,
+      "confidence_average": 0.8072022177034762,
+      "batch_size": 14.0
+    }
+  },
+  "comparison_summary": {
+    "gate_3_status": "IN_PROGRESS",
+    "rules_version": "AUREXIS_GATE_3_AUTHORED_REAL_CAPTURE_COMPARISON_RULES_V1",
+    "gate_clearance_authority": false,
+    "authored_reference_present": true,
+    "real_capture_reference_present": true,
+    "overlap_metric_count": 1,
+    "overlap_metrics": [
+      "primitive_density"
+    ],
+    "metric_deltas": {
+      "primitive_density": 1.0
+    },
+    "comparison_ready": true,
+    "blocking_reasons": []
+  },
+  "earned_scaffold_audit": {
+    "gate_3_status": "IN_PROGRESS",
+    "rules_version": "AUREXIS_GATE_3_EARNED_EVIDENCE_AUDIT_V1",
+    "gate_clearance_authority": false,
+    "comparison_ready": true,
+    "earned_candidate_ready": true,
+    "earned_audit_ready": true,
+    "source_counts": {
+      "lab": 0,
+      "authored": 1,
+      "real-capture": 1,
+      "earned": 0
+    },
+    "overlap_metric_count": 1,
+    "blocking_reasons": []
+  },
+  "earned_candidate": {
+    "report_scope": "gate3_earned_candidate",
+    "rules_version": "AUREXIS_GATE_3_EARNED_TIER_PROMOTION_RULES_V1",
+    "gate_clearance_authority": false,
+    "output_honesty_explicit": true,
+    "earned_promotion_ready": true,
+    "earned_promotion_passed": true,
+    "promoted_evidence_tier": "earned",
+    "source_counts": {
+      "lab": 0,
+      "authored": 1,
+      "real-capture": 1,
+      "earned": 1
+    },
+    "overlap_metric_count": 1,
+    "metric_deltas": {
+      "primitive_density": 1.0
+    },
+    "max_metric_delta": 1.0,
+    "delta_threshold": 1.5,
+    "blocking_reasons": []
+  },
+  "batch_report_surface": {
+    "batch_name": "m6_enhanced",
+    "gate_3_status": "IN_PROGRESS",
+    "gate_clearance_authority": false,
+    "report_scope": "gate3_batch_report",
+    "report_rules_version": "AUREXIS_GATE_3_BATCH_REPORT_SURFACE_RULES_V1",
+    "output_honesty_explicit": true,
+    "comparison_ready": true,
+    "earned_candidate_ready": true,
+    "earned_audit_ready": true,
+    "earned_promotion_ready": true,
+    "earned_promotion_passed": true,
+    "promoted_evidence_tier": "earned",
+    "source_counts": {
+      "lab": 0,
+      "authored": 1,
+      "real-capture": 1,
+      "earned": 1
+    },
+    "blocking_reasons": [],
+    "evaluation_summary": {
+      "row_count": 14,
+      "hit_count": 14,
+      "hit_rate": 1.0,
+      "average_score": 0.8072022177034762,
+      "success_rate": 1.0
+    }
+  },
+  "gate3_audit": {
+    "audit_rules_version": "AUREXIS_GATE_3_COMPLETION_AUDIT_V1",
+    "completion_authority": "earned_evidence_audit_and_real_capture_comparison",
+    "audit_checks": {
+      "report_scope_explicit": true,
+      "non_clearing_scaffold_surface": true,
+      "comparison_ready": true,
+      "earned_candidate_ready": true,
+      "earned_audit_ready": true,
+      "authored_inputs_present": true,
+      "real_capture_inputs_present": true,
+      "earned_inputs_present": true,
+      "blocking_reasons_empty": true,
+      "output_honesty_explicit": true
+    },
+    "blocking_components": [],
+    "all_audit_checks_pass": true,
+    "gate_3_complete": true,
+    "summary": "Gate 3 completion audit passed"
+  },
+  "summary": {
+    "gate3_complete": true,
+    "earned_candidate_ready": true,
+    "earned_promotion_passed": true,
+    "blocking_reasons": [],
+    "audit_checks": {
+      "report_scope_explicit": true,
+      "non_clearing_scaffold_surface": true,
+      "comparison_ready": true,
+      "earned_candidate_ready": true,
+      "earned_audit_ready": true,
+      "authored_inputs_present": true,
+      "real_capture_inputs_present": true,
+      "earned_inputs_present": true,
+      "blocking_reasons_empty": true,
+      "output_honesty_explicit": true
+    }
+  }
+}
