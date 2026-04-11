@@ -21,12 +21,12 @@
 | 9 | Framing stays narrow and honest | ✅ PASS | Module docstring: "narrow deterministic recovered-set match proof, not general document fingerprinting or secure provenance" |
 | 10 | Returned zip ACTUALLY CONTAINS new match files | ✅ PASS | `recovered_set_signature_match_bridge_v1.py`, `test_recovered_set_signature_match_bridge_v1.py`, `run_v1_recovered_set_signature_match_tests.py` — all confirmed in 70-file zip |
 | 11 | Returned zip is clean-room verified | ✅ PASS | Extracted to `/tmp/clean_room_match/`, 23 modules imported, 100/100 standalone runner PASS |
-| 12 | Removable GitHub backup pushed | — | See GITHUB_BACKUP_RECORD_V1.md |
-| 13 | Remote backup branch exists | — | See GITHUB_BACKUP_RECORD_V1.md |
-| 14 | Remote backup tag exists if created | — | See GITHUB_BACKUP_RECORD_V1.md |
-| 15 | Backup deletion commands written | — | See GITHUB_BACKUP_RECORD_V1.md |
+| 12 | Removable GitHub backup pushed | ✅ PASS | Pushed to `https://github.com/KungFury87/Aurexis` via Git Credential Manager (browser OAuth). Commit `457cb8cc` |
+| 13 | Remote backup branch exists | ✅ PASS | `backup/v1-substrate-candidate-20260411` verified via `git ls-remote` |
+| 14 | Remote backup tag exists | ✅ PASS | `backup-v1-substrate-candidate-20260411` verified via `git ls-remote` |
+| 15 | Backup deletion commands written | ✅ PASS | Full deletion commands in `GITHUB_BACKUP_RECORD_V1.md` |
 
-**Result: 11/11 code gates PASS** (GitHub backup gates verified separately in backup record)
+**Result: 15/15 PASS**
 
 ---
 

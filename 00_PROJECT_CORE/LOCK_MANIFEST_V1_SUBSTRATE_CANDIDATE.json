@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 1437,
-      "total_runners": 21,
+      "total_assertions": 1586,
+      "total_runners": 22,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -37,12 +37,13 @@
         "run_v1_multi_artifact_layout_tests.py": 68,
         "run_v1_artifact_set_contract_tests.py": 89,
         "run_v1_recovered_set_signature_tests.py": 86,
-        "run_v1_recovered_set_signature_match_tests.py": 100
+        "run_v1_recovered_set_signature_match_tests.py": 100,
+        "run_v1_recovered_page_sequence_contract_tests.py": 149
       }
     },
     "pytest_format": {
-      "total_functions": 498,
-      "total_files": 19,
+      "total_functions": 528,
+      "total_files": 20,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -61,7 +62,7 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/self_hosting_v1.py": "051857a8f77895c60a21d389cc28f848347d4b353857fffd84f92197946c4847",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/substrate_v1.py": "c980c4a3c26139f537e33b9d8c440feb7abe88be51cfe9002565ffc3a4ace938",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/raster_law_bridge_v1.py": "633aab6f8ac6cf13e1f93eeb655dd4b64ddeae066cb04bdf6c88c863479517e7",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "eb04799a87e240bcf44c593911d3da016007de33ebfc2936bcb8dfd6f7960484",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "392c6b7379d2911e14813a764bfae46609f8b4b2eefcc59054bba2beadf408ff",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/capture_tolerance_bridge_v1.py": "75c4e119a4c4bc2b9436dead2ae56244eeeffb4765f5ec2c33aa144b5f8b6218",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_localization_bridge_v1.py": "337d8a8255e073534482ab0e1c3808f43415eab0792f4049bf4c673eec628611",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/orientation_normalization_bridge_v1.py": "545b84011164c754bf6f25f9f766f58f99d2a558d3e6fb7197e67c86d1d4f817",
@@ -71,7 +72,8 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/multi_artifact_layout_bridge_v1.py": "d93e8fcd7ab218082412af89337a937d43713ded39034502ce39d743c202b3a8",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_set_contract_bridge_v1.py": "f3724bc9d36c02ae7f5fc13d021f21dbdd1787757cc9a09abb75847d91c84876",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_set_signature_bridge_v1.py": "eefcf59ffe10a6c60ce314d795b21f85433009aeac6a68387428df1085d3e710",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_set_signature_match_bridge_v1.py": "660db97d4cc0cdfb780ee624aa55da30ac90652a3def42066fc3b8b7fe530e07"
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_set_signature_match_bridge_v1.py": "660db97d4cc0cdfb780ee624aa55da30ac90652a3def42066fc3b8b7fe530e07",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_page_sequence_contract_bridge_v1.py": "78f8b156a6e53d640bf34324363a3fd3a250ddfa1b09df08ae02d6a04ee921bf"
   },
   "lock_documents": [
     "00_PROJECT_CORE/ACCEPTED_STATUS_V1_SUBSTRATE_CANDIDATE.md",
@@ -88,7 +90,8 @@
     "00_PROJECT_CORE/MULTI_ARTIFACT_LAYOUT_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/ARTIFACT_SET_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/RECOVERED_SET_SIGNATURE_BRIDGE_V1_GATE_VERIFICATION.md",
-    "00_PROJECT_CORE/RECOVERED_SET_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md"
+    "00_PROJECT_CORE/RECOVERED_SET_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_PAGE_SEQUENCE_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md"
   ],
   "next_lane": "TBD — Vincent decides",
   "raster_law_bridge_v1": {
@@ -200,5 +203,29 @@
     "oob_cases": 3,
     "unsupported_cases": 1,
     "match_method": "computed_vs_frozen_expected_baseline"
+  },
+  "recovered_page_sequence_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "12/12 PASS",
+    "standalone_assertions": 149,
+    "frozen_sequence_contracts": [
+      "two_page_horizontal_vertical",
+      "three_page_all_families",
+      "two_page_mixed_reversed"
+    ],
+    "sequence_verdicts": [
+      "SEQUENCE_SATISFIED",
+      "WRONG_PAGE_COUNT",
+      "WRONG_PAGE_ORDER",
+      "PAGE_MATCH_FAILED",
+      "UNSUPPORTED_SEQUENCE",
+      "ERROR"
+    ],
+    "validation_method": "per_page_match_then_ordered_signature_sequence_check",
+    "in_bounds_cases": 3,
+    "wrong_count_cases": 2,
+    "wrong_order_cases": 2,
+    "wrong_content_cases": 1,
+    "unsupported_cases": 1
   }
 }

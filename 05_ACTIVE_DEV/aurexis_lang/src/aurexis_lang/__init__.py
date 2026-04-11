@@ -40,4 +40,5 @@ V1_MODULES = [
     "artifact_set_contract_bridge_v1",
     "recovered_set_signature_bridge_v1",
     "recovered_set_signature_match_bridge_v1",
+    "recovered_page_sequence_contract_bridge_v1",
 ]
