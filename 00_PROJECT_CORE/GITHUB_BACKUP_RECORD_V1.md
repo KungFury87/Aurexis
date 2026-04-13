@@ -5,6 +5,35 @@
 
 ---
 
+## Backup #25 — Real Capture User Handoff COMPLETE-ENOUGH (49 bridges, 8 branches)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-user-handoff` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-user-handoff` |
+| Pushed commit hash | `6f109fa` (pending user push — sandbox proxy 403) |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 (pending) |
+
+### What This Backup Contains
+
+Snapshot at the Real Capture User Handoff branch COMPLETE-ENOUGH milestone. Includes:
+
+- 49 bridge milestones across 8 branches (18 static + 10 temporal + 4 coherence + 4 view-dep + 4 VSA + 4 integration + 4 observed evidence + 1 user handoff)
+- 6282 standalone assertions across 59 runners
+- 61 V1 modules
+- Eight branch capstones verified
+- Zip with 216 files (~586 KB) including release surface docs + user-facing handoff docs
+- Real capture intake pack, session template kit (MD+JSON), preflight validator (bridge 49), delta-ready handoff surface
+- Branch capstone verified
+
+### Push Instructions
+
+Run `_github_backup.bat` from File Explorer on Windows. The sandbox proxy blocks direct push (403). The batch script is pre-configured with the correct branch/tag names.
+
+---
+
 ## Backup #24 — Observed Evidence Loop COMPLETE-ENOUGH (48 bridges, 7 branches)
 
 | Field | Value |
