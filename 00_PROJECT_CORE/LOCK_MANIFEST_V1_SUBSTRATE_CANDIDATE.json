@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 4347,
-      "total_runners": 34,
+      "total_assertions": 4480,
+      "total_runners": 35,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -50,12 +50,13 @@
         "run_v1_temporal_transport_dispatch_tests.py": 178,
         "run_v1_temporal_consistency_tests.py": 412,
         "run_v1_frame_accurate_transport_tests.py": 350,
-        "run_v1_combined_temporal_fusion_tests.py": 250
+        "run_v1_combined_temporal_fusion_tests.py": 250,
+        "run_v1_temporal_payload_contract_tests.py": 133
       }
     },
     "pytest_format": {
-      "total_functions": 879,
-      "total_files": 32,
+      "total_functions": 910,
+      "total_files": 33,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -74,7 +75,7 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/self_hosting_v1.py": "051857a8f77895c60a21d389cc28f848347d4b353857fffd84f92197946c4847",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/substrate_v1.py": "c980c4a3c26139f537e33b9d8c440feb7abe88be51cfe9002565ffc3a4ace938",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/raster_law_bridge_v1.py": "633aab6f8ac6cf13e1f93eeb655dd4b64ddeae066cb04bdf6c88c863479517e7",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "f88de33db650f942625991dcd242f7d8132688d68ecf949ea4706c9a19c1b31f",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "287c7bae0e413d4a6cd69394ca3449c290987b8fbf204f030866ae8dcd759099",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/capture_tolerance_bridge_v1.py": "75c4e119a4c4bc2b9436dead2ae56244eeeffb4765f5ec2c33aa144b5f8b6218",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_localization_bridge_v1.py": "337d8a8255e073534482ab0e1c3808f43415eab0792f4049bf4c673eec628611",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/orientation_normalization_bridge_v1.py": "545b84011164c754bf6f25f9f766f58f99d2a558d3e6fb7197e67c86d1d4f817",
@@ -97,7 +98,8 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_transport_dispatch_bridge_v1.py": "8f717273edd135ec1d7e3d88f8d7d1536795c47820c3eadeb7d7a883dca28da1",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_consistency_bridge_v1.py": "a0bd5d8963c792d335c9935992c6c29ef9504f422dd03bb40c3d6e90f517bc71",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/frame_accurate_transport_bridge_v1.py": "4aed553a9de4060acf2675d99c9169c094cf085bfe43bc117994901b7e87a21c",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/combined_temporal_fusion_bridge_v1.py": "3cf1a748c856a62edf39e0fb9f6ee57436577a1c4bac65fd5002c6df142d6a5d"
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/combined_temporal_fusion_bridge_v1.py": "3cf1a748c856a62edf39e0fb9f6ee57436577a1c4bac65fd5002c6df142d6a5d",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_contract_bridge_v1.py": "29523fa0d91b344f6eea3e7633ab591bd7a1a2d8c2a17287f3e02449ab0cc014"
   },
   "lock_documents": [
     "00_PROJECT_CORE/ACCEPTED_STATUS_V1_SUBSTRATE_CANDIDATE.md",
@@ -127,7 +129,8 @@
     "00_PROJECT_CORE/TEMPORAL_TRANSPORT_DISPATCH_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/TEMPORAL_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/FRAME_ACCURATE_TRANSPORT_BRIDGE_V1_GATE_VERIFICATION.md",
-    "00_PROJECT_CORE/COMBINED_TEMPORAL_FUSION_BRIDGE_V1_GATE_VERIFICATION.md"
+    "00_PROJECT_CORE/COMBINED_TEMPORAL_FUSION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_PAYLOAD_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md"
   ],
   "next_lane": "TBD — Vincent decides",
   "raster_law_bridge_v1": {
@@ -547,5 +550,41 @@
     "agree_cases": 6,
     "disagree_cases": 2,
     "oob_cases": 4
+  },
+  "temporal_payload_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "32/32 PASS",
+    "standalone_assertions": 133,
+    "branch": "screen_to_camera_temporal_transport",
+    "contract_profile": {
+      "supported_contracts": 5,
+      "contract_names": [
+        "rs_4bit_adjacent",
+        "cc_any_family",
+        "either_containment",
+        "fused_any_family",
+        "rs_large_three_regions"
+      ],
+      "dispatch_profile_ref": "V1_DISPATCH_PROFILE",
+      "fusion_profile_ref": "V1_FUSION_PROFILE"
+    },
+    "contract_verdicts": [
+      "CONTRACT_SATISFIED",
+      "WRONG_PAYLOAD_LENGTH",
+      "WRONG_PAYLOAD_FAMILY",
+      "WRONG_TRANSPORT_MODE",
+      "FUSED_REQUIRED",
+      "DECODE_FAILED",
+      "EMPTY_PAYLOAD",
+      "UNSUPPORTED_CONTRACT",
+      "ERROR"
+    ],
+    "contract_method": "frozen_contract_validation_over_dispatch_recovered_structures",
+    "satisfy_cases": 8,
+    "wrong_length_cases": 2,
+    "wrong_family_cases": 2,
+    "wrong_mode_cases": 2,
+    "fused_required_cases": 2,
+    "oob_cases": 3
   }
 }

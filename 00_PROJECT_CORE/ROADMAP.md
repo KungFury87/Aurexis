@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Combined RS+CC Temporal Fusion Bridge V1 + Future Roadmap
+**Updated:** April 13, 2026 — Temporal Payload Contract Bridge V1 + Future Roadmap
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -236,8 +236,9 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 22 | Temporal Consistency Bridge V1 | ✅ COMPLETE | 412 |
 | 23 | Frame-Accurate Transport Bridge V1 | ✅ COMPLETE | 350 |
 | 24 | Combined RS+CC Temporal Fusion Bridge V1 | ✅ COMPLETE | 250 |
+| 25 | Temporal Payload Contract Bridge V1 | ✅ COMPLETE | 133 |
 
-**Total:** 4347 standalone assertions, 879 pytest functions, 34 runners — all passing.
+**Total:** 4480 standalone assertions, 910 pytest functions, 35 runners — all passing.
 
 ---
 
@@ -262,7 +263,7 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ## Active Branch: Screen-to-Camera Temporal Transport
 
-**Status:** ACTIVE — six milestones complete as of April 13, 2026.
+**Status:** ACTIVE — seven milestones complete as of April 13, 2026.
 
 **Concept:** Extend the static raster bridge to handle temporal transport — the process of capturing a screen-displayed visual program through a physical camera, accounting for temporal artifacts introduced by the capture process.
 
@@ -274,13 +275,15 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - ✅ Temporal Consistency Bridge V1 (22nd bridge) — bounded repeated-capture agreement proof. Repeated synthetic captures of the same bounded temporal payload dispatched through the existing dispatch bridge produce a stable recovered identity (unanimous agreement across 2–10 captures), and inconsistent or drifted capture sets are honestly rejected. 412 assertions, all passing.
 - ✅ Frame-Accurate Transport Bridge V1 (23rd bridge) — bounded temporal slot-identity preservation proof. A frozen family of ordered temporal display sequences (2, 3, or 4 slots) can be independently transported, captured, decoded, and the per-slot payload association and ordering deterministically recovered. Drifted or unsupported sequences are honestly rejected. 350 assertions, all passing.
 - ✅ Combined RS+CC Temporal Fusion Bridge V1 (24th bridge) — bounded stripe-and-color fusion transport proof. Encoding the same bounded payload through both rolling-shutter stripe transport and complementary-color temporal transport, decoding both channels independently, and checking agreement under a frozen fusion policy produces deterministic fused payload recovery. Supports both-agree, single-channel fallback (permissive profile), fallback-denied (strict profile), disagreement rejection, and both-failed rejection. 250 assertions, all passing.
+- ✅ Temporal Payload Contract Bridge V1 (25th bridge) — bounded temporal structure validation proof. Recovered temporal payload structures (from RS, CC, or fused transport) can be validated against an explicit frozen contract specifying allowed payload lengths, payload families, transport modes, and fused-channel requirements. 5 frozen contracts, deterministic accept/reject verdicts. 133 assertions, all passing.
 
 **Planned milestones (tentative):**
+- Temporal payload signature/match work — TBD by Vincent
 - Advanced temporal/OCC work — TBD by Vincent
 
-**Prerequisite:** Stable static raster substrate. All six temporal transport milestones are complete and proven.
+**Prerequisite:** Stable static raster substrate. All seven temporal transport milestones are complete and proven.
 
-**Honest framing:** Temporal transport is a harder problem than static raster recovery. The six completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
+**Honest framing:** Temporal transport is a harder problem than static raster recovery. The seven completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
 
 ---
 

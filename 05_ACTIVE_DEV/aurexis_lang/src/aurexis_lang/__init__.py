@@ -53,4 +53,5 @@ V1_MODULES = [
     "temporal_consistency_bridge_v1",
     "frame_accurate_transport_bridge_v1",
     "combined_temporal_fusion_bridge_v1",
+    "temporal_payload_contract_bridge_v1",
 ]
