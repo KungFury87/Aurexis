@@ -5,6 +5,48 @@
 
 ---
 
+## Backup #24 — Observed Evidence Loop COMPLETE-ENOUGH (48 bridges, 7 branches)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-observed-evidence` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-observed-evidence` |
+| Pushed commit hash | `dbd1813946f6d68c8c6973ad7418da9f3df2fb0f` |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 |
+
+### What This Backup Contains
+
+Snapshot at the Observed Evidence Loop branch COMPLETE-ENOUGH milestone. Includes:
+
+- 48 bridge milestones across 7 branches (18 static + 10 temporal + 4 coherence + 4 view-dep + 4 VSA + 4 integration + 4 observed evidence)
+- 6246 standalone assertions across 58 runners
+- 60 V1 modules
+- Seven branch capstones verified
+- Zip with 188 files (~512 KB) including 9 top-level release surface docs
+- Real capture ingest profile, session manifest, delta analysis, calibration recommendation
+- All recommendations advisory, none auto-execute
+
+This is a removable backup snapshot, not a claim of full Aurexis Core completion.
+
+### Remote Verification
+
+*(to be filled after push)*
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260413-observed-evidence
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260413-observed-evidence
+# Delete local branch (optional):
+git branch -d backup/v1-substrate-candidate-20260413-observed-evidence
+```
+
+---
+
 ## Backup #23 — Release-Hardened V1 Substrate Candidate (44 bridges, top-level docs)
 
 | Field | Value |
