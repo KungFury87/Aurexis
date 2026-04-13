@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 13, 2026 — Rolling Shutter Temporal Transport Bridge V1 COMPLETE
-**Status:** V1 Substrate Candidate accepted and baseline-locked. Nineteen bridge milestones complete (18 static substrate + 1 temporal transport): Raster Law, Capture Tolerance, Artifact Localization, Orientation Normalization, Perspective Normalization, Composed Recovery, Artifact Dispatch, Multi-Artifact Layout, Artifact Set Contract, Recovered Set Signature, Recovered Set Signature Match, Recovered Page Sequence Contract, Recovered Page Sequence Signature, Recovered Page Sequence Signature Match, Recovered Sequence Collection Contract, Recovered Sequence Collection Signature, Recovered Sequence Collection Signature Match, Recovered Collection Global Consistency, Rolling Shutter Temporal Transport. 2840 standalone assertions + 714 pytest functions, all passing.
+**Last Updated:** April 13, 2026 — Complementary-Color Temporal Transport Bridge V1 COMPLETE
+**Status:** V1 Substrate Candidate accepted and baseline-locked. Twenty bridge milestones complete (18 static substrate + 2 temporal transport): Raster Law, Capture Tolerance, Artifact Localization, Orientation Normalization, Perspective Normalization, Composed Recovery, Artifact Dispatch, Multi-Artifact Layout, Artifact Set Contract, Recovered Set Signature, Recovered Set Signature Match, Recovered Page Sequence Contract, Recovered Page Sequence Signature, Recovered Page Sequence Signature Match, Recovered Sequence Collection Contract, Recovered Sequence Collection Signature, Recovered Sequence Collection Signature Match, Recovered Collection Global Consistency, Rolling Shutter Temporal Transport, Complementary-Color Temporal Transport. 3157 standalone assertions + 761 pytest functions, all passing.
 
 ---
 
@@ -168,8 +168,9 @@ Narrow law-bearing substrate candidate — not full Aurexis Core completion.
 | — | **Recovered Sequence Collection Signature Match Bridge V1** | ✅ COMPLETE | 148 assertions |
 | — | **Recovered Collection Global Consistency Bridge V1** | ✅ COMPLETE | 186 assertions |
 | — | **Rolling Shutter Temporal Transport Bridge V1** | ✅ COMPLETE | 289 assertions |
+| — | **Complementary-Color Temporal Transport Bridge V1** | ✅ COMPLETE | 317 assertions |
 
-**Total:** 2840 standalone assertions, 714 pytest functions, 29 runners — all passing.
+**Total:** 3157 standalone assertions, 761 pytest functions, 30 runners — all passing.
 
 **Rule:** Do not skip or reorder. Each milestone gets a gate verification audit.
 

@@ -48,4 +48,5 @@ V1_MODULES = [
     "recovered_sequence_collection_signature_match_bridge_v1",
     "recovered_collection_global_consistency_bridge_v1",
     "rolling_shutter_temporal_transport_bridge_v1",
+    "complementary_color_temporal_transport_bridge_v1",
 ]
