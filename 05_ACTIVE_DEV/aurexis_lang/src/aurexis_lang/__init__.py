@@ -50,4 +50,5 @@ V1_MODULES = [
     "rolling_shutter_temporal_transport_bridge_v1",
     "complementary_color_temporal_transport_bridge_v1",
     "temporal_transport_dispatch_bridge_v1",
+    "temporal_consistency_bridge_v1",
 ]

@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — V1 Substrate Bridge Ladder + Future Roadmap
+**Updated:** April 13, 2026 — Temporal Consistency Bridge V1 + Future Roadmap
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -233,8 +233,9 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 19 | Rolling Shutter Temporal Transport Bridge V1 | ✅ COMPLETE | 289 |
 | 20 | Complementary-Color Temporal Transport Bridge V1 | ✅ COMPLETE | 317 |
 | 21 | Temporal Transport Dispatch Bridge V1 | ✅ COMPLETE | 178 |
+| 22 | Temporal Consistency Bridge V1 | ✅ COMPLETE | 412 |
 
-**Total:** 3335 standalone assertions, 785 pytest functions, 31 runners — all passing.
+**Total:** 3747 standalone assertions, 820 pytest functions, 32 runners — all passing.
 
 ---
 
@@ -259,7 +260,7 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ## Active Branch: Screen-to-Camera Temporal Transport
 
-**Status:** ACTIVE — three milestones complete as of April 13, 2026.
+**Status:** ACTIVE — four milestones complete as of April 13, 2026.
 
 **Concept:** Extend the static raster bridge to handle temporal transport — the process of capturing a screen-displayed visual program through a physical camera, accounting for temporal artifacts introduced by the capture process.
 
@@ -268,16 +269,16 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - ✅ Rolling Shutter Temporal Transport Bridge V1 (19th bridge) — bounded screen-to-camera stripe transport proof using 1 kHz temporal modulation, CMOS rolling-shutter row-delay exploitation, timing-based slot decoding, and route mapping into existing Aurexis dispatch families. 289 assertions, all passing.
 - ✅ Complementary-Color Temporal Transport Bridge V1 (20th bridge) — bounded screen-to-camera complementary-color transport proof using 3 frozen color pairs (cyan/red, magenta/green, yellow/blue), chrominance projection decoding, and route mapping into existing Aurexis dispatch families. 317 assertions, all passing.
 - ✅ Temporal Transport Dispatch Bridge V1 (21st bridge) — bounded temporal-mode routing proof. Identifies which of the two frozen transport modes (rolling-shutter or complementary-color) produced a recovered signal via structural fingerprinting, routes to the correct decoder, and feeds the payload into the existing Aurexis dispatch path. 178 assertions, all passing.
+- ✅ Temporal Consistency Bridge V1 (22nd bridge) — bounded repeated-capture agreement proof. Repeated synthetic captures of the same bounded temporal payload dispatched through the existing dispatch bridge produce a stable recovered identity (unanimous agreement across 2–10 captures), and inconsistent or drifted capture sets are honestly rejected. 412 assertions, all passing.
 
 **Planned milestones (tentative):**
 
-- Temporal Consistency Bridge — prove that the recovered content maintains identity across multiple temporal captures (same program captured at different times yields consistent recovery)
 - Frame-Accurate Transport Bridge — prove that the temporal transport preserves frame-level timing information from the original display sequence
 - Combined RS + Complementary-Color Fusion Bridge — explore combining rolling-shutter stripe structure with complementary-color encoding for higher-capacity temporal transport
 
-**Prerequisite:** Stable static raster substrate. All three temporal transport milestones are complete and proven.
+**Prerequisite:** Stable static raster substrate. All four temporal transport milestones are complete and proven.
 
-**Honest framing:** Temporal transport is a harder problem than static raster recovery. The three completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
+**Honest framing:** Temporal transport is a harder problem than static raster recovery. The four completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
 
 ---
 
