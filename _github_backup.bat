@@ -3,17 +3,17 @@ setlocal enabledelayedexpansion
 
 REM ── Aurexis Core GitHub Backup Script ──
 REM Pushes current repo state to a removable backup branch + tag
-REM Complementary-Color Temporal Transport Bridge V1 (20th bridge)
+REM Temporal Transport Dispatch Bridge V1 (21st bridge)
 
 set "REPO_DIR=%~dp0"
-set "BRANCH=backup/v1-substrate-candidate-20260413-cctransport"
-set "TAG=backup-v1-substrate-candidate-20260413-cctransport"
+set "BRANCH=backup/v1-substrate-candidate-20260413-ttdispatch"
+set "TAG=backup-v1-substrate-candidate-20260413-ttdispatch"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
 echo ============================================ > "%LOG%"
 echo Aurexis Core GitHub Backup >> "%LOG%"
-echo Complementary-Color Temporal Transport Bridge V1 >> "%LOG%"
+echo Temporal Transport Dispatch Bridge V1 >> "%LOG%"
 echo %date% %time% >> "%LOG%"
 echo ============================================ >> "%LOG%"
 
@@ -33,7 +33,7 @@ if exist ".git" (
 
     REM Commit
     echo Committing... >> "%LOG%"
-    git commit -m "Complementary-Color Temporal Transport Bridge V1 — 20th bridge milestone, 3157 assertions, 30 runners, 32 modules" >> "%LOG%" 2>&1
+    git commit -m "Temporal Transport Dispatch Bridge V1 — 21st bridge milestone, 3335 assertions, 31 runners, 33 modules" >> "%LOG%" 2>&1
 
     REM Create backup branch
     echo Creating branch %BRANCH%... >> "%LOG%"
@@ -41,7 +41,7 @@ if exist ".git" (
 
     REM Create tag
     echo Creating tag %TAG%... >> "%LOG%"
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Complementary-Color Temporal Transport Bridge (20th bridge)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Temporal Transport Dispatch Bridge (21st bridge)" >> "%LOG%" 2>&1
 
     REM Push branch
     echo Pushing branch... >> "%LOG%"
@@ -69,9 +69,9 @@ if exist ".git" (
     git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
     git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
     git add -A >> "%LOG%" 2>&1
-    git commit -m "Complementary-Color Temporal Transport Bridge V1 — 20th bridge milestone, 3157 assertions, 30 runners, 32 modules" >> "%LOG%" 2>&1
+    git commit -m "Temporal Transport Dispatch Bridge V1 — 21st bridge milestone, 3335 assertions, 31 runners, 33 modules" >> "%LOG%" 2>&1
     git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Complementary-Color Temporal Transport Bridge (20th bridge)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Temporal Transport Dispatch Bridge (21st bridge)" >> "%LOG%" 2>&1
 
     echo Pushing branch... >> "%LOG%"
     git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1

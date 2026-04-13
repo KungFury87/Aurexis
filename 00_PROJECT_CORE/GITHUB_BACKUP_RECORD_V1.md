@@ -5,6 +5,49 @@
 
 ---
 
+## Backup #11 — Temporal Transport Dispatch Bridge V1
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-ttdispatch` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-ttdispatch` |
+| Pushed commit hash | *(to be filled after push)* |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 |
+
+### What This Backup Contains
+
+Snapshot at the Temporal Transport Dispatch Bridge V1 milestone (21st bridge, 3rd temporal transport). Includes:
+
+- 21 bridge milestones (18 static substrate + 3 temporal transport)
+- 3335 standalone assertions across 31 runners
+- 33 V1 modules
+- All project core documents, gate verifications, lock manifest, ROADMAP
+- The locked zip package
+- All legacy releases and working session files
+
+This is a removable backup snapshot, not a claim of full Aurexis Core completion.
+
+### Remote Verification
+
+*(to be filled after push)*
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260413-ttdispatch
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260413-ttdispatch
+# Delete local branch (optional):
+git branch -D backup/v1-substrate-candidate-20260413-ttdispatch
+# Delete local tag (optional):
+git tag -d backup-v1-substrate-candidate-20260413-ttdispatch
+```
+
+---
+
 ## Backup #10 — Complementary-Color Temporal Transport Bridge V1
 
 | Field | Value |

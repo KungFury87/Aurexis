@@ -49,4 +49,5 @@ V1_MODULES = [
     "recovered_collection_global_consistency_bridge_v1",
     "rolling_shutter_temporal_transport_bridge_v1",
     "complementary_color_temporal_transport_bridge_v1",
+    "temporal_transport_dispatch_bridge_v1",
 ]
