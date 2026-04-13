@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 13, 2026 — Observed Evidence Loop / Real Capture Calibration Branch COMPLETE-ENOUGH
-**Status:** V1 Substrate Candidate with observed-evidence loop. Forty-eight bridge milestones complete (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release + 4 observed evidence). All seven branch capstones verified. 6246 standalone assertions across 58 runners, all passing.
+**Last Updated:** April 13, 2026 — Real Capture User Handoff Branch COMPLETE-ENOUGH
+**Status:** V1 Substrate Candidate with real-capture user handoff. Forty-nine bridge milestones complete (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release + 4 observed evidence + 1 user handoff). All eight branch capstones verified. 6282 standalone assertions across 59 runners, all passing.
 
 ---
 
@@ -197,8 +197,9 @@ Narrow law-bearing substrate candidate — not full Aurexis Core completion.
 | — | **Capture Session Manifest Bridge V1** | ✅ COMPLETE | 42 assertions |
 | — | **Evidence Delta Analysis Bridge V1** | ✅ COMPLETE | 40 assertions |
 | — | **Calibration Recommendation Bridge V1** | ✅ COMPLETE | 33 assertions |
+| — | **Real Capture Intake Preflight Bridge V1** | ✅ COMPLETE | 36 assertions |
 
-**Total:** 6246 standalone assertions, 58 runners — all passing.
+**Total:** 6282 standalone assertions, 59 runners — all passing.
 
 **Rule:** Do not skip or reorder. Each milestone gets a gate verification audit.
 

@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 6246,
-      "total_runners": 58,
+      "total_assertions": 6282,
+      "total_runners": 59,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -70,12 +70,17 @@
         "run_v1_unified_capability_manifest_tests.py": 53,
         "run_v1_unified_substrate_entrypoint_tests.py": 57,
         "run_v1_cross_branch_compatibility_tests.py": 36,
-        "run_v1_release_audit_tests.py": 40
+        "run_v1_release_audit_tests.py": 40,
+        "run_v1_real_capture_ingest_profile_tests.py": 50,
+        "run_v1_capture_session_manifest_tests.py": 42,
+        "run_v1_evidence_delta_analysis_tests.py": 40,
+        "run_v1_calibration_recommendation_tests.py": 33,
+        "run_v1_real_capture_intake_preflight_tests.py": 36
       }
     },
     "pytest_format": {
-      "total_functions": 1310,
-      "total_files": 52,
+      "total_functions": 1396,
+      "total_files": 57,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -1015,5 +1020,30 @@
     "branch_name": "observed_evidence_loop",
     "capstone_doc": "05_ACTIVE_DEV/aurexis_lang/OBSERVED_EVIDENCE_LOOP_CAPSTONE_V1.md",
     "real_stop_condition": "requires_user_supplied_capture_datasets"
+  },
+  "real_capture_intake_preflight_bridge_v1": {
+    "status": "complete",
+    "gate": "19/19 PASS",
+    "standalone_assertions": 36,
+    "pytest_functions": 19,
+    "bridge_number": 49,
+    "branch": "real_capture_user_handoff",
+    "branch_milestone": 1,
+    "preflight_checks": 10,
+    "allowed_extensions": [".jpg", ".png", ".tif"],
+    "required_session_fields": 4,
+    "required_file_fields": 7
+  },
+  "real_capture_user_handoff_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_handoff_milestones": 5,
+    "total_handoff_code_bridges": 1,
+    "total_handoff_documentation_milestones": 4,
+    "total_handoff_assertions": 36,
+    "total_handoff_runners": 1,
+    "total_handoff_pytest_functions": 19,
+    "branch_name": "real_capture_user_handoff",
+    "capstone_doc": "05_ACTIVE_DEV/aurexis_lang/REAL_CAPTURE_USER_HANDOFF_CAPSTONE_V1.md",
+    "real_stop_condition": "requires_user_supplied_real_capture_packs"
   }
 }

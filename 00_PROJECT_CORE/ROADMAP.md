@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Integration / Release Hardening Branch COMPLETE-ENOUGH (44 bridges)
+**Updated:** April 13, 2026 — Real Capture User Handoff Branch COMPLETE-ENOUGH (49 bridges)
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -260,8 +260,9 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 46 | Capture Session Manifest Bridge V1 | ✅ COMPLETE | 42 |
 | 47 | Evidence Delta Analysis Bridge V1 | ✅ COMPLETE | 40 |
 | 48 | Calibration Recommendation Bridge V1 | ✅ COMPLETE | 33 |
+| 49 | Real Capture Intake Preflight Bridge V1 | ✅ COMPLETE | 36 |
 
-**Total:** 6246 standalone assertions, 58 runners — all passing.
+**Total:** 6282 standalone assertions, 59 runners — all passing.
 
 ---
 
@@ -383,6 +384,26 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 **Honest limits:** No real capture files have been processed yet — the loop infrastructure is proven but requires user-supplied capture datasets to exercise against real data. All recommendations are advisory; none auto-execute. No root-cause analysis or continuous monitoring.
 
 **What still requires user action later:** User-supplied real capture datasets to feed through the loop. Until then, the infrastructure is proven against synthetic/deterministic test cases only.
+
+---
+
+## Real Capture User Intake / Handoff Hardening — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**Bridge:** 49 (1 code bridge + 4 documentation milestones)
+**New assertions:** 36 standalone, 1 runner
+**Branch verdict:** COMPLETE-ENOUGH — bounded real-capture submission readiness
+
+**What was built:**
+- **Milestone 1 — Real Capture Intake Pack V1:** Complete user-facing specification of allowed formats (5 ingest cases), required/optional metadata, capture assumptions, folder structure, naming rules, and processing pipeline.
+- **Milestone 2 — Capture Session Template Kit V1:** Human-readable template and machine-readable JSON template for users to copy, fill in, and submit as session_manifest.json.
+- **Bridge 49 — Real Capture Intake Preflight V1:** 10 frozen structural checks validating session manifests before processing. Checks session fields, session ID, files array, file fields, extensions (.jpg/.png/.tif), filenames, duplicates, sizes, resolutions, conditions. (36 assertions, 19/19 gate)
+- **Milestone 4 — Delta-Ready Handoff Surface V1:** End-to-end pipeline documentation showing how a valid capture pack flows through preflight → ingest → manifest → delta → recommendations.
+- **Milestone 5 — Branch Capstone:** Verification of all 5 milestones.
+
+**Honest limits:** No real captures have been submitted. No automated file discovery. No image content validation. No web upload or API. This is one-shot file-based session submission, not streaming or incremental intake.
+
+**What still requires user action:** User-supplied real capture files processed through this intake surface.
 
 ---
 

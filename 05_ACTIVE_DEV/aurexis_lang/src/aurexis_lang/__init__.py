@@ -77,4 +77,5 @@ V1_MODULES = [
     "capture_session_manifest_bridge_v1",
     "evidence_delta_analysis_bridge_v1",
     "calibration_recommendation_bridge_v1",
+    "real_capture_intake_preflight_bridge_v1",
 ]
