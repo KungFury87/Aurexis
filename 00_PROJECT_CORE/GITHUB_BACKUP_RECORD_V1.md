@@ -5,6 +5,49 @@
 
 ---
 
+## Backup #10 — Complementary-Color Temporal Transport Bridge V1
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-cctransport` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-cctransport` |
+| Pushed commit hash | *(to be filled after push)* |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 |
+
+### What This Backup Contains
+
+Snapshot at the Complementary-Color Temporal Transport Bridge V1 milestone (20th bridge, 2nd temporal transport). Includes:
+
+- 20 bridge milestones (18 static substrate + 2 temporal transport)
+- 3157 standalone assertions across 30 runners
+- 32 V1 modules
+- All project core documents, gate verifications, lock manifest, ROADMAP
+- The locked zip package (~496 KB)
+- All legacy releases and working session files
+
+This is a removable backup snapshot, not a claim of full Aurexis Core completion.
+
+### Remote Verification
+
+*(to be filled after push)*
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260413-cctransport
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260413-cctransport
+# Delete local branch (optional):
+git branch -D backup/v1-substrate-candidate-20260413-cctransport
+# Delete local tag (optional):
+git tag -d backup-v1-substrate-candidate-20260413-cctransport
+```
+
+---
+
 ## Backup #9 — Rolling Shutter Temporal Transport Bridge V1
 
 | Field | Value |
