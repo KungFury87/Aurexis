@@ -230,8 +230,9 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 16 | Recovered Sequence Collection Signature Bridge V1 | ✅ COMPLETE | 173 |
 | 17 | Recovered Sequence Collection Signature Match Bridge V1 | ✅ COMPLETE | 148 |
 | 18 | Recovered Collection Global Consistency Bridge V1 | ✅ COMPLETE | 186 |
+| 19 | Rolling Shutter Temporal Transport Bridge V1 | ✅ COMPLETE | 289 |
 
-**Total:** 2551 standalone assertions, 686 pytest functions, 28 runners — all passing.
+**Total:** 2840 standalone assertions, 714 pytest functions, 29 runners — all passing.
 
 ---
 
@@ -254,15 +255,18 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ---
 
-## Future Branch: Screen-to-Camera Temporal Transport
+## Active Branch: Screen-to-Camera Temporal Transport
 
-**Insertion point:** After the static substrate matures and the sheaf-style coherence branch demonstrates composable consistency.
+**Status:** STARTED — first milestone (Rolling Shutter Temporal Transport Bridge V1) complete as of April 13, 2026.
 
 **Concept:** Extend the static raster bridge to handle temporal transport — the process of capturing a screen-displayed visual program through a physical camera, accounting for temporal artifacts introduced by the capture process.
 
+**Completed milestones:**
+
+- ✅ Rolling Shutter Temporal Transport Bridge V1 (19th bridge) — bounded screen-to-camera stripe transport proof using 1 kHz temporal modulation, CMOS rolling-shutter row-delay exploitation, timing-based slot decoding, and route mapping into existing Aurexis dispatch families. 289 assertions, all passing.
+
 **Planned milestones (tentative):**
 
-- Rolling-Shutter Compensation Bridge — detect and compensate for rolling-shutter distortion in camera captures of screen-displayed content (row-by-row temporal skew)
 - Complementary-Color / Imperceptible Marker Bridge — embed and recover temporal markers that are imperceptible to the human eye but detectable by camera (exploiting display refresh timing, complementary color channels, or sub-frame encoding)
 - Temporal Consistency Bridge — prove that the recovered content maintains identity across multiple temporal captures (same program captured at different times yields consistent recovery)
 - Frame-Accurate Transport Bridge — prove that the temporal transport preserves frame-level timing information from the original display sequence

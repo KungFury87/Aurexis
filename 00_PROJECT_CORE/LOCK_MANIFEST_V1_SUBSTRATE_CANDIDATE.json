@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 2551,
-      "total_runners": 28,
+      "total_assertions": 2840,
+      "total_runners": 29,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -44,12 +44,13 @@
         "run_v1_recovered_sequence_collection_contract_tests.py": 163,
         "run_v1_recovered_sequence_collection_signature_tests.py": 173,
         "run_v1_recovered_sequence_collection_signature_match_tests.py": 148,
-        "run_v1_recovered_collection_global_consistency_tests.py": 186
+        "run_v1_recovered_collection_global_consistency_tests.py": 186,
+        "run_v1_rolling_shutter_temporal_transport_tests.py": 289
       }
     },
     "pytest_format": {
-      "total_functions": 686,
-      "total_files": 26,
+      "total_functions": 714,
+      "total_files": 27,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -68,7 +69,7 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/self_hosting_v1.py": "051857a8f77895c60a21d389cc28f848347d4b353857fffd84f92197946c4847",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/substrate_v1.py": "c980c4a3c26139f537e33b9d8c440feb7abe88be51cfe9002565ffc3a4ace938",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/raster_law_bridge_v1.py": "633aab6f8ac6cf13e1f93eeb655dd4b64ddeae066cb04bdf6c88c863479517e7",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "1f906eed7c51bb0d9aa8b8ea50386b146f3cac38daea990dcbf777766600643c",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "acea40541f98c1014205f6ac2b86f6aa3e0c9ccec3719577494b3788f38eef92",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/capture_tolerance_bridge_v1.py": "75c4e119a4c4bc2b9436dead2ae56244eeeffb4765f5ec2c33aa144b5f8b6218",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_localization_bridge_v1.py": "337d8a8255e073534482ab0e1c3808f43415eab0792f4049bf4c673eec628611",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/orientation_normalization_bridge_v1.py": "545b84011164c754bf6f25f9f766f58f99d2a558d3e6fb7197e67c86d1d4f817",
@@ -85,7 +86,8 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_sequence_collection_contract_bridge_v1.py": "d930e32333d1f33fc11c9228885c68dc03f302c42aadf3b89f6d3745837d5866",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_sequence_collection_signature_bridge_v1.py": "ceea3bf4b7c3a7b0ec11c4ffe3b01b7958873351cf5d0b359e950584e6aee690",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_sequence_collection_signature_match_bridge_v1.py": "9f5da9fd0112cfb45de9edd7f1b42317f0e9e69db616ad84276a2937da86bc7f",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_collection_global_consistency_bridge_v1.py": "71995e962a92356543ead08d71a675c4a96de334fd7a15d68803a5193f366629"
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_collection_global_consistency_bridge_v1.py": "71995e962a92356543ead08d71a675c4a96de334fd7a15d68803a5193f366629",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/rolling_shutter_temporal_transport_bridge_v1.py": "04876d9ccf69233c9649e44688138d96422923dd60a17b980084c72fe283fb8f"
   },
   "lock_documents": [
     "00_PROJECT_CORE/ACCEPTED_STATUS_V1_SUBSTRATE_CANDIDATE.md",
@@ -109,7 +111,8 @@
     "00_PROJECT_CORE/RECOVERED_SEQUENCE_COLLECTION_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/RECOVERED_SEQUENCE_COLLECTION_SIGNATURE_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/RECOVERED_SEQUENCE_COLLECTION_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md",
-    "00_PROJECT_CORE/RECOVERED_COLLECTION_GLOBAL_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md"
+    "00_PROJECT_CORE/RECOVERED_COLLECTION_GLOBAL_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/ROLLING_SHUTTER_TEMPORAL_TRANSPORT_BRIDGE_V1_GATE_VERIFICATION.md"
   ],
   "next_lane": "TBD — Vincent decides",
   "raster_law_bridge_v1": {
@@ -373,5 +376,31 @@
     "in_bounds_cases": 3,
     "contradictory_cases": 6,
     "unsupported_cases": 1
+  },
+  "rolling_shutter_temporal_transport_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 289,
+    "branch": "screen_to_camera_temporal_transport",
+    "temporal_transport_profile": {
+      "temporal_rate_hz": 1000,
+      "row_readout_us": 25.0,
+      "frame_height": 480,
+      "frame_width": 640,
+      "rows_per_slot": 40,
+      "max_slots": 12,
+      "supported_payload_lengths": [4, 5, 6, 7, 8],
+      "sync_header": [1, 0, 1]
+    },
+    "route_table": {
+      "00": "adjacent_pair",
+      "01": "containment",
+      "10": "three_regions",
+      "11": "RESERVED"
+    },
+    "transport_method": "temporal_modulation_to_rs_stripe_to_timing_decode_to_route",
+    "in_bounds_cases": 8,
+    "oob_cases": 4,
+    "edge_cases": 2
   }
 }
