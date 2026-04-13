@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Frame-Accurate Transport Bridge V1 + Future Roadmap
+**Updated:** April 13, 2026 — Combined RS+CC Temporal Fusion Bridge V1 + Future Roadmap
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -235,8 +235,9 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 21 | Temporal Transport Dispatch Bridge V1 | ✅ COMPLETE | 178 |
 | 22 | Temporal Consistency Bridge V1 | ✅ COMPLETE | 412 |
 | 23 | Frame-Accurate Transport Bridge V1 | ✅ COMPLETE | 350 |
+| 24 | Combined RS+CC Temporal Fusion Bridge V1 | ✅ COMPLETE | 250 |
 
-**Total:** 4097 standalone assertions, 852 pytest functions, 33 runners — all passing.
+**Total:** 4347 standalone assertions, 879 pytest functions, 34 runners — all passing.
 
 ---
 
@@ -261,7 +262,7 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ## Active Branch: Screen-to-Camera Temporal Transport
 
-**Status:** ACTIVE — five milestones complete as of April 13, 2026.
+**Status:** ACTIVE — six milestones complete as of April 13, 2026.
 
 **Concept:** Extend the static raster bridge to handle temporal transport — the process of capturing a screen-displayed visual program through a physical camera, accounting for temporal artifacts introduced by the capture process.
 
@@ -272,13 +273,14 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - ✅ Temporal Transport Dispatch Bridge V1 (21st bridge) — bounded temporal-mode routing proof. Identifies which of the two frozen transport modes (rolling-shutter or complementary-color) produced a recovered signal via structural fingerprinting, routes to the correct decoder, and feeds the payload into the existing Aurexis dispatch path. 178 assertions, all passing.
 - ✅ Temporal Consistency Bridge V1 (22nd bridge) — bounded repeated-capture agreement proof. Repeated synthetic captures of the same bounded temporal payload dispatched through the existing dispatch bridge produce a stable recovered identity (unanimous agreement across 2–10 captures), and inconsistent or drifted capture sets are honestly rejected. 412 assertions, all passing.
 - ✅ Frame-Accurate Transport Bridge V1 (23rd bridge) — bounded temporal slot-identity preservation proof. A frozen family of ordered temporal display sequences (2, 3, or 4 slots) can be independently transported, captured, decoded, and the per-slot payload association and ordering deterministically recovered. Drifted or unsupported sequences are honestly rejected. 350 assertions, all passing.
+- ✅ Combined RS+CC Temporal Fusion Bridge V1 (24th bridge) — bounded stripe-and-color fusion transport proof. Encoding the same bounded payload through both rolling-shutter stripe transport and complementary-color temporal transport, decoding both channels independently, and checking agreement under a frozen fusion policy produces deterministic fused payload recovery. Supports both-agree, single-channel fallback (permissive profile), fallback-denied (strict profile), disagreement rejection, and both-failed rejection. 250 assertions, all passing.
 
 **Planned milestones (tentative):**
-- Combined RS + Complementary-Color Fusion Bridge — explore combining rolling-shutter stripe structure with complementary-color encoding for higher-capacity temporal transport
+- Advanced temporal/OCC work — TBD by Vincent
 
-**Prerequisite:** Stable static raster substrate. All five temporal transport milestones are complete and proven.
+**Prerequisite:** Stable static raster substrate. All six temporal transport milestones are complete and proven.
 
-**Honest framing:** Temporal transport is a harder problem than static raster recovery. The five completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
+**Honest framing:** Temporal transport is a harder problem than static raster recovery. The six completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
 
 ---
 
