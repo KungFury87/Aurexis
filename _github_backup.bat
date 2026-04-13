@@ -3,17 +3,17 @@ setlocal enabledelayedexpansion
 
 REM ── Aurexis Core GitHub Backup Script ──
 REM Pushes current repo state to a removable backup branch + tag
-REM Temporal Consistency Bridge V1 (22nd bridge)
+REM Frame-Accurate Transport Bridge V1 (23rd bridge)
 
 set "REPO_DIR=%~dp0"
-set "BRANCH=backup/v1-substrate-candidate-20260413-tconsistency"
-set "TAG=backup-v1-substrate-candidate-20260413-tconsistency"
+set "BRANCH=backup/v1-substrate-candidate-20260413-frameacc"
+set "TAG=backup-v1-substrate-candidate-20260413-frameacc"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
 echo ============================================ > "%LOG%"
 echo Aurexis Core GitHub Backup >> "%LOG%"
-echo Temporal Transport Dispatch Bridge V1 >> "%LOG%"
+echo Frame-Accurate Transport Bridge V1 >> "%LOG%"
 echo %date% %time% >> "%LOG%"
 echo ============================================ >> "%LOG%"
 
@@ -33,7 +33,7 @@ if exist ".git" (
 
     REM Commit
     echo Committing... >> "%LOG%"
-    git commit -m "Temporal Consistency Bridge V1 — 22nd bridge milestone, 3747 assertions, 32 runners, 34 modules" >> "%LOG%" 2>&1
+    git commit -m "Frame-Accurate Transport Bridge V1 — 23rd bridge milestone, 4097 assertions, 33 runners, 35 modules" >> "%LOG%" 2>&1
 
     REM Create backup branch
     echo Creating branch %BRANCH%... >> "%LOG%"
@@ -41,7 +41,7 @@ if exist ".git" (
 
     REM Create tag
     echo Creating tag %TAG%... >> "%LOG%"
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Temporal Consistency Bridge (22nd bridge)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Frame-Accurate Transport Bridge (23rd bridge)" >> "%LOG%" 2>&1
 
     REM Push branch
     echo Pushing branch... >> "%LOG%"
@@ -69,9 +69,9 @@ if exist ".git" (
     git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
     git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
     git add -A >> "%LOG%" 2>&1
-    git commit -m "Temporal Consistency Bridge V1 — 22nd bridge milestone, 3747 assertions, 32 runners, 34 modules" >> "%LOG%" 2>&1
+    git commit -m "Frame-Accurate Transport Bridge V1 — 23rd bridge milestone, 4097 assertions, 33 runners, 35 modules" >> "%LOG%" 2>&1
     git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Temporal Consistency Bridge (22nd bridge)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Frame-Accurate Transport Bridge (23rd bridge)" >> "%LOG%" 2>&1
 
     echo Pushing branch... >> "%LOG%"
     git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1

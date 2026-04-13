@@ -51,4 +51,5 @@ V1_MODULES = [
     "complementary_color_temporal_transport_bridge_v1",
     "temporal_transport_dispatch_bridge_v1",
     "temporal_consistency_bridge_v1",
+    "frame_accurate_transport_bridge_v1",
 ]

@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Temporal Consistency Bridge V1 + Future Roadmap
+**Updated:** April 13, 2026 — Frame-Accurate Transport Bridge V1 + Future Roadmap
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -234,8 +234,9 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 20 | Complementary-Color Temporal Transport Bridge V1 | ✅ COMPLETE | 317 |
 | 21 | Temporal Transport Dispatch Bridge V1 | ✅ COMPLETE | 178 |
 | 22 | Temporal Consistency Bridge V1 | ✅ COMPLETE | 412 |
+| 23 | Frame-Accurate Transport Bridge V1 | ✅ COMPLETE | 350 |
 
-**Total:** 3747 standalone assertions, 820 pytest functions, 32 runners — all passing.
+**Total:** 4097 standalone assertions, 852 pytest functions, 33 runners — all passing.
 
 ---
 
@@ -260,7 +261,7 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ## Active Branch: Screen-to-Camera Temporal Transport
 
-**Status:** ACTIVE — four milestones complete as of April 13, 2026.
+**Status:** ACTIVE — five milestones complete as of April 13, 2026.
 
 **Concept:** Extend the static raster bridge to handle temporal transport — the process of capturing a screen-displayed visual program through a physical camera, accounting for temporal artifacts introduced by the capture process.
 
@@ -270,15 +271,14 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - ✅ Complementary-Color Temporal Transport Bridge V1 (20th bridge) — bounded screen-to-camera complementary-color transport proof using 3 frozen color pairs (cyan/red, magenta/green, yellow/blue), chrominance projection decoding, and route mapping into existing Aurexis dispatch families. 317 assertions, all passing.
 - ✅ Temporal Transport Dispatch Bridge V1 (21st bridge) — bounded temporal-mode routing proof. Identifies which of the two frozen transport modes (rolling-shutter or complementary-color) produced a recovered signal via structural fingerprinting, routes to the correct decoder, and feeds the payload into the existing Aurexis dispatch path. 178 assertions, all passing.
 - ✅ Temporal Consistency Bridge V1 (22nd bridge) — bounded repeated-capture agreement proof. Repeated synthetic captures of the same bounded temporal payload dispatched through the existing dispatch bridge produce a stable recovered identity (unanimous agreement across 2–10 captures), and inconsistent or drifted capture sets are honestly rejected. 412 assertions, all passing.
+- ✅ Frame-Accurate Transport Bridge V1 (23rd bridge) — bounded temporal slot-identity preservation proof. A frozen family of ordered temporal display sequences (2, 3, or 4 slots) can be independently transported, captured, decoded, and the per-slot payload association and ordering deterministically recovered. Drifted or unsupported sequences are honestly rejected. 350 assertions, all passing.
 
 **Planned milestones (tentative):**
-
-- Frame-Accurate Transport Bridge — prove that the temporal transport preserves frame-level timing information from the original display sequence
 - Combined RS + Complementary-Color Fusion Bridge — explore combining rolling-shutter stripe structure with complementary-color encoding for higher-capacity temporal transport
 
-**Prerequisite:** Stable static raster substrate. All four temporal transport milestones are complete and proven.
+**Prerequisite:** Stable static raster substrate. All five temporal transport milestones are complete and proven.
 
-**Honest framing:** Temporal transport is a harder problem than static raster recovery. The four completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
+**Honest framing:** Temporal transport is a harder problem than static raster recovery. The five completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
 
 ---
 
