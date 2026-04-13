@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 13, 2026 — Higher-Order Coherence Branch COMPLETE-ENOUGH + Capstone Verification
-**Status:** V1 Substrate Candidate accepted and baseline-locked. Thirty-two bridge milestones complete (18 static substrate + 10 temporal transport + 4 higher-order coherence). Both temporal and higher-order coherence branch capstones verified. 5093 standalone assertions + 1100 pytest functions, all passing.
+**Last Updated:** April 13, 2026 — View-Dependent Markers Branch COMPLETE-ENOUGH
+**Status:** V1 Substrate Candidate accepted and baseline-locked. Thirty-six bridge milestones complete (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers). All three branch capstones verified. 5603 standalone assertions + 1185 pytest functions, all passing.
 
 ---
 
@@ -181,8 +181,12 @@ Narrow law-bearing substrate candidate — not full Aurexis Core completion.
 | — | **Local Section Consistency Bridge V1** | ✅ COMPLETE | 62 assertions |
 | — | **Sheaf-Style Composition Bridge V1** | ✅ COMPLETE | 58 assertions |
 | — | **Cohomological Obstruction Detection Bridge V1** | ✅ COMPLETE | 56 assertions |
+| — | **View-Dependent Marker Profile Bridge V1** | ✅ COMPLETE | 95 assertions |
+| — | **Moment-Invariant Identity Bridge V1** | ✅ COMPLETE | 92 assertions |
+| — | **View-Facet Recovery Bridge V1** | ✅ COMPLETE | 179 assertions |
+| — | **View-Dependent Contract Bridge V1** | ✅ COMPLETE | 144 assertions |
 
-**Total:** 5093 standalone assertions, 1100 pytest functions, 42 runners — all passing.
+**Total:** 5603 standalone assertions, 1185 pytest functions, 46 runners — all passing.
 
 **Rule:** Do not skip or reorder. Each milestone gets a gate verification audit.
 

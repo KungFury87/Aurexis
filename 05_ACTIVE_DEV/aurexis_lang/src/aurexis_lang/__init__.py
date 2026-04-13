@@ -61,4 +61,8 @@ V1_MODULES = [
     "local_section_consistency_bridge_v1",
     "sheaf_style_composition_bridge_v1",
     "cohomological_obstruction_bridge_v1",
+    "view_dependent_marker_profile_bridge_v1",
+    "moment_invariant_identity_bridge_v1",
+    "view_facet_recovery_bridge_v1",
+    "view_dependent_contract_bridge_v1",
 ]

@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Temporal Branch Complete + Capstone Verification + Future Roadmap
+**Updated:** April 13, 2026 — View-Dependent Markers Branch COMPLETE-ENOUGH (36 bridges)
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -298,13 +298,20 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ---
 
-## Pinned (Later): View-Dependent Markers / 3D Moment Invariants
+## View-Dependent Markers / 3D Moment Invariants — ✅ BRANCH COMPLETE-ENOUGH
 
-**Status:** Deferred — to be addressed after temporal transport matures.
+**Completed:** April 13, 2026
+**Bridges:** 33–36 (4 milestones + branch capstone)
+**New assertions:** 510 standalone, 85 pytest functions
+**Branch verdict:** COMPLETE-ENOUGH — narrow bounded proof
 
-**Concept:** Explore markers whose appearance varies with viewing angle but whose identity can still be recovered through 3D moment invariants or viewpoint-invariant features. This would extend the substrate from flat 2D captures to captures that preserve identity across 3D viewing transformations.
+**What was built:**
+- **Bridge 33 — View-Dependent Marker Profile V1:** 4 frozen markers × 4 viewpoint buckets = 16 facets. Stable identity + view-dependent facets. (95 assertions, 20/20 gate)
+- **Bridge 34 — Moment-Invariant Identity V1:** Identity hash is viewpoint-invariant by construction. All 4 markers verified stable. (92 assertions, 17/17 gate)
+- **Bridge 35 — View-Facet Recovery V1:** Full recovery (identity + viewpoint + facet) from single observation. 16/16 full recoveries. Facets provably vary while identity stays constant. (179 assertions, 17/17 gate)
+- **Bridge 36 — View-Dependent Contract V1:** Frozen contract validates recovered identity, viewpoint, and facet hash. 16/16 valid, 4 rejection paths tested. (144 assertions, 18/18 gate)
 
-**Why deferred:** The current substrate is strictly 2D (flat raster). View-dependent markers require a fundamentally different geometric model. The 2D foundation must be solid before adding this complexity.
+**Honest limits:** Viewpoint buckets are discrete (4 positions, not continuous). Markers are hand-defined, not discovered from real imagery. Facet matching uses exact hash comparison, not noise-tolerant matching.
 
 ---
 

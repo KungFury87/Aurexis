@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 5093,
-      "total_runners": 42,
+      "total_assertions": 5603,
+      "total_runners": 46,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -58,12 +58,16 @@
         "run_v1_overlap_detection_tests.py": 82,
         "run_v1_local_section_consistency_tests.py": 62,
         "run_v1_sheaf_style_composition_tests.py": 58,
-        "run_v1_cohomological_obstruction_tests.py": 56
+        "run_v1_cohomological_obstruction_tests.py": 56,
+        "run_v1_view_dependent_marker_profile_tests.py": 95,
+        "run_v1_moment_invariant_identity_tests.py": 92,
+        "run_v1_view_facet_recovery_tests.py": 179,
+        "run_v1_view_dependent_contract_tests.py": 144
       }
     },
     "pytest_format": {
-      "total_functions": 1100,
-      "total_files": 40,
+      "total_functions": 1185,
+      "total_files": 44,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -113,7 +117,11 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/overlap_detection_bridge_v1.py": "6468457218330b63ef0f727c82e9b4f4d2a1dfe1afc46f9358a51dfd65fca2a8",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/local_section_consistency_bridge_v1.py": "07777df1248dbf1d182cfbb7a11c06b3260135e9b879eb019fd938b1112fb4de",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/sheaf_style_composition_bridge_v1.py": "7e63d79c72a223963cd507bdda90dd92faad5c9c3d8c6335b51663304f431232",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/cohomological_obstruction_bridge_v1.py": "9f5040181c1ff9ae2f0a73d83ec88558d0b50b279a9a9e263c496a64e05e1d84"
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/cohomological_obstruction_bridge_v1.py": "9f5040181c1ff9ae2f0a73d83ec88558d0b50b279a9a9e263c496a64e05e1d84",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_dependent_marker_profile_bridge_v1.py": "c57e38f38764a96ac1f0c175741c08030ba2daf42bef4a217df2b842781c54f6",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/moment_invariant_identity_bridge_v1.py": "18a0331eb1b9c5f22b57966496c8c10162fef3b19d99b924918d9c9533332e6f",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_facet_recovery_bridge_v1.py": "cf3256d9c65c0f0b4e642bef1ed3ff4bd4c8e72fa42bec9cff49729db3506352",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_dependent_contract_bridge_v1.py": "2220eb3cf4ca5e5e8dc764be43e3f7827084087bfa6719ea9386a1717e622c7c"
   },
   "lock_documents": [
     "00_PROJECT_CORE/ACCEPTED_STATUS_V1_SUBSTRATE_CANDIDATE.md",
@@ -153,7 +161,12 @@
     "00_PROJECT_CORE/LOCAL_SECTION_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/SHEAF_STYLE_COMPOSITION_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/COHOMOLOGICAL_OBSTRUCTION_BRIDGE_V1_GATE_VERIFICATION.md",
-    "00_PROJECT_CORE/HIGHER_ORDER_COHERENCE_BRANCH_CAPSTONE_V1.md"
+    "00_PROJECT_CORE/HIGHER_ORDER_COHERENCE_BRANCH_CAPSTONE_V1.md",
+    "00_PROJECT_CORE/VIEW_DEPENDENT_MARKER_PROFILE_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/MOMENT_INVARIANT_IDENTITY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VIEW_FACET_RECOVERY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VIEW_DEPENDENT_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VIEW_DEPENDENT_BRANCH_CAPSTONE_V1.md"
   ],
   "next_lane": "TBD — Vincent decides",
   "raster_law_bridge_v1": {
@@ -759,5 +772,63 @@
     "total_higher_order_runners": 4,
     "branch_name": "higher_order_coherence_sheaf_style",
     "capstone_doc": "00_PROJECT_CORE/HIGHER_ORDER_COHERENCE_BRANCH_CAPSTONE_V1.md"
+  },
+  "view_dependent_marker_profile_bridge_v1": {
+    "status": "complete",
+    "gate": "20/20 PASS",
+    "standalone_assertions": 95,
+    "pytest_functions": 30,
+    "bridge_number": 33,
+    "branch": "view_dependent_markers",
+    "branch_milestone": 1,
+    "frozen_markers": 4,
+    "viewpoint_buckets": 4,
+    "total_facets": 16,
+    "marker_names": ["alpha_planar", "beta_relief", "gamma_prismatic", "delta_pyramidal"]
+  },
+  "moment_invariant_identity_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 92,
+    "pytest_functions": 20,
+    "bridge_number": 34,
+    "branch": "view_dependent_markers",
+    "branch_milestone": 2,
+    "identity_invariant_fields": ["name", "structural_class", "region_count"],
+    "all_markers_stable": true
+  },
+  "view_facet_recovery_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 179,
+    "pytest_functions": 16,
+    "bridge_number": 35,
+    "branch": "view_dependent_markers",
+    "branch_milestone": 3,
+    "total_recoveries": 16,
+    "full_recovery_count": 16,
+    "all_facets_vary": true,
+    "rejection_paths": ["NO_IDENTITY", "IDENTITY_ONLY"]
+  },
+  "view_dependent_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "18/18 PASS",
+    "standalone_assertions": 144,
+    "pytest_functions": 19,
+    "bridge_number": 36,
+    "branch": "view_dependent_markers",
+    "branch_milestone": 4,
+    "contract_count": 4,
+    "valid_validations": 16,
+    "violation_types": ["RECOVERY_INCOMPLETE", "UNKNOWN_MARKER", "INVALID_IDENTITY", "INVALID_FACET"]
+  },
+  "view_dependent_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_view_dependent_milestones": 4,
+    "total_view_dependent_assertions": 510,
+    "total_view_dependent_runners": 4,
+    "total_view_dependent_pytest_functions": 85,
+    "branch_name": "view_dependent_markers_3d_moment_invariants",
+    "capstone_doc": "00_PROJECT_CORE/VIEW_DEPENDENT_BRANCH_CAPSTONE_V1.md"
   }
 }
