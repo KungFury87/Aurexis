@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — View-Dependent Markers Branch COMPLETE-ENOUGH (36 bridges)
+**Updated:** April 13, 2026 — VSA Cleanup Branch COMPLETE-ENOUGH (40 bridges)
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -315,13 +315,20 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ---
 
-## Pinned (Later): VSA / Hyperdimensional Cleanup Layer
+## VSA / Hyperdimensional Cleanup Layer — ✅ BRANCH COMPLETE-ENOUGH
 
-**Status:** Deferred — to be addressed when the bridge ladder is sufficiently mature.
+**Completed:** April 13, 2026
+**Bridges:** 37–40 (4 milestones + branch capstone)
+**New assertions:** 292 standalone, 59 pytest functions
+**Branch verdict:** COMPLETE-ENOUGH — bounded auxiliary helper layer
 
-**Concept:** Explore Vector Symbolic Architecture (VSA) / hyperdimensional computing as a cleanup and binding layer for the substrate. VSAs could provide a robust way to bind together multi-scale features (per-page, per-sequence, per-collection) into high-dimensional distributed representations that are noise-tolerant and composable.
+**What was built:**
+- **Bridge 37 — VSA Cleanup Profile V1:** 11 frozen cleanup targets mapping substrate outputs (5 set + 3 sequence + 3 collection contracts) to VSA symbol IDs. (64 assertions, 15/15 gate)
+- **Bridge 38 — Hypervector Binding / Bundling V1:** 1024-dimensional bipolar MAP-style operations: atomic generation, binding (self-inverse), bundling (majority vote), permutation (order encoding). (55 assertions, 17/17 gate)
+- **Bridge 39 — Cleanup Retrieval V1:** Cosine-similarity nearest-codebook-entry cleanup. All 11 symbols recovered at up to 20% bit-flip noise. (100 assertions, 15/15 gate)
+- **Bridge 40 — VSA Consistency / Contract V1:** Cross-check VSA recovery against deterministic substrate truth. 11/11 CONSISTENT at 0% and 10% noise. 3 rejection paths tested. (73 assertions, 15/15 gate)
 
-**Why deferred:** The current substrate uses explicit SHA-256 signatures and deterministic contracts. VSA would be an alternative or complementary representation layer, not a replacement. It requires careful integration design to avoid undermining the existing deterministic guarantees.
+**Honest limits:** Dimension (1024) is small. Noise model is simple bit-flip. Codebook is only 11 entries. VSA is explicitly AUXILIARY — it compresses/cleans substrate outputs but the deterministic substrate remains the truth layer.
 
 ---
 

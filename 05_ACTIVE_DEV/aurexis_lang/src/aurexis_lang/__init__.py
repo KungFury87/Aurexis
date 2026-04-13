@@ -65,4 +65,8 @@ V1_MODULES = [
     "moment_invariant_identity_bridge_v1",
     "view_facet_recovery_bridge_v1",
     "view_dependent_contract_bridge_v1",
+    "vsa_cleanup_profile_bridge_v1",
+    "hypervector_binding_bundling_bridge_v1",
+    "cleanup_retrieval_bridge_v1",
+    "vsa_consistency_contract_bridge_v1",
 ]

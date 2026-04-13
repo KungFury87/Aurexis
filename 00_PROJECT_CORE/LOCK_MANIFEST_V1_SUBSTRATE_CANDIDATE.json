@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 5603,
-      "total_runners": 46,
+      "total_assertions": 5895,
+      "total_runners": 50,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -62,12 +62,16 @@
         "run_v1_view_dependent_marker_profile_tests.py": 95,
         "run_v1_moment_invariant_identity_tests.py": 92,
         "run_v1_view_facet_recovery_tests.py": 179,
-        "run_v1_view_dependent_contract_tests.py": 144
+        "run_v1_view_dependent_contract_tests.py": 144,
+        "run_v1_vsa_cleanup_profile_tests.py": 64,
+        "run_v1_hypervector_binding_bundling_tests.py": 55,
+        "run_v1_cleanup_retrieval_tests.py": 100,
+        "run_v1_vsa_consistency_contract_tests.py": 73
       }
     },
     "pytest_format": {
-      "total_functions": 1185,
-      "total_files": 44,
+      "total_functions": 1244,
+      "total_files": 48,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -121,7 +125,11 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_dependent_marker_profile_bridge_v1.py": "c57e38f38764a96ac1f0c175741c08030ba2daf42bef4a217df2b842781c54f6",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/moment_invariant_identity_bridge_v1.py": "18a0331eb1b9c5f22b57966496c8c10162fef3b19d99b924918d9c9533332e6f",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_facet_recovery_bridge_v1.py": "cf3256d9c65c0f0b4e642bef1ed3ff4bd4c8e72fa42bec9cff49729db3506352",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_dependent_contract_bridge_v1.py": "2220eb3cf4ca5e5e8dc764be43e3f7827084087bfa6719ea9386a1717e622c7c"
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_dependent_contract_bridge_v1.py": "2220eb3cf4ca5e5e8dc764be43e3f7827084087bfa6719ea9386a1717e622c7c",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/vsa_cleanup_profile_bridge_v1.py": "2b58feea6aa5cba2a746f1bd7cafd3058f667a74db1c08a9bfea6ecf37ebde65",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/hypervector_binding_bundling_bridge_v1.py": "f45388fc85c1a38cdc013cd6efb0871c2c9a4d5b58afedd048779593d13a2cd4",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/cleanup_retrieval_bridge_v1.py": "1c20a37f0fca270c8e7288aa804798a6914c047ace099de348f40e785231a353",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/vsa_consistency_contract_bridge_v1.py": "0597b33e183c198b31dc6dafe743da92e592c918c136b1019b2c6fbcb0fd8f5d"
   },
   "lock_documents": [
     "00_PROJECT_CORE/ACCEPTED_STATUS_V1_SUBSTRATE_CANDIDATE.md",
@@ -166,7 +174,12 @@
     "00_PROJECT_CORE/MOMENT_INVARIANT_IDENTITY_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/VIEW_FACET_RECOVERY_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/VIEW_DEPENDENT_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
-    "00_PROJECT_CORE/VIEW_DEPENDENT_BRANCH_CAPSTONE_V1.md"
+    "00_PROJECT_CORE/VIEW_DEPENDENT_BRANCH_CAPSTONE_V1.md",
+    "00_PROJECT_CORE/VSA_CLEANUP_PROFILE_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/HYPERVECTOR_BINDING_BUNDLING_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/CLEANUP_RETRIEVAL_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VSA_CONSISTENCY_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VSA_CLEANUP_BRANCH_CAPSTONE_V1.md"
   ],
   "next_lane": "TBD — Vincent decides",
   "raster_law_bridge_v1": {
@@ -830,5 +843,62 @@
     "total_view_dependent_pytest_functions": 85,
     "branch_name": "view_dependent_markers_3d_moment_invariants",
     "capstone_doc": "00_PROJECT_CORE/VIEW_DEPENDENT_BRANCH_CAPSTONE_V1.md"
+  },
+  "vsa_cleanup_profile_bridge_v1": {
+    "status": "complete",
+    "gate": "15/15 PASS",
+    "standalone_assertions": 64,
+    "pytest_functions": 15,
+    "bridge_number": 37,
+    "branch": "vsa_cleanup",
+    "branch_milestone": 1,
+    "cleanup_targets": 11,
+    "set_targets": 5,
+    "sequence_targets": 3,
+    "collection_targets": 3
+  },
+  "hypervector_binding_bundling_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 55,
+    "pytest_functions": 23,
+    "bridge_number": 38,
+    "branch": "vsa_cleanup",
+    "branch_milestone": 2,
+    "dimension": 1024,
+    "encoding": "bipolar",
+    "operations": ["generate_atomic", "bind", "unbind", "bundle", "permute", "inverse_permute"]
+  },
+  "cleanup_retrieval_bridge_v1": {
+    "status": "complete",
+    "gate": "15/15 PASS",
+    "standalone_assertions": 100,
+    "pytest_functions": 11,
+    "bridge_number": 39,
+    "branch": "vsa_cleanup",
+    "branch_milestone": 3,
+    "noise_tolerance_tested": ["0%", "10%", "20%", "30%"],
+    "cleanup_method": "cosine_similarity_nearest_codebook_entry"
+  },
+  "vsa_consistency_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "15/15 PASS",
+    "standalone_assertions": 73,
+    "pytest_functions": 10,
+    "bridge_number": 40,
+    "branch": "vsa_cleanup",
+    "branch_milestone": 4,
+    "consistent_at_0pct": 11,
+    "consistent_at_10pct": 11,
+    "violation_types": ["MISMATCH", "VSA_FAILED", "UNKNOWN_TARGET"]
+  },
+  "vsa_cleanup_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_vsa_milestones": 4,
+    "total_vsa_assertions": 292,
+    "total_vsa_runners": 4,
+    "total_vsa_pytest_functions": 59,
+    "branch_name": "vsa_hyperdimensional_cleanup",
+    "capstone_doc": "00_PROJECT_CORE/VSA_CLEANUP_BRANCH_CAPSTONE_V1.md"
   }
 }
