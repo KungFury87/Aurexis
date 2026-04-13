@@ -256,8 +256,12 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 42 | Unified Substrate Entrypoint Bridge V1 | ✅ COMPLETE | 57 |
 | 43 | Cross-Branch Compatibility Contract Bridge V1 | ✅ COMPLETE | 36 |
 | 44 | V1 Substrate Release Audit Bridge V1 | ✅ COMPLETE | 40 |
+| 45 | Real Capture Ingest Profile Bridge V1 | ✅ COMPLETE | 50 |
+| 46 | Capture Session Manifest Bridge V1 | ✅ COMPLETE | 42 |
+| 47 | Evidence Delta Analysis Bridge V1 | ✅ COMPLETE | 40 |
+| 48 | Calibration Recommendation Bridge V1 | ✅ COMPLETE | 33 |
 
-**Total:** 6081 standalone assertions, 54 runners — all passing.
+**Total:** 6246 standalone assertions, 58 runners — all passing.
 
 ---
 
@@ -360,6 +364,25 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - **Bridge 44 — V1 Substrate Release Audit V1:** 10 release-level audit checks. Manifest, entrypoint, compatibility, module imports, route success, hash determinism, foundation, exclusions, version consistency. All 10 PASS. (40 assertions, 16/16 gate)
 
 **Honest limits:** Integration checks are structural (imports, namespaces, routing). Not runtime interoperation under load or production deployment validation.
+
+---
+
+## Observed Evidence Loop / Real Capture Calibration — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**Bridges:** 45–48 (4 milestones + branch capstone)
+**New assertions:** 165 standalone, 4 runners
+**Branch verdict:** COMPLETE-ENOUGH — bounded real-capture calibration loop
+
+**What was built:**
+- **Bridge 45 — Real Capture Ingest Profile V1:** 5 frozen ingest cases (phone JPEG, phone PNG, webcam JPEG, video frame PNG, scanner TIFF). File shape, metadata, and assumption validation. (50 assertions, 17/17 gate)
+- **Bridge 46 — Capture Session Manifest V1:** Deterministic session manifests linking capture files, ingest results, device metadata, evidence tiers. SHA-256 manifest hash. (42 assertions, 15/15 gate)
+- **Bridge 47 — Evidence Delta Analysis V1:** Structured comparison of expected vs observed substrate outputs. Missing/extra/changed primitives, contract deltas, signature deltas. Bounded tolerances. (40 assertions, 16/16 gate)
+- **Bridge 48 — Calibration Recommendation V1:** 7 recommendation rules producing 5 kinds of advisory outputs. All recommendations advisory and subordinate to the deterministic truth layer. (33 assertions, 17/17 gate)
+
+**Honest limits:** No real capture files have been processed yet — the loop infrastructure is proven but requires user-supplied capture datasets to exercise against real data. All recommendations are advisory; none auto-execute. No root-cause analysis or continuous monitoring.
+
+**What still requires user action later:** User-supplied real capture datasets to feed through the loop. Until then, the infrastructure is proven against synthetic/deterministic test cases only.
 
 ---
 

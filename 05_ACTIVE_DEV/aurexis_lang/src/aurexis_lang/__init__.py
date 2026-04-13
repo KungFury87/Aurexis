@@ -73,4 +73,8 @@ V1_MODULES = [
     "unified_substrate_entrypoint_bridge_v1",
     "cross_branch_compatibility_contract_bridge_v1",
     "v1_substrate_release_audit_bridge_v1",
+    "real_capture_ingest_profile_bridge_v1",
+    "capture_session_manifest_bridge_v1",
+    "evidence_delta_analysis_bridge_v1",
+    "calibration_recommendation_bridge_v1",
 ]

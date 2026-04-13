@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 13, 2026 — Integration / Release Hardening Branch COMPLETE-ENOUGH
-**Status:** V1 Substrate Candidate release-hardened. Forty-four bridge milestones complete (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release). All six branch capstones verified. 6081 standalone assertions across 54 runners, all passing.
+**Last Updated:** April 13, 2026 — Observed Evidence Loop / Real Capture Calibration Branch COMPLETE-ENOUGH
+**Status:** V1 Substrate Candidate with observed-evidence loop. Forty-eight bridge milestones complete (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release + 4 observed evidence). All seven branch capstones verified. 6246 standalone assertions across 58 runners, all passing.
 
 ---
 
@@ -193,8 +193,12 @@ Narrow law-bearing substrate candidate — not full Aurexis Core completion.
 | — | **Unified Substrate Entrypoint Bridge V1** | ✅ COMPLETE | 57 assertions |
 | — | **Cross-Branch Compatibility Contract Bridge V1** | ✅ COMPLETE | 36 assertions |
 | — | **V1 Substrate Release Audit Bridge V1** | ✅ COMPLETE | 40 assertions |
+| — | **Real Capture Ingest Profile Bridge V1** | ✅ COMPLETE | 50 assertions |
+| — | **Capture Session Manifest Bridge V1** | ✅ COMPLETE | 42 assertions |
+| — | **Evidence Delta Analysis Bridge V1** | ✅ COMPLETE | 40 assertions |
+| — | **Calibration Recommendation Bridge V1** | ✅ COMPLETE | 33 assertions |
 
-**Total:** 6081 standalone assertions, 54 runners — all passing.
+**Total:** 6246 standalone assertions, 58 runners — all passing.
 
 **Rule:** Do not skip or reorder. Each milestone gets a gate verification audit.
 

@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 6081,
-      "total_runners": 54,
+      "total_assertions": 6246,
+      "total_runners": 58,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -960,5 +960,60 @@
     "total_integration_pytest_functions": 66,
     "branch_name": "integration_release_hardening",
     "capstone_doc": "00_PROJECT_CORE/INTEGRATION_RELEASE_BRANCH_CAPSTONE_V1.md"
+  },
+  "real_capture_ingest_profile_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 50,
+    "pytest_functions": 22,
+    "bridge_number": 45,
+    "branch": "observed_evidence_loop",
+    "branch_milestone": 1,
+    "ingest_cases": 5,
+    "evidence_tier_entry": "real-capture"
+  },
+  "capture_session_manifest_bridge_v1": {
+    "status": "complete",
+    "gate": "15/15 PASS",
+    "standalone_assertions": 42,
+    "pytest_functions": 15,
+    "bridge_number": 46,
+    "branch": "observed_evidence_loop",
+    "branch_milestone": 2,
+    "manifest_hash_deterministic": true
+  },
+  "evidence_delta_analysis_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 40,
+    "pytest_functions": 13,
+    "bridge_number": 47,
+    "branch": "observed_evidence_loop",
+    "branch_milestone": 3,
+    "delta_verdicts": 7,
+    "default_confidence_tolerance": 0.05,
+    "default_position_tolerance": 5.0
+  },
+  "calibration_recommendation_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 33,
+    "pytest_functions": 17,
+    "bridge_number": 48,
+    "branch": "observed_evidence_loop",
+    "branch_milestone": 4,
+    "recommendation_kinds": 5,
+    "recommendation_rules": 7,
+    "all_advisory": true
+  },
+  "observed_evidence_loop_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_observed_evidence_milestones": 4,
+    "total_observed_evidence_assertions": 165,
+    "total_observed_evidence_runners": 4,
+    "total_observed_evidence_pytest_functions": 67,
+    "branch_name": "observed_evidence_loop",
+    "capstone_doc": "05_ACTIVE_DEV/aurexis_lang/OBSERVED_EVIDENCE_LOOP_CAPSTONE_V1.md",
+    "real_stop_condition": "requires_user_supplied_capture_datasets"
   }
 }
