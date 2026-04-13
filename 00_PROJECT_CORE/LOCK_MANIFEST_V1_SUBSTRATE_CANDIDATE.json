@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 4835,
-      "total_runners": 38,
+      "total_assertions": 5093,
+      "total_runners": 42,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -54,12 +54,16 @@
         "run_v1_temporal_payload_contract_tests.py": 133,
         "run_v1_temporal_payload_signature_tests.py": 99,
         "run_v1_temporal_payload_signature_match_tests.py": 142,
-        "run_v1_temporal_global_consistency_tests.py": 114
+        "run_v1_temporal_global_consistency_tests.py": 114,
+        "run_v1_overlap_detection_tests.py": 82,
+        "run_v1_local_section_consistency_tests.py": 62,
+        "run_v1_sheaf_style_composition_tests.py": 58,
+        "run_v1_cohomological_obstruction_tests.py": 56
       }
     },
     "pytest_format": {
-      "total_functions": 997,
-      "total_files": 36,
+      "total_functions": 1100,
+      "total_files": 40,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -105,7 +109,11 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_contract_bridge_v1.py": "29523fa0d91b344f6eea3e7633ab591bd7a1a2d8c2a17287f3e02449ab0cc014",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_signature_bridge_v1.py": "574697b3f0d63049589c9dee03fcc7a104f26f2053e379a01033f4e3a2c66751",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_signature_match_bridge_v1.py": "7b7d8eb54fc979dbcb8f26a4c1cd511288ec1450ee091ae0733399e520380182",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_global_consistency_bridge_v1.py": "5656d15c016d85fe5f8d2517f46a4c0cebe984e6a0f65e4f046570662d0c89f4"
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_global_consistency_bridge_v1.py": "5656d15c016d85fe5f8d2517f46a4c0cebe984e6a0f65e4f046570662d0c89f4",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/overlap_detection_bridge_v1.py": "6468457218330b63ef0f727c82e9b4f4d2a1dfe1afc46f9358a51dfd65fca2a8",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/local_section_consistency_bridge_v1.py": "07777df1248dbf1d182cfbb7a11c06b3260135e9b879eb019fd938b1112fb4de",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/sheaf_style_composition_bridge_v1.py": "7e63d79c72a223963cd507bdda90dd92faad5c9c3d8c6335b51663304f431232",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/cohomological_obstruction_bridge_v1.py": "9f5040181c1ff9ae2f0a73d83ec88558d0b50b279a9a9e263c496a64e05e1d84"
   },
   "lock_documents": [
     "00_PROJECT_CORE/ACCEPTED_STATUS_V1_SUBSTRATE_CANDIDATE.md",
@@ -140,7 +148,12 @@
     "00_PROJECT_CORE/TEMPORAL_PAYLOAD_SIGNATURE_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/TEMPORAL_PAYLOAD_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/TEMPORAL_GLOBAL_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
-    "00_PROJECT_CORE/TEMPORAL_BRANCH_CAPSTONE_V1.md"
+    "00_PROJECT_CORE/TEMPORAL_BRANCH_CAPSTONE_V1.md",
+    "00_PROJECT_CORE/OVERLAP_DETECTION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/LOCAL_SECTION_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/SHEAF_STYLE_COMPOSITION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/COHOMOLOGICAL_OBSTRUCTION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/HIGHER_ORDER_COHERENCE_BRANCH_CAPSTONE_V1.md"
   ],
   "next_lane": "TBD — Vincent decides",
   "raster_law_bridge_v1": {
@@ -694,5 +707,57 @@
     "total_temporal_runners": 10,
     "branch_name": "screen_to_camera_temporal_transport",
     "capstone_doc": "00_PROJECT_CORE/TEMPORAL_BRANCH_CAPSTONE_V1.md"
+  },
+  "overlap_detection_bridge_v1": {
+    "status": "complete",
+    "gate": "20/20 PASS",
+    "standalone_assertions": 82,
+    "pytest_functions": 35,
+    "bridge_number": 29,
+    "branch": "higher_order_coherence",
+    "branch_milestone": 1,
+    "collection_overlaps": 3,
+    "sequence_overlaps": 1
+  },
+  "local_section_consistency_bridge_v1": {
+    "status": "complete",
+    "gate": "18/18 PASS",
+    "standalone_assertions": 62,
+    "pytest_functions": 23,
+    "bridge_number": 30,
+    "branch": "higher_order_coherence",
+    "branch_milestone": 2,
+    "overlap_regions_consistent": 3,
+    "inconsistency_types": ["SIGNATURE_MISMATCH", "PAGE_COUNT_MISMATCH", "PAGE_NAMES_MISMATCH"]
+  },
+  "sheaf_style_composition_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 58,
+    "pytest_functions": 20,
+    "bridge_number": 31,
+    "branch": "higher_order_coherence",
+    "branch_milestone": 3,
+    "global_assignment_sequences": 3,
+    "composition_verdict": "COMPOSABLE"
+  },
+  "cohomological_obstruction_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 56,
+    "pytest_functions": 25,
+    "bridge_number": 32,
+    "branch": "higher_order_coherence",
+    "branch_milestone": 4,
+    "obstruction_types": ["HASH_CYCLE_CONFLICT", "PAGE_STRUCTURE_CONFLICT", "COVERAGE_GAP", "ASSIGNMENT_CONTRADICTION"],
+    "clean_result": "NO_OBSTRUCTIONS"
+  },
+  "higher_order_coherence_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_higher_order_milestones": 4,
+    "total_higher_order_assertions": 258,
+    "total_higher_order_runners": 4,
+    "branch_name": "higher_order_coherence_sheaf_style",
+    "capstone_doc": "00_PROJECT_CORE/HIGHER_ORDER_COHERENCE_BRANCH_CAPSTONE_V1.md"
   }
 }

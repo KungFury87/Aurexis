@@ -57,4 +57,8 @@ V1_MODULES = [
     "temporal_payload_signature_bridge_v1",
     "temporal_payload_signature_match_bridge_v1",
     "temporal_global_consistency_bridge_v1",
+    "overlap_detection_bridge_v1",
+    "local_section_consistency_bridge_v1",
+    "sheaf_style_composition_bridge_v1",
+    "cohomological_obstruction_bridge_v1",
 ]

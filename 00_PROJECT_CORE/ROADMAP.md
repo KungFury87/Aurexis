@@ -240,27 +240,29 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 26 | Temporal Payload Signature Bridge V1 | ✅ COMPLETE | 99 |
 | 27 | Temporal Payload Signature Match Bridge V1 | ✅ COMPLETE | 142 |
 | 28 | Temporal Global Consistency Bridge V1 | ✅ COMPLETE | 114 |
+| 29 | Overlap Detection Bridge V1 | ✅ COMPLETE | 82 |
+| 30 | Local Section Consistency Bridge V1 | ✅ COMPLETE | 62 |
+| 31 | Sheaf-Style Composition Bridge V1 | ✅ COMPLETE | 58 |
+| 32 | Cohomological Obstruction Detection Bridge V1 | ✅ COMPLETE | 56 |
 
-**Total:** 4835 standalone assertions, 997 pytest functions, 38 runners — all passing.
+**Total:** 5093 standalone assertions, 1100 pytest functions, 42 runners — all passing.
 
 ---
 
-## Future Branch: Global Consistency / Sheaf-Style Coherence
+## Completed Branch: Higher-Order Coherence / Sheaf-Style Composition
 
-**Insertion point:** After the current Global Consistency Bridge (18th bridge) matures.
+**Status:** BRANCH COMPLETE-ENOUGH — four milestones complete as of April 13, 2026. Capstone verification passed.
 
-**Concept:** Extend the current cross-layer consistency checks into a higher-order coherence framework inspired by sheaf-theoretic consistency. Where the current bridge verifies that individual layers agree locally, the sheaf-style branch would verify that local consistency *composes* correctly across overlapping regions — e.g., that two overlapping sub-collections produce coherent global signatures when their shared elements are identified.
+**Concept:** Extends the cross-layer consistency checks into a bounded local-to-global coherence framework inspired by sheaf-theoretic ideas. Proves that the frozen collection family overlaps, agrees locally, composes globally, and has no composition obstructions.
 
-**Planned milestones (tentative):**
+**Completed milestones:**
 
-- Overlap Detection Bridge — identify shared sequences across overlapping collections
-- Local Section Consistency Bridge — verify that overlapping local sections agree on their shared parts
-- Sheaf Composition Bridge — prove that locally-consistent sections compose into a globally-consistent assignment
-- Cohomological Obstruction Detection — detect and report obstructions to global consistency (non-trivial sheaf cohomology)
+- ✅ Overlap Detection Bridge V1 (29th bridge) — bounded structural overlap detection across collections and sequences. 3 pairwise collection overlaps, 1 sequence overlap, all deterministic. 82 assertions, all passing.
+- ✅ Local Section Consistency Bridge V1 (30th bridge) — bounded local-section agreement verification. All 3 overlap regions consistent, 3 fabricated inconsistency types detected. 62 assertions, all passing.
+- ✅ Sheaf-Style Composition Bridge V1 (31st bridge) — bounded composition proof. Global assignment of 3 sequences, all 3 collections agree. Fabricated contradictions produce NOT_COMPOSABLE. 58 assertions, all passing.
+- ✅ Cohomological Obstruction Detection Bridge V1 (32nd bridge) — bounded obstruction detector. No obstructions in frozen contracts, 3 fabricated obstruction types detected. 56 assertions, all passing.
 
-**Prerequisite:** The static raster substrate must be mature and stable before this branch begins. The current 18-bridge ladder provides the necessary foundation.
-
-**Honest framing:** This is a planned future direction, not a current capability. The sheaf analogy is a design inspiration, not a claim of mathematical rigor.
+**Honest framing:** The sheaf analogy is a design inspiration, not a claim of full sheaf-theory generality. This is a bounded executable coherence proof, not a general theorem prover.
 
 ---
 
