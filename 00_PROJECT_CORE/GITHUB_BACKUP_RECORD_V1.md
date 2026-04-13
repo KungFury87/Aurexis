@@ -5,6 +5,48 @@
 
 ---
 
+## Backup #20 — View-Dependent Markers Branch COMPLETE-ENOUGH (36 bridges)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-view-dependent-complete` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-view-dependent-complete` |
+| Pushed commit hash | *(to be filled after push)* |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 |
+
+### What This Backup Contains
+
+Snapshot at the View-Dependent Markers Branch COMPLETE-ENOUGH milestone. Includes:
+
+- 36 bridge milestones (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers)
+- 5603 standalone assertions across 46 runners
+- 48 V1 modules
+- Three branch capstones verified (temporal: 2284, higher-order: 258, view-dependent: 510 assertions)
+- All project core documents, gate verifications, lock manifest, ROADMAP
+- The locked zip package (124 files, ~365 KB)
+- All legacy releases and working session files
+
+This is a removable backup snapshot, not a claim of full Aurexis Core completion.
+
+### Remote Verification
+
+*(to be filled after push)*
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260413-view-dependent-complete
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260413-view-dependent-complete
+# Delete local branch (optional):
+git branch -d backup/v1-substrate-candidate-20260413-view-dependent-complete
+```
+
+---
+
 ## Backup #19 — Higher-Order Coherence Branch COMPLETE-ENOUGH (32 bridges)
 
 | Field | Value |

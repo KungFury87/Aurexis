@@ -3,17 +3,17 @@ setlocal enabledelayedexpansion
 
 REM ── Aurexis Core GitHub Backup Script ──
 REM Pushes current repo state to a removable backup branch + tag
-REM Higher-Order Coherence Branch COMPLETE-ENOUGH — 32 bridges (42 runners)
+REM View-Dependent Markers Branch COMPLETE-ENOUGH — 36 bridges (46 runners)
 
 set "REPO_DIR=%~dp0"
-set "BRANCH=backup/v1-substrate-candidate-20260413-coherence-complete"
-set "TAG=backup-v1-substrate-candidate-20260413-coherence-complete"
+set "BRANCH=backup/v1-substrate-candidate-20260413-view-dependent-complete"
+set "TAG=backup-v1-substrate-candidate-20260413-view-dependent-complete"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
 echo ============================================ > "%LOG%"
 echo Aurexis Core GitHub Backup >> "%LOG%"
-echo Higher-Order Coherence Branch COMPLETE-ENOUGH — 32 bridges >> "%LOG%"
+echo View-Dependent Markers Branch COMPLETE-ENOUGH — 36 bridges >> "%LOG%"
 echo %date% %time% >> "%LOG%"
 echo ============================================ >> "%LOG%"
 
@@ -33,7 +33,7 @@ if exist ".git" (
 
     REM Commit
     echo Committing... >> "%LOG%"
-    git commit -m "Higher-Order Coherence Branch COMPLETE-ENOUGH — 32 bridges, 5093 assertions, 42 runners, 44 modules, capstone verified" >> "%LOG%" 2>&1
+    git commit -m "View-Dependent Markers Branch COMPLETE-ENOUGH — 36 bridges, 5603 assertions, 46 runners, 48 modules, capstone verified" >> "%LOG%" 2>&1
 
     REM Create backup branch
     echo Creating branch %BRANCH%... >> "%LOG%"
@@ -41,7 +41,7 @@ if exist ".git" (
 
     REM Create tag
     echo Creating tag %TAG%... >> "%LOG%"
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — Higher-Order Coherence Branch COMPLETE-ENOUGH (32 bridges, 4 higher-order, capstone verified)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — View-Dependent Markers Branch COMPLETE-ENOUGH (36 bridges, 4 view-dependent, capstone verified)" >> "%LOG%" 2>&1
 
     REM Push branch
     echo Pushing branch... >> "%LOG%"
@@ -69,9 +69,9 @@ if exist ".git" (
     git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
     git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
     git add -A >> "%LOG%" 2>&1
-    git commit -m "Higher-Order Coherence Branch COMPLETE-ENOUGH — 32 bridges, 5093 assertions, 42 runners, 44 modules, capstone verified" >> "%LOG%" 2>&1
+    git commit -m "View-Dependent Markers Branch COMPLETE-ENOUGH — 36 bridges, 5603 assertions, 46 runners, 48 modules, capstone verified" >> "%LOG%" 2>&1
     git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — Higher-Order Coherence Branch COMPLETE-ENOUGH (32 bridges, 4 higher-order, capstone verified)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — View-Dependent Markers Branch COMPLETE-ENOUGH (36 bridges, 4 view-dependent, capstone verified)" >> "%LOG%" 2>&1
 
     echo Pushing branch... >> "%LOG%"
     git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1
