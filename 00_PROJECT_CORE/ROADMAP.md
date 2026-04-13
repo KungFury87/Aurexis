@@ -1,6 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
+**Updated:** April 12, 2026 — V1 Substrate Bridge Ladder + Future Roadmap
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -202,6 +203,106 @@ Aurexis programs, inspect state, and diagnose issues.
 **Audit:** 8/8 checks passed (phoxel_overlay, ir_tree_rendered,
 evidence_inspector, promotion_tracker, debugger_loaded, frames_processed,
 executable_reached, within_tech_floor).
+
+---
+
+## V1 Substrate Bridge Ladder (Post-M11)
+
+After M11, the project entered the V1 Substrate Bridge phase — proving narrow law-bearing properties through a strict sequence of deterministic bridge milestones. Each bridge adds one specific capability to the substrate stack.
+
+| # | Bridge | Status | Assertions |
+|---|--------|--------|------------|
+| 1 | Raster Law Bridge V1 | ✅ COMPLETE | 58 |
+| 2 | Capture Tolerance Bridge V1 | ✅ COMPLETE | 99 |
+| 3 | Artifact Localization Bridge V1 | ✅ COMPLETE | 54 |
+| 4 | Orientation Normalization Bridge V1 | ✅ COMPLETE | 70 |
+| 5 | Perspective Normalization Bridge V1 | ✅ COMPLETE | 53 |
+| 6 | Composed Recovery Bridge V1 | ✅ COMPLETE | 72 |
+| 7 | Artifact Dispatch Bridge V1 | ✅ COMPLETE | 58 |
+| 8 | Multi-Artifact Layout Bridge V1 | ✅ COMPLETE | 68 |
+| 9 | Artifact Set Contract Bridge V1 | ✅ COMPLETE | 89 |
+| 10 | Recovered Set Signature Bridge V1 | ✅ COMPLETE | 86 |
+| 11 | Recovered Set Signature Match Bridge V1 | ✅ COMPLETE | 100 |
+| 12 | Recovered Page Sequence Contract Bridge V1 | ✅ COMPLETE | 149 |
+| 13 | Recovered Page Sequence Signature Bridge V1 | ✅ COMPLETE | 154 |
+| 14 | Recovered Page Sequence Signature Match Bridge V1 | ✅ COMPLETE | 141 |
+| 15 | Recovered Sequence Collection Contract Bridge V1 | ✅ COMPLETE | 163 |
+| 16 | Recovered Sequence Collection Signature Bridge V1 | ✅ COMPLETE | 173 |
+| 17 | Recovered Sequence Collection Signature Match Bridge V1 | ✅ COMPLETE | 148 |
+| 18 | Recovered Collection Global Consistency Bridge V1 | ✅ COMPLETE | 186 |
+
+**Total:** 2551 standalone assertions, 686 pytest functions, 28 runners — all passing.
+
+---
+
+## Future Branch: Global Consistency / Sheaf-Style Coherence
+
+**Insertion point:** After the current Global Consistency Bridge (18th bridge) matures.
+
+**Concept:** Extend the current cross-layer consistency checks into a higher-order coherence framework inspired by sheaf-theoretic consistency. Where the current bridge verifies that individual layers agree locally, the sheaf-style branch would verify that local consistency *composes* correctly across overlapping regions — e.g., that two overlapping sub-collections produce coherent global signatures when their shared elements are identified.
+
+**Planned milestones (tentative):**
+
+- Overlap Detection Bridge — identify shared sequences across overlapping collections
+- Local Section Consistency Bridge — verify that overlapping local sections agree on their shared parts
+- Sheaf Composition Bridge — prove that locally-consistent sections compose into a globally-consistent assignment
+- Cohomological Obstruction Detection — detect and report obstructions to global consistency (non-trivial sheaf cohomology)
+
+**Prerequisite:** The static raster substrate must be mature and stable before this branch begins. The current 18-bridge ladder provides the necessary foundation.
+
+**Honest framing:** This is a planned future direction, not a current capability. The sheaf analogy is a design inspiration, not a claim of mathematical rigor.
+
+---
+
+## Future Branch: Screen-to-Camera Temporal Transport
+
+**Insertion point:** After the static substrate matures and the sheaf-style coherence branch demonstrates composable consistency.
+
+**Concept:** Extend the static raster bridge to handle temporal transport — the process of capturing a screen-displayed visual program through a physical camera, accounting for temporal artifacts introduced by the capture process.
+
+**Planned milestones (tentative):**
+
+- Rolling-Shutter Compensation Bridge — detect and compensate for rolling-shutter distortion in camera captures of screen-displayed content (row-by-row temporal skew)
+- Complementary-Color / Imperceptible Marker Bridge — embed and recover temporal markers that are imperceptible to the human eye but detectable by camera (exploiting display refresh timing, complementary color channels, or sub-frame encoding)
+- Temporal Consistency Bridge — prove that the recovered content maintains identity across multiple temporal captures (same program captured at different times yields consistent recovery)
+- Frame-Accurate Transport Bridge — prove that the temporal transport preserves frame-level timing information from the original display sequence
+
+**Prerequisite:** Stable static raster substrate. The rolling-shutter milestone can begin once the static bridges are proven robust. The complementary-color milestone requires additional research into display-camera interaction models.
+
+**Honest framing:** Temporal transport is a harder problem than static raster recovery. These milestones are exploratory and may require significant iteration.
+
+---
+
+## Pinned (Later): View-Dependent Markers / 3D Moment Invariants
+
+**Status:** Deferred — to be addressed after temporal transport matures.
+
+**Concept:** Explore markers whose appearance varies with viewing angle but whose identity can still be recovered through 3D moment invariants or viewpoint-invariant features. This would extend the substrate from flat 2D captures to captures that preserve identity across 3D viewing transformations.
+
+**Why deferred:** The current substrate is strictly 2D (flat raster). View-dependent markers require a fundamentally different geometric model. The 2D foundation must be solid before adding this complexity.
+
+---
+
+## Pinned (Later): VSA / Hyperdimensional Cleanup Layer
+
+**Status:** Deferred — to be addressed when the bridge ladder is sufficiently mature.
+
+**Concept:** Explore Vector Symbolic Architecture (VSA) / hyperdimensional computing as a cleanup and binding layer for the substrate. VSAs could provide a robust way to bind together multi-scale features (per-page, per-sequence, per-collection) into high-dimensional distributed representations that are noise-tolerant and composable.
+
+**Why deferred:** The current substrate uses explicit SHA-256 signatures and deterministic contracts. VSA would be an alternative or complementary representation layer, not a replacement. It requires careful integration design to avoid undermining the existing deterministic guarantees.
+
+---
+
+## Explicitly Excluded
+
+The following technologies and approaches are **explicitly excluded** from the V1 substrate roadmap:
+
+- **OAM (Orbital Angular Momentum)** — Exotic optical encoding not relevant to standard camera/screen capture pipelines.
+- **Optical Skyrmions** — Topological light structures requiring specialized detection hardware. Outside the scope of standard vision systems.
+- **NLOS (Non-Line-of-Sight) Imaging** — Imaging around corners or through scattering media. Interesting but irrelevant to the direct camera-to-screen pipeline.
+- **Exotic Specialized Optics** — Any approach requiring non-standard optical hardware (metamaterials, computational optics, holographic elements, etc.). The V1 substrate must work with standard consumer cameras and displays.
+
+**Rationale:** The V1 substrate is grounded in physics-of-light as captured by standard consumer hardware. Exotic optics violate the Current Tech Floor (Gate 6 of the Core Law: must run on current mobile hardware) and would create dependencies on unavailable equipment.
 
 ---
 

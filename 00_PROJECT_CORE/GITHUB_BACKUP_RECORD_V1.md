@@ -5,6 +5,49 @@
 
 ---
 
+## Backup #8 — Recovered Collection Global Consistency Bridge V1
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260412-globalconsistency` |
+| Remote tag name | `backup-v1-substrate-candidate-20260412-globalconsistency` |
+| Pushed commit hash | *(to be filled after push)* |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 12, 2026 |
+
+### What This Backup Contains
+
+Snapshot at the Recovered Collection Global Consistency Bridge V1 milestone (18th bridge). Includes:
+
+- 18 bridge milestones (Raster Law through Recovered Collection Global Consistency)
+- 2551 standalone assertions across 28 runners
+- 30 V1 modules
+- All project core documents, gate verifications, lock manifest, ROADMAP
+- The locked zip package (~374 KB)
+- All legacy releases and working session files
+
+This is a removable backup snapshot, not a claim of full Aurexis Core completion.
+
+### Remote Verification
+
+*(to be filled after push)*
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260412-globalconsistency
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260412-globalconsistency
+# Delete local branch (optional):
+git branch -D backup/v1-substrate-candidate-20260412-globalconsistency
+# Delete local tag (optional):
+git tag -d backup-v1-substrate-candidate-20260412-globalconsistency
+```
+
+---
+
 ## Backup #7 — Recovered Sequence Collection Signature Match Bridge V1
 
 | Field | Value |
