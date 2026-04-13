@@ -3,17 +3,17 @@ setlocal enabledelayedexpansion
 
 REM ── Aurexis Core GitHub Backup Script ──
 REM Pushes current repo state to a removable backup branch + tag
-REM Integration / Release Hardening COMPLETE-ENOUGH — 44 bridges (54 runners)
+REM Release-Hardened V1 Substrate Candidate — 44 bridges (54 runners)
 
 set "REPO_DIR=%~dp0"
-set "BRANCH=backup/v1-substrate-candidate-20260413-integration-complete"
-set "TAG=backup-v1-substrate-candidate-20260413-integration-complete"
+set "BRANCH=backup/v1-substrate-candidate-20260413-release-hardened"
+set "TAG=backup-v1-substrate-candidate-20260413-release-hardened"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
 echo ============================================ > "%LOG%"
 echo Aurexis Core GitHub Backup >> "%LOG%"
-echo Integration / Release Hardening COMPLETE-ENOUGH — 44 bridges >> "%LOG%"
+echo Release-Hardened V1 Substrate Candidate — 44 bridges >> "%LOG%"
 echo %date% %time% >> "%LOG%"
 echo ============================================ >> "%LOG%"
 
@@ -33,7 +33,7 @@ if exist ".git" (
 
     REM Commit
     echo Committing... >> "%LOG%"
-    git commit -m "Integration / Release Hardening COMPLETE-ENOUGH — 44 bridges, 6081 assertions, 54 runners, 56 modules, capstone verified" >> "%LOG%" 2>&1
+    git commit -m "Release-Hardened V1 Substrate Candidate — 44 bridges, 6081 assertions, 54 runners, 56 modules, capstone verified" >> "%LOG%" 2>&1
 
     REM Create backup branch
     echo Creating branch %BRANCH%... >> "%LOG%"
@@ -41,7 +41,7 @@ if exist ".git" (
 
     REM Create tag
     echo Creating tag %TAG%... >> "%LOG%"
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — Integration / Release Hardening COMPLETE-ENOUGH (44 bridges, 6 branches, capstone verified)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: Release-Hardened V1 Substrate Candidate — 44 bridges, 6081 assertions, 54 runners, 56 modules, 6 branches, capstone verified" >> "%LOG%" 2>&1
 
     REM Push branch
     echo Pushing branch... >> "%LOG%"
@@ -69,9 +69,9 @@ if exist ".git" (
     git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
     git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
     git add -A >> "%LOG%" 2>&1
-    git commit -m "Integration / Release Hardening COMPLETE-ENOUGH — 44 bridges, 6081 assertions, 54 runners, 56 modules, capstone verified" >> "%LOG%" 2>&1
+    git commit -m "Release-Hardened V1 Substrate Candidate — 44 bridges, 6081 assertions, 54 runners, 56 modules, capstone verified" >> "%LOG%" 2>&1
     git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — Integration / Release Hardening COMPLETE-ENOUGH (44 bridges, 6 branches, capstone verified)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: Release-Hardened V1 Substrate Candidate — 44 bridges, 6081 assertions, 54 runners, 56 modules, 6 branches, capstone verified" >> "%LOG%" 2>&1
 
     echo Pushing branch... >> "%LOG%"
     git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1
