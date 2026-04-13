@@ -3,17 +3,17 @@ setlocal enabledelayedexpansion
 
 REM ── Aurexis Core GitHub Backup Script ──
 REM Pushes current repo state to a removable backup branch + tag
-REM VSA Cleanup Branch COMPLETE-ENOUGH — 40 bridges (50 runners)
+REM Integration / Release Hardening COMPLETE-ENOUGH — 44 bridges (54 runners)
 
 set "REPO_DIR=%~dp0"
-set "BRANCH=backup/v1-substrate-candidate-20260413-vsa-cleanup-complete"
-set "TAG=backup-v1-substrate-candidate-20260413-vsa-cleanup-complete"
+set "BRANCH=backup/v1-substrate-candidate-20260413-integration-complete"
+set "TAG=backup-v1-substrate-candidate-20260413-integration-complete"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
 echo ============================================ > "%LOG%"
 echo Aurexis Core GitHub Backup >> "%LOG%"
-echo VSA Cleanup Branch COMPLETE-ENOUGH — 40 bridges >> "%LOG%"
+echo Integration / Release Hardening COMPLETE-ENOUGH — 44 bridges >> "%LOG%"
 echo %date% %time% >> "%LOG%"
 echo ============================================ >> "%LOG%"
 
@@ -33,7 +33,7 @@ if exist ".git" (
 
     REM Commit
     echo Committing... >> "%LOG%"
-    git commit -m "VSA Cleanup Branch COMPLETE-ENOUGH — 40 bridges, 5895 assertions, 50 runners, 48 modules, capstone verified" >> "%LOG%" 2>&1
+    git commit -m "Integration / Release Hardening COMPLETE-ENOUGH — 44 bridges, 6081 assertions, 54 runners, 56 modules, capstone verified" >> "%LOG%" 2>&1
 
     REM Create backup branch
     echo Creating branch %BRANCH%... >> "%LOG%"
@@ -41,7 +41,7 @@ if exist ".git" (
 
     REM Create tag
     echo Creating tag %TAG%... >> "%LOG%"
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — VSA Cleanup Branch COMPLETE-ENOUGH (40 bridges, 4 VSA cleanup, capstone verified)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — Integration / Release Hardening COMPLETE-ENOUGH (44 bridges, 6 branches, capstone verified)" >> "%LOG%" 2>&1
 
     REM Push branch
     echo Pushing branch... >> "%LOG%"
@@ -69,9 +69,9 @@ if exist ".git" (
     git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
     git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
     git add -A >> "%LOG%" 2>&1
-    git commit -m "VSA Cleanup Branch COMPLETE-ENOUGH — 40 bridges, 5895 assertions, 50 runners, 48 modules, capstone verified" >> "%LOG%" 2>&1
+    git commit -m "Integration / Release Hardening COMPLETE-ENOUGH — 44 bridges, 6081 assertions, 54 runners, 56 modules, capstone verified" >> "%LOG%" 2>&1
     git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — VSA Cleanup Branch COMPLETE-ENOUGH (40 bridges, 4 VSA cleanup, capstone verified)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate — Integration / Release Hardening COMPLETE-ENOUGH (44 bridges, 6 branches, capstone verified)" >> "%LOG%" 2>&1
 
     echo Pushing branch... >> "%LOG%"
     git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1

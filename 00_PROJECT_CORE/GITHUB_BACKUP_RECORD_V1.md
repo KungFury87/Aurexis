@@ -5,6 +5,50 @@
 
 ---
 
+## Backup #22 — Integration / Release Hardening COMPLETE-ENOUGH (44 bridges)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-integration-complete` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-integration-complete` |
+| Pushed commit hash | *(to be filled after push)* |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 |
+
+### What This Backup Contains
+
+Snapshot at the Integration / Release Hardening Branch COMPLETE-ENOUGH milestone. Includes:
+
+- 44 bridge milestones (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release)
+- 6081 standalone assertions across 54 runners
+- 56 V1 modules
+- Six branch capstones verified
+- Unified capability manifest (JSON), entrypoint, compatibility contract, release audit
+- All project core documents, gate verifications, lock manifest, ROADMAP
+- The locked zip package (169 files, ~499 KB)
+- Release handoff hardening documentation
+- All legacy releases and working session files
+
+This is a removable backup snapshot, not a claim of full Aurexis Core completion.
+
+### Remote Verification
+
+*(to be filled after push)*
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260413-integration-complete
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260413-integration-complete
+# Delete local branch (optional):
+git branch -d backup/v1-substrate-candidate-20260413-integration-complete
+```
+
+---
+
 ## Backup #21 — VSA Cleanup Branch COMPLETE-ENOUGH (40 bridges)
 
 | Field | Value |
