@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 11, 2026 — Recovered Page Sequence Signature Bridge V1 COMPLETE
-**Status:** V1 Substrate Candidate accepted and baseline-locked. Thirteen bridge milestones complete: Raster Law, Capture Tolerance, Artifact Localization, Orientation Normalization, Perspective Normalization, Composed Recovery, Artifact Dispatch, Multi-Artifact Layout, Artifact Set Contract, Recovered Set Signature, Recovered Set Signature Match, Recovered Page Sequence Contract, Recovered Page Sequence Signature. 1740 standalone assertions + 556 pytest functions, all passing.
+**Last Updated:** April 12, 2026 — Recovered Sequence Collection Signature Match Bridge V1 COMPLETE
+**Status:** V1 Substrate Candidate accepted and baseline-locked. Seventeen bridge milestones complete: Raster Law, Capture Tolerance, Artifact Localization, Orientation Normalization, Perspective Normalization, Composed Recovery, Artifact Dispatch, Multi-Artifact Layout, Artifact Set Contract, Recovered Set Signature, Recovered Set Signature Match, Recovered Page Sequence Contract, Recovered Page Sequence Signature, Recovered Page Sequence Signature Match, Recovered Sequence Collection Contract, Recovered Sequence Collection Signature, Recovered Sequence Collection Signature Match. 2365 standalone assertions + 658 pytest functions, all passing.
 
 ---
 
@@ -162,8 +162,12 @@ Narrow law-bearing substrate candidate — not full Aurexis Core completion.
 | — | **Recovered Set Signature Match Bridge V1** | ✅ COMPLETE | 100 assertions |
 | — | **Recovered Page Sequence Contract Bridge V1** | ✅ COMPLETE | 149 assertions |
 | — | **Recovered Page Sequence Signature Bridge V1** | ✅ COMPLETE | 154 assertions |
+| — | **Recovered Page Sequence Signature Match Bridge V1** | ✅ COMPLETE | 141 assertions |
+| — | **Recovered Sequence Collection Contract Bridge V1** | ✅ COMPLETE | 163 assertions |
+| — | **Recovered Sequence Collection Signature Bridge V1** | ✅ COMPLETE | 173 assertions |
+| — | **Recovered Sequence Collection Signature Match Bridge V1** | ✅ COMPLETE | 148 assertions |
 
-**Total:** 1740 standalone assertions, 556 pytest functions, 23 runners — all passing.
+**Total:** 2365 standalone assertions, 658 pytest functions, 27 runners — all passing.
 
 **Rule:** Do not skip or reorder. Each milestone gets a gate verification audit.
 

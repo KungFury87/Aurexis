@@ -42,4 +42,8 @@ V1_MODULES = [
     "recovered_set_signature_match_bridge_v1",
     "recovered_page_sequence_contract_bridge_v1",
     "recovered_page_sequence_signature_bridge_v1",
+    "recovered_page_sequence_signature_match_bridge_v1",
+    "recovered_sequence_collection_contract_bridge_v1",
+    "recovered_sequence_collection_signature_bridge_v1",
+    "recovered_sequence_collection_signature_match_bridge_v1",
 ]

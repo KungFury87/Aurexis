@@ -3,17 +3,17 @@ setlocal enabledelayedexpansion
 
 REM ── Aurexis Core GitHub Backup Script ──
 REM Pushes current repo state to a removable backup branch + tag
-REM Recovered Page Sequence Signature Bridge V1 (13th bridge)
+REM Recovered Sequence Collection Signature Match Bridge V1 (17th bridge)
 
 set "REPO_DIR=%~dp0"
-set "BRANCH=backup/v1-substrate-candidate-20260411-seqsig"
-set "TAG=backup-v1-substrate-candidate-20260411-seqsig"
+set "BRANCH=backup/v1-substrate-candidate-20260412-collsigmatch"
+set "TAG=backup-v1-substrate-candidate-20260412-collsigmatch"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
 echo ============================================ > "%LOG%"
 echo Aurexis Core GitHub Backup >> "%LOG%"
-echo Recovered Page Sequence Signature Bridge V1 >> "%LOG%"
+echo Recovered Sequence Collection Signature Match Bridge V1 >> "%LOG%"
 echo %date% %time% >> "%LOG%"
 echo ============================================ >> "%LOG%"
 
@@ -33,7 +33,7 @@ if exist ".git" (
 
     REM Commit
     echo Committing... >> "%LOG%"
-    git commit -m "Recovered Page Sequence Signature Bridge V1 — 13th bridge milestone, 1740 assertions, 23 runners, 25 modules" >> "%LOG%" 2>&1
+    git commit -m "Recovered Sequence Collection Signature Match Bridge V1 — 17th bridge milestone, 2365 assertions, 27 runners, 29 modules" >> "%LOG%" 2>&1
 
     REM Create backup branch
     echo Creating branch %BRANCH%... >> "%LOG%"
@@ -41,7 +41,7 @@ if exist ".git" (
 
     REM Create tag
     echo Creating tag %TAG%... >> "%LOG%"
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Page Sequence Signature Bridge (13th bridge)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Sequence Collection Signature Match Bridge (17th bridge)" >> "%LOG%" 2>&1
 
     REM Push branch
     echo Pushing branch... >> "%LOG%"
@@ -69,9 +69,9 @@ if exist ".git" (
     git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
     git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
     git add -A >> "%LOG%" 2>&1
-    git commit -m "Recovered Page Sequence Signature Bridge V1 — 13th bridge milestone, 1740 assertions, 23 runners, 25 modules" >> "%LOG%" 2>&1
+    git commit -m "Recovered Sequence Collection Signature Match Bridge V1 — 17th bridge milestone, 2365 assertions, 27 runners, 29 modules" >> "%LOG%" 2>&1
     git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Page Sequence Signature Bridge (13th bridge)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Sequence Collection Signature Match Bridge (17th bridge)" >> "%LOG%" 2>&1
 
     echo Pushing branch... >> "%LOG%"
     git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1
