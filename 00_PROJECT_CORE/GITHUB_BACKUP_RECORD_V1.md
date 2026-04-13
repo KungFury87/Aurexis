@@ -5,6 +5,48 @@
 
 ---
 
+## Backup #21 — VSA Cleanup Branch COMPLETE-ENOUGH (40 bridges)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-vsa-cleanup-complete` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-vsa-cleanup-complete` |
+| Pushed commit hash | *(to be filled after push)* |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 |
+
+### What This Backup Contains
+
+Snapshot at the VSA Cleanup Branch COMPLETE-ENOUGH milestone. Includes:
+
+- 40 bridge milestones (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup)
+- 5895 standalone assertions across 50 runners
+- 52 V1 modules
+- Four branch capstones verified (temporal: 2284, higher-order: 258, view-dependent: 510, VSA cleanup: 292 assertions)
+- All project core documents, gate verifications, lock manifest, ROADMAP
+- The locked zip package (141 files, ~396 KB)
+- All legacy releases and working session files
+
+This is a removable backup snapshot, not a claim of full Aurexis Core completion.
+
+### Remote Verification
+
+*(to be filled after push)*
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260413-vsa-cleanup-complete
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260413-vsa-cleanup-complete
+# Delete local branch (optional):
+git branch -d backup/v1-substrate-candidate-20260413-vsa-cleanup-complete
+```
+
+---
+
 ## Backup #20 — View-Dependent Markers Branch COMPLETE-ENOUGH (36 bridges)
 
 | Field | Value |
