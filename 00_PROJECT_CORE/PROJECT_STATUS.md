@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 13, 2026 — Temporal Payload Contract Bridge V1 COMPLETE
-**Status:** V1 Substrate Candidate accepted and baseline-locked. Twenty-five bridge milestones complete (18 static substrate + 7 temporal transport): Raster Law, Capture Tolerance, Artifact Localization, Orientation Normalization, Perspective Normalization, Composed Recovery, Artifact Dispatch, Multi-Artifact Layout, Artifact Set Contract, Recovered Set Signature, Recovered Set Signature Match, Recovered Page Sequence Contract, Recovered Page Sequence Signature, Recovered Page Sequence Signature Match, Recovered Sequence Collection Contract, Recovered Sequence Collection Signature, Recovered Sequence Collection Signature Match, Recovered Collection Global Consistency, Rolling Shutter Temporal Transport, Complementary-Color Temporal Transport, Temporal Transport Dispatch, Temporal Consistency, Frame-Accurate Transport, Combined RS+CC Temporal Fusion, Temporal Payload Contract. 4480 standalone assertions + 910 pytest functions, all passing.
+**Last Updated:** April 13, 2026 — Temporal Payload Signature Bridge V1 COMPLETE
+**Status:** V1 Substrate Candidate accepted and baseline-locked. Twenty-six bridge milestones complete (18 static substrate + 8 temporal transport): Raster Law, Capture Tolerance, Artifact Localization, Orientation Normalization, Perspective Normalization, Composed Recovery, Artifact Dispatch, Multi-Artifact Layout, Artifact Set Contract, Recovered Set Signature, Recovered Set Signature Match, Recovered Page Sequence Contract, Recovered Page Sequence Signature, Recovered Page Sequence Signature Match, Recovered Sequence Collection Contract, Recovered Sequence Collection Signature, Recovered Sequence Collection Signature Match, Recovered Collection Global Consistency, Rolling Shutter Temporal Transport, Complementary-Color Temporal Transport, Temporal Transport Dispatch, Temporal Consistency, Frame-Accurate Transport, Combined RS+CC Temporal Fusion, Temporal Payload Contract, Temporal Payload Signature. 4579 standalone assertions + 939 pytest functions, all passing.
 
 ---
 
@@ -174,8 +174,9 @@ Narrow law-bearing substrate candidate — not full Aurexis Core completion.
 | — | **Frame-Accurate Transport Bridge V1** | ✅ COMPLETE | 350 assertions |
 | — | **Combined RS+CC Temporal Fusion Bridge V1** | ✅ COMPLETE | 250 assertions |
 | — | **Temporal Payload Contract Bridge V1** | ✅ COMPLETE | 133 assertions |
+| — | **Temporal Payload Signature Bridge V1** | ✅ COMPLETE | 99 assertions |
 
-**Total:** 4480 standalone assertions, 910 pytest functions, 35 runners — all passing.
+**Total:** 4579 standalone assertions, 939 pytest functions, 36 runners — all passing.
 
 **Rule:** Do not skip or reorder. Each milestone gets a gate verification audit.
 

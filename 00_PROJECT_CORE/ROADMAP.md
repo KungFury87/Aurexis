@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Temporal Payload Contract Bridge V1 + Future Roadmap
+**Updated:** April 13, 2026 — Temporal Payload Signature Bridge V1 + Future Roadmap
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -237,8 +237,9 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 23 | Frame-Accurate Transport Bridge V1 | ✅ COMPLETE | 350 |
 | 24 | Combined RS+CC Temporal Fusion Bridge V1 | ✅ COMPLETE | 250 |
 | 25 | Temporal Payload Contract Bridge V1 | ✅ COMPLETE | 133 |
+| 26 | Temporal Payload Signature Bridge V1 | ✅ COMPLETE | 99 |
 
-**Total:** 4480 standalone assertions, 910 pytest functions, 35 runners — all passing.
+**Total:** 4579 standalone assertions, 939 pytest functions, 36 runners — all passing.
 
 ---
 
@@ -263,7 +264,7 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ## Active Branch: Screen-to-Camera Temporal Transport
 
-**Status:** ACTIVE — seven milestones complete as of April 13, 2026.
+**Status:** ACTIVE — eight milestones complete as of April 13, 2026.
 
 **Concept:** Extend the static raster bridge to handle temporal transport — the process of capturing a screen-displayed visual program through a physical camera, accounting for temporal artifacts introduced by the capture process.
 
@@ -276,14 +277,15 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - ✅ Frame-Accurate Transport Bridge V1 (23rd bridge) — bounded temporal slot-identity preservation proof. A frozen family of ordered temporal display sequences (2, 3, or 4 slots) can be independently transported, captured, decoded, and the per-slot payload association and ordering deterministically recovered. Drifted or unsupported sequences are honestly rejected. 350 assertions, all passing.
 - ✅ Combined RS+CC Temporal Fusion Bridge V1 (24th bridge) — bounded stripe-and-color fusion transport proof. Encoding the same bounded payload through both rolling-shutter stripe transport and complementary-color temporal transport, decoding both channels independently, and checking agreement under a frozen fusion policy produces deterministic fused payload recovery. Supports both-agree, single-channel fallback (permissive profile), fallback-denied (strict profile), disagreement rejection, and both-failed rejection. 250 assertions, all passing.
 - ✅ Temporal Payload Contract Bridge V1 (25th bridge) — bounded temporal structure validation proof. Recovered temporal payload structures (from RS, CC, or fused transport) can be validated against an explicit frozen contract specifying allowed payload lengths, payload families, transport modes, and fused-channel requirements. 5 frozen contracts, deterministic accept/reject verdicts. 133 assertions, all passing.
+- ✅ Temporal Payload Signature Bridge V1 (26th bridge) — bounded temporal fingerprint proof. Validated recovered temporal payload structures (contract-satisfied) can be reduced to a deterministic SHA-256 signature/fingerprint over canonical structural fields (contract name, payload bits, payload family, transport mode, fused flag, payload length). Identical validated structures produce identical signatures; changed content, family, mode, or contract produce different signatures. Structures that fail contract validation cannot be signed. 99 assertions, all passing.
 
 **Planned milestones (tentative):**
-- Temporal payload signature/match work — TBD by Vincent
+- Temporal payload signature match work — TBD by Vincent
 - Advanced temporal/OCC work — TBD by Vincent
 
-**Prerequisite:** Stable static raster substrate. All seven temporal transport milestones are complete and proven.
+**Prerequisite:** Stable static raster substrate. All eight temporal transport milestones are complete and proven.
 
-**Honest framing:** Temporal transport is a harder problem than static raster recovery. The seven completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
+**Honest framing:** Temporal transport is a harder problem than static raster recovery. The eight completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
 
 ---
 
