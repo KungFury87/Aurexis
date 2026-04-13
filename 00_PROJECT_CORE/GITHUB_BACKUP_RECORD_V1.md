@@ -5,6 +5,50 @@
 
 ---
 
+## Backup #18 — Temporal Branch COMPLETE-ENOUGH (28 bridges + capstone)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-temporal-complete` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-temporal-complete` |
+| Pushed commit hash | *(to be filled after push)* |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 |
+
+### What This Backup Contains
+
+Snapshot at the Temporal Branch COMPLETE-ENOUGH milestone. Includes:
+
+- 28 bridge milestones (18 static substrate + 10 temporal transport)
+- 4835 standalone assertions across 38 runners
+- 40 V1 modules
+- Temporal Branch Capstone Verification (all 10 temporal runners verified, 2284 temporal assertions)
+- All project core documents, gate verifications, lock manifest, ROADMAP
+- The locked zip package (174 files, ~508 KB)
+- All legacy releases and working session files
+
+This is a removable backup snapshot, not a claim of full Aurexis Core completion.
+
+### Remote Verification
+
+*(to be filled after push)*
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260413-temporal-complete
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260413-temporal-complete
+# Delete local branch (optional):
+git branch -D backup/v1-substrate-candidate-20260413-temporal-complete
+# Delete local tag (optional):
+git tag -d backup-v1-substrate-candidate-20260413-temporal-complete
+```
+
+---
+
 ## Backup #17 — Temporal Payload Signature Match Bridge V1
 
 | Field | Value |

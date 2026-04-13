@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 13, 2026 — Temporal Payload Signature Match Bridge V1 COMPLETE
-**Status:** V1 Substrate Candidate accepted and baseline-locked. Twenty-seven bridge milestones complete (18 static substrate + 9 temporal transport): Raster Law, Capture Tolerance, Artifact Localization, Orientation Normalization, Perspective Normalization, Composed Recovery, Artifact Dispatch, Multi-Artifact Layout, Artifact Set Contract, Recovered Set Signature, Recovered Set Signature Match, Recovered Page Sequence Contract, Recovered Page Sequence Signature, Recovered Page Sequence Signature Match, Recovered Sequence Collection Contract, Recovered Sequence Collection Signature, Recovered Sequence Collection Signature Match, Recovered Collection Global Consistency, Rolling Shutter Temporal Transport, Complementary-Color Temporal Transport, Temporal Transport Dispatch, Temporal Consistency, Frame-Accurate Transport, Combined RS+CC Temporal Fusion, Temporal Payload Contract, Temporal Payload Signature, Temporal Payload Signature Match. 4721 standalone assertions + 970 pytest functions, all passing.
+**Last Updated:** April 13, 2026 — Temporal Branch COMPLETE-ENOUGH + Capstone Verification
+**Status:** V1 Substrate Candidate accepted and baseline-locked. Twenty-eight bridge milestones complete (18 static substrate + 10 temporal transport). Temporal branch capstone verified. 4835 standalone assertions + 997 pytest functions, all passing.
 
 ---
 
@@ -176,8 +176,9 @@ Narrow law-bearing substrate candidate — not full Aurexis Core completion.
 | — | **Temporal Payload Contract Bridge V1** | ✅ COMPLETE | 133 assertions |
 | — | **Temporal Payload Signature Bridge V1** | ✅ COMPLETE | 99 assertions |
 | — | **Temporal Payload Signature Match Bridge V1** | ✅ COMPLETE | 142 assertions |
+| — | **Temporal Global Consistency Bridge V1** | ✅ COMPLETE | 114 assertions |
 
-**Total:** 4721 standalone assertions, 970 pytest functions, 37 runners — all passing.
+**Total:** 4835 standalone assertions, 997 pytest functions, 38 runners — all passing.
 
 **Rule:** Do not skip or reorder. Each milestone gets a gate verification audit.
 

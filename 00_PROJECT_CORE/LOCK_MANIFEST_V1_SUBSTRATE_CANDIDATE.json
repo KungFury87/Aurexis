@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 4721,
-      "total_runners": 37,
+      "total_assertions": 4835,
+      "total_runners": 38,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -53,12 +53,13 @@
         "run_v1_combined_temporal_fusion_tests.py": 250,
         "run_v1_temporal_payload_contract_tests.py": 133,
         "run_v1_temporal_payload_signature_tests.py": 99,
-        "run_v1_temporal_payload_signature_match_tests.py": 142
+        "run_v1_temporal_payload_signature_match_tests.py": 142,
+        "run_v1_temporal_global_consistency_tests.py": 114
       }
     },
     "pytest_format": {
-      "total_functions": 970,
-      "total_files": 35,
+      "total_functions": 997,
+      "total_files": 36,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -77,7 +78,7 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/self_hosting_v1.py": "051857a8f77895c60a21d389cc28f848347d4b353857fffd84f92197946c4847",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/substrate_v1.py": "c980c4a3c26139f537e33b9d8c440feb7abe88be51cfe9002565ffc3a4ace938",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/raster_law_bridge_v1.py": "633aab6f8ac6cf13e1f93eeb655dd4b64ddeae066cb04bdf6c88c863479517e7",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "de83ab6b12bbee6cffabfe73c98bfa3ad042f1787949ebf5f0129c44c6d240da",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "0de0d3070dfe6db23ec32a9de5eb276492e0b2783d3bcdee6bbedd96175a337e",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/capture_tolerance_bridge_v1.py": "75c4e119a4c4bc2b9436dead2ae56244eeeffb4765f5ec2c33aa144b5f8b6218",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_localization_bridge_v1.py": "337d8a8255e073534482ab0e1c3808f43415eab0792f4049bf4c673eec628611",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/orientation_normalization_bridge_v1.py": "545b84011164c754bf6f25f9f766f58f99d2a558d3e6fb7197e67c86d1d4f817",
@@ -103,7 +104,8 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/combined_temporal_fusion_bridge_v1.py": "3cf1a748c856a62edf39e0fb9f6ee57436577a1c4bac65fd5002c6df142d6a5d",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_contract_bridge_v1.py": "29523fa0d91b344f6eea3e7633ab591bd7a1a2d8c2a17287f3e02449ab0cc014",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_signature_bridge_v1.py": "574697b3f0d63049589c9dee03fcc7a104f26f2053e379a01033f4e3a2c66751",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_signature_match_bridge_v1.py": "7b7d8eb54fc979dbcb8f26a4c1cd511288ec1450ee091ae0733399e520380182"
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_signature_match_bridge_v1.py": "7b7d8eb54fc979dbcb8f26a4c1cd511288ec1450ee091ae0733399e520380182",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_global_consistency_bridge_v1.py": "5656d15c016d85fe5f8d2517f46a4c0cebe984e6a0f65e4f046570662d0c89f4"
   },
   "lock_documents": [
     "00_PROJECT_CORE/ACCEPTED_STATUS_V1_SUBSTRATE_CANDIDATE.md",
@@ -136,7 +138,9 @@
     "00_PROJECT_CORE/COMBINED_TEMPORAL_FUSION_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/TEMPORAL_PAYLOAD_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/TEMPORAL_PAYLOAD_SIGNATURE_BRIDGE_V1_GATE_VERIFICATION.md",
-    "00_PROJECT_CORE/TEMPORAL_PAYLOAD_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md"
+    "00_PROJECT_CORE/TEMPORAL_PAYLOAD_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_GLOBAL_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_BRANCH_CAPSTONE_V1.md"
   ],
   "next_lane": "TBD — Vincent decides",
   "raster_law_bridge_v1": {
@@ -651,5 +655,44 @@
     "unsupported_cases": 2,
     "oob_cases": 1,
     "convenience_path": "match_from_signature_result"
+  },
+  "temporal_global_consistency_bridge_v1": {
+    "status": "complete",
+    "gate": "22/22 PASS",
+    "standalone_assertions": 114,
+    "branch": "screen_to_camera_temporal_transport",
+    "consistency_profile": {
+      "checks": [
+        "MATCH_VERDICT_AGREEMENT",
+        "CONTRACT_VERDICT_AGREEMENT",
+        "SIGNATURE_EQUALITY",
+        "CANONICAL_FIELD_CONSISTENCY",
+        "PAYLOAD_LENGTH_CONSISTENCY",
+        "CROSS_CASE_DISTINCTNESS"
+      ],
+      "require_all": true,
+      "match_baseline_ref": "V1_MATCH_BASELINE",
+      "signature_profile_ref": "V1_SIGNATURE_PROFILE",
+      "contract_profile_ref": "V1_CONTRACT_PROFILE"
+    },
+    "consistency_verdicts": [
+      "CONSISTENT",
+      "INCONSISTENT",
+      "UNSUPPORTED",
+      "ERROR"
+    ],
+    "consistency_method": "cross_layer_temporal_check_dispatch_with_fabricated_contradiction_detection",
+    "consistent_cases": 6,
+    "contradictory_cases": 5,
+    "unsupported_cases": 1,
+    "convenience_path": "check_temporal_consistency_from_match"
+  },
+  "temporal_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_temporal_milestones": 10,
+    "total_temporal_assertions": 2284,
+    "total_temporal_runners": 10,
+    "branch_name": "screen_to_camera_temporal_transport",
+    "capstone_doc": "00_PROJECT_CORE/TEMPORAL_BRANCH_CAPSTONE_V1.md"
   }
 }

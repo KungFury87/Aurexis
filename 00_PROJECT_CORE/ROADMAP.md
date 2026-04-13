@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Temporal Payload Signature Match Bridge V1 + Future Roadmap
+**Updated:** April 13, 2026 — Temporal Branch Complete + Capstone Verification + Future Roadmap
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -239,8 +239,9 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 25 | Temporal Payload Contract Bridge V1 | ✅ COMPLETE | 133 |
 | 26 | Temporal Payload Signature Bridge V1 | ✅ COMPLETE | 99 |
 | 27 | Temporal Payload Signature Match Bridge V1 | ✅ COMPLETE | 142 |
+| 28 | Temporal Global Consistency Bridge V1 | ✅ COMPLETE | 114 |
 
-**Total:** 4721 standalone assertions, 970 pytest functions, 37 runners — all passing.
+**Total:** 4835 standalone assertions, 997 pytest functions, 38 runners — all passing.
 
 ---
 
@@ -265,7 +266,7 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ## Active Branch: Screen-to-Camera Temporal Transport
 
-**Status:** ACTIVE — nine milestones complete as of April 13, 2026.
+**Status:** BRANCH COMPLETE-ENOUGH — ten milestones complete as of April 13, 2026. Capstone verification passed.
 
 **Concept:** Extend the static raster bridge to handle temporal transport — the process of capturing a screen-displayed visual program through a physical camera, accounting for temporal artifacts introduced by the capture process.
 
@@ -280,13 +281,18 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - ✅ Temporal Payload Contract Bridge V1 (25th bridge) — bounded temporal structure validation proof. Recovered temporal payload structures (from RS, CC, or fused transport) can be validated against an explicit frozen contract specifying allowed payload lengths, payload families, transport modes, and fused-channel requirements. 5 frozen contracts, deterministic accept/reject verdicts. 133 assertions, all passing.
 - ✅ Temporal Payload Signature Bridge V1 (26th bridge) — bounded temporal fingerprint proof. Validated recovered temporal payload structures (contract-satisfied) can be reduced to a deterministic SHA-256 signature/fingerprint over canonical structural fields (contract name, payload bits, payload family, transport mode, fused flag, payload length). Identical validated structures produce identical signatures; changed content, family, mode, or contract produce different signatures. Structures that fail contract validation cannot be signed. 99 assertions, all passing.
 - ✅ Temporal Payload Signature Match Bridge V1 (27th bridge) — bounded expected-temporal-signature verification proof. Computed temporal payload signatures can be compared against a frozen expected-signature baseline (6 frozen cases) and return deterministic MATCH / MISMATCH / UNSUPPORTED verdicts. Changed payload bits, transport mode, or contract produce honest mismatch or upstream failure. Unsupported cases fail honestly. 142 assertions, all passing.
+- ✅ Temporal Global Consistency Bridge V1 (28th bridge) — bounded temporal cross-layer coherence verification proof. Cross-layer consistency checks (match verdict agreement, contract verdict agreement, signature equality, canonical field consistency, payload length consistency, cross-case distinctness) catch locally-valid but globally-contradictory temporal structures. 6 consistent cases, 5 contradictory cases, 1 unsupported case. 114 assertions, all passing.
+- ✅ **TEMPORAL BRANCH CAPSTONE** — All 10 temporal milestones verified end-to-end. 2,284 temporal assertions across 10 runners, all passing. Full pipeline proven: generate → encode → capture → decode → dispatch → stabilize → fuse → contract → sign → match → global consistency. See TEMPORAL_BRANCH_CAPSTONE_V1.md.
 
-**Planned milestones (tentative):**
-- Advanced temporal/OCC work — TBD by Vincent
+**Branch status:** COMPLETE-ENOUGH. The bounded temporal transport proof is self-contained and coherent.
 
-**Prerequisite:** Stable static raster substrate. All nine temporal transport milestones are complete and proven.
+**Remaining for later (not in this branch):**
+- Advanced temporal/OCC work (broader transport modes, real-world noise, adaptive decoding) — TBD by Vincent
+- Any future temporal extensions require a new branch or user decision
 
-**Honest framing:** Temporal transport is a harder problem than static raster recovery. The nine completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
+**Prerequisite:** Stable static raster substrate. All ten temporal transport milestones are complete and proven.
+
+**Honest framing:** Temporal transport is a harder problem than static raster recovery. The ten completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
 
 ---
 
