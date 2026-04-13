@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — VSA Cleanup Branch COMPLETE-ENOUGH (40 bridges)
+**Updated:** April 13, 2026 — Integration / Release Hardening Branch COMPLETE-ENOUGH (44 bridges)
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -244,8 +244,20 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 30 | Local Section Consistency Bridge V1 | ✅ COMPLETE | 62 |
 | 31 | Sheaf-Style Composition Bridge V1 | ✅ COMPLETE | 58 |
 | 32 | Cohomological Obstruction Detection Bridge V1 | ✅ COMPLETE | 56 |
+| 33 | View-Dependent Marker Profile Bridge V1 | ✅ COMPLETE | 95 |
+| 34 | Moment-Invariant Identity Bridge V1 | ✅ COMPLETE | 92 |
+| 35 | View-Facet Recovery Bridge V1 | ✅ COMPLETE | 179 |
+| 36 | View-Dependent Contract Bridge V1 | ✅ COMPLETE | 144 |
+| 37 | VSA Cleanup Profile Bridge V1 | ✅ COMPLETE | 64 |
+| 38 | Hypervector Binding / Bundling Bridge V1 | ✅ COMPLETE | 55 |
+| 39 | Cleanup Retrieval Bridge V1 | ✅ COMPLETE | 100 |
+| 40 | VSA Consistency / Contract Bridge V1 | ✅ COMPLETE | 73 |
+| 41 | Unified Capability Manifest Bridge V1 | ✅ COMPLETE | 53 |
+| 42 | Unified Substrate Entrypoint Bridge V1 | ✅ COMPLETE | 57 |
+| 43 | Cross-Branch Compatibility Contract Bridge V1 | ✅ COMPLETE | 36 |
+| 44 | V1 Substrate Release Audit Bridge V1 | ✅ COMPLETE | 40 |
 
-**Total:** 5093 standalone assertions, 1100 pytest functions, 42 runners — all passing.
+**Total:** 6081 standalone assertions, 54 runners — all passing.
 
 ---
 
@@ -317,6 +329,8 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 
 ## VSA / Hyperdimensional Cleanup Layer — ✅ BRANCH COMPLETE-ENOUGH
 
+
+
 **Completed:** April 13, 2026
 **Bridges:** 37–40 (4 milestones + branch capstone)
 **New assertions:** 292 standalone, 59 pytest functions
@@ -329,6 +343,23 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - **Bridge 40 — VSA Consistency / Contract V1:** Cross-check VSA recovery against deterministic substrate truth. 11/11 CONSISTENT at 0% and 10% noise. 3 rejection paths tested. (73 assertions, 15/15 gate)
 
 **Honest limits:** Dimension (1024) is small. Noise model is simple bit-flip. Codebook is only 11 entries. VSA is explicitly AUXILIARY — it compresses/cleans substrate outputs but the deterministic substrate remains the truth layer.
+
+---
+
+## Integration / Release Hardening — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**Bridges:** 41–44 (4 milestones + branch capstone)
+**New assertions:** 186 standalone, 4 runners
+**Branch verdict:** COMPLETE-ENOUGH — unified V1 substrate candidate release-hardened
+
+**What was built:**
+- **Bridge 41 — Unified Capability Manifest V1:** Machine-readable manifest of all 40 bridges, 5 branches, 52 modules. JSON export. Deterministic manifest hash. (53 assertions, 19/19 gate)
+- **Bridge 42 — Unified Substrate Entrypoint V1:** Thin orchestrator routing into all branches. 40-bridge registry. 7 routes (5 branch + manifest + compatibility). Dynamic import. (57 assertions, 17/17 gate)
+- **Bridge 43 — Cross-Branch Compatibility Contract V1:** 12 structural compatibility rules. Module namespace, bridge numbering, branch ranges, VSA auxiliary precedence, no circular imports. All 12 COMPATIBLE. (36 assertions, 17/17 gate)
+- **Bridge 44 — V1 Substrate Release Audit V1:** 10 release-level audit checks. Manifest, entrypoint, compatibility, module imports, route success, hash determinism, foundation, exclusions, version consistency. All 10 PASS. (40 assertions, 16/16 gate)
+
+**Honest limits:** Integration checks are structural (imports, namespaces, routing). Not runtime interoperation under load or production deployment validation.
 
 ---
 

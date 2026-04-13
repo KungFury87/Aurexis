@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 5895,
-      "total_runners": 50,
+      "total_assertions": 6081,
+      "total_runners": 54,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -66,12 +66,16 @@
         "run_v1_vsa_cleanup_profile_tests.py": 64,
         "run_v1_hypervector_binding_bundling_tests.py": 55,
         "run_v1_cleanup_retrieval_tests.py": 100,
-        "run_v1_vsa_consistency_contract_tests.py": 73
+        "run_v1_vsa_consistency_contract_tests.py": 73,
+        "run_v1_unified_capability_manifest_tests.py": 53,
+        "run_v1_unified_substrate_entrypoint_tests.py": 57,
+        "run_v1_cross_branch_compatibility_tests.py": 36,
+        "run_v1_release_audit_tests.py": 40
       }
     },
     "pytest_format": {
-      "total_functions": 1244,
-      "total_files": 48,
+      "total_functions": 1310,
+      "total_files": 52,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -900,5 +904,61 @@
     "total_vsa_pytest_functions": 59,
     "branch_name": "vsa_hyperdimensional_cleanup",
     "capstone_doc": "00_PROJECT_CORE/VSA_CLEANUP_BRANCH_CAPSTONE_V1.md"
+  },
+  "unified_capability_manifest_bridge_v1": {
+    "status": "complete",
+    "gate": "19/19 PASS",
+    "standalone_assertions": 53,
+    "pytest_functions": 25,
+    "bridge_number": 41,
+    "branch": "integration_release",
+    "branch_milestone": 1,
+    "bridges_enumerated": 40,
+    "branches_enumerated": 5,
+    "modules_enumerated": 52,
+    "manifest_hash_deterministic": true
+  },
+  "unified_substrate_entrypoint_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 57,
+    "pytest_functions": 19,
+    "bridge_number": 42,
+    "branch": "integration_release",
+    "branch_milestone": 2,
+    "bridge_registry_size": 40,
+    "routes": 7,
+    "branch_routes": 5
+  },
+  "cross_branch_compatibility_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 36,
+    "pytest_functions": 11,
+    "bridge_number": 43,
+    "branch": "integration_release",
+    "branch_milestone": 3,
+    "compatibility_rules": 12,
+    "all_compatible": true
+  },
+  "v1_substrate_release_audit_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 40,
+    "pytest_functions": 11,
+    "bridge_number": 44,
+    "branch": "integration_release",
+    "branch_milestone": 4,
+    "audit_checks": 10,
+    "all_pass": true
+  },
+  "integration_release_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_integration_milestones": 4,
+    "total_integration_assertions": 186,
+    "total_integration_runners": 4,
+    "total_integration_pytest_functions": 66,
+    "branch_name": "integration_release_hardening",
+    "capstone_doc": "00_PROJECT_CORE/INTEGRATION_RELEASE_BRANCH_CAPSTONE_V1.md"
   }
 }

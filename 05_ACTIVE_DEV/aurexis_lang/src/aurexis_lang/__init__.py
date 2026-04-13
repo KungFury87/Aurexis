@@ -69,4 +69,8 @@ V1_MODULES = [
     "hypervector_binding_bundling_bridge_v1",
     "cleanup_retrieval_bridge_v1",
     "vsa_consistency_contract_bridge_v1",
+    "unified_capability_manifest_bridge_v1",
+    "unified_substrate_entrypoint_bridge_v1",
+    "cross_branch_compatibility_contract_bridge_v1",
+    "v1_substrate_release_audit_bridge_v1",
 ]
