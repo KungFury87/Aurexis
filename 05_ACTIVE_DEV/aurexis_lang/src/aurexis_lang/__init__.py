@@ -55,4 +55,5 @@ V1_MODULES = [
     "combined_temporal_fusion_bridge_v1",
     "temporal_payload_contract_bridge_v1",
     "temporal_payload_signature_bridge_v1",
+    "temporal_payload_signature_match_bridge_v1",
 ]

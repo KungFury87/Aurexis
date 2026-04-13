@@ -5,6 +5,49 @@
 
 ---
 
+## Backup #17 — Temporal Payload Signature Match Bridge V1
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-tpsigmatch` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-tpsigmatch` |
+| Pushed commit hash | *(to be filled after push)* |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 |
+
+### What This Backup Contains
+
+Snapshot at the Temporal Payload Signature Match Bridge V1 milestone (27th bridge, 9th temporal transport). Includes:
+
+- 27 bridge milestones (18 static substrate + 9 temporal transport)
+- 4721 standalone assertions across 37 runners
+- 39 V1 modules
+- All project core documents, gate verifications, lock manifest, ROADMAP
+- The locked zip package
+- All legacy releases and working session files
+
+This is a removable backup snapshot, not a claim of full Aurexis Core completion.
+
+### Remote Verification
+
+*(to be filled after push)*
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260413-tpsigmatch
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260413-tpsigmatch
+# Delete local branch (optional):
+git branch -D backup/v1-substrate-candidate-20260413-tpsigmatch
+# Delete local tag (optional):
+git tag -d backup-v1-substrate-candidate-20260413-tpsigmatch
+```
+
+---
+
 ## Backup #16 — Temporal Payload Signature Bridge V1
 
 | Field | Value |

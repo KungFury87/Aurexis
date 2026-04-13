@@ -3,17 +3,17 @@ setlocal enabledelayedexpansion
 
 REM ── Aurexis Core GitHub Backup Script ──
 REM Pushes current repo state to a removable backup branch + tag
-REM Temporal Payload Signature Bridge V1 (26th bridge)
+REM Temporal Payload Signature Match Bridge V1 (27th bridge)
 
 set "REPO_DIR=%~dp0"
-set "BRANCH=backup/v1-substrate-candidate-20260413-tpsignature"
-set "TAG=backup-v1-substrate-candidate-20260413-tpsignature"
+set "BRANCH=backup/v1-substrate-candidate-20260413-tpsigmatch"
+set "TAG=backup-v1-substrate-candidate-20260413-tpsigmatch"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
 echo ============================================ > "%LOG%"
 echo Aurexis Core GitHub Backup >> "%LOG%"
-echo Temporal Payload Signature Bridge V1 >> "%LOG%"
+echo Temporal Payload Signature Match Bridge V1 >> "%LOG%"
 echo %date% %time% >> "%LOG%"
 echo ============================================ >> "%LOG%"
 
@@ -33,7 +33,7 @@ if exist ".git" (
 
     REM Commit
     echo Committing... >> "%LOG%"
-    git commit -m "Temporal Payload Signature Bridge V1 — 26th bridge milestone, 4579 assertions, 36 runners, 38 modules" >> "%LOG%" 2>&1
+    git commit -m "Temporal Payload Signature Match Bridge V1 — 27th bridge milestone, 4721 assertions, 37 runners, 39 modules" >> "%LOG%" 2>&1
 
     REM Create backup branch
     echo Creating branch %BRANCH%... >> "%LOG%"
@@ -41,7 +41,7 @@ if exist ".git" (
 
     REM Create tag
     echo Creating tag %TAG%... >> "%LOG%"
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Temporal Payload Signature Bridge (26th bridge)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Temporal Payload Signature Match Bridge (27th bridge)" >> "%LOG%" 2>&1
 
     REM Push branch
     echo Pushing branch... >> "%LOG%"
@@ -69,9 +69,9 @@ if exist ".git" (
     git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
     git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
     git add -A >> "%LOG%" 2>&1
-    git commit -m "Temporal Payload Signature Bridge V1 — 26th bridge milestone, 4579 assertions, 36 runners, 38 modules" >> "%LOG%" 2>&1
+    git commit -m "Temporal Payload Signature Match Bridge V1 — 27th bridge milestone, 4721 assertions, 37 runners, 39 modules" >> "%LOG%" 2>&1
     git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
-    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Temporal Payload Signature Bridge (26th bridge)" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: V1 Substrate Candidate with Temporal Payload Signature Match Bridge (27th bridge)" >> "%LOG%" 2>&1
 
     echo Pushing branch... >> "%LOG%"
     git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1
