@@ -5,6 +5,58 @@
 
 ---
 
+## Backup #29 — FINALIZED V1 Substrate Candidate — Freeze/Release Polish (51 bridges, 9 branches, 327/327 pytest, truth-surface polished)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260414-120000` |
+| Remote tag name | `backup-v1-substrate-candidate-20260414-120000` |
+| Pushed commit hash | `d33799c` (pending user push — sandbox proxy 403) |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 14, 2026 (pending) |
+
+### What This Backup Contains
+
+Snapshot at the Final Freeze / Release Polish milestone. Truth-surface consistency cleanup across all top-level docs. Zip includes FINAL_CANDIDATE_FREEZE_CAPSTONE_V1.md as the single authoritative freeze statement.
+
+- 51 bridge milestones across 9 branches
+- 6,358 standalone assertions across 61 runners
+- 67 source modules
+- Nine branch capstones verified
+- Zip with 186 files (~2.2 MB)
+- Pytest surface: 327 passed, 0 failed (clean-room verified)
+- UNIFIED_CAPABILITY_MANIFEST (md+json), V1_SUBSTRATE_RELEASE_AUDIT_CAPSTONE, RELEASE_HANDOFF_HARDENING all updated to reflect current finalized state
+- FINAL_CANDIDATE_FREEZE_CAPSTONE_V1.md is the new freeze statement
+
+This is a removable backup snapshot, not a claim of full Core completion. The package is "finalized" only in the sense of a FINALIZED V1 Substrate Candidate bundle.
+
+### Push Instructions
+
+Run `_github_backup.bat` from File Explorer on Windows. The sandbox proxy blocks direct push (403). The batch script is pre-configured with the correct branch/tag names.
+
+### Verification Commands (run after push)
+
+```
+git ls-remote origin backup/v1-substrate-candidate-20260414-120000
+git ls-remote origin refs/tags/backup-v1-substrate-candidate-20260414-120000
+```
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260414-120000
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260414-120000
+# Delete local branch (optional):
+git branch -D backup/v1-substrate-candidate-20260414-120000
+# Delete local tag (optional):
+git tag -d backup-v1-substrate-candidate-20260414-120000
+```
+
+---
+
 ## Backup #28 — Pytest Surface Green Pass — HANDOFF-READY (51 bridges, 9 branches, 327/327 pytest)
 
 | Field | Value |
