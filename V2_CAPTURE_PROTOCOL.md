@@ -61,7 +61,9 @@ The screen is the **sole artifact presenter**. Its role is:
 
 **Screen — locked:**
 - **Monitor:** **MSI G27C4X** — 27" curved, confirmed via computer-use on 2026-04-14 (panel type / native resolution / native refresh rate: recorded per session from the MSI OSD at pilot start; treat the unit as fixed for the duration of V2).
-- **Dual-monitor setup:** Vincent's workstation has **two G27C4X units** attached. The **capture target monitor** is declared at pilot start (by port, position, or OSD label) and is the one displaying the benchmark artifact. The **secondary monitor** hosts the working tree / capture tooling and must be oriented or positioned so it does not appear in the capture frame or create reflections onto the capture path.
+- **Dual-monitor setup:** Vincent's workstation has **two G27C4X units** attached. The **capture target monitor** is declared at pilot start and recorded in `session_manifest.json.screen.capture_target_monitor_id` (use the Windows identifier from Settings → System → Display, e.g. `"Display 1"` or `"Display 2"`, plus the port if known, e.g. `"DP-1"`). The capture target monitor is the one displaying the benchmark artifact.
+- **Secondary monitor state during capture:** the non-target monitor hosts the working tree / capture tooling and must be either **powered off** for the capture window, or physically rotated / positioned so it is not visible from the phone's optical axis and does not bounce light onto the screen or phone. Leaving the secondary monitor on and facing the rig is forbidden.
+- **Per-monitor scaling note (Windows 11):** Windows 11 allows per-monitor DPI scaling. The scaling value that matters for V2 is the **capture target monitor's** scaling. Record that value; do not change it between pilot and validation.
 - **Panel output:** SDR only (HDR output OFF).
 - **OS:** **Windows 11**, confirmed via computer-use on 2026-04-14 (exact build recorded at pilot start).
 - **OS display scaling:** the system default on the capture machine at V2-M1 lock time (prior context = 125%; **OSD/Settings verification at pilot start**, and the verified value is frozen into `V2_CAPTURE_PROTOCOL.md` session-scoped metadata for the remainder of V2). Do not change scaling between pilot and validation.
@@ -97,10 +99,11 @@ Step order:
    - Clean the MSI screen surface with a dry microfiber cloth (no liquid cleaners)
 
 2. **Screen preparation**
-   - Wake the MSI monitor and allow **10–15 minutes** warm-up before any capture is taken
-   - Confirm brightness, refresh rate, scaling, and color settings per §4
-   - Open the benchmark artifact in the designated viewer, full-screen, 100% zoom, with black padding if needed
-   - Move / hide the cursor; enable Do Not Disturb on Windows
+   - Declare the capture target monitor (Display 1 or Display 2 from Windows Settings → System → Display) and put the secondary monitor into its capture-window state (off, or rotated away — see §4)
+   - Wake the capture target monitor and allow **10–15 minutes** warm-up before any capture is taken
+   - Confirm brightness, refresh rate, scaling, and color settings per §4 on the capture target monitor
+   - Open the benchmark artifact in a **full-screen-capable viewer**. Acceptable viewers: Windows Photos in full-screen view, or a web browser in F11 fullscreen mode pointing at a `file:///` URL for the artifact. Zoom 100% / fit-to-native. Black padding when aspect mismatches.
+   - Park the cursor on the secondary (tooling) monitor, not on the capture target; enable Focus Assist / Do Not Disturb on Windows
 
 3. **Rig placement (handheld baseline for first pass)**
    - **Mount:** handheld is the locked first-pass mode. A fixed stand may be adopted later; until then, handheld is the declared rig.
@@ -198,12 +201,17 @@ NN is zero-padded two digits starting at 01. Re-takes append a letter (`01b`, `0
 - EXIF: preserved in full. Any transfer path that strips or rewrites EXIF is forbidden.
 - Resolution: native sensor output at 1.0x zoom. No downscaling.
 - Color space: as written by the device. Recorded in manifest.
-- Checksums: SHA-256 computed on arrival in `V2_PILOT_RUN/raw/<session_id>/captures/` and recorded in `session_manifest.json`.
+- Checksums: SHA-256 computed on arrival in `V2_PILOT_RUN/raw/<session_id>/captures/` and recorded in `session_manifest.json`. On Windows 11, use PowerShell:
+  ```powershell
+  Get-ChildItem .\V2_PILOT_RUN\raw\<session_id>\captures\ |
+    ForEach-Object { "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash, $_.Name }
+  ```
+  Paste each hash into the matching entry in `session_manifest.json.captures[].sha256`.
 - Filesize: > 0; corrupt files fail §12 intake.
 
 ## 10. Exact upload expectations for later review
 
-- **Preferred transfer:** USB cable from the S23 Ultra to the Windows workstation, MTP / direct file copy, preserving original files and EXIF.
+- **Preferred transfer:** USB cable from the S23 Ultra to the Windows workstation, MTP direct file copy in File Explorer (Copy/Paste or drag-and-drop from the phone's DCIM folder). Do **not** use Windows' "Import pictures and videos" importer — it can rename, recompress, or strip metadata. Plain File Explorer copy preserves originals and EXIF.
 - **Acceptable alternatives:** any direct transfer path that preserves originals and EXIF (e.g. Samsung's direct Windows link, a local-network SMB / SFTP transfer, or similar). The path used is recorded in `notes.md`.
 - **Forbidden transfer paths:** messaging apps, cloud photo sync paths with "optimize storage" or "compress uploads" enabled, or any path that re-encodes / strips EXIF.
 - **Upload destination:** `V2_PILOT_RUN/raw/<session_id>/captures/` exactly. No staging under `Downloads` / `Desktop` / temp folders that are later moved (moves alter timestamps).
@@ -228,6 +236,8 @@ For the V2-M3 pilot run under this protocol, the following are explicitly exclud
 - Any E/D-track activity
 - Any cloud-sync path that strips EXIF or recompresses
 - Mid-session changes to distance, orientation, brightness, scaling, or lighting (any such change ends the session and starts a new one with a new session_id)
+- On-device deletions, edits, crops, filters, or gallery "enhancements" of captures before they are transferred and intaked (Samsung Gallery "trash" is also forbidden during a session — treat captures as immutable between shutter and intake)
+- Re-takes performed outside the declared session window (a re-take must occur within the same session, before session close; otherwise start a new session)
 
 ## 12. Exact intake criteria — usable vs. unusable
 

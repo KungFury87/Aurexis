@@ -2,6 +2,21 @@
 
 **Locked:** 2026-04-14
 
+## Gate status (live)
+
+| Gate | Milestone | Status | Commit |
+|---|---|---|---|
+| G0 | V2-M0 Charter Lock | **CLOSED** (2026-04-14) | `39d1c38` |
+| G1 | V2-M1 Capture Protocol | **CLOSED** (2026-04-14) | bundled with paper dry-run commit |
+| G2 | V2-M2 Benchmark Artifact Set | open | — |
+| G3 | V2-M3 First Capture Pilot | open | — |
+| G4 | V2-M4 Failure Taxonomy | open | — |
+| G5 | V2-M5 Evidence-Driven Calibration | open | — |
+| G6 | V2-M6 Before/After Validation | open | — |
+| G7 | V2-M7 Controlled Expansion | open | — |
+| G8 | V2-M8 V2 Candidate Release | open | — |
+
+
 Each milestone has an explicit gate. A milestone is not "complete" until its gate passes. Gate failure re-opens the milestone; it does not downgrade the definition.
 
 ---

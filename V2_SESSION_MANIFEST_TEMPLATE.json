@@ -1,0 +1,80 @@
+{
+  "_template_note": "Shape reference only. Copy this into V2_PILOT_RUN/raw/<session_id>/session_manifest.json at session close and fill in every field. Matches V2_CAPTURE_PROTOCOL.md §7. Delete this _template_note key before saving the real manifest.",
+
+  "session_id": "V2S-YYYYMMDD-HHMM-<benchmark_artifact_id>-rigHH01-<pass_label>",
+  "protocol_version": "V2-CAP-PROTO-1.0-LOCK",
+  "benchmark_artifact_id": "<from V2_BENCHMARK_SET_MANIFEST.json>",
+  "benchmark_artifact_checksum": "<SHA-256 of the artifact file>",
+  "capture_count": 3,
+
+  "device": {
+    "make": "Samsung",
+    "model": "Galaxy S23 Ultra",
+    "os_name": "Android",
+    "os_version": "<record from phone Settings > About at session time>",
+    "camera_app": "Samsung Camera",
+    "lens": "rear_main_1x",
+    "zoom": 1.0,
+    "hdr": "off",
+    "flash": "off",
+    "night_mode": "off",
+    "ai_enhance": "off",
+    "format": "jpeg"
+  },
+
+  "screen": {
+    "make": "MSI",
+    "model": "G27C4X",
+    "panel_class": "curved_27in",
+    "capture_target_monitor_id": "<Display 1 | Display 2 | DP-1 | etc.>",
+    "secondary_monitor_state": "<off | rotated_away>",
+    "native_resolution": "<e.g. 1920x1080>",
+    "refresh_rate_hz": "<e.g. 165>",
+    "brightness_setting": "default_unchanged",
+    "brightness_osd_value": "<OSD numeric value if visible, else null>",
+    "os": "Windows",
+    "os_version": "<Windows 11 build, e.g. 23H2 22631.xxxx>",
+    "os_scaling_percent": 125,
+    "hdr_output": "off",
+    "night_light": "off",
+    "adaptive_brightness": "off"
+  },
+
+  "rig": {
+    "mount_type": "handheld",
+    "rig_profile_id": "rigHH01",
+    "phone_to_screen_distance": "<e.g. 400 mm or 16 in>",
+    "orientation": "portrait",
+    "framing_fill_range": "70-90_percent"
+  },
+
+  "environment": {
+    "room_id": "home_desk",
+    "session_window": "<e.g. evening_indoor_blinds_closed>",
+    "lighting_profile": "<prose: fixtures and state>",
+    "blackout": "<yes | no>"
+  },
+
+  "operator": "Vincent",
+
+  "captured_at_session_start": "<ISO-8601 local timestamp>",
+  "captured_at_session_end": "<ISO-8601 local timestamp>",
+
+  "captures": [
+    {
+      "filename": "<session_id>_cap_01.jpg",
+      "sha256": "<from Get-FileHash>",
+      "shutter_release": "self_timer_2s",
+      "exif_summary": {
+        "shutter": "<e.g. 1/60>",
+        "iso": "<e.g. 100>",
+        "aperture": "<e.g. f/1.7>",
+        "focal_length": "<e.g. 23mm (eqv.)>",
+        "focus_distance": "<if present>",
+        "white_balance": "<auto | daylight | etc.>"
+      }
+    }
+  ],
+
+  "notes": "<honest observations: reflections caught, re-takes, anomalies, non-standard events>"
+}

@@ -24,18 +24,18 @@ Read top-to-bottom. If any step cannot be completed as written, stop the session
 
 ## B. Screen preparation
 
-- [ ] Confirm capture target monitor (one of the two MSI G27C4X units) — declared by port, position, or OSD label
+- [ ] Declare capture target monitor (Display 1 or Display 2 per Windows Settings → System → Display) and record it in `session_manifest.json.screen.capture_target_monitor_id`
+- [ ] Put the **secondary monitor OFF** for the capture window, **or** rotated physically so it is not visible from the phone's optical axis and does not bounce light at the phone
 - [ ] Wake capture target monitor; **warm up 10–15 minutes** before any capture
 - [ ] Confirm monitor brightness is the V2-locked default (unchanged)
-- [ ] Confirm Windows 11 display scaling matches the frozen V2 value (prior context 125% — verify at Settings → System → Display → Scale)
+- [ ] Confirm Windows 11 per-monitor scaling on the capture target monitor matches the frozen V2 value (prior context 125% — verify at Settings → System → Display → Scale, with the capture target monitor selected)
 - [ ] Confirm native resolution at 1:1 pixel mapping; browser / viewer zoom = 100%
 - [ ] HDR output OFF on the capture target monitor
 - [ ] Night light / blue-light filter / color profile tweaks: OFF
 - [ ] Screen saver / auto-dim / auto-sleep: disabled for the session
 - [ ] Adaptive brightness: OFF
-- [ ] Secondary monitor oriented / positioned so it is not in the capture frame and does not bounce light at the phone
-- [ ] Open benchmark artifact full-screen, 100% zoom, black padding if aspect mismatches
-- [ ] Cursor moved off-screen or hidden; taskbar auto-hidden or covered
+- [ ] Open benchmark artifact in a full-screen viewer: Windows Photos in full-screen view, or a browser in F11 fullscreen on a `file:///` URL. Zoom 100%, black padding if aspect mismatches
+- [ ] Park cursor on the secondary (tooling) monitor; taskbar auto-hidden or covered on the capture target
 
 ## C. Phone preparation (Galaxy S23 Ultra)
 
@@ -71,14 +71,20 @@ For each capture:
 
 ## F. Session close
 
-- [ ] Write `session_manifest.json` with every field from protocol §7 populated
-- [ ] Transfer captures via USB (preferred) or EXIF-preserving direct path to:
+- [ ] Connect S23 Ultra via USB. Unlock phone. On Windows, open File Explorer → the phone's DCIM/Camera folder.
+- [ ] **Copy** (do not "Import" — avoid Windows "Import pictures and videos") the session's captures into:
       `V2_PILOT_RUN/raw/<session_id>/captures/`
-- [ ] Compute SHA-256 per file; record in `session_manifest.json`
+- [ ] Compute SHA-256 for each captured file. Windows PowerShell:
+      ```powershell
+      Get-ChildItem .\V2_PILOT_RUN\raw\<session_id>\captures\ |
+        ForEach-Object { "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash, $_.Name }
+      ```
+- [ ] Fill in `session_manifest.json` using `V2_SESSION_MANIFEST_TEMPLATE.json` as the shape reference. Every field from protocol §7 populated. `captures[].sha256` set from the PowerShell output.
 - [ ] Verify `captures/` matches manifest filenames and checksums
 - [ ] Run §12 intake check on each file; move rejects to
       `V2_PILOT_RUN/raw/<session_id>/rejected/` with `rejection_reason.txt`
-- [ ] If fewer than N usable captures, re-run the loop or mark session failed in `notes.md`
+- [ ] If fewer than N usable captures, re-run the loop **within the declared session window, before session close** (or mark session failed in `notes.md` and start a new session)
+- [ ] Do not delete, edit, crop, filter, or "enhance" captures on the phone at any point between shutter and intake (Samsung Gallery "trash" included)
 - [ ] Confirm no GitHub push attempted; `V2_PILOT_RUN` stays local
 
 ## G. Session ID (fill in at session start)
@@ -100,6 +106,7 @@ Any of the following ends the current session — do not mix conditions within o
 - Lighting changes mid-session (fixture on/off, bulb change, window state change)
 - Capture target monitor swapped for the secondary monitor
 - Phone camera settings changed (HDR, Scene Optimizer, lens, zoom)
+- Any on-device deletion / edit / crop / filter / enhancement of captures between shutter and intake
 
 ## I. Forbidden (protocol §11 exclusions)
 
