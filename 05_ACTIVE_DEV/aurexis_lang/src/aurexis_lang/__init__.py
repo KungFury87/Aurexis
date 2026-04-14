@@ -78,4 +78,7 @@ V1_MODULES = [
     "evidence_delta_analysis_bridge_v1",
     "calibration_recommendation_bridge_v1",
     "real_capture_intake_preflight_bridge_v1",
+    "authored_capture_fixtures_v1",
+    "intake_to_delta_replay_harness_v1",
+    "replay_outcome_contract_bridge_v1",
 ]

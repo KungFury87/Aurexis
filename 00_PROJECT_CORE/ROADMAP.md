@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Real Capture User Handoff Branch COMPLETE-ENOUGH (49 bridges)
+**Updated:** April 13, 2026 — Observed-Evidence Replay Branch COMPLETE-ENOUGH (51 bridges)
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -261,8 +261,11 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 | 47 | Evidence Delta Analysis Bridge V1 | ✅ COMPLETE | 40 |
 | 48 | Calibration Recommendation Bridge V1 | ✅ COMPLETE | 33 |
 | 49 | Real Capture Intake Preflight Bridge V1 | ✅ COMPLETE | 36 |
+| — | Authored Capture Session Fixture Pack V1 | ✅ COMPLETE | (support module) |
+| 50 | Intake-to-Delta Replay Harness Bridge V1 | ✅ COMPLETE | 42 |
+| 51 | Replay Outcome Contract Bridge V1 | ✅ COMPLETE | 34 |
 
-**Total:** 6282 standalone assertions, 59 runners — all passing.
+**Total:** 6358 standalone assertions, 61 runners — all passing.
 
 ---
 
@@ -404,6 +407,26 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 **Honest limits:** No real captures have been submitted. No automated file discovery. No image content validation. No web upload or API. This is one-shot file-based session submission, not streaming or incremental intake.
 
 **What still requires user action:** User-supplied real capture files processed through this intake surface.
+
+---
+
+## Observed-Evidence Dry-Run / Replay Readiness — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**Bridges:** 50–51 (2 code bridges + 1 support module + 2 documentation milestones)
+**New assertions:** 76 standalone, 2 runners
+**Branch verdict:** COMPLETE-ENOUGH — bounded dry-run replay proof
+
+**What was built:**
+- **Milestone 1 — Authored Capture Session Fixture Pack V1:** 6 frozen fixtures (3 valid + 3 invalid) at evidence_tier="authored". Valid: phone JPEG, scanner TIFF, two-file. Invalid: missing fields, bad extension, duplicate files. Reference substrate outputs for delta comparison.
+- **Bridge 50 — Intake-to-Delta Replay Harness V1:** Deterministic 5-stage pipeline replay (preflight → ingest → manifest → delta → recommendation). All 6 fixtures exercised end-to-end. Valid fixtures reach ALL_STAGES_PASSED; invalid fixtures produce EXPECTED_REJECTION at preflight. (42 assertions, 12/12 gate)
+- **Bridge 51 — Replay Outcome Contract V1:** Validates replay outcomes match explicit expected dry-run verdicts. 4 global checks + 33 per-fixture checks = 37 individual contract checks, all SATISFIED. Deterministic SHA-256 hashing. (34 assertions, 9/9 gate)
+- **Milestone 4 — Dry-Run Evidence Report Surface V1:** Documentation showing what a completed dry-run looks like, pipeline stages, critical distinction between authored vs real-capture.
+- **Milestone 5 — Observed-Evidence Replay Capstone V1:** Branch capstone with solved/unsolved table, honest framing.
+
+**Honest limits:** Authored fixtures use metadata-only validation, not real image processing. The dry-run proves pipeline wiring is correct and deterministic, but does NOT prove real captures will produce useful results. The transition from authored dry-run to real-capture processing is the remaining gap.
+
+**What still requires user action:** User-supplied real capture files to exercise the pipeline against real data.
 
 ---
 

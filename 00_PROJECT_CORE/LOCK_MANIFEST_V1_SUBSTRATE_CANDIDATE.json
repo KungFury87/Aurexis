@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 6282,
-      "total_runners": 59,
+      "total_assertions": 6358,
+      "total_runners": 61,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -75,7 +75,9 @@
         "run_v1_capture_session_manifest_tests.py": 42,
         "run_v1_evidence_delta_analysis_tests.py": 40,
         "run_v1_calibration_recommendation_tests.py": 33,
-        "run_v1_real_capture_intake_preflight_tests.py": 36
+        "run_v1_real_capture_intake_preflight_tests.py": 36,
+        "run_v1_intake_to_delta_replay_tests.py": 42,
+        "run_v1_replay_outcome_contract_tests.py": 34
       }
     },
     "pytest_format": {
@@ -1045,5 +1047,47 @@
     "branch_name": "real_capture_user_handoff",
     "capstone_doc": "05_ACTIVE_DEV/aurexis_lang/REAL_CAPTURE_USER_HANDOFF_CAPSTONE_V1.md",
     "real_stop_condition": "requires_user_supplied_real_capture_packs"
+  },
+  "authored_capture_fixtures_v1": {
+    "status": "complete",
+    "bridge_number": "support_module",
+    "branch": "observed_evidence_replay",
+    "branch_milestone": 1,
+    "fixture_count": 6,
+    "valid_fixtures": 3,
+    "invalid_fixtures": 3,
+    "evidence_tier": "authored"
+  },
+  "intake_to_delta_replay_harness_v1": {
+    "status": "complete",
+    "gate": "12/12 PASS",
+    "standalone_assertions": 42,
+    "bridge_number": 50,
+    "branch": "observed_evidence_replay",
+    "branch_milestone": 2,
+    "pipeline_stages": 5,
+    "fixture_pack_used": "V1_FIXTURE_PACK"
+  },
+  "replay_outcome_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "9/9 PASS",
+    "standalone_assertions": 34,
+    "bridge_number": 51,
+    "branch": "observed_evidence_replay",
+    "branch_milestone": 3,
+    "contract_checks": 37,
+    "all_satisfied": true
+  },
+  "observed_evidence_replay_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_replay_milestones": 5,
+    "total_replay_code_bridges": 2,
+    "total_replay_support_modules": 1,
+    "total_replay_documentation_milestones": 2,
+    "total_replay_assertions": 76,
+    "total_replay_runners": 2,
+    "branch_name": "observed_evidence_replay",
+    "capstone_doc": "05_ACTIVE_DEV/aurexis_lang/OBSERVED_EVIDENCE_REPLAY_CAPSTONE_V1.md",
+    "real_stop_condition": "requires_user_supplied_real_capture_files"
   }
 }
