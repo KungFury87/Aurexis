@@ -9,6 +9,7 @@ set "REPO_DIR=%~dp0"
 set "BRANCH=backup/v1-substrate-candidate-20260414-120000"
 set "TAG=backup-v1-substrate-candidate-20260414-120000"
 set "RELEASE_TAG=core-v1-substrate-candidate-or1"
+set "RELEASE_TAG_FOLLOWUP=core-v1-substrate-candidate-or1.1"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
@@ -54,16 +55,22 @@ if exist ".git" (
     git push origin "%TAG%" --force >> "%LOG%" 2>&1
     echo Push tag exit code: !errorlevel! >> "%LOG%"
 
-    REM Push official release tag
+    REM Push official release tag (ACOR-1)
     echo Pushing official release tag %RELEASE_TAG%... >> "%LOG%"
     git push origin "%RELEASE_TAG%" --force >> "%LOG%" 2>&1
     echo Push release tag exit code: !errorlevel! >> "%LOG%"
+
+    REM Push follow-up release tag (ACOR-1.1)
+    echo Pushing follow-up release tag %RELEASE_TAG_FOLLOWUP%... >> "%LOG%"
+    git push origin "%RELEASE_TAG_FOLLOWUP%" --force >> "%LOG%" 2>&1
+    echo Push follow-up release tag exit code: !errorlevel! >> "%LOG%"
 
     REM Verify
     echo Verifying remote... >> "%LOG%"
     git ls-remote origin "%BRANCH%" >> "%LOG%" 2>&1
     git ls-remote origin "refs/tags/%TAG%" >> "%LOG%" 2>&1
     git ls-remote origin "refs/tags/%RELEASE_TAG%" >> "%LOG%" 2>&1
+    git ls-remote origin "refs/tags/%RELEASE_TAG_FOLLOWUP%" >> "%LOG%" 2>&1
 
     echo ============================================ >> "%LOG%"
     echo DONE >> "%LOG%"

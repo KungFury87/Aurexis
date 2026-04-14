@@ -5,6 +5,102 @@
 
 ---
 
+## Backup / Release #32 — ACOR-1.1 Follow-Up Release (Post-Re-Verification Sync)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Follow-up release name | Aurexis Core Official Release 1.1 — V1 Substrate Candidate |
+| Short label | ACOR-1.1 |
+| Release branch | `backup/v1-substrate-candidate-20260414-120000` |
+| Follow-up release tag | `core-v1-substrate-candidate-or1.1` |
+| Original release tag (preserved) | `core-v1-substrate-candidate-or1` (ACOR-1) |
+| Pushed commit hash | `7053e6fcc06ed515eb69daca877302bac5a5d60d` (pending user push — sandbox proxy 403) |
+| Push method | Git Credential Manager (device auth) via `_github_backup.bat` |
+| Push date | April 14, 2026 (pending) |
+
+### Relationship to ACOR-1
+
+ACOR-1.1 is the **release-sync** follow-up to ACOR-1. The audited release code (bridges, tests, runners, manifests, truth-surface docs) is **identical** between the two tags. ACOR-1.1 adds only:
+
+- A Re-Verification Stamp section in `CODE_PROVENANCE_AUDIT_V1.md`
+- A `re_verification` object in `CODE_PROVENANCE_AUDIT_V1.json`
+- `RELEASE_NOTES_ACOR-1.1.md` (this release's notes file)
+- Rebuilt release zip including the above
+
+The original `core-v1-substrate-candidate-or1` tag is **preserved** and is **not** silently rewritten. Both tags coexist so the public release history is honest.
+
+### Push Instructions (Windows, File Explorer)
+
+The sandbox blocks `git push` (proxy 403). Push from your own machine by running `_github_backup.bat`. It now pushes:
+
+1. The release branch `backup/v1-substrate-candidate-20260414-120000`
+2. The original release tag `core-v1-substrate-candidate-or1` (unchanged)
+3. The companion backup tag `backup-v1-substrate-candidate-20260414-120000`
+4. The new follow-up release tag **`core-v1-substrate-candidate-or1.1`**
+
+Steps:
+
+1. Open **File Explorer** and navigate to the repo root.
+2. Double-click **`_github_backup.bat`**.
+3. If Git Credential Manager prompts for device auth, follow the browser steps.
+4. Open `_backup_log.txt` and confirm all four `Push … exit code: 0` lines.
+
+### How to Create the GitHub Release Object for ACOR-1.1
+
+#### Option A — GitHub UI
+
+1. Go to `https://github.com/KungFury87/Aurexis/releases`.
+2. Click **"Draft a new release"**.
+3. **Choose a tag:** select **`core-v1-substrate-candidate-or1.1`**.
+4. **Release title:** `Aurexis Core Official Release 1.1 — V1 Substrate Candidate`
+5. Paste the contents of `00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.1.md` into the description box.
+6. Drag `00_PROJECT_CORE/aurexis_core_v1_substrate_candidate_locked.zip` into the binaries area.
+7. Leave **"Set as the latest release"** checked (ACOR-1.1 is the newest build).
+8. Click **"Publish release"**.
+9. Verify: visit `https://github.com/KungFury87/Aurexis/releases/tag/core-v1-substrate-candidate-or1.1`.
+
+The existing ACOR-1 Release Object (if you created one) stays as-is — that is the first published release. ACOR-1.1 supersedes it only for "latest release" purposes.
+
+#### Option B — `gh` CLI (from your own machine)
+
+```bash
+cd <your-local-Aurexis-clone>
+git fetch --all --tags
+gh release create core-v1-substrate-candidate-or1.1 \
+  --repo KungFury87/Aurexis \
+  --title "Aurexis Core Official Release 1.1 — V1 Substrate Candidate" \
+  --notes-file 00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.1.md \
+  --latest \
+  00_PROJECT_CORE/aurexis_core_v1_substrate_candidate_locked.zip
+
+gh release view core-v1-substrate-candidate-or1.1 --repo KungFury87/Aurexis
+```
+
+### Verification Commands (run after push)
+
+```
+git ls-remote origin backup/v1-substrate-candidate-20260414-120000
+git ls-remote origin refs/tags/core-v1-substrate-candidate-or1
+git ls-remote origin refs/tags/core-v1-substrate-candidate-or1.1
+git ls-remote origin refs/tags/backup-v1-substrate-candidate-20260414-120000
+```
+
+### Release Removal / Revision Commands
+
+```bash
+# Remove only the ACOR-1.1 Release Object:
+gh release delete core-v1-substrate-candidate-or1.1 --repo KungFury87/Aurexis --yes
+
+# Remove only the ACOR-1.1 tag:
+git push origin --delete core-v1-substrate-candidate-or1.1
+git tag -d core-v1-substrate-candidate-or1.1
+
+# (Commands to remove ACOR-1 separately are recorded in entry #31 above.)
+```
+
+---
+
 ## Backup / Release #31 — ACOR-1 Post-Audit Repackaging (Phase 1 + Phase 2)
 
 | Field | Value |
