@@ -5,6 +5,108 @@
 
 ---
 
+## Backup / Release #31 — ACOR-1 Post-Audit Repackaging (Phase 1 + Phase 2)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Release name | Aurexis Core Official Release 1 — V1 Substrate Candidate |
+| Short label | ACOR-1 |
+| Release branch | `backup/v1-substrate-candidate-20260414-120000` |
+| Official release tag | `core-v1-substrate-candidate-or1` (re-pointed after audit) |
+| Companion backup tag | `backup-v1-substrate-candidate-20260414-120000` |
+| Pushed commit hash | `987800b321c196117d620da34228224031c753f2` (pending user push — sandbox proxy 403) |
+| Push method | Git Credential Manager (device auth) via `_github_backup.bat` |
+| Push date | April 14, 2026 (pending) |
+
+### What This Release Adds (on top of #30)
+
+- **LICENSE** file at repo root (proprietary, all rights reserved, © 2026 Vincent Anderson)
+- **.gitignore** for public-repo hygiene (ChatGPT-*.json exports, .buildozer/, ziqHxpn5, caches)
+- **Provenance audit** suite under `00_PROJECT_CORE/`:
+  - `CODE_PROVENANCE_AUDIT_V1.md` / `.json` — human + machine-readable audit
+  - `THIRD_PARTY_LICENSE_NOTES_V1.md` — third-party usage notes
+  - `CLEAN_ROOM_REMEDIATION_LOG_V1.md` — decision log
+- **README.md** updated with a "Provenance / Copyright / Clean-Room Audit" section and LICENSE reference
+- **Zip rebuilt**: 193 files, ~2.28 MB (adds LICENSE + 4 audit docs)
+- **Audit verdict**: Zero clean-room rewrites required. No third-party source code shipped in the ACOR-1 release zip.
+
+### Push Instructions (Windows, File Explorer)
+
+The sandbox environment where these commits were created blocks `git push` (proxy returns HTTP 403). **You need to push from your own machine.** The batch script `_github_backup.bat` is pre-configured to push the release branch + official release tag + companion backup tag in one go.
+
+1. Open **File Explorer** and navigate to the repo root (the folder that contains `README.md`, `LICENSE`, `_github_backup.bat`).
+2. Double-click **`_github_backup.bat`**.
+3. If Git Credential Manager prompts for GitHub auth (device flow), follow the on-screen code entry in your browser.
+4. When the script finishes, open `_backup_log.txt` to confirm all three `Push … exit code: 0` lines and the `git ls-remote` verification lines at the end.
+
+### How to Create the Actual GitHub Release Object
+
+The steps above push the **branch and tag**. The actual GitHub **Release object** (with downloadable zip attached) has to be created separately because the sandbox does not have `gh` CLI installed or authenticated. You have two ways to do this:
+
+#### Option A — GitHub UI (recommended, no tooling required)
+
+1. Open your browser and go to **https://github.com/KungFury87/Aurexis/releases**
+2. Click **"Draft a new release"** (top right).
+3. In **"Choose a tag"**, select the existing tag **`core-v1-substrate-candidate-or1`** (it will appear in the dropdown after the push succeeds).
+4. In **"Release title"**, paste: `Aurexis Core Official Release 1 — V1 Substrate Candidate`
+5. In the **"Describe this release"** box, paste the contents of `00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.md`.
+6. Under **"Attach binaries by dropping them here or selecting them"**, attach `00_PROJECT_CORE/aurexis_core_v1_substrate_candidate_locked.zip`.
+7. Leave **"Set as the latest release"** checked. Leave **"Set as a pre-release"** unchecked unless you want to mark ACOR-1 as pre-release.
+8. Click **"Publish release"**.
+
+To verify the Release is live, visit `https://github.com/KungFury87/Aurexis/releases/tag/core-v1-substrate-candidate-or1`.
+
+#### Option B — GitHub CLI (`gh`), from your own machine
+
+If you have (or install) the GitHub CLI and it is authenticated against your GitHub account:
+
+```bash
+cd <local-clone-of-Aurexis>
+git fetch --all --tags
+# Create the release from the existing tag:
+gh release create core-v1-substrate-candidate-or1 \
+  --repo KungFury87/Aurexis \
+  --title "Aurexis Core Official Release 1 — V1 Substrate Candidate" \
+  --notes-file 00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.md \
+  00_PROJECT_CORE/aurexis_core_v1_substrate_candidate_locked.zip
+```
+
+To verify:
+
+```bash
+gh release view core-v1-substrate-candidate-or1 --repo KungFury87/Aurexis
+```
+
+### Verification Commands (run after push)
+
+```
+git ls-remote origin backup/v1-substrate-candidate-20260414-120000
+git ls-remote origin refs/tags/core-v1-substrate-candidate-or1
+git ls-remote origin refs/tags/backup-v1-substrate-candidate-20260414-120000
+```
+
+### Release Removal / Revision Commands
+
+```bash
+# Delete the GitHub Release object (if created via UI or gh):
+gh release delete core-v1-substrate-candidate-or1 --repo KungFury87/Aurexis --yes
+
+# Delete the official release tag:
+git push origin --delete core-v1-substrate-candidate-or1
+git tag -d core-v1-substrate-candidate-or1
+
+# Delete the companion backup tag:
+git push origin --delete backup-v1-substrate-candidate-20260414-120000
+git tag -d backup-v1-substrate-candidate-20260414-120000
+
+# Delete the release branch (optional):
+git push origin --delete backup/v1-substrate-candidate-20260414-120000
+git branch -D backup/v1-substrate-candidate-20260414-120000
+```
+
+---
+
 ## Backup / Release #30 — Aurexis Core Official Release 1 (ACOR-1) — V1 Substrate Candidate
 
 | Field | Value |
