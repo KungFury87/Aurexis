@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Observed-Evidence Replay Branch COMPLETE-ENOUGH (51 bridges)
+**Updated:** April 13, 2026 — Final Package Handoff Hardening COMPLETE-ENOUGH (51 bridges, handoff-ready)
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -427,6 +427,25 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 **Honest limits:** Authored fixtures use metadata-only validation, not real image processing. The dry-run proves pipeline wiring is correct and deterministic, but does NOT prove real captures will produce useful results. The transition from authored dry-run to real-capture processing is the remaining gap.
 
 **What still requires user action:** User-supplied real capture files to exercise the pipeline against real data.
+
+---
+
+## Final Package Handoff Hardening — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**New files:** 8 (no new bridges — packaging/documentation pass)
+**Branch verdict:** COMPLETE-ENOUGH — release-hardened handoff-ready V1 candidate
+
+**What was built:**
+- **Final Top-Level Truth Surface Restoration V1:** ROADMAP, PROJECT_STATUS, GITHUB_BACKUP_RECORD, UNIFIED_CAPABILITY_MANIFEST (md+json), RELEASE_AUDIT_CAPSTONE, RELEASE_HANDOFF_HARDENING all restored to the returned zip top level.
+- **Real-Capture Intake Surface Completion V1:** REAL_CAPTURE_SESSION_TEMPLATE_V1.json and FIXTURES_AUTHORED_CAPTURE_SESSION_PACK_V1.json (machine-readable exports) added to zip.
+- **Pytest Discovery Surface Restoration V1:** tests/__init__.py, tests/conftest.py created. 19 pytest test modules (bridges 33-51) + 2 new modules for replay bridges added. Legacy fixture support modules included.
+- **Final Candidate Package Map V1:** FINAL_CANDIDATE_PACKAGE_MAP_V1.md — complete directory tree, branch families, test surfaces, entrypoints.
+- **Final V1 Candidate Handoff Capstone:** FINAL_V1_CANDIDATE_HANDOFF_CAPSTONE.md — what is complete-enough, what still requires real captures, what is deferred.
+
+**Package state:** 184 files in zip. 32 .md docs, 3 .json files, 61 standalone runners, 21 pytest test files, 67 source modules. Clean-room verified.
+
+**Honest limits:** This is a packaging/documentation pass. No new bridges or algorithmic code. The package is now self-describing and handoff-ready but still requires user-supplied real capture data to exercise the pipeline against real-world inputs.
 
 ---
 
