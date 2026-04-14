@@ -1,0 +1,184 @@
+{
+  "version": "V1.0",
+  "frozen": true,
+  "evidence_tier": "authored",
+  "expected_fixture_count": 6,
+  "expected_valid_count": 3,
+  "expected_invalid_count": 3,
+  "fixtures": [
+    {
+      "name": "valid_phone_jpeg",
+      "description": "Valid phone JPEG capture session \u2014 single file, all fields present, should CLEAR preflight",
+      "evidence_tier": "authored",
+      "is_valid": true,
+      "expected_preflight_verdict": "CLEARED",
+      "session_manifest": {
+        "session_id": "authored-fixture-phone-jpeg-001",
+        "description": "Authored fixture: phone JPEG capture of printed artifact",
+        "created_at": "2026-04-13T10:00:00Z",
+        "files": [
+          {
+            "file_ref": "artifact_photo_001.jpg",
+            "file_ext": ".jpg",
+            "file_size_bytes": 2500000,
+            "width_px": 4032,
+            "height_px": 3024,
+            "capture_device": "Samsung S23 Ultra",
+            "capture_timestamp": "2026-04-13T10:30:00Z"
+          }
+        ],
+        "conditions": {
+          "adequate_lighting": true,
+          "subject_in_frame": true
+        }
+      }
+    },
+    {
+      "name": "valid_scanner_tiff",
+      "description": "Valid scanner TIFF capture session \u2014 single file, all fields present, should CLEAR preflight",
+      "evidence_tier": "authored",
+      "is_valid": true,
+      "expected_preflight_verdict": "CLEARED",
+      "session_manifest": {
+        "session_id": "authored-fixture-scanner-tiff-001",
+        "description": "Authored fixture: flatbed scanner output of printed artifact",
+        "created_at": "2026-04-13T11:00:00Z",
+        "files": [
+          {
+            "file_ref": "scanned_artifact_001.tif",
+            "file_ext": ".tif",
+            "file_size_bytes": 15000000,
+            "width_px": 2400,
+            "height_px": 3600,
+            "capture_device": "Epson V600",
+            "capture_timestamp": "2026-04-13T11:00:00Z"
+          }
+        ],
+        "conditions": {
+          "adequate_lighting": true,
+          "subject_in_frame": true
+        }
+      }
+    },
+    {
+      "name": "valid_two_file",
+      "description": "Valid session with two files (phone JPEG + PNG) \u2014 should CLEAR preflight",
+      "evidence_tier": "authored",
+      "is_valid": true,
+      "expected_preflight_verdict": "CLEARED",
+      "session_manifest": {
+        "session_id": "authored-fixture-two-file-001",
+        "description": "Authored fixture: two-file phone capture session",
+        "created_at": "2026-04-13T12:00:00Z",
+        "files": [
+          {
+            "file_ref": "page1_photo.jpg",
+            "file_ext": ".jpg",
+            "file_size_bytes": 3000000,
+            "width_px": 4032,
+            "height_px": 3024,
+            "capture_device": "Samsung S23 Ultra",
+            "capture_timestamp": "2026-04-13T12:00:00Z"
+          },
+          {
+            "file_ref": "page2_photo.png",
+            "file_ext": ".png",
+            "file_size_bytes": 8000000,
+            "width_px": 4032,
+            "height_px": 3024,
+            "capture_device": "Samsung S23 Ultra",
+            "capture_timestamp": "2026-04-13T12:01:00Z"
+          }
+        ],
+        "conditions": {
+          "adequate_lighting": true,
+          "subject_in_frame": true
+        }
+      }
+    },
+    {
+      "name": "invalid_missing_fields",
+      "description": "Invalid session \u2014 missing required session fields (session_id, created_at), should REJECT at preflight",
+      "evidence_tier": "authored",
+      "is_valid": false,
+      "expected_preflight_verdict": "REJECTED",
+      "session_manifest": {
+        "description": "Authored fixture: intentionally missing session_id and created_at",
+        "files": [
+          {
+            "file_ref": "artifact_photo.jpg",
+            "file_ext": ".jpg",
+            "file_size_bytes": 2000000,
+            "width_px": 1920,
+            "height_px": 1080,
+            "capture_device": "Generic Camera",
+            "capture_timestamp": "2026-04-13T13:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "invalid_bad_extension",
+      "description": "Invalid session \u2014 unsupported .bmp extension, should REJECT at preflight",
+      "evidence_tier": "authored",
+      "is_valid": false,
+      "expected_preflight_verdict": "REJECTED",
+      "session_manifest": {
+        "session_id": "authored-fixture-bad-ext-001",
+        "description": "Authored fixture: unsupported file extension",
+        "created_at": "2026-04-13T14:00:00Z",
+        "files": [
+          {
+            "file_ref": "artifact_photo.bmp",
+            "file_ext": ".bmp",
+            "file_size_bytes": 5000000,
+            "width_px": 1920,
+            "height_px": 1080,
+            "capture_device": "Generic Camera",
+            "capture_timestamp": "2026-04-13T14:00:00Z"
+          }
+        ],
+        "conditions": {
+          "adequate_lighting": true,
+          "subject_in_frame": true
+        }
+      }
+    },
+    {
+      "name": "invalid_duplicate_files",
+      "description": "Invalid session \u2014 duplicate file_ref values, should REJECT at preflight",
+      "evidence_tier": "authored",
+      "is_valid": false,
+      "expected_preflight_verdict": "REJECTED",
+      "session_manifest": {
+        "session_id": "authored-fixture-dup-files-001",
+        "description": "Authored fixture: duplicate file refs",
+        "created_at": "2026-04-13T15:00:00Z",
+        "files": [
+          {
+            "file_ref": "same_name.jpg",
+            "file_ext": ".jpg",
+            "file_size_bytes": 2000000,
+            "width_px": 1920,
+            "height_px": 1080,
+            "capture_device": "Samsung S23",
+            "capture_timestamp": "2026-04-13T15:00:00Z"
+          },
+          {
+            "file_ref": "same_name.jpg",
+            "file_ext": ".jpg",
+            "file_size_bytes": 2100000,
+            "width_px": 1920,
+            "height_px": 1080,
+            "capture_device": "Samsung S23",
+            "capture_timestamp": "2026-04-13T15:01:00Z"
+          }
+        ],
+        "conditions": {
+          "adequate_lighting": true,
+          "subject_in_frame": true
+        }
+      }
+    }
+  ]
+}

@@ -1,103 +1,103 @@
 @echo off
-cd /d "C:\Users\vince\Desktop\Aurexis evolved\back again"
+setlocal enabledelayedexpansion
 
-REM Log everything
-set "LOG=%~dp0_backup_log.txt"
-echo === Aurexis GitHub Backup Log === > "%LOG%"
-echo Working dir: %CD% >> "%LOG%" 2>&1
-echo. >> "%LOG%"
+REM ── Aurexis Core GitHub Backup / Release Script ──
+REM Pushes current repo state to the official release branch + backup tag + official release tag
+REM Aurexis Core Official Release 1 (ACOR-1) — V1 Substrate Candidate (51 bridges, 61 runners, 327/327 pytest)
 
-echo Step 1: Remove old .git >> "%LOG%"
+set "REPO_DIR=%~dp0"
+set "BRANCH=backup/v1-substrate-candidate-20260414-120000"
+set "TAG=backup-v1-substrate-candidate-20260414-120000"
+set "RELEASE_TAG=core-v1-substrate-candidate-or1"
+set "LOG=%REPO_DIR%_backup_log.txt"
+set "GCM_GITHUBAUTHMODE=device"
+
+echo ============================================ > "%LOG%"
+echo Aurexis Core GitHub Backup >> "%LOG%"
+echo FINALIZED V1 Substrate Candidate (freeze/release polish) — 51 bridges >> "%LOG%"
+echo %date% %time% >> "%LOG%"
+echo ============================================ >> "%LOG%"
+
+cd /d "%REPO_DIR%"
+
+REM Check if .git exists
 if exist ".git" (
-    rmdir /s /q ".git" >> "%LOG%" 2>&1
-    echo Removed .git >> "%LOG%"
+    echo Git repo found, updating... >> "%LOG%"
+
+    REM Add all files
+    echo Adding files... >> "%LOG%"
+    git add -A >> "%LOG%" 2>&1
+
+    REM Configure identity
+    git config user.email "vincent.anderson.87@gmail.com" >> "%LOG%" 2>&1
+    git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
+
+    REM Commit
+    echo Committing... >> "%LOG%"
+    git commit -m "FINALIZED V1 Substrate Candidate (freeze/release polish) — 51 bridges, 6358 assertions, 61 runners, 67 source modules, handoff-ready" >> "%LOG%" 2>&1
+
+    REM Create backup branch
+    echo Creating branch %BRANCH%... >> "%LOG%"
+    git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
+
+    REM Create tag
+    echo Creating tag %TAG%... >> "%LOG%"
+    git tag -f "%TAG%" -m "Backup: FINALIZED V1 Substrate Candidate (freeze/release polish) — 51 bridges, 6358 assertions, 61 runners, 67 source modules, 9 branches, handoff-ready" >> "%LOG%" 2>&1
+
+    REM Push branch
+    echo Pushing branch... >> "%LOG%"
+    git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1
+    echo Push branch exit code: !errorlevel! >> "%LOG%"
+
+    REM Push backup tag
+    echo Pushing tag... >> "%LOG%"
+    git push origin "%TAG%" --force >> "%LOG%" 2>&1
+    echo Push tag exit code: !errorlevel! >> "%LOG%"
+
+    REM Push official release tag
+    echo Pushing official release tag %RELEASE_TAG%... >> "%LOG%"
+    git push origin "%RELEASE_TAG%" --force >> "%LOG%" 2>&1
+    echo Push release tag exit code: !errorlevel! >> "%LOG%"
+
+    REM Verify
+    echo Verifying remote... >> "%LOG%"
+    git ls-remote origin "%BRANCH%" >> "%LOG%" 2>&1
+    git ls-remote origin "refs/tags/%TAG%" >> "%LOG%" 2>&1
+    git ls-remote origin "refs/tags/%RELEASE_TAG%" >> "%LOG%" 2>&1
+
+    echo ============================================ >> "%LOG%"
+    echo DONE >> "%LOG%"
+    echo %date% %time% >> "%LOG%"
+
 ) else (
-    echo No .git found >> "%LOG%"
+    echo No .git found, initializing... >> "%LOG%"
+    git init >> "%LOG%" 2>&1
+    git config user.email "vincent.anderson.87@gmail.com" >> "%LOG%" 2>&1
+    git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
+    git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
+    git add -A >> "%LOG%" 2>&1
+    git commit -m "FINALIZED V1 Substrate Candidate (freeze/release polish) — 51 bridges, 6358 assertions, 61 runners, 67 source modules, handoff-ready" >> "%LOG%" 2>&1
+    git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: FINALIZED V1 Substrate Candidate (freeze/release polish) — 51 bridges, 6358 assertions, 61 runners, 67 source modules, 9 branches, handoff-ready" >> "%LOG%" 2>&1
+
+    echo Pushing branch... >> "%LOG%"
+    git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1
+    echo Push branch exit code: !errorlevel! >> "%LOG%"
+
+    echo Pushing tag... >> "%LOG%"
+    git push origin "%TAG%" --force >> "%LOG%" 2>&1
+    echo Push tag exit code: !errorlevel! >> "%LOG%"
+
+    echo Verifying remote... >> "%LOG%"
+    git ls-remote origin "%BRANCH%" >> "%LOG%" 2>&1
+    git ls-remote origin "refs/tags/%TAG%" >> "%LOG%" 2>&1
+
+    echo ============================================ >> "%LOG%"
+    echo DONE >> "%LOG%"
+    echo %date% %time% >> "%LOG%"
 )
 
-echo Step 2: git init >> "%LOG%"
-git init >> "%LOG%" 2>&1
-if errorlevel 1 (
-    echo FAILED at git init >> "%LOG%"
-    echo STATUS=FAILED> "%~dp0_backup_result.txt"
-    pause
-    exit /b 1
-)
-
-echo Step 3: git remote add >> "%LOG%"
-git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
-if errorlevel 1 (
-    echo FAILED at git remote add >> "%LOG%"
-    echo STATUS=FAILED> "%~dp0_backup_result.txt"
-    pause
-    exit /b 1
-)
-
-echo Step 3b: git config user >> "%LOG%"
-git config user.email "vincent.anderson.87@gmail.com" >> "%LOG%" 2>&1
-git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
-
-echo Step 4: git add -A >> "%LOG%"
-git add -A >> "%LOG%" 2>&1
-if errorlevel 1 (
-    echo FAILED at git add >> "%LOG%"
-    echo STATUS=FAILED> "%~dp0_backup_result.txt"
-    pause
-    exit /b 1
-)
-
-echo Step 5: git commit >> "%LOG%"
-git commit -m "Aurexis Core V1 Substrate Candidate backup snapshot (11 bridges, 1437 assertions, 21 runners)" >> "%LOG%" 2>&1
-if errorlevel 1 (
-    echo FAILED at git commit >> "%LOG%"
-    echo STATUS=FAILED> "%~dp0_backup_result.txt"
-    pause
-    exit /b 1
-)
-
-set "BRANCH=backup/v1-substrate-candidate-20260411"
-set "TAG=backup-v1-substrate-candidate-20260411"
-
-echo Step 6: checkout branch %BRANCH% >> "%LOG%"
-git checkout -b "%BRANCH%" >> "%LOG%" 2>&1
-if errorlevel 1 (
-    echo FAILED at checkout branch >> "%LOG%"
-    echo STATUS=FAILED> "%~dp0_backup_result.txt"
-    pause
-    exit /b 1
-)
-
-echo Step 7: push branch >> "%LOG%"
-git push -u origin "%BRANCH%" >> "%LOG%" 2>&1
-if errorlevel 1 (
-    echo FAILED at push branch >> "%LOG%"
-    echo STATUS=FAILED> "%~dp0_backup_result.txt"
-    pause
-    exit /b 1
-)
-
-echo Step 8: create tag >> "%LOG%"
-git tag -a "%TAG%" -m "Removable backup - Aurexis Core V1 Substrate Candidate, not full Core completion" >> "%LOG%" 2>&1
-
-echo Step 9: push tag >> "%LOG%"
-git push origin "%TAG%" >> "%LOG%" 2>&1
-
-echo Step 10: verify >> "%LOG%"
-git ls-remote --heads origin "%BRANCH%" >> "%LOG%" 2>&1
-git ls-remote --tags origin "%TAG%" >> "%LOG%" 2>&1
-
-echo. >> "%LOG%"
-echo BACKUP COMPLETE >> "%LOG%"
-echo BRANCH=%BRANCH% >> "%LOG%"
-echo TAG=%TAG% >> "%LOG%"
-
-for /f "tokens=*" %%H in ('git rev-parse HEAD') do set "HASH=%%H"
-echo HASH=%HASH% >> "%LOG%"
-
-echo BRANCH=%BRANCH%> "%~dp0_backup_result.txt"
-echo TAG=%TAG%>> "%~dp0_backup_result.txt"
-echo HASH=%HASH%>> "%~dp0_backup_result.txt"
-echo STATUS=SUCCESS>> "%~dp0_backup_result.txt"
-
-echo Done! See _backup_log.txt for details.
-pause
+echo.
+echo Backup script finished. See _backup_log.txt for details.
+echo Press any key to close...
+pause >nul

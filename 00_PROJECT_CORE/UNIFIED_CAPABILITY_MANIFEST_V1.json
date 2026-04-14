@@ -1,0 +1,432 @@
+{
+  "version": "V1.0",
+  "frozen": true,
+  "package_name": "Aurexis Core V1 Substrate Candidate",
+  "package_description": "Narrow law-bearing substrate candidate. 51 bridge milestones across 9 completed branches. Finalized handoff-ready V1 Substrate Candidate. Not full Aurexis Core completion.",
+  "freeze_state": "FINALIZED_V1_SUBSTRATE_CANDIDATE",
+  "freeze_date": "2026-04-14",
+  "manifest_hash": "fbd7328f7a69aa4fab6306686be67d6f042a9017b209a956edd25e74aabaa6a7",
+  "totals": {
+    "bridges": 51,
+    "branches": 9,
+    "standalone_assertions": 6358,
+    "standalone_runners": 61,
+    "source_modules": 67,
+    "pytest_modules": 19,
+    "pytest_surface_passed": 327,
+    "pytest_surface_failed": 0,
+    "zip_file_count": 185
+  },
+  "note": "The detailed bridges[] list below enumerates the first 40 bridges (through integration/release). Bridges 45-51 (observed evidence, user handoff, replay readiness) are documented in UNIFIED_CAPABILITY_MANIFEST_V1.md and in each bridge's gate verification doc.",
+  "foundation_modules": [
+    "visual_grammar_v1",
+    "visual_parser_v1",
+    "visual_parse_rules_v1",
+    "visual_executor_v1",
+    "visual_program_executor_v1",
+    "type_system_v1",
+    "composition_v1",
+    "print_scan_stability_v1",
+    "temporal_law_v1",
+    "hardware_calibration_v1",
+    "self_hosting_v1",
+    "substrate_v1"
+  ],
+  "bridges": [
+    {
+      "number": 1,
+      "name": "Raster Law",
+      "module": "raster_law_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 58,
+      "pytest_functions": 20
+    },
+    {
+      "number": 2,
+      "name": "Capture Tolerance",
+      "module": "capture_tolerance_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 99,
+      "pytest_functions": 25
+    },
+    {
+      "number": 3,
+      "name": "Artifact Localization",
+      "module": "artifact_localization_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 54,
+      "pytest_functions": 15
+    },
+    {
+      "number": 4,
+      "name": "Orientation Normalization",
+      "module": "orientation_normalization_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 70,
+      "pytest_functions": 20
+    },
+    {
+      "number": 5,
+      "name": "Perspective Normalization",
+      "module": "perspective_normalization_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 53,
+      "pytest_functions": 15
+    },
+    {
+      "number": 6,
+      "name": "Composed Recovery",
+      "module": "composed_recovery_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 72,
+      "pytest_functions": 20
+    },
+    {
+      "number": 7,
+      "name": "Artifact Dispatch",
+      "module": "artifact_dispatch_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 58,
+      "pytest_functions": 20
+    },
+    {
+      "number": 8,
+      "name": "Multi-Artifact Layout",
+      "module": "multi_artifact_layout_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 68,
+      "pytest_functions": 20
+    },
+    {
+      "number": 9,
+      "name": "Artifact Set Contract",
+      "module": "artifact_set_contract_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 89,
+      "pytest_functions": 30
+    },
+    {
+      "number": 10,
+      "name": "Recovered Set Signature",
+      "module": "recovered_set_signature_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 86,
+      "pytest_functions": 25
+    },
+    {
+      "number": 11,
+      "name": "Recovered Set Signature Match",
+      "module": "recovered_set_signature_match_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 100,
+      "pytest_functions": 30
+    },
+    {
+      "number": 12,
+      "name": "Recovered Page Sequence Contract",
+      "module": "recovered_page_sequence_contract_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 149,
+      "pytest_functions": 40
+    },
+    {
+      "number": 13,
+      "name": "Recovered Page Sequence Signature",
+      "module": "recovered_page_sequence_signature_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 154,
+      "pytest_functions": 35
+    },
+    {
+      "number": 14,
+      "name": "Recovered Page Sequence Signature Match",
+      "module": "recovered_page_sequence_signature_match_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 141,
+      "pytest_functions": 40
+    },
+    {
+      "number": 15,
+      "name": "Recovered Sequence Collection Contract",
+      "module": "recovered_sequence_collection_contract_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 163,
+      "pytest_functions": 45
+    },
+    {
+      "number": 16,
+      "name": "Recovered Sequence Collection Signature",
+      "module": "recovered_sequence_collection_signature_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 173,
+      "pytest_functions": 40
+    },
+    {
+      "number": 17,
+      "name": "Recovered Sequence Collection Signature Match",
+      "module": "recovered_sequence_collection_signature_match_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 148,
+      "pytest_functions": 45
+    },
+    {
+      "number": 18,
+      "name": "Recovered Collection Global Consistency",
+      "module": "recovered_collection_global_consistency_bridge_v1",
+      "kind": "STATIC_SUBSTRATE",
+      "assertions": 186,
+      "pytest_functions": 50
+    },
+    {
+      "number": 19,
+      "name": "Rolling Shutter Temporal Transport",
+      "module": "rolling_shutter_temporal_transport_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 289,
+      "pytest_functions": 55
+    },
+    {
+      "number": 20,
+      "name": "Complementary-Color Temporal Transport",
+      "module": "complementary_color_temporal_transport_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 317,
+      "pytest_functions": 60
+    },
+    {
+      "number": 21,
+      "name": "Temporal Transport Dispatch",
+      "module": "temporal_transport_dispatch_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 178,
+      "pytest_functions": 40
+    },
+    {
+      "number": 22,
+      "name": "Temporal Consistency",
+      "module": "temporal_consistency_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 412,
+      "pytest_functions": 70
+    },
+    {
+      "number": 23,
+      "name": "Frame-Accurate Transport",
+      "module": "frame_accurate_transport_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 350,
+      "pytest_functions": 60
+    },
+    {
+      "number": 24,
+      "name": "Combined RS+CC Temporal Fusion",
+      "module": "combined_temporal_fusion_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 250,
+      "pytest_functions": 50
+    },
+    {
+      "number": 25,
+      "name": "Temporal Payload Contract",
+      "module": "temporal_payload_contract_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 133,
+      "pytest_functions": 35
+    },
+    {
+      "number": 26,
+      "name": "Temporal Payload Signature",
+      "module": "temporal_payload_signature_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 99,
+      "pytest_functions": 25
+    },
+    {
+      "number": 27,
+      "name": "Temporal Payload Signature Match",
+      "module": "temporal_payload_signature_match_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 142,
+      "pytest_functions": 35
+    },
+    {
+      "number": 28,
+      "name": "Temporal Global Consistency",
+      "module": "temporal_global_consistency_bridge_v1",
+      "kind": "TEMPORAL_TRANSPORT",
+      "assertions": 114,
+      "pytest_functions": 30
+    },
+    {
+      "number": 29,
+      "name": "Overlap Detection",
+      "module": "overlap_detection_bridge_v1",
+      "kind": "HIGHER_ORDER_COHERENCE",
+      "assertions": 82,
+      "pytest_functions": 25
+    },
+    {
+      "number": 30,
+      "name": "Local Section Consistency",
+      "module": "local_section_consistency_bridge_v1",
+      "kind": "HIGHER_ORDER_COHERENCE",
+      "assertions": 62,
+      "pytest_functions": 20
+    },
+    {
+      "number": 31,
+      "name": "Sheaf-Style Composition",
+      "module": "sheaf_style_composition_bridge_v1",
+      "kind": "HIGHER_ORDER_COHERENCE",
+      "assertions": 58,
+      "pytest_functions": 20
+    },
+    {
+      "number": 32,
+      "name": "Cohomological Obstruction Detection",
+      "module": "cohomological_obstruction_bridge_v1",
+      "kind": "HIGHER_ORDER_COHERENCE",
+      "assertions": 56,
+      "pytest_functions": 20
+    },
+    {
+      "number": 33,
+      "name": "View-Dependent Marker Profile",
+      "module": "view_dependent_marker_profile_bridge_v1",
+      "kind": "VIEW_DEPENDENT",
+      "assertions": 95,
+      "pytest_functions": 30
+    },
+    {
+      "number": 34,
+      "name": "Moment-Invariant Identity",
+      "module": "moment_invariant_identity_bridge_v1",
+      "kind": "VIEW_DEPENDENT",
+      "assertions": 92,
+      "pytest_functions": 20
+    },
+    {
+      "number": 35,
+      "name": "View-Facet Recovery",
+      "module": "view_facet_recovery_bridge_v1",
+      "kind": "VIEW_DEPENDENT",
+      "assertions": 179,
+      "pytest_functions": 16
+    },
+    {
+      "number": 36,
+      "name": "View-Dependent Contract",
+      "module": "view_dependent_contract_bridge_v1",
+      "kind": "VIEW_DEPENDENT",
+      "assertions": 144,
+      "pytest_functions": 19
+    },
+    {
+      "number": 37,
+      "name": "VSA Cleanup Profile",
+      "module": "vsa_cleanup_profile_bridge_v1",
+      "kind": "VSA_CLEANUP",
+      "assertions": 64,
+      "pytest_functions": 15
+    },
+    {
+      "number": 38,
+      "name": "Hypervector Binding / Bundling",
+      "module": "hypervector_binding_bundling_bridge_v1",
+      "kind": "VSA_CLEANUP",
+      "assertions": 55,
+      "pytest_functions": 23
+    },
+    {
+      "number": 39,
+      "name": "Cleanup Retrieval",
+      "module": "cleanup_retrieval_bridge_v1",
+      "kind": "VSA_CLEANUP",
+      "assertions": 100,
+      "pytest_functions": 11
+    },
+    {
+      "number": 40,
+      "name": "VSA Consistency / Contract",
+      "module": "vsa_consistency_contract_bridge_v1",
+      "kind": "VSA_CLEANUP",
+      "assertions": 73,
+      "pytest_functions": 10
+    }
+  ],
+  "branches": [
+    {
+      "name": "Static Artifact Substrate",
+      "status": "COMPLETE_ENOUGH",
+      "bridge_range": [
+        1,
+        18
+      ],
+      "assertions": 1873,
+      "capstone_verified": false,
+      "honest_limits": "Deterministic geometry only. No real-camera noise model."
+    },
+    {
+      "name": "Screen-to-Camera Temporal Transport",
+      "status": "COMPLETE_ENOUGH",
+      "bridge_range": [
+        19,
+        28
+      ],
+      "assertions": 2284,
+      "capstone_verified": true,
+      "honest_limits": "Synthetic captures only. Two frozen transport modes. No real-camera temporal noise."
+    },
+    {
+      "name": "Higher-Order Coherence / Sheaf-Style Composition",
+      "status": "COMPLETE_ENOUGH",
+      "bridge_range": [
+        29,
+        32
+      ],
+      "assertions": 258,
+      "capstone_verified": true,
+      "honest_limits": "Bounded to frozen collection family. Sheaf analogy is design inspiration, not full sheaf theory."
+    },
+    {
+      "name": "View-Dependent Markers / 3D Moment Invariants",
+      "status": "COMPLETE_ENOUGH",
+      "bridge_range": [
+        33,
+        36
+      ],
+      "assertions": 510,
+      "capstone_verified": true,
+      "honest_limits": "4 discrete viewpoints, not continuous. Hand-defined markers. Exact hash matching."
+    },
+    {
+      "name": "VSA / Hyperdimensional Cleanup",
+      "status": "COMPLETE_ENOUGH",
+      "bridge_range": [
+        37,
+        40
+      ],
+      "assertions": 292,
+      "capstone_verified": true,
+      "honest_limits": "Dim=1024, 11-entry codebook, simple bit-flip noise. VSA is auxiliary to deterministic substrate."
+    }
+  ],
+  "exclusions": [
+    {
+      "name": "OAM (Orbital Angular Momentum)",
+      "reason": "Exotic optical encoding not relevant to standard camera/screen pipelines."
+    },
+    {
+      "name": "Optical Skyrmions",
+      "reason": "Topological light structures requiring specialized detection hardware."
+    },
+    {
+      "name": "NLOS (Non-Line-of-Sight) Imaging",
+      "reason": "Imaging around corners. Irrelevant to direct camera-to-screen pipeline."
+    },
+    {
+      "name": "Exotic Specialized Optics",
+      "reason": "Metamaterials, computational optics, holographic elements. Violates Current Tech Floor."
+    }
+  ]
+}

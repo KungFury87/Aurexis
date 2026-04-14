@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 11, 2026 — Recovered Set Signature Match Bridge V1 COMPLETE
-**Status:** V1 Substrate Candidate accepted and baseline-locked. Eleven bridge milestones complete: Raster Law, Capture Tolerance, Artifact Localization, Orientation Normalization, Perspective Normalization, Composed Recovery, Artifact Dispatch, Multi-Artifact Layout, Artifact Set Contract, Recovered Set Signature, Recovered Set Signature Match. 1437 standalone assertions + 498 pytest functions, all passing.
+**Last Updated:** April 14, 2026 — FINALIZED V1 Substrate Candidate (freeze-and-release polish complete)
+**Status:** FINALIZED V1 Substrate Candidate — handoff-ready. Fifty-one bridge milestones complete across 9 branches (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release + 4 observed evidence + 1 user handoff + 2 replay readiness). All nine branch capstones verified. Replay result / contract structure alignment verified. Package-level pytest surface: 327 passed, 0 failed across 19 test modules (clean-room verified). 6,358 standalone assertions across 61 runners, all passing. 185-file zip package. All top-level truth surface files are internally consistent. NOT a claim of full Aurexis Core completion — real-capture validation still requires future user-supplied photographs.
 
 ---
 
@@ -160,8 +160,49 @@ Narrow law-bearing substrate candidate — not full Aurexis Core completion.
 | — | **Artifact Set Contract Bridge V1** | ✅ COMPLETE | 89 assertions |
 | — | **Recovered Set Signature Bridge V1** | ✅ COMPLETE | 86 assertions |
 | — | **Recovered Set Signature Match Bridge V1** | ✅ COMPLETE | 100 assertions |
+| — | **Recovered Page Sequence Contract Bridge V1** | ✅ COMPLETE | 149 assertions |
+| — | **Recovered Page Sequence Signature Bridge V1** | ✅ COMPLETE | 154 assertions |
+| — | **Recovered Page Sequence Signature Match Bridge V1** | ✅ COMPLETE | 141 assertions |
+| — | **Recovered Sequence Collection Contract Bridge V1** | ✅ COMPLETE | 163 assertions |
+| — | **Recovered Sequence Collection Signature Bridge V1** | ✅ COMPLETE | 173 assertions |
+| — | **Recovered Sequence Collection Signature Match Bridge V1** | ✅ COMPLETE | 148 assertions |
+| — | **Recovered Collection Global Consistency Bridge V1** | ✅ COMPLETE | 186 assertions |
+| — | **Rolling Shutter Temporal Transport Bridge V1** | ✅ COMPLETE | 289 assertions |
+| — | **Complementary-Color Temporal Transport Bridge V1** | ✅ COMPLETE | 317 assertions |
+| — | **Temporal Transport Dispatch Bridge V1** | ✅ COMPLETE | 178 assertions |
+| — | **Temporal Consistency Bridge V1** | ✅ COMPLETE | 412 assertions |
+| — | **Frame-Accurate Transport Bridge V1** | ✅ COMPLETE | 350 assertions |
+| — | **Combined RS+CC Temporal Fusion Bridge V1** | ✅ COMPLETE | 250 assertions |
+| — | **Temporal Payload Contract Bridge V1** | ✅ COMPLETE | 133 assertions |
+| — | **Temporal Payload Signature Bridge V1** | ✅ COMPLETE | 99 assertions |
+| — | **Temporal Payload Signature Match Bridge V1** | ✅ COMPLETE | 142 assertions |
+| — | **Temporal Global Consistency Bridge V1** | ✅ COMPLETE | 114 assertions |
+| — | **Overlap Detection Bridge V1** | ✅ COMPLETE | 82 assertions |
+| — | **Local Section Consistency Bridge V1** | ✅ COMPLETE | 62 assertions |
+| — | **Sheaf-Style Composition Bridge V1** | ✅ COMPLETE | 58 assertions |
+| — | **Cohomological Obstruction Detection Bridge V1** | ✅ COMPLETE | 56 assertions |
+| — | **View-Dependent Marker Profile Bridge V1** | ✅ COMPLETE | 95 assertions |
+| — | **Moment-Invariant Identity Bridge V1** | ✅ COMPLETE | 92 assertions |
+| — | **View-Facet Recovery Bridge V1** | ✅ COMPLETE | 179 assertions |
+| — | **View-Dependent Contract Bridge V1** | ✅ COMPLETE | 144 assertions |
+| — | **VSA Cleanup Profile Bridge V1** | ✅ COMPLETE | 64 assertions |
+| — | **Hypervector Binding / Bundling Bridge V1** | ✅ COMPLETE | 55 assertions |
+| — | **Cleanup Retrieval Bridge V1** | ✅ COMPLETE | 100 assertions |
+| — | **VSA Consistency / Contract Bridge V1** | ✅ COMPLETE | 73 assertions |
+| — | **Unified Capability Manifest Bridge V1** | ✅ COMPLETE | 53 assertions |
+| — | **Unified Substrate Entrypoint Bridge V1** | ✅ COMPLETE | 57 assertions |
+| — | **Cross-Branch Compatibility Contract Bridge V1** | ✅ COMPLETE | 36 assertions |
+| — | **V1 Substrate Release Audit Bridge V1** | ✅ COMPLETE | 40 assertions |
+| — | **Real Capture Ingest Profile Bridge V1** | ✅ COMPLETE | 50 assertions |
+| — | **Capture Session Manifest Bridge V1** | ✅ COMPLETE | 42 assertions |
+| — | **Evidence Delta Analysis Bridge V1** | ✅ COMPLETE | 40 assertions |
+| — | **Calibration Recommendation Bridge V1** | ✅ COMPLETE | 33 assertions |
+| — | **Real Capture Intake Preflight Bridge V1** | ✅ COMPLETE | 36 assertions |
+| — | **Authored Capture Session Fixture Pack V1** | ✅ COMPLETE | (support module) |
+| — | **Intake-to-Delta Replay Harness Bridge V1** | ✅ COMPLETE | 42 assertions |
+| — | **Replay Outcome Contract Bridge V1** | ✅ COMPLETE | 34 assertions |
 
-**Total:** 1437 standalone assertions, 498 pytest functions, 21 runners — all passing.
+**Total:** 6358 standalone assertions, 61 runners — all passing.
 
 **Rule:** Do not skip or reorder. Each milestone gets a gate verification audit.
 

@@ -12,8 +12,8 @@
   ],
   "reproducible_test_counts": {
     "standalone_runners": {
-      "total_assertions": 1437,
-      "total_runners": 21,
+      "total_assertions": 6358,
+      "total_runners": 61,
       "runner_path": "05_ACTIVE_DEV/tests/standalone_runners/",
       "requires": "Python 3.x only, no external dependencies",
       "breakdown": {
@@ -37,12 +37,52 @@
         "run_v1_multi_artifact_layout_tests.py": 68,
         "run_v1_artifact_set_contract_tests.py": 89,
         "run_v1_recovered_set_signature_tests.py": 86,
-        "run_v1_recovered_set_signature_match_tests.py": 100
+        "run_v1_recovered_set_signature_match_tests.py": 100,
+        "run_v1_recovered_page_sequence_contract_tests.py": 149,
+        "run_v1_recovered_page_sequence_signature_tests.py": 154,
+        "run_v1_recovered_page_sequence_signature_match_tests.py": 141,
+        "run_v1_recovered_sequence_collection_contract_tests.py": 163,
+        "run_v1_recovered_sequence_collection_signature_tests.py": 173,
+        "run_v1_recovered_sequence_collection_signature_match_tests.py": 148,
+        "run_v1_recovered_collection_global_consistency_tests.py": 186,
+        "run_v1_rolling_shutter_temporal_transport_tests.py": 289,
+        "run_v1_complementary_color_temporal_transport_tests.py": 317,
+        "run_v1_temporal_transport_dispatch_tests.py": 178,
+        "run_v1_temporal_consistency_tests.py": 412,
+        "run_v1_frame_accurate_transport_tests.py": 350,
+        "run_v1_combined_temporal_fusion_tests.py": 250,
+        "run_v1_temporal_payload_contract_tests.py": 133,
+        "run_v1_temporal_payload_signature_tests.py": 99,
+        "run_v1_temporal_payload_signature_match_tests.py": 142,
+        "run_v1_temporal_global_consistency_tests.py": 114,
+        "run_v1_overlap_detection_tests.py": 82,
+        "run_v1_local_section_consistency_tests.py": 62,
+        "run_v1_sheaf_style_composition_tests.py": 58,
+        "run_v1_cohomological_obstruction_tests.py": 56,
+        "run_v1_view_dependent_marker_profile_tests.py": 95,
+        "run_v1_moment_invariant_identity_tests.py": 92,
+        "run_v1_view_facet_recovery_tests.py": 179,
+        "run_v1_view_dependent_contract_tests.py": 144,
+        "run_v1_vsa_cleanup_profile_tests.py": 64,
+        "run_v1_hypervector_binding_bundling_tests.py": 55,
+        "run_v1_cleanup_retrieval_tests.py": 100,
+        "run_v1_vsa_consistency_contract_tests.py": 73,
+        "run_v1_unified_capability_manifest_tests.py": 53,
+        "run_v1_unified_substrate_entrypoint_tests.py": 57,
+        "run_v1_cross_branch_compatibility_tests.py": 36,
+        "run_v1_release_audit_tests.py": 40,
+        "run_v1_real_capture_ingest_profile_tests.py": 50,
+        "run_v1_capture_session_manifest_tests.py": 42,
+        "run_v1_evidence_delta_analysis_tests.py": 40,
+        "run_v1_calibration_recommendation_tests.py": 33,
+        "run_v1_real_capture_intake_preflight_tests.py": 36,
+        "run_v1_intake_to_delta_replay_tests.py": 42,
+        "run_v1_replay_outcome_contract_tests.py": 34
       }
     },
     "pytest_format": {
-      "total_functions": 498,
-      "total_files": 19,
+      "total_functions": 1396,
+      "total_files": 57,
       "path": "05_ACTIVE_DEV/tests/test_*_v1.py",
       "note": "5 legacy test files excluded from shipped package (test_camera_bridge, test_end_to_end_pipeline, test_gate_reverification, test_live_camera_pipeline, test_regression_bugs) \u2014 they import modules outside the V1 substrate candidate scope"
     }
@@ -61,7 +101,7 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/self_hosting_v1.py": "051857a8f77895c60a21d389cc28f848347d4b353857fffd84f92197946c4847",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/substrate_v1.py": "c980c4a3c26139f537e33b9d8c440feb7abe88be51cfe9002565ffc3a4ace938",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/raster_law_bridge_v1.py": "633aab6f8ac6cf13e1f93eeb655dd4b64ddeae066cb04bdf6c88c863479517e7",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "eb04799a87e240bcf44c593911d3da016007de33ebfc2936bcb8dfd6f7960484",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/__init__.py": "0de0d3070dfe6db23ec32a9de5eb276492e0b2783d3bcdee6bbedd96175a337e",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/capture_tolerance_bridge_v1.py": "75c4e119a4c4bc2b9436dead2ae56244eeeffb4765f5ec2c33aa144b5f8b6218",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_localization_bridge_v1.py": "337d8a8255e073534482ab0e1c3808f43415eab0792f4049bf4c673eec628611",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/orientation_normalization_bridge_v1.py": "545b84011164c754bf6f25f9f766f58f99d2a558d3e6fb7197e67c86d1d4f817",
@@ -71,7 +111,36 @@
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/multi_artifact_layout_bridge_v1.py": "d93e8fcd7ab218082412af89337a937d43713ded39034502ce39d743c202b3a8",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/artifact_set_contract_bridge_v1.py": "f3724bc9d36c02ae7f5fc13d021f21dbdd1787757cc9a09abb75847d91c84876",
     "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_set_signature_bridge_v1.py": "eefcf59ffe10a6c60ce314d795b21f85433009aeac6a68387428df1085d3e710",
-    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_set_signature_match_bridge_v1.py": "660db97d4cc0cdfb780ee624aa55da30ac90652a3def42066fc3b8b7fe530e07"
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_set_signature_match_bridge_v1.py": "660db97d4cc0cdfb780ee624aa55da30ac90652a3def42066fc3b8b7fe530e07",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_page_sequence_contract_bridge_v1.py": "78f8b156a6e53d640bf34324363a3fd3a250ddfa1b09df08ae02d6a04ee921bf",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_page_sequence_signature_bridge_v1.py": "6f6e4e23bb7faf2039ef2a914a3da09d0d53aae59dbb6f95355f8540b2a48db5",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_page_sequence_signature_match_bridge_v1.py": "8147a9188064e482bb13201d0712aaa4f826338f50e3614a5e8840d55cf9a4c3",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_sequence_collection_contract_bridge_v1.py": "d930e32333d1f33fc11c9228885c68dc03f302c42aadf3b89f6d3745837d5866",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_sequence_collection_signature_bridge_v1.py": "ceea3bf4b7c3a7b0ec11c4ffe3b01b7958873351cf5d0b359e950584e6aee690",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_sequence_collection_signature_match_bridge_v1.py": "9f5da9fd0112cfb45de9edd7f1b42317f0e9e69db616ad84276a2937da86bc7f",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/recovered_collection_global_consistency_bridge_v1.py": "71995e962a92356543ead08d71a675c4a96de334fd7a15d68803a5193f366629",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/rolling_shutter_temporal_transport_bridge_v1.py": "04876d9ccf69233c9649e44688138d96422923dd60a17b980084c72fe283fb8f",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/complementary_color_temporal_transport_bridge_v1.py": "a533ebbf60bbc64e7e8783419a09e724e677b4691081b4072f5a4eaccae95778",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_transport_dispatch_bridge_v1.py": "8f717273edd135ec1d7e3d88f8d7d1536795c47820c3eadeb7d7a883dca28da1",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_consistency_bridge_v1.py": "a0bd5d8963c792d335c9935992c6c29ef9504f422dd03bb40c3d6e90f517bc71",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/frame_accurate_transport_bridge_v1.py": "4aed553a9de4060acf2675d99c9169c094cf085bfe43bc117994901b7e87a21c",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/combined_temporal_fusion_bridge_v1.py": "3cf1a748c856a62edf39e0fb9f6ee57436577a1c4bac65fd5002c6df142d6a5d",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_contract_bridge_v1.py": "29523fa0d91b344f6eea3e7633ab591bd7a1a2d8c2a17287f3e02449ab0cc014",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_signature_bridge_v1.py": "574697b3f0d63049589c9dee03fcc7a104f26f2053e379a01033f4e3a2c66751",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_payload_signature_match_bridge_v1.py": "7b7d8eb54fc979dbcb8f26a4c1cd511288ec1450ee091ae0733399e520380182",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/temporal_global_consistency_bridge_v1.py": "5656d15c016d85fe5f8d2517f46a4c0cebe984e6a0f65e4f046570662d0c89f4",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/overlap_detection_bridge_v1.py": "6468457218330b63ef0f727c82e9b4f4d2a1dfe1afc46f9358a51dfd65fca2a8",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/local_section_consistency_bridge_v1.py": "07777df1248dbf1d182cfbb7a11c06b3260135e9b879eb019fd938b1112fb4de",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/sheaf_style_composition_bridge_v1.py": "7e63d79c72a223963cd507bdda90dd92faad5c9c3d8c6335b51663304f431232",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/cohomological_obstruction_bridge_v1.py": "9f5040181c1ff9ae2f0a73d83ec88558d0b50b279a9a9e263c496a64e05e1d84",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_dependent_marker_profile_bridge_v1.py": "c57e38f38764a96ac1f0c175741c08030ba2daf42bef4a217df2b842781c54f6",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/moment_invariant_identity_bridge_v1.py": "18a0331eb1b9c5f22b57966496c8c10162fef3b19d99b924918d9c9533332e6f",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_facet_recovery_bridge_v1.py": "cf3256d9c65c0f0b4e642bef1ed3ff4bd4c8e72fa42bec9cff49729db3506352",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/view_dependent_contract_bridge_v1.py": "2220eb3cf4ca5e5e8dc764be43e3f7827084087bfa6719ea9386a1717e622c7c",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/vsa_cleanup_profile_bridge_v1.py": "2b58feea6aa5cba2a746f1bd7cafd3058f667a74db1c08a9bfea6ecf37ebde65",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/hypervector_binding_bundling_bridge_v1.py": "f45388fc85c1a38cdc013cd6efb0871c2c9a4d5b58afedd048779593d13a2cd4",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/cleanup_retrieval_bridge_v1.py": "1c20a37f0fca270c8e7288aa804798a6914c047ace099de348f40e785231a353",
+    "05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/vsa_consistency_contract_bridge_v1.py": "0597b33e183c198b31dc6dafe743da92e592c918c136b1019b2c6fbcb0fd8f5d"
   },
   "lock_documents": [
     "00_PROJECT_CORE/ACCEPTED_STATUS_V1_SUBSTRATE_CANDIDATE.md",
@@ -88,7 +157,40 @@
     "00_PROJECT_CORE/MULTI_ARTIFACT_LAYOUT_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/ARTIFACT_SET_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
     "00_PROJECT_CORE/RECOVERED_SET_SIGNATURE_BRIDGE_V1_GATE_VERIFICATION.md",
-    "00_PROJECT_CORE/RECOVERED_SET_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md"
+    "00_PROJECT_CORE/RECOVERED_SET_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_PAGE_SEQUENCE_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_PAGE_SEQUENCE_SIGNATURE_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_PAGE_SEQUENCE_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_SEQUENCE_COLLECTION_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_SEQUENCE_COLLECTION_SIGNATURE_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_SEQUENCE_COLLECTION_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/RECOVERED_COLLECTION_GLOBAL_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/ROLLING_SHUTTER_TEMPORAL_TRANSPORT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/COMPLEMENTARY_COLOR_TEMPORAL_TRANSPORT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_TRANSPORT_DISPATCH_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/FRAME_ACCURATE_TRANSPORT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/COMBINED_TEMPORAL_FUSION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_PAYLOAD_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_PAYLOAD_SIGNATURE_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_PAYLOAD_SIGNATURE_MATCH_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_GLOBAL_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/TEMPORAL_BRANCH_CAPSTONE_V1.md",
+    "00_PROJECT_CORE/OVERLAP_DETECTION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/LOCAL_SECTION_CONSISTENCY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/SHEAF_STYLE_COMPOSITION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/COHOMOLOGICAL_OBSTRUCTION_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/HIGHER_ORDER_COHERENCE_BRANCH_CAPSTONE_V1.md",
+    "00_PROJECT_CORE/VIEW_DEPENDENT_MARKER_PROFILE_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/MOMENT_INVARIANT_IDENTITY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VIEW_FACET_RECOVERY_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VIEW_DEPENDENT_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VIEW_DEPENDENT_BRANCH_CAPSTONE_V1.md",
+    "00_PROJECT_CORE/VSA_CLEANUP_PROFILE_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/HYPERVECTOR_BINDING_BUNDLING_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/CLEANUP_RETRIEVAL_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VSA_CONSISTENCY_CONTRACT_BRIDGE_V1_GATE_VERIFICATION.md",
+    "00_PROJECT_CORE/VSA_CLEANUP_BRANCH_CAPSTONE_V1.md"
   ],
   "next_lane": "TBD — Vincent decides",
   "raster_law_bridge_v1": {
@@ -200,5 +302,792 @@
     "oob_cases": 3,
     "unsupported_cases": 1,
     "match_method": "computed_vs_frozen_expected_baseline"
+  },
+  "recovered_page_sequence_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "12/12 PASS",
+    "standalone_assertions": 149,
+    "frozen_sequence_contracts": [
+      "two_page_horizontal_vertical",
+      "three_page_all_families",
+      "two_page_mixed_reversed"
+    ],
+    "sequence_verdicts": [
+      "SEQUENCE_SATISFIED",
+      "WRONG_PAGE_COUNT",
+      "WRONG_PAGE_ORDER",
+      "PAGE_MATCH_FAILED",
+      "UNSUPPORTED_SEQUENCE",
+      "ERROR"
+    ],
+    "validation_method": "per_page_match_then_ordered_signature_sequence_check",
+    "in_bounds_cases": 3,
+    "wrong_count_cases": 2,
+    "wrong_order_cases": 2,
+    "wrong_content_cases": 1,
+    "unsupported_cases": 1
+  },
+  "recovered_page_sequence_signature_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 154,
+    "frozen_sequence_signature_profile": {
+      "canonical_fields": ["sequence_contract_name", "page_count", "ordered_page_signatures"],
+      "hash_algorithm": "sha256",
+      "version": "V1.0"
+    },
+    "supported_sequence_contracts": [
+      "two_page_horizontal_vertical",
+      "three_page_all_families",
+      "two_page_mixed_reversed"
+    ],
+    "signature_method": "sha256_of_deterministic_canonical_sequence_form",
+    "canonicalization_inputs": "sequence_contract_name + page_count + ordered_per_page_sha256_signatures",
+    "in_bounds_cases": 3,
+    "wrong_count_cases": 2,
+    "wrong_order_cases": 2,
+    "unsupported_cases": 1
+  },
+  "recovered_page_sequence_signature_match_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 141,
+    "expected_sequence_signature_baseline": {
+      "supported_sequence_contracts": 3,
+      "signature_format": "sha256_hex_64_chars",
+      "version": "V1.0"
+    },
+    "supported_sequence_contracts": [
+      "two_page_horizontal_vertical",
+      "three_page_all_families",
+      "two_page_mixed_reversed"
+    ],
+    "match_method": "computed_seq_sig_vs_frozen_expected_seq_sig_baseline",
+    "in_bounds_cases": 3,
+    "wrong_count_cases": 2,
+    "wrong_order_cases": 2,
+    "unsupported_cases": 1
+  },
+  "recovered_sequence_collection_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "19/19 PASS",
+    "standalone_assertions": 163,
+    "frozen_collection_contracts": [
+      "two_seq_hv_mixed",
+      "three_seq_all",
+      "two_seq_all_mixed"
+    ],
+    "collection_verdicts": [
+      "COLLECTION_SATISFIED",
+      "WRONG_SEQUENCE_COUNT",
+      "WRONG_SEQUENCE_ORDER",
+      "SEQUENCE_MATCH_FAILED",
+      "UNSUPPORTED_COLLECTION",
+      "ERROR"
+    ],
+    "validation_method": "per_sequence_sig_match_then_ordered_collection_check",
+    "in_bounds_cases": 3,
+    "wrong_count_cases": 2,
+    "wrong_order_cases": 2,
+    "wrong_content_cases": 1,
+    "unsupported_cases": 1
+  },
+  "recovered_sequence_collection_signature_bridge_v1": {
+    "status": "complete",
+    "gate": "20/20 PASS",
+    "standalone_assertions": 173,
+    "frozen_collection_signature_profile": {
+      "canonical_fields": ["collection_contract_name", "sequence_count", "ordered_sequence_signatures"],
+      "hash_algorithm": "sha256",
+      "version": "V1.0"
+    },
+    "supported_collection_contracts": [
+      "two_seq_hv_mixed",
+      "three_seq_all",
+      "two_seq_all_mixed"
+    ],
+    "signature_method": "sha256_of_deterministic_canonical_collection_form",
+    "canonicalization_inputs": "collection_contract_name + sequence_count + ordered_per_sequence_sha256_signatures",
+    "in_bounds_cases": 3,
+    "wrong_count_cases": 2,
+    "wrong_order_cases": 2,
+    "unsupported_cases": 1
+  },
+  "recovered_sequence_collection_signature_match_bridge_v1": {
+    "status": "complete",
+    "gate": "20/20 PASS",
+    "standalone_assertions": 148,
+    "expected_collection_signature_baseline": {
+      "supported_collection_contracts": 3,
+      "signature_format": "sha256_hex_64_chars",
+      "version": "V1.0"
+    },
+    "supported_collection_contracts": [
+      "two_seq_hv_mixed",
+      "three_seq_all",
+      "two_seq_all_mixed"
+    ],
+    "match_method": "computed_coll_sig_vs_frozen_expected_coll_sig_baseline",
+    "in_bounds_cases": 3,
+    "wrong_count_cases": 2,
+    "wrong_order_cases": 2,
+    "unsupported_cases": 1
+  },
+  "recovered_collection_global_consistency_bridge_v1": {
+    "status": "complete",
+    "gate": "20/20 PASS",
+    "standalone_assertions": 186,
+    "consistency_checks": [
+      "MATCH_VERDICT_AGREEMENT",
+      "VALIDATION_VERDICT_AGREEMENT",
+      "SIGNATURE_EQUALITY",
+      "SEQUENCE_SIGNATURE_CHAIN",
+      "PAIRWISE_SEQUENCE_DISTINCTNESS",
+      "CROSS_LAYER_COUNT_CONSISTENCY"
+    ],
+    "supported_collection_contracts": [
+      "two_seq_hv_mixed",
+      "three_seq_all",
+      "two_seq_all_mixed"
+    ],
+    "consistency_method": "cross_layer_check_dispatch_with_fabricated_contradiction_detection",
+    "in_bounds_cases": 3,
+    "contradictory_cases": 6,
+    "unsupported_cases": 1
+  },
+  "rolling_shutter_temporal_transport_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 289,
+    "branch": "screen_to_camera_temporal_transport",
+    "temporal_transport_profile": {
+      "temporal_rate_hz": 1000,
+      "row_readout_us": 25.0,
+      "frame_height": 480,
+      "frame_width": 640,
+      "rows_per_slot": 40,
+      "max_slots": 12,
+      "supported_payload_lengths": [4, 5, 6, 7, 8],
+      "sync_header": [1, 0, 1]
+    },
+    "route_table": {
+      "00": "adjacent_pair",
+      "01": "containment",
+      "10": "three_regions",
+      "11": "RESERVED"
+    },
+    "transport_method": "temporal_modulation_to_rs_stripe_to_timing_decode_to_route",
+    "in_bounds_cases": 8,
+    "oob_cases": 4,
+    "edge_cases": 2
+  },
+  "complementary_color_temporal_transport_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 317,
+    "branch": "screen_to_camera_temporal_transport",
+    "complementary_color_transport_profile": {
+      "color_pair_name": "cyan_red",
+      "temporal_slot_hz": 60,
+      "exposure_slots": 1,
+      "supported_payload_lengths": [3, 4, 5, 6],
+      "sync_header": [0, 1, 0]
+    },
+    "frozen_color_pairs": {
+      "cyan_red": {"primary": [0, 255, 255], "complement": [255, 0, 0]},
+      "magenta_green": {"primary": [255, 0, 255], "complement": [0, 255, 0]},
+      "yellow_blue": {"primary": [255, 255, 0], "complement": [0, 0, 255]}
+    },
+    "route_table": {
+      "00": "adjacent_pair",
+      "01": "containment",
+      "10": "three_regions",
+      "11": "RESERVED"
+    },
+    "transport_method": "complementary_color_pair_encoding_to_chrominance_projection_decode_to_route",
+    "in_bounds_cases": 9,
+    "oob_cases": 5,
+    "edge_cases": 3
+  },
+  "temporal_transport_dispatch_bridge_v1": {
+    "status": "complete",
+    "gate": "15/15 PASS",
+    "standalone_assertions": 178,
+    "branch": "screen_to_camera_temporal_transport",
+    "dispatch_profile": {
+      "supported_modes": ["rolling_shutter", "complementary_color"],
+      "identification_method": "structural_fingerprinting",
+      "rs_profile_ref": "V1_TRANSPORT_PROFILE",
+      "cc_profile_ref": "V1_CC_TRANSPORT_PROFILE"
+    },
+    "dispatch_method": "structural_fingerprint_to_mode_specific_decoder_to_route",
+    "rs_dispatch_cases": 4,
+    "cc_dispatch_cases": 4,
+    "oob_cases": 6,
+    "edge_cases": 2
+  },
+  "temporal_consistency_bridge_v1": {
+    "status": "complete",
+    "gate": "28/28 PASS",
+    "standalone_assertions": 412,
+    "branch": "screen_to_camera_temporal_transport",
+    "consistency_profile": {
+      "min_captures": 2,
+      "max_captures": 10,
+      "agreement_threshold": 1.0,
+      "supported_modes": ["rolling_shutter", "complementary_color"],
+      "dispatch_profile_ref": "V1_DISPATCH_PROFILE"
+    },
+    "consistency_verdicts": [
+      "CONSISTENT",
+      "INCONSISTENT",
+      "CAPTURE_FAILED",
+      "TOO_FEW_CAPTURES",
+      "TOO_MANY_CAPTURES",
+      "EMPTY_SET",
+      "ERROR"
+    ],
+    "consistency_method": "unanimous_agreement_across_repeated_captures_via_dispatch_bridge",
+    "consistent_cases": 6,
+    "inconsistent_cases": 2,
+    "oob_cases": 3
+  },
+  "frame_accurate_transport_bridge_v1": {
+    "status": "complete",
+    "gate": "31/31 PASS",
+    "standalone_assertions": 350,
+    "branch": "screen_to_camera_temporal_transport",
+    "frame_accurate_profile": {
+      "supported_sequence_lengths": [2, 3, 4],
+      "min_sequence_length": 2,
+      "max_sequence_length": 4,
+      "supported_modes": ["rolling_shutter", "complementary_color"],
+      "dispatch_profile_ref": "V1_DISPATCH_PROFILE"
+    },
+    "frame_accurate_verdicts": [
+      "FRAME_ACCURATE",
+      "SLOT_MISMATCH",
+      "SLOT_DECODE_FAILED",
+      "SEQUENCE_TOO_SHORT",
+      "SEQUENCE_TOO_LONG",
+      "EMPTY_SEQUENCE",
+      "GENERATION_FAILED",
+      "ERROR"
+    ],
+    "frame_accurate_method": "per_slot_dispatch_with_ordered_payload_association_verification",
+    "rs_frame_cases": 4,
+    "cc_frame_cases": 3,
+    "drift_cases": 2,
+    "oob_cases": 3
+  },
+  "combined_temporal_fusion_bridge_v1": {
+    "status": "complete",
+    "gate": "34/34 PASS",
+    "standalone_assertions": 250,
+    "branch": "screen_to_camera_temporal_transport",
+    "fusion_profile": {
+      "supported_payload_lengths": [4, 5, 6],
+      "payload_length_derivation": "intersection of RS(4-8) and CC(3-6)",
+      "allow_single_channel_fallback": true,
+      "dispatch_profile_ref": "V1_DISPATCH_PROFILE"
+    },
+    "strict_profile": {
+      "allow_single_channel_fallback": false
+    },
+    "fusion_verdicts": [
+      "BOTH_AGREE",
+      "RS_ONLY",
+      "CC_ONLY",
+      "DISAGREE",
+      "BOTH_FAILED",
+      "FALLBACK_DENIED",
+      "UNSUPPORTED_LENGTH",
+      "EMPTY_PAYLOAD",
+      "GENERATION_FAILED",
+      "ERROR"
+    ],
+    "fusion_method": "dual_channel_encode_decode_with_agreement_policy",
+    "agree_cases": 6,
+    "disagree_cases": 2,
+    "oob_cases": 4
+  },
+  "temporal_payload_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "32/32 PASS",
+    "standalone_assertions": 133,
+    "branch": "screen_to_camera_temporal_transport",
+    "contract_profile": {
+      "supported_contracts": 5,
+      "contract_names": [
+        "rs_4bit_adjacent",
+        "cc_any_family",
+        "either_containment",
+        "fused_any_family",
+        "rs_large_three_regions"
+      ],
+      "dispatch_profile_ref": "V1_DISPATCH_PROFILE",
+      "fusion_profile_ref": "V1_FUSION_PROFILE"
+    },
+    "contract_verdicts": [
+      "CONTRACT_SATISFIED",
+      "WRONG_PAYLOAD_LENGTH",
+      "WRONG_PAYLOAD_FAMILY",
+      "WRONG_TRANSPORT_MODE",
+      "FUSED_REQUIRED",
+      "DECODE_FAILED",
+      "EMPTY_PAYLOAD",
+      "UNSUPPORTED_CONTRACT",
+      "ERROR"
+    ],
+    "contract_method": "frozen_contract_validation_over_dispatch_recovered_structures",
+    "satisfy_cases": 8,
+    "wrong_length_cases": 2,
+    "wrong_family_cases": 2,
+    "wrong_mode_cases": 2,
+    "fused_required_cases": 2,
+    "oob_cases": 3
+  },
+  "temporal_payload_signature_bridge_v1": {
+    "status": "complete",
+    "gate": "30/30 PASS",
+    "standalone_assertions": 99,
+    "branch": "screen_to_camera_temporal_transport",
+    "signature_profile": {
+      "canonical_fields": ["contract_name", "payload_bits", "payload_length", "payload_family", "transport_mode", "is_fused"],
+      "hash_algorithm": "sha256",
+      "version": "V1.0",
+      "contract_profile_ref": "V1_CONTRACT_PROFILE"
+    },
+    "signature_verdicts": [
+      "SIGNED",
+      "CONTRACT_NOT_SATISFIED",
+      "EMPTY_PAYLOAD",
+      "UNSUPPORTED_CONTRACT",
+      "ERROR"
+    ],
+    "signature_method": "sha256_of_deterministic_canonical_temporal_payload_form",
+    "sign_cases": 6,
+    "reject_cases": 3,
+    "oob_cases": 2,
+    "difference_cases": 3,
+    "convenience_path": "sign_from_contract_result"
+  },
+  "temporal_payload_signature_match_bridge_v1": {
+    "status": "complete",
+    "gate": "28/28 PASS",
+    "standalone_assertions": 142,
+    "branch": "screen_to_camera_temporal_transport",
+    "match_profile": {
+      "supported_cases": 6,
+      "case_labels": [
+        "rs_4bit_adj_sign",
+        "cc_3bit_adj_sign",
+        "cc_6bit_cont_sign",
+        "rs_containment_sign",
+        "fused_adj_sign",
+        "rs_5bit_three_sign"
+      ],
+      "signature_profile_ref": "V1_SIGNATURE_PROFILE",
+      "contract_profile_ref": "V1_CONTRACT_PROFILE"
+    },
+    "match_verdicts": [
+      "MATCH",
+      "MISMATCH",
+      "UNSUPPORTED",
+      "SIGN_FAILED",
+      "EMPTY_PAYLOAD",
+      "ERROR"
+    ],
+    "match_method": "computed_temporal_sig_vs_frozen_expected_temporal_sig_baseline",
+    "match_cases": 6,
+    "mismatch_cases": 3,
+    "sign_fail_cases": 2,
+    "unsupported_cases": 2,
+    "oob_cases": 1,
+    "convenience_path": "match_from_signature_result"
+  },
+  "temporal_global_consistency_bridge_v1": {
+    "status": "complete",
+    "gate": "22/22 PASS",
+    "standalone_assertions": 114,
+    "branch": "screen_to_camera_temporal_transport",
+    "consistency_profile": {
+      "checks": [
+        "MATCH_VERDICT_AGREEMENT",
+        "CONTRACT_VERDICT_AGREEMENT",
+        "SIGNATURE_EQUALITY",
+        "CANONICAL_FIELD_CONSISTENCY",
+        "PAYLOAD_LENGTH_CONSISTENCY",
+        "CROSS_CASE_DISTINCTNESS"
+      ],
+      "require_all": true,
+      "match_baseline_ref": "V1_MATCH_BASELINE",
+      "signature_profile_ref": "V1_SIGNATURE_PROFILE",
+      "contract_profile_ref": "V1_CONTRACT_PROFILE"
+    },
+    "consistency_verdicts": [
+      "CONSISTENT",
+      "INCONSISTENT",
+      "UNSUPPORTED",
+      "ERROR"
+    ],
+    "consistency_method": "cross_layer_temporal_check_dispatch_with_fabricated_contradiction_detection",
+    "consistent_cases": 6,
+    "contradictory_cases": 5,
+    "unsupported_cases": 1,
+    "convenience_path": "check_temporal_consistency_from_match"
+  },
+  "temporal_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_temporal_milestones": 10,
+    "total_temporal_assertions": 2284,
+    "total_temporal_runners": 10,
+    "branch_name": "screen_to_camera_temporal_transport",
+    "capstone_doc": "00_PROJECT_CORE/TEMPORAL_BRANCH_CAPSTONE_V1.md"
+  },
+  "overlap_detection_bridge_v1": {
+    "status": "complete",
+    "gate": "20/20 PASS",
+    "standalone_assertions": 82,
+    "pytest_functions": 35,
+    "bridge_number": 29,
+    "branch": "higher_order_coherence",
+    "branch_milestone": 1,
+    "collection_overlaps": 3,
+    "sequence_overlaps": 1
+  },
+  "local_section_consistency_bridge_v1": {
+    "status": "complete",
+    "gate": "18/18 PASS",
+    "standalone_assertions": 62,
+    "pytest_functions": 23,
+    "bridge_number": 30,
+    "branch": "higher_order_coherence",
+    "branch_milestone": 2,
+    "overlap_regions_consistent": 3,
+    "inconsistency_types": ["SIGNATURE_MISMATCH", "PAGE_COUNT_MISMATCH", "PAGE_NAMES_MISMATCH"]
+  },
+  "sheaf_style_composition_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 58,
+    "pytest_functions": 20,
+    "bridge_number": 31,
+    "branch": "higher_order_coherence",
+    "branch_milestone": 3,
+    "global_assignment_sequences": 3,
+    "composition_verdict": "COMPOSABLE"
+  },
+  "cohomological_obstruction_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 56,
+    "pytest_functions": 25,
+    "bridge_number": 32,
+    "branch": "higher_order_coherence",
+    "branch_milestone": 4,
+    "obstruction_types": ["HASH_CYCLE_CONFLICT", "PAGE_STRUCTURE_CONFLICT", "COVERAGE_GAP", "ASSIGNMENT_CONTRADICTION"],
+    "clean_result": "NO_OBSTRUCTIONS"
+  },
+  "higher_order_coherence_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_higher_order_milestones": 4,
+    "total_higher_order_assertions": 258,
+    "total_higher_order_runners": 4,
+    "branch_name": "higher_order_coherence_sheaf_style",
+    "capstone_doc": "00_PROJECT_CORE/HIGHER_ORDER_COHERENCE_BRANCH_CAPSTONE_V1.md"
+  },
+  "view_dependent_marker_profile_bridge_v1": {
+    "status": "complete",
+    "gate": "20/20 PASS",
+    "standalone_assertions": 95,
+    "pytest_functions": 30,
+    "bridge_number": 33,
+    "branch": "view_dependent_markers",
+    "branch_milestone": 1,
+    "frozen_markers": 4,
+    "viewpoint_buckets": 4,
+    "total_facets": 16,
+    "marker_names": ["alpha_planar", "beta_relief", "gamma_prismatic", "delta_pyramidal"]
+  },
+  "moment_invariant_identity_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 92,
+    "pytest_functions": 20,
+    "bridge_number": 34,
+    "branch": "view_dependent_markers",
+    "branch_milestone": 2,
+    "identity_invariant_fields": ["name", "structural_class", "region_count"],
+    "all_markers_stable": true
+  },
+  "view_facet_recovery_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 179,
+    "pytest_functions": 16,
+    "bridge_number": 35,
+    "branch": "view_dependent_markers",
+    "branch_milestone": 3,
+    "total_recoveries": 16,
+    "full_recovery_count": 16,
+    "all_facets_vary": true,
+    "rejection_paths": ["NO_IDENTITY", "IDENTITY_ONLY"]
+  },
+  "view_dependent_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "18/18 PASS",
+    "standalone_assertions": 144,
+    "pytest_functions": 19,
+    "bridge_number": 36,
+    "branch": "view_dependent_markers",
+    "branch_milestone": 4,
+    "contract_count": 4,
+    "valid_validations": 16,
+    "violation_types": ["RECOVERY_INCOMPLETE", "UNKNOWN_MARKER", "INVALID_IDENTITY", "INVALID_FACET"]
+  },
+  "view_dependent_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_view_dependent_milestones": 4,
+    "total_view_dependent_assertions": 510,
+    "total_view_dependent_runners": 4,
+    "total_view_dependent_pytest_functions": 85,
+    "branch_name": "view_dependent_markers_3d_moment_invariants",
+    "capstone_doc": "00_PROJECT_CORE/VIEW_DEPENDENT_BRANCH_CAPSTONE_V1.md"
+  },
+  "vsa_cleanup_profile_bridge_v1": {
+    "status": "complete",
+    "gate": "15/15 PASS",
+    "standalone_assertions": 64,
+    "pytest_functions": 15,
+    "bridge_number": 37,
+    "branch": "vsa_cleanup",
+    "branch_milestone": 1,
+    "cleanup_targets": 11,
+    "set_targets": 5,
+    "sequence_targets": 3,
+    "collection_targets": 3
+  },
+  "hypervector_binding_bundling_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 55,
+    "pytest_functions": 23,
+    "bridge_number": 38,
+    "branch": "vsa_cleanup",
+    "branch_milestone": 2,
+    "dimension": 1024,
+    "encoding": "bipolar",
+    "operations": ["generate_atomic", "bind", "unbind", "bundle", "permute", "inverse_permute"]
+  },
+  "cleanup_retrieval_bridge_v1": {
+    "status": "complete",
+    "gate": "15/15 PASS",
+    "standalone_assertions": 100,
+    "pytest_functions": 11,
+    "bridge_number": 39,
+    "branch": "vsa_cleanup",
+    "branch_milestone": 3,
+    "noise_tolerance_tested": ["0%", "10%", "20%", "30%"],
+    "cleanup_method": "cosine_similarity_nearest_codebook_entry"
+  },
+  "vsa_consistency_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "15/15 PASS",
+    "standalone_assertions": 73,
+    "pytest_functions": 10,
+    "bridge_number": 40,
+    "branch": "vsa_cleanup",
+    "branch_milestone": 4,
+    "consistent_at_0pct": 11,
+    "consistent_at_10pct": 11,
+    "violation_types": ["MISMATCH", "VSA_FAILED", "UNKNOWN_TARGET"]
+  },
+  "vsa_cleanup_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_vsa_milestones": 4,
+    "total_vsa_assertions": 292,
+    "total_vsa_runners": 4,
+    "total_vsa_pytest_functions": 59,
+    "branch_name": "vsa_hyperdimensional_cleanup",
+    "capstone_doc": "00_PROJECT_CORE/VSA_CLEANUP_BRANCH_CAPSTONE_V1.md"
+  },
+  "unified_capability_manifest_bridge_v1": {
+    "status": "complete",
+    "gate": "19/19 PASS",
+    "standalone_assertions": 53,
+    "pytest_functions": 25,
+    "bridge_number": 41,
+    "branch": "integration_release",
+    "branch_milestone": 1,
+    "bridges_enumerated": 40,
+    "branches_enumerated": 5,
+    "modules_enumerated": 52,
+    "manifest_hash_deterministic": true
+  },
+  "unified_substrate_entrypoint_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 57,
+    "pytest_functions": 19,
+    "bridge_number": 42,
+    "branch": "integration_release",
+    "branch_milestone": 2,
+    "bridge_registry_size": 40,
+    "routes": 7,
+    "branch_routes": 5
+  },
+  "cross_branch_compatibility_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 36,
+    "pytest_functions": 11,
+    "bridge_number": 43,
+    "branch": "integration_release",
+    "branch_milestone": 3,
+    "compatibility_rules": 12,
+    "all_compatible": true
+  },
+  "v1_substrate_release_audit_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 40,
+    "pytest_functions": 11,
+    "bridge_number": 44,
+    "branch": "integration_release",
+    "branch_milestone": 4,
+    "audit_checks": 10,
+    "all_pass": true
+  },
+  "integration_release_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_integration_milestones": 4,
+    "total_integration_assertions": 186,
+    "total_integration_runners": 4,
+    "total_integration_pytest_functions": 66,
+    "branch_name": "integration_release_hardening",
+    "capstone_doc": "00_PROJECT_CORE/INTEGRATION_RELEASE_BRANCH_CAPSTONE_V1.md"
+  },
+  "real_capture_ingest_profile_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 50,
+    "pytest_functions": 22,
+    "bridge_number": 45,
+    "branch": "observed_evidence_loop",
+    "branch_milestone": 1,
+    "ingest_cases": 5,
+    "evidence_tier_entry": "real-capture"
+  },
+  "capture_session_manifest_bridge_v1": {
+    "status": "complete",
+    "gate": "15/15 PASS",
+    "standalone_assertions": 42,
+    "pytest_functions": 15,
+    "bridge_number": 46,
+    "branch": "observed_evidence_loop",
+    "branch_milestone": 2,
+    "manifest_hash_deterministic": true
+  },
+  "evidence_delta_analysis_bridge_v1": {
+    "status": "complete",
+    "gate": "16/16 PASS",
+    "standalone_assertions": 40,
+    "pytest_functions": 13,
+    "bridge_number": 47,
+    "branch": "observed_evidence_loop",
+    "branch_milestone": 3,
+    "delta_verdicts": 7,
+    "default_confidence_tolerance": 0.05,
+    "default_position_tolerance": 5.0
+  },
+  "calibration_recommendation_bridge_v1": {
+    "status": "complete",
+    "gate": "17/17 PASS",
+    "standalone_assertions": 33,
+    "pytest_functions": 17,
+    "bridge_number": 48,
+    "branch": "observed_evidence_loop",
+    "branch_milestone": 4,
+    "recommendation_kinds": 5,
+    "recommendation_rules": 7,
+    "all_advisory": true
+  },
+  "observed_evidence_loop_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_observed_evidence_milestones": 4,
+    "total_observed_evidence_assertions": 165,
+    "total_observed_evidence_runners": 4,
+    "total_observed_evidence_pytest_functions": 67,
+    "branch_name": "observed_evidence_loop",
+    "capstone_doc": "05_ACTIVE_DEV/aurexis_lang/OBSERVED_EVIDENCE_LOOP_CAPSTONE_V1.md",
+    "real_stop_condition": "requires_user_supplied_capture_datasets"
+  },
+  "real_capture_intake_preflight_bridge_v1": {
+    "status": "complete",
+    "gate": "19/19 PASS",
+    "standalone_assertions": 36,
+    "pytest_functions": 19,
+    "bridge_number": 49,
+    "branch": "real_capture_user_handoff",
+    "branch_milestone": 1,
+    "preflight_checks": 10,
+    "allowed_extensions": [".jpg", ".png", ".tif"],
+    "required_session_fields": 4,
+    "required_file_fields": 7
+  },
+  "real_capture_user_handoff_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_handoff_milestones": 5,
+    "total_handoff_code_bridges": 1,
+    "total_handoff_documentation_milestones": 4,
+    "total_handoff_assertions": 36,
+    "total_handoff_runners": 1,
+    "total_handoff_pytest_functions": 19,
+    "branch_name": "real_capture_user_handoff",
+    "capstone_doc": "05_ACTIVE_DEV/aurexis_lang/REAL_CAPTURE_USER_HANDOFF_CAPSTONE_V1.md",
+    "real_stop_condition": "requires_user_supplied_real_capture_packs"
+  },
+  "authored_capture_fixtures_v1": {
+    "status": "complete",
+    "bridge_number": "support_module",
+    "branch": "observed_evidence_replay",
+    "branch_milestone": 1,
+    "fixture_count": 6,
+    "valid_fixtures": 3,
+    "invalid_fixtures": 3,
+    "evidence_tier": "authored"
+  },
+  "intake_to_delta_replay_harness_v1": {
+    "status": "complete",
+    "gate": "12/12 PASS",
+    "standalone_assertions": 42,
+    "bridge_number": 50,
+    "branch": "observed_evidence_replay",
+    "branch_milestone": 2,
+    "pipeline_stages": 5,
+    "fixture_pack_used": "V1_FIXTURE_PACK"
+  },
+  "replay_outcome_contract_bridge_v1": {
+    "status": "complete",
+    "gate": "9/9 PASS",
+    "standalone_assertions": 34,
+    "bridge_number": 51,
+    "branch": "observed_evidence_replay",
+    "branch_milestone": 3,
+    "contract_checks": 37,
+    "all_satisfied": true
+  },
+  "observed_evidence_replay_branch_capstone": {
+    "status": "branch_complete_enough",
+    "total_replay_milestones": 5,
+    "total_replay_code_bridges": 2,
+    "total_replay_support_modules": 1,
+    "total_replay_documentation_milestones": 2,
+    "total_replay_assertions": 76,
+    "total_replay_runners": 2,
+    "branch_name": "observed_evidence_replay",
+    "capstone_doc": "05_ACTIVE_DEV/aurexis_lang/OBSERVED_EVIDENCE_REPLAY_CAPSTONE_V1.md",
+    "real_stop_condition": "requires_user_supplied_real_capture_files"
   }
 }

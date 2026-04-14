@@ -1,6 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
+**Updated:** April 14, 2026 — FINALIZED V1 Substrate Candidate (freeze-and-release polish complete, 51 bridges, 9 branches, 327/327 pytest, handoff-ready)
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -202,6 +203,270 @@ Aurexis programs, inspect state, and diagnose issues.
 **Audit:** 8/8 checks passed (phoxel_overlay, ir_tree_rendered,
 evidence_inspector, promotion_tracker, debugger_loaded, frames_processed,
 executable_reached, within_tech_floor).
+
+---
+
+## V1 Substrate Bridge Ladder (Post-M11)
+
+After M11, the project entered the V1 Substrate Bridge phase — proving narrow law-bearing properties through a strict sequence of deterministic bridge milestones. Each bridge adds one specific capability to the substrate stack.
+
+| # | Bridge | Status | Assertions |
+|---|--------|--------|------------|
+| 1 | Raster Law Bridge V1 | ✅ COMPLETE | 58 |
+| 2 | Capture Tolerance Bridge V1 | ✅ COMPLETE | 99 |
+| 3 | Artifact Localization Bridge V1 | ✅ COMPLETE | 54 |
+| 4 | Orientation Normalization Bridge V1 | ✅ COMPLETE | 70 |
+| 5 | Perspective Normalization Bridge V1 | ✅ COMPLETE | 53 |
+| 6 | Composed Recovery Bridge V1 | ✅ COMPLETE | 72 |
+| 7 | Artifact Dispatch Bridge V1 | ✅ COMPLETE | 58 |
+| 8 | Multi-Artifact Layout Bridge V1 | ✅ COMPLETE | 68 |
+| 9 | Artifact Set Contract Bridge V1 | ✅ COMPLETE | 89 |
+| 10 | Recovered Set Signature Bridge V1 | ✅ COMPLETE | 86 |
+| 11 | Recovered Set Signature Match Bridge V1 | ✅ COMPLETE | 100 |
+| 12 | Recovered Page Sequence Contract Bridge V1 | ✅ COMPLETE | 149 |
+| 13 | Recovered Page Sequence Signature Bridge V1 | ✅ COMPLETE | 154 |
+| 14 | Recovered Page Sequence Signature Match Bridge V1 | ✅ COMPLETE | 141 |
+| 15 | Recovered Sequence Collection Contract Bridge V1 | ✅ COMPLETE | 163 |
+| 16 | Recovered Sequence Collection Signature Bridge V1 | ✅ COMPLETE | 173 |
+| 17 | Recovered Sequence Collection Signature Match Bridge V1 | ✅ COMPLETE | 148 |
+| 18 | Recovered Collection Global Consistency Bridge V1 | ✅ COMPLETE | 186 |
+| 19 | Rolling Shutter Temporal Transport Bridge V1 | ✅ COMPLETE | 289 |
+| 20 | Complementary-Color Temporal Transport Bridge V1 | ✅ COMPLETE | 317 |
+| 21 | Temporal Transport Dispatch Bridge V1 | ✅ COMPLETE | 178 |
+| 22 | Temporal Consistency Bridge V1 | ✅ COMPLETE | 412 |
+| 23 | Frame-Accurate Transport Bridge V1 | ✅ COMPLETE | 350 |
+| 24 | Combined RS+CC Temporal Fusion Bridge V1 | ✅ COMPLETE | 250 |
+| 25 | Temporal Payload Contract Bridge V1 | ✅ COMPLETE | 133 |
+| 26 | Temporal Payload Signature Bridge V1 | ✅ COMPLETE | 99 |
+| 27 | Temporal Payload Signature Match Bridge V1 | ✅ COMPLETE | 142 |
+| 28 | Temporal Global Consistency Bridge V1 | ✅ COMPLETE | 114 |
+| 29 | Overlap Detection Bridge V1 | ✅ COMPLETE | 82 |
+| 30 | Local Section Consistency Bridge V1 | ✅ COMPLETE | 62 |
+| 31 | Sheaf-Style Composition Bridge V1 | ✅ COMPLETE | 58 |
+| 32 | Cohomological Obstruction Detection Bridge V1 | ✅ COMPLETE | 56 |
+| 33 | View-Dependent Marker Profile Bridge V1 | ✅ COMPLETE | 95 |
+| 34 | Moment-Invariant Identity Bridge V1 | ✅ COMPLETE | 92 |
+| 35 | View-Facet Recovery Bridge V1 | ✅ COMPLETE | 179 |
+| 36 | View-Dependent Contract Bridge V1 | ✅ COMPLETE | 144 |
+| 37 | VSA Cleanup Profile Bridge V1 | ✅ COMPLETE | 64 |
+| 38 | Hypervector Binding / Bundling Bridge V1 | ✅ COMPLETE | 55 |
+| 39 | Cleanup Retrieval Bridge V1 | ✅ COMPLETE | 100 |
+| 40 | VSA Consistency / Contract Bridge V1 | ✅ COMPLETE | 73 |
+| 41 | Unified Capability Manifest Bridge V1 | ✅ COMPLETE | 53 |
+| 42 | Unified Substrate Entrypoint Bridge V1 | ✅ COMPLETE | 57 |
+| 43 | Cross-Branch Compatibility Contract Bridge V1 | ✅ COMPLETE | 36 |
+| 44 | V1 Substrate Release Audit Bridge V1 | ✅ COMPLETE | 40 |
+| 45 | Real Capture Ingest Profile Bridge V1 | ✅ COMPLETE | 50 |
+| 46 | Capture Session Manifest Bridge V1 | ✅ COMPLETE | 42 |
+| 47 | Evidence Delta Analysis Bridge V1 | ✅ COMPLETE | 40 |
+| 48 | Calibration Recommendation Bridge V1 | ✅ COMPLETE | 33 |
+| 49 | Real Capture Intake Preflight Bridge V1 | ✅ COMPLETE | 36 |
+| — | Authored Capture Session Fixture Pack V1 | ✅ COMPLETE | (support module) |
+| 50 | Intake-to-Delta Replay Harness Bridge V1 | ✅ COMPLETE | 42 |
+| 51 | Replay Outcome Contract Bridge V1 | ✅ COMPLETE | 34 |
+
+**Total:** 6358 standalone assertions, 61 runners — all passing.
+
+---
+
+## Completed Branch: Higher-Order Coherence / Sheaf-Style Composition
+
+**Status:** BRANCH COMPLETE-ENOUGH — four milestones complete as of April 13, 2026. Capstone verification passed.
+
+**Concept:** Extends the cross-layer consistency checks into a bounded local-to-global coherence framework inspired by sheaf-theoretic ideas. Proves that the frozen collection family overlaps, agrees locally, composes globally, and has no composition obstructions.
+
+**Completed milestones:**
+
+- ✅ Overlap Detection Bridge V1 (29th bridge) — bounded structural overlap detection across collections and sequences. 3 pairwise collection overlaps, 1 sequence overlap, all deterministic. 82 assertions, all passing.
+- ✅ Local Section Consistency Bridge V1 (30th bridge) — bounded local-section agreement verification. All 3 overlap regions consistent, 3 fabricated inconsistency types detected. 62 assertions, all passing.
+- ✅ Sheaf-Style Composition Bridge V1 (31st bridge) — bounded composition proof. Global assignment of 3 sequences, all 3 collections agree. Fabricated contradictions produce NOT_COMPOSABLE. 58 assertions, all passing.
+- ✅ Cohomological Obstruction Detection Bridge V1 (32nd bridge) — bounded obstruction detector. No obstructions in frozen contracts, 3 fabricated obstruction types detected. 56 assertions, all passing.
+
+**Honest framing:** The sheaf analogy is a design inspiration, not a claim of full sheaf-theory generality. This is a bounded executable coherence proof, not a general theorem prover.
+
+---
+
+## Active Branch: Screen-to-Camera Temporal Transport
+
+**Status:** BRANCH COMPLETE-ENOUGH — ten milestones complete as of April 13, 2026. Capstone verification passed.
+
+**Concept:** Extend the static raster bridge to handle temporal transport — the process of capturing a screen-displayed visual program through a physical camera, accounting for temporal artifacts introduced by the capture process.
+
+**Completed milestones:**
+
+- ✅ Rolling Shutter Temporal Transport Bridge V1 (19th bridge) — bounded screen-to-camera stripe transport proof using 1 kHz temporal modulation, CMOS rolling-shutter row-delay exploitation, timing-based slot decoding, and route mapping into existing Aurexis dispatch families. 289 assertions, all passing.
+- ✅ Complementary-Color Temporal Transport Bridge V1 (20th bridge) — bounded screen-to-camera complementary-color transport proof using 3 frozen color pairs (cyan/red, magenta/green, yellow/blue), chrominance projection decoding, and route mapping into existing Aurexis dispatch families. 317 assertions, all passing.
+- ✅ Temporal Transport Dispatch Bridge V1 (21st bridge) — bounded temporal-mode routing proof. Identifies which of the two frozen transport modes (rolling-shutter or complementary-color) produced a recovered signal via structural fingerprinting, routes to the correct decoder, and feeds the payload into the existing Aurexis dispatch path. 178 assertions, all passing.
+- ✅ Temporal Consistency Bridge V1 (22nd bridge) — bounded repeated-capture agreement proof. Repeated synthetic captures of the same bounded temporal payload dispatched through the existing dispatch bridge produce a stable recovered identity (unanimous agreement across 2–10 captures), and inconsistent or drifted capture sets are honestly rejected. 412 assertions, all passing.
+- ✅ Frame-Accurate Transport Bridge V1 (23rd bridge) — bounded temporal slot-identity preservation proof. A frozen family of ordered temporal display sequences (2, 3, or 4 slots) can be independently transported, captured, decoded, and the per-slot payload association and ordering deterministically recovered. Drifted or unsupported sequences are honestly rejected. 350 assertions, all passing.
+- ✅ Combined RS+CC Temporal Fusion Bridge V1 (24th bridge) — bounded stripe-and-color fusion transport proof. Encoding the same bounded payload through both rolling-shutter stripe transport and complementary-color temporal transport, decoding both channels independently, and checking agreement under a frozen fusion policy produces deterministic fused payload recovery. Supports both-agree, single-channel fallback (permissive profile), fallback-denied (strict profile), disagreement rejection, and both-failed rejection. 250 assertions, all passing.
+- ✅ Temporal Payload Contract Bridge V1 (25th bridge) — bounded temporal structure validation proof. Recovered temporal payload structures (from RS, CC, or fused transport) can be validated against an explicit frozen contract specifying allowed payload lengths, payload families, transport modes, and fused-channel requirements. 5 frozen contracts, deterministic accept/reject verdicts. 133 assertions, all passing.
+- ✅ Temporal Payload Signature Bridge V1 (26th bridge) — bounded temporal fingerprint proof. Validated recovered temporal payload structures (contract-satisfied) can be reduced to a deterministic SHA-256 signature/fingerprint over canonical structural fields (contract name, payload bits, payload family, transport mode, fused flag, payload length). Identical validated structures produce identical signatures; changed content, family, mode, or contract produce different signatures. Structures that fail contract validation cannot be signed. 99 assertions, all passing.
+- ✅ Temporal Payload Signature Match Bridge V1 (27th bridge) — bounded expected-temporal-signature verification proof. Computed temporal payload signatures can be compared against a frozen expected-signature baseline (6 frozen cases) and return deterministic MATCH / MISMATCH / UNSUPPORTED verdicts. Changed payload bits, transport mode, or contract produce honest mismatch or upstream failure. Unsupported cases fail honestly. 142 assertions, all passing.
+- ✅ Temporal Global Consistency Bridge V1 (28th bridge) — bounded temporal cross-layer coherence verification proof. Cross-layer consistency checks (match verdict agreement, contract verdict agreement, signature equality, canonical field consistency, payload length consistency, cross-case distinctness) catch locally-valid but globally-contradictory temporal structures. 6 consistent cases, 5 contradictory cases, 1 unsupported case. 114 assertions, all passing.
+- ✅ **TEMPORAL BRANCH CAPSTONE** — All 10 temporal milestones verified end-to-end. 2,284 temporal assertions across 10 runners, all passing. Full pipeline proven: generate → encode → capture → decode → dispatch → stabilize → fuse → contract → sign → match → global consistency. See TEMPORAL_BRANCH_CAPSTONE_V1.md.
+
+**Branch status:** COMPLETE-ENOUGH. The bounded temporal transport proof is self-contained and coherent.
+
+**Remaining for later (not in this branch):**
+- Advanced temporal/OCC work (broader transport modes, real-world noise, adaptive decoding) — TBD by Vincent
+- Any future temporal extensions require a new branch or user decision
+
+**Prerequisite:** Stable static raster substrate. All ten temporal transport milestones are complete and proven.
+
+**Honest framing:** Temporal transport is a harder problem than static raster recovery. The ten completed milestones are narrow deterministic proofs, not full real-world camera robustness or general OCC.
+
+---
+
+## View-Dependent Markers / 3D Moment Invariants — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**Bridges:** 33–36 (4 milestones + branch capstone)
+**New assertions:** 510 standalone, 85 pytest functions
+**Branch verdict:** COMPLETE-ENOUGH — narrow bounded proof
+
+**What was built:**
+- **Bridge 33 — View-Dependent Marker Profile V1:** 4 frozen markers × 4 viewpoint buckets = 16 facets. Stable identity + view-dependent facets. (95 assertions, 20/20 gate)
+- **Bridge 34 — Moment-Invariant Identity V1:** Identity hash is viewpoint-invariant by construction. All 4 markers verified stable. (92 assertions, 17/17 gate)
+- **Bridge 35 — View-Facet Recovery V1:** Full recovery (identity + viewpoint + facet) from single observation. 16/16 full recoveries. Facets provably vary while identity stays constant. (179 assertions, 17/17 gate)
+- **Bridge 36 — View-Dependent Contract V1:** Frozen contract validates recovered identity, viewpoint, and facet hash. 16/16 valid, 4 rejection paths tested. (144 assertions, 18/18 gate)
+
+**Honest limits:** Viewpoint buckets are discrete (4 positions, not continuous). Markers are hand-defined, not discovered from real imagery. Facet matching uses exact hash comparison, not noise-tolerant matching.
+
+---
+
+## VSA / Hyperdimensional Cleanup Layer — ✅ BRANCH COMPLETE-ENOUGH
+
+
+
+**Completed:** April 13, 2026
+**Bridges:** 37–40 (4 milestones + branch capstone)
+**New assertions:** 292 standalone, 59 pytest functions
+**Branch verdict:** COMPLETE-ENOUGH — bounded auxiliary helper layer
+
+**What was built:**
+- **Bridge 37 — VSA Cleanup Profile V1:** 11 frozen cleanup targets mapping substrate outputs (5 set + 3 sequence + 3 collection contracts) to VSA symbol IDs. (64 assertions, 15/15 gate)
+- **Bridge 38 — Hypervector Binding / Bundling V1:** 1024-dimensional bipolar MAP-style operations: atomic generation, binding (self-inverse), bundling (majority vote), permutation (order encoding). (55 assertions, 17/17 gate)
+- **Bridge 39 — Cleanup Retrieval V1:** Cosine-similarity nearest-codebook-entry cleanup. All 11 symbols recovered at up to 20% bit-flip noise. (100 assertions, 15/15 gate)
+- **Bridge 40 — VSA Consistency / Contract V1:** Cross-check VSA recovery against deterministic substrate truth. 11/11 CONSISTENT at 0% and 10% noise. 3 rejection paths tested. (73 assertions, 15/15 gate)
+
+**Honest limits:** Dimension (1024) is small. Noise model is simple bit-flip. Codebook is only 11 entries. VSA is explicitly AUXILIARY — it compresses/cleans substrate outputs but the deterministic substrate remains the truth layer.
+
+---
+
+## Integration / Release Hardening — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**Bridges:** 41–44 (4 milestones + branch capstone)
+**New assertions:** 186 standalone, 4 runners
+**Branch verdict:** COMPLETE-ENOUGH — unified V1 substrate candidate release-hardened
+
+**What was built:**
+- **Bridge 41 — Unified Capability Manifest V1:** Machine-readable manifest of all 40 bridges, 5 branches, 52 modules. JSON export. Deterministic manifest hash. (53 assertions, 19/19 gate)
+- **Bridge 42 — Unified Substrate Entrypoint V1:** Thin orchestrator routing into all branches. 40-bridge registry. 7 routes (5 branch + manifest + compatibility). Dynamic import. (57 assertions, 17/17 gate)
+- **Bridge 43 — Cross-Branch Compatibility Contract V1:** 12 structural compatibility rules. Module namespace, bridge numbering, branch ranges, VSA auxiliary precedence, no circular imports. All 12 COMPATIBLE. (36 assertions, 17/17 gate)
+- **Bridge 44 — V1 Substrate Release Audit V1:** 10 release-level audit checks. Manifest, entrypoint, compatibility, module imports, route success, hash determinism, foundation, exclusions, version consistency. All 10 PASS. (40 assertions, 16/16 gate)
+
+**Honest limits:** Integration checks are structural (imports, namespaces, routing). Not runtime interoperation under load or production deployment validation.
+
+---
+
+## Observed Evidence Loop / Real Capture Calibration — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**Bridges:** 45–48 (4 milestones + branch capstone)
+**New assertions:** 165 standalone, 4 runners
+**Branch verdict:** COMPLETE-ENOUGH — bounded real-capture calibration loop
+
+**What was built:**
+- **Bridge 45 — Real Capture Ingest Profile V1:** 5 frozen ingest cases (phone JPEG, phone PNG, webcam JPEG, video frame PNG, scanner TIFF). File shape, metadata, and assumption validation. (50 assertions, 17/17 gate)
+- **Bridge 46 — Capture Session Manifest V1:** Deterministic session manifests linking capture files, ingest results, device metadata, evidence tiers. SHA-256 manifest hash. (42 assertions, 15/15 gate)
+- **Bridge 47 — Evidence Delta Analysis V1:** Structured comparison of expected vs observed substrate outputs. Missing/extra/changed primitives, contract deltas, signature deltas. Bounded tolerances. (40 assertions, 16/16 gate)
+- **Bridge 48 — Calibration Recommendation V1:** 7 recommendation rules producing 5 kinds of advisory outputs. All recommendations advisory and subordinate to the deterministic truth layer. (33 assertions, 17/17 gate)
+
+**Honest limits:** No real capture files have been processed yet — the loop infrastructure is proven but requires user-supplied capture datasets to exercise against real data. All recommendations are advisory; none auto-execute. No root-cause analysis or continuous monitoring.
+
+**What still requires user action later:** User-supplied real capture datasets to feed through the loop. Until then, the infrastructure is proven against synthetic/deterministic test cases only.
+
+---
+
+## Real Capture User Intake / Handoff Hardening — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**Bridge:** 49 (1 code bridge + 4 documentation milestones)
+**New assertions:** 36 standalone, 1 runner
+**Branch verdict:** COMPLETE-ENOUGH — bounded real-capture submission readiness
+
+**What was built:**
+- **Milestone 1 — Real Capture Intake Pack V1:** Complete user-facing specification of allowed formats (5 ingest cases), required/optional metadata, capture assumptions, folder structure, naming rules, and processing pipeline.
+- **Milestone 2 — Capture Session Template Kit V1:** Human-readable template and machine-readable JSON template for users to copy, fill in, and submit as session_manifest.json.
+- **Bridge 49 — Real Capture Intake Preflight V1:** 10 frozen structural checks validating session manifests before processing. Checks session fields, session ID, files array, file fields, extensions (.jpg/.png/.tif), filenames, duplicates, sizes, resolutions, conditions. (36 assertions, 19/19 gate)
+- **Milestone 4 — Delta-Ready Handoff Surface V1:** End-to-end pipeline documentation showing how a valid capture pack flows through preflight → ingest → manifest → delta → recommendations.
+- **Milestone 5 — Branch Capstone:** Verification of all 5 milestones.
+
+**Honest limits:** No real captures have been submitted. No automated file discovery. No image content validation. No web upload or API. This is one-shot file-based session submission, not streaming or incremental intake.
+
+**What still requires user action:** User-supplied real capture files processed through this intake surface.
+
+---
+
+## Observed-Evidence Dry-Run / Replay Readiness — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**Bridges:** 50–51 (2 code bridges + 1 support module + 2 documentation milestones)
+**New assertions:** 76 standalone, 2 runners
+**Branch verdict:** COMPLETE-ENOUGH — bounded dry-run replay proof
+
+**What was built:**
+- **Milestone 1 — Authored Capture Session Fixture Pack V1:** 6 frozen fixtures (3 valid + 3 invalid) at evidence_tier="authored". Valid: phone JPEG, scanner TIFF, two-file. Invalid: missing fields, bad extension, duplicate files. Reference substrate outputs for delta comparison.
+- **Bridge 50 — Intake-to-Delta Replay Harness V1:** Deterministic 5-stage pipeline replay (preflight → ingest → manifest → delta → recommendation). All 6 fixtures exercised end-to-end. Valid fixtures reach ALL_STAGES_PASSED; invalid fixtures produce EXPECTED_REJECTION at preflight. (42 assertions, 12/12 gate)
+- **Bridge 51 — Replay Outcome Contract V1:** Validates replay outcomes match explicit expected dry-run verdicts. 4 global checks + 33 per-fixture checks = 37 individual contract checks, all SATISFIED. Deterministic SHA-256 hashing. (34 assertions, 9/9 gate)
+- **Milestone 4 — Dry-Run Evidence Report Surface V1:** Documentation showing what a completed dry-run looks like, pipeline stages, critical distinction between authored vs real-capture.
+- **Milestone 5 — Observed-Evidence Replay Capstone V1:** Branch capstone with solved/unsolved table, honest framing.
+
+**Honest limits:** Authored fixtures use metadata-only validation, not real image processing. The dry-run proves pipeline wiring is correct and deterministic, but does NOT prove real captures will produce useful results. The transition from authored dry-run to real-capture processing is the remaining gap.
+
+**What still requires user action:** User-supplied real capture files to exercise the pipeline against real data.
+
+---
+
+## Final Package Handoff Hardening — ✅ BRANCH COMPLETE-ENOUGH
+
+**Completed:** April 13, 2026
+**New files:** 8 (no new bridges — packaging/documentation pass)
+**Branch verdict:** COMPLETE-ENOUGH — release-hardened handoff-ready V1 candidate
+
+**What was built:**
+- **Final Top-Level Truth Surface Restoration V1:** ROADMAP, PROJECT_STATUS, GITHUB_BACKUP_RECORD, UNIFIED_CAPABILITY_MANIFEST (md+json), RELEASE_AUDIT_CAPSTONE, RELEASE_HANDOFF_HARDENING all restored to the returned zip top level.
+- **Real-Capture Intake Surface Completion V1:** REAL_CAPTURE_SESSION_TEMPLATE_V1.json and FIXTURES_AUTHORED_CAPTURE_SESSION_PACK_V1.json (machine-readable exports) added to zip.
+- **Pytest Discovery Surface Restoration V1:** tests/__init__.py, tests/conftest.py created. 19 pytest test modules (bridges 33-51) + 2 new modules for replay bridges added. Legacy fixture support modules included.
+- **Final Candidate Package Map V1:** FINAL_CANDIDATE_PACKAGE_MAP_V1.md — complete directory tree, branch families, test surfaces, entrypoints.
+- **Final V1 Candidate Handoff Capstone:** FINAL_V1_CANDIDATE_HANDOFF_CAPSTONE.md — what is complete-enough, what still requires real captures, what is deferred.
+
+**Package state:** 184 files in zip. 32 .md docs, 3 .json files, 61 standalone runners, 21 pytest test files, 67 source modules. Clean-room verified.
+
+### Follow-up: FINAL FREEZE / RELEASE POLISH (April 14, 2026)
+
+Truth-surface consistency cleanup. UNIFIED_CAPABILITY_MANIFEST_V1 (md+json), V1_SUBSTRATE_RELEASE_AUDIT_CAPSTONE, and RELEASE_HANDOFF_HARDENING_V1 all updated from their earlier-pass numbers (44/6/6081/54) to the current finalized state (51/9/6358/61). FINAL_CANDIDATE_FREEZE_CAPSTONE_V1 added as the single authoritative freeze statement. No new bridges. No new tests. No architecture changes. Package is frozen as a FINALIZED V1 Substrate Candidate — handoff-ready, not full Core completion.
+
+### Follow-up: Pytest Surface Green Pass (April 14, 2026)
+
+Replay result / contract test alignment fixed. Two pytest files (`test_intake_to_delta_replay_harness_v1.py`, `test_replay_outcome_contract_bridge_v1.py`) had wrong API field references: `stage_results` vs real `stages`, `global_checks` vs real `checks`, `check_name` vs real `name`, reversed arg order in `validate_single_outcome`. All fixed. `run_pytest_surface.py` lightweight pytest-compatible runner added (works without pytest installed). Full pytest surface: 327 passed, 0 failed across 19 test modules. Clean-room verified from fresh zip extraction. Final zip: 185 files.
+
+**Honest limits:** This is a packaging/documentation pass. No new bridges or algorithmic code. The package is now self-describing and handoff-ready but still requires user-supplied real capture data to exercise the pipeline against real-world inputs.
+
+---
+
+## Explicitly Excluded
+
+The following technologies and approaches are **explicitly excluded** from the V1 substrate roadmap:
+
+- **OAM (Orbital Angular Momentum)** — Exotic optical encoding not relevant to standard camera/screen capture pipelines.
+- **Optical Skyrmions** — Topological light structures requiring specialized detection hardware. Outside the scope of standard vision systems.
+- **NLOS (Non-Line-of-Sight) Imaging** — Imaging around corners or through scattering media. Interesting but irrelevant to the direct camera-to-screen pipeline.
+- **Exotic Specialized Optics** — Any approach requiring non-standard optical hardware (metamaterials, computational optics, holographic elements, etc.). The V1 substrate must work with standard consumer cameras and displays.
+
+**Rationale:** The V1 substrate is grounded in physics-of-light as captured by standard consumer hardware. Exotic optics violate the Current Tech Floor (Gate 6 of the Core Law: must run on current mobile hardware) and would create dependencies on unavailable equipment.
 
 ---
 
