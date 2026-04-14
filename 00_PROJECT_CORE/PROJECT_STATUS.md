@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 14, 2026 — Pytest Surface Green Pass COMPLETE-ENOUGH
-**Status:** Release-hardened handoff-ready V1 Substrate Candidate with green pytest surface. Fifty-one bridge milestones complete (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release + 4 observed evidence + 1 user handoff + 2 replay readiness). All nine branch capstones verified. Replay result / contract structure alignment verified. Package-level pytest surface: 327 passed, 0 failed across 19 test modules (clean-room verified). 6358 standalone assertions across 61 runners, all passing. 185-file zip package.
+**Last Updated:** April 14, 2026 — FINALIZED V1 Substrate Candidate (freeze-and-release polish complete)
+**Status:** FINALIZED V1 Substrate Candidate — handoff-ready. Fifty-one bridge milestones complete across 9 branches (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release + 4 observed evidence + 1 user handoff + 2 replay readiness). All nine branch capstones verified. Replay result / contract structure alignment verified. Package-level pytest surface: 327 passed, 0 failed across 19 test modules (clean-room verified). 6,358 standalone assertions across 61 runners, all passing. 185-file zip package. All top-level truth surface files are internally consistent. NOT a claim of full Aurexis Core completion — real-capture validation still requires future user-supplied photographs.
 
 ---
 

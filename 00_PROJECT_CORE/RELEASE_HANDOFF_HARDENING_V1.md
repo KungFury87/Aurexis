@@ -1,16 +1,16 @@
 # Release Handoff Hardening — V1 Substrate Candidate
 
-**Date:** April 13, 2026
+**Date:** April 14, 2026
 **Owner:** Vincent Anderson
-**Status:** Release-hardened V1 substrate candidate
+**Status:** FINALIZED V1 Substrate Candidate (handoff-ready)
 
 ---
 
 ## What This Package Is
 
-The Aurexis Core V1 Substrate Candidate is a narrow law-bearing substrate package. It contains 44 bridge milestones across 6 branches (5 capability + 1 integration), with 6081 standalone assertions verified across 54 runners.
+The Aurexis Core V1 Substrate Candidate is a narrow law-bearing substrate package. It contains 51 bridge milestones across 9 branches, with 6,358 standalone assertions verified across 61 runners. The pytest surface is green (327 passed, 0 failed across 19 test modules).
 
-This is NOT full Aurexis Core completion. It is a bounded, tested, documented substrate candidate.
+This is NOT full Aurexis Core completion. It is a finalized, bounded, tested, documented substrate candidate package.
 
 ---
 
@@ -28,6 +28,11 @@ This is NOT full Aurexis Core completion. It is a bounded, tested, documented su
    ```
    python3 run_v1_release_audit_tests.py
    ```
+4. Run the full pytest surface (no pytest install required — lightweight runner is included):
+   ```
+   python3 run_pytest_surface.py
+   ```
+   Expected result: `TOTAL: 327 passed, 0 failed`. The equivalent host command when pytest is installed is `pytest tests/ -q`.
 4. Import the unified entrypoint:
    ```python
    from aurexis_lang.unified_substrate_entrypoint_bridge_v1 import V1_ENTRYPOINT

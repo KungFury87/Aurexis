@@ -1,8 +1,9 @@
 # Aurexis Core V1 Substrate Candidate — Final Handoff Capstone
 
 **Owner:** Vincent Anderson
-**Date:** April 13, 2026
-**Verdict:** HANDOFF-READY — release-hardened V1 substrate candidate
+**Date:** April 14, 2026
+**Verdict:** HANDOFF-READY — FINALIZED V1 substrate candidate
+**See also:** `FINAL_CANDIDATE_FREEZE_CAPSTONE_V1.md` for the authoritative freeze statement.
 
 ---
 

@@ -1,8 +1,9 @@
 # Aurexis Core V1 Substrate Candidate — Final Package Map
 
 **Owner:** Vincent Anderson
-**Date:** April 13, 2026
-**Status:** Release-hardened handoff-ready V1 substrate candidate
+**Date:** April 14, 2026
+**Status:** FINALIZED V1 Substrate Candidate — handoff-ready
+**Freeze Capstone:** `FINAL_CANDIDATE_FREEZE_CAPSTONE_V1.md`
 
 ---
 
@@ -97,8 +98,9 @@ aurexis_core_v1_substrate_candidate_locked.zip
 │       ├── test_vsa_cleanup_profile_bridge_v1.py
 │       └── test_vsa_consistency_contract_bridge_v1.py
 │
-├── [Handoff Capstone]
-│   └── FINAL_V1_CANDIDATE_HANDOFF_CAPSTONE.md
+├── [Handoff + Freeze Capstones]
+│   ├── FINAL_V1_CANDIDATE_HANDOFF_CAPSTONE.md
+│   └── FINAL_CANDIDATE_FREEZE_CAPSTONE_V1.md
 │
 └── [Source Modules] (64 V1 modules + __init__.py)
     └── src/aurexis_lang/

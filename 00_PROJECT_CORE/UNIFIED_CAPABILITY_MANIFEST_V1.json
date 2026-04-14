@@ -2,14 +2,22 @@
   "version": "V1.0",
   "frozen": true,
   "package_name": "Aurexis Core V1 Substrate Candidate",
-  "package_description": "Narrow law-bearing substrate candidate. 40 bridge milestones across 5 completed branches. Not full Aurexis Core completion.",
+  "package_description": "Narrow law-bearing substrate candidate. 51 bridge milestones across 9 completed branches. Finalized handoff-ready V1 Substrate Candidate. Not full Aurexis Core completion.",
+  "freeze_state": "FINALIZED_V1_SUBSTRATE_CANDIDATE",
+  "freeze_date": "2026-04-14",
   "manifest_hash": "fbd7328f7a69aa4fab6306686be67d6f042a9017b209a956edd25e74aabaa6a7",
   "totals": {
-    "bridges": 40,
-    "branches": 5,
-    "assertions": 5265,
-    "modules": 52
+    "bridges": 51,
+    "branches": 9,
+    "standalone_assertions": 6358,
+    "standalone_runners": 61,
+    "source_modules": 67,
+    "pytest_modules": 19,
+    "pytest_surface_passed": 327,
+    "pytest_surface_failed": 0,
+    "zip_file_count": 185
   },
+  "note": "The detailed bridges[] list below enumerates the first 40 bridges (through integration/release). Bridges 45-51 (observed evidence, user handoff, replay readiness) are documented in UNIFIED_CAPABILITY_MANIFEST_V1.md and in each bridge's gate verification doc.",
   "foundation_modules": [
     "visual_grammar_v1",
     "visual_parser_v1",

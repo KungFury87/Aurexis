@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 14, 2026 — Pytest Surface Green Pass COMPLETE-ENOUGH (51 bridges, handoff-ready, 327/327 pytest pass)
+**Updated:** April 14, 2026 — FINALIZED V1 Substrate Candidate (freeze-and-release polish complete, 51 bridges, 9 branches, 327/327 pytest, handoff-ready)
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -444,6 +444,10 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - **Final V1 Candidate Handoff Capstone:** FINAL_V1_CANDIDATE_HANDOFF_CAPSTONE.md — what is complete-enough, what still requires real captures, what is deferred.
 
 **Package state:** 184 files in zip. 32 .md docs, 3 .json files, 61 standalone runners, 21 pytest test files, 67 source modules. Clean-room verified.
+
+### Follow-up: FINAL FREEZE / RELEASE POLISH (April 14, 2026)
+
+Truth-surface consistency cleanup. UNIFIED_CAPABILITY_MANIFEST_V1 (md+json), V1_SUBSTRATE_RELEASE_AUDIT_CAPSTONE, and RELEASE_HANDOFF_HARDENING_V1 all updated from their earlier-pass numbers (44/6/6081/54) to the current finalized state (51/9/6358/61). FINAL_CANDIDATE_FREEZE_CAPSTONE_V1 added as the single authoritative freeze statement. No new bridges. No new tests. No architecture changes. Package is frozen as a FINALIZED V1 Substrate Candidate — handoff-ready, not full Core completion.
 
 ### Follow-up: Pytest Surface Green Pass (April 14, 2026)
 
