@@ -1,10 +1,11 @@
-# Aurexis Core — Official Release 1 (ACOR-1) — V1 Substrate Candidate
+# Aurexis Core — Official Release 1.1 (ACOR-1.1) — V1 Substrate Candidate
 
 **Owner:** Vincent Anderson
 **Release date:** April 14, 2026
-**Release tag:** `core-v1-substrate-candidate-or1`
-**Release name:** Aurexis Core Official Release 1 — V1 Substrate Candidate
+**Current official release tag:** `core-v1-substrate-candidate-or1.1`
+**Current official release name:** Aurexis Core Official Release 1.1 — V1 Substrate Candidate
 **Status:** FINALIZED V1 Substrate Candidate — handoff-ready
+**Earlier release (superseded):** [`core-v1-substrate-candidate-or1`](https://github.com/KungFury87/Aurexis/releases/tag/core-v1-substrate-candidate-or1)
 
 ---
 
@@ -23,7 +24,9 @@ This is not image processing. It is the deeper language layer for machine vision
 
 ## What This Release Is
 
-**Official Release 1 (ACOR-1)** is the first public-facing, release-hardened package of the Aurexis Core **V1 Substrate Candidate**. It proves bounded, deterministic, law-governed visual computing properties through **51 bridge milestones** across **9 branch families**, with a green pytest surface and a removable GitHub backup.
+**Official Release 1.1 (ACOR-1.1)** is the **current official public release** of the Aurexis Core **V1 Substrate Candidate**. It supersedes ACOR-1 (same audited build, plus a second-pass provenance re-verification stamp). It proves bounded, deterministic, law-governed visual computing properties through **51 bridge milestones** across **9 branch families**, with a green pytest surface and a removable GitHub backup.
+
+ACOR-1 is preserved for history at [`/releases/tag/core-v1-substrate-candidate-or1`](https://github.com/KungFury87/Aurexis/releases/tag/core-v1-substrate-candidate-or1) and is clearly marked as superseded.
 
 ## What This Release Is NOT
 
@@ -33,6 +36,13 @@ This is not image processing. It is the deeper language layer for machine vision
 - **Not an exotic-optics system.** OAM, optical skyrmions, NLOS imaging, and other exotic optics are explicitly excluded (see manifest).
 
 ---
+
+## Release Line
+
+| Release | Tag | Status |
+|---------|-----|--------|
+| ACOR-1.1 | `core-v1-substrate-candidate-or1.1` | **Current official latest** |
+| ACOR-1 | `core-v1-substrate-candidate-or1` | Superseded by ACOR-1.1 |
 
 ## Package Totals
 
@@ -44,7 +54,7 @@ This is not image processing. It is the deeper language layer for machine vision
 | V1 source modules | **67** |
 | Pytest test modules | **19** |
 | Pytest surface | **327 passed, 0 failed** (clean-room verified) |
-| Packaged zip | **186 files, ~2.2 MB** |
+| Packaged zip | **193 files, ~2.28 MB** |
 | Branch capstones verified | **9 / 9** |
 
 ---
@@ -52,7 +62,11 @@ This is not image processing. It is the deeper language layer for machine vision
 ## Quick Start
 
 ```bash
-# 1) Extract the locked zip (or clone the repo)
+# 1) Clone and check out the current official release tag
+git clone https://github.com/KungFury87/Aurexis.git
+cd Aurexis
+git checkout core-v1-substrate-candidate-or1.1
+
 # 2) Enter the source tree
 cd 05_ACTIVE_DEV/aurexis_lang
 export PYTHONPATH=src
@@ -70,6 +84,9 @@ python3 run_v1_unified_capability_manifest_tests.py # 53/53 PASS
 python3 run_v1_intake_to_delta_replay_tests.py     # 42/42 PASS
 ```
 
+The release zip is also attached directly to the release page:
+https://github.com/KungFury87/Aurexis/releases/tag/core-v1-substrate-candidate-or1.1
+
 ---
 
 ## Package Map
@@ -82,7 +99,8 @@ python3 run_v1_intake_to_delta_replay_tests.py     # 42/42 PASS
 | `00_PROJECT_CORE/UNIFIED_CAPABILITY_MANIFEST_V1.md` / `.json` | Human and machine-readable capability manifest |
 | `00_PROJECT_CORE/V1_SUBSTRATE_RELEASE_AUDIT_CAPSTONE.md` | Release audit (10/10 PASS) |
 | `00_PROJECT_CORE/RELEASE_HANDOFF_HARDENING_V1.md` | Handoff hardening notes |
-| `00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.md` | Official release notes for ACOR-1 |
+| `00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.1.md` | Official release notes for ACOR-1.1 (current) |
+| `00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.md` | Release notes for ACOR-1 (superseded) |
 | `00_PROJECT_CORE/GITHUB_BACKUP_RECORD_V1.md` | Removable backup branches/tags + deletion commands |
 | `05_ACTIVE_DEV/aurexis_lang/FINAL_CANDIDATE_PACKAGE_MAP_V1.md` | Detailed package map |
 | `05_ACTIVE_DEV/aurexis_lang/FINAL_V1_CANDIDATE_HANDOFF_CAPSTONE.md` | Handoff capstone |
@@ -140,15 +158,15 @@ The following are **permanently excluded** from V1 (they violate the Current Tec
 
 ---
 
-## GitHub Backup / Release Branches
+## GitHub Release / Backup References
 
-The repo includes removable backup branches documenting the release progression. See `00_PROJECT_CORE/GITHUB_BACKUP_RECORD_V1.md` for the full list with deletion commands. The current official release is:
-
-- Release branch: `backup/v1-substrate-candidate-20260414-120000`
-- Official release tag: `core-v1-substrate-candidate-or1`
+Current official release:
+- Release branch: `backup/v1-substrate-candidate-20260414-120000` (default branch `main` tracks its ACOR-1.1 commit)
+- **Current official release tag: `core-v1-substrate-candidate-or1.1`**
 - Companion backup tag: `backup-v1-substrate-candidate-20260414-120000`
+- Superseded earlier release tag: `core-v1-substrate-candidate-or1`
 
-All backups are designed to be removable. Deletion commands are recorded in the backup record.
+All backups and both release tags are designed to be removable. Exact deletion commands are recorded in `00_PROJECT_CORE/GITHUB_BACKUP_RECORD_V1.md`.
 
 ---
 
@@ -161,17 +179,17 @@ Sole inventor and owner: Vincent Anderson.
 
 ## Honest Framing
 
-This is the **first official release** of Aurexis Core, in its current honest state. It is a narrow, law-bearing V1 Substrate Candidate — a foundation layer, not a finished system. The bridges are deterministic and verified; the pytest surface is green; the package is self-describing. The real-world camera validation step is the explicit next forward direction and requires user action (real capture photographs) rather than more code.
+This is the **current official release** of Aurexis Core, in its honest state. It is a narrow, law-bearing V1 Substrate Candidate — a foundation layer, not a finished system. The bridges are deterministic and verified; the pytest surface is green; the package is self-describing. The real-world camera validation step is the explicit next forward direction and requires user action (real capture photographs) rather than more code.
 
 ---
 
 ## Provenance / Copyright / Clean-Room Audit
 
-Before this release was tagged, the repository went through a repo-wide provenance and copyright-risk audit.
+Before ACOR-1 was tagged, the repository went through a repo-wide provenance and copyright-risk audit. That audit was re-verified in a second pass before ACOR-1.1 was tagged.
 
 Key findings:
 
-- **No third-party source code is shipped inside the ACOR-1 release zip.** All 67 source modules, 19 pytest test modules, and 61 standalone runners are authored by Vincent Anderson.
+- **No third-party source code is shipped inside the release zip.** All 67 source modules, 19 pytest test modules, and 61 standalone runners are authored by Vincent Anderson.
 - **One optional third-party dependency** is referenced through its public API only: **Pillow (PIL)**, used inside a `try` block in `raster_law_bridge_v1.py` with a full stdlib PNG-decode fallback. Pillow itself is not redistributed. Pillow is HPND-licensed.
 - **pytest** is optionally supported on the host. A lightweight pytest-compatible runner (`run_pytest_surface.py`) ships in the release and does not require pytest to be installed.
 - No `HIGH-RISK POSSIBLE COPY / PROTECTED CODE` findings in the release zip.
@@ -179,10 +197,10 @@ Key findings:
 
 Full audit:
 
-- `00_PROJECT_CORE/CODE_PROVENANCE_AUDIT_V1.md` — human-readable audit report
+- `00_PROJECT_CORE/CODE_PROVENANCE_AUDIT_V1.md` — human-readable audit report (includes a Re-Verification Stamp section for the ACOR-1.1 pass)
 - `00_PROJECT_CORE/CODE_PROVENANCE_AUDIT_V1.json` — machine-readable audit summary
 - `00_PROJECT_CORE/THIRD_PARTY_LICENSE_NOTES_V1.md` — third-party usage notes
-- `00_PROJECT_CORE/CLEAN_ROOM_REMEDIATION_LOG_V1.md` — decision log for this pass
+- `00_PROJECT_CORE/CLEAN_ROOM_REMEDIATION_LOG_V1.md` — decision log
 
 Honest disclaimer: this audit is an engineering-grade repo review, not a formal legal opinion. See each document for full framing.
 
