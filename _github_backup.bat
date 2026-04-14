@@ -3,17 +3,17 @@ setlocal enabledelayedexpansion
 
 REM ── Aurexis Core GitHub Backup Script ──
 REM Pushes current repo state to a removable backup branch + tag
-REM Real Capture User Handoff V1 Substrate Candidate — 49 bridges (59 runners)
+REM Observed-Evidence Replay Readiness V1 Substrate Candidate — 51 bridges (61 runners)
 
 set "REPO_DIR=%~dp0"
-set "BRANCH=backup/v1-substrate-candidate-20260413-user-handoff"
-set "TAG=backup-v1-substrate-candidate-20260413-user-handoff"
+set "BRANCH=backup/v1-substrate-candidate-20260413-replay-readiness"
+set "TAG=backup-v1-substrate-candidate-20260413-replay-readiness"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
 echo ============================================ > "%LOG%"
 echo Aurexis Core GitHub Backup >> "%LOG%"
-echo Real Capture User Handoff V1 Substrate Candidate — 49 bridges >> "%LOG%"
+echo Observed-Evidence Replay Readiness V1 Substrate Candidate — 51 bridges >> "%LOG%"
 echo %date% %time% >> "%LOG%"
 echo ============================================ >> "%LOG%"
 
@@ -33,7 +33,7 @@ if exist ".git" (
 
     REM Commit
     echo Committing... >> "%LOG%"
-    git commit -m "Real Capture User Handoff V1 Substrate Candidate — 49 bridges, 6282 assertions, 59 runners, 61 modules, capstone verified" >> "%LOG%" 2>&1
+    git commit -m "Observed-Evidence Replay Readiness V1 Substrate Candidate — 51 bridges, 6358 assertions, 61 runners, 64 modules, capstone verified" >> "%LOG%" 2>&1
 
     REM Create backup branch
     echo Creating branch %BRANCH%... >> "%LOG%"
@@ -41,7 +41,7 @@ if exist ".git" (
 
     REM Create tag
     echo Creating tag %TAG%... >> "%LOG%"
-    git tag -f "%TAG%" -m "Backup: Real Capture User Handoff V1 Substrate Candidate — 49 bridges, 6282 assertions, 59 runners, 61 modules, 8 branches, capstone verified" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: Observed-Evidence Replay Readiness V1 Substrate Candidate — 51 bridges, 6358 assertions, 61 runners, 64 modules, 9 branches, capstone verified" >> "%LOG%" 2>&1
 
     REM Push branch
     echo Pushing branch... >> "%LOG%"
@@ -69,9 +69,9 @@ if exist ".git" (
     git config user.name "Vincent Anderson" >> "%LOG%" 2>&1
     git remote add origin https://github.com/KungFury87/Aurexis.git >> "%LOG%" 2>&1
     git add -A >> "%LOG%" 2>&1
-    git commit -m "Real Capture User Handoff V1 Substrate Candidate — 49 bridges, 6282 assertions, 59 runners, 61 modules, capstone verified" >> "%LOG%" 2>&1
+    git commit -m "Observed-Evidence Replay Readiness V1 Substrate Candidate — 51 bridges, 6358 assertions, 61 runners, 64 modules, capstone verified" >> "%LOG%" 2>&1
     git checkout -B "%BRANCH%" >> "%LOG%" 2>&1
-    git tag -f "%TAG%" -m "Backup: Real Capture User Handoff V1 Substrate Candidate — 49 bridges, 6282 assertions, 59 runners, 61 modules, 8 branches, capstone verified" >> "%LOG%" 2>&1
+    git tag -f "%TAG%" -m "Backup: Observed-Evidence Replay Readiness V1 Substrate Candidate — 51 bridges, 6358 assertions, 61 runners, 64 modules, 9 branches, capstone verified" >> "%LOG%" 2>&1
 
     echo Pushing branch... >> "%LOG%"
     git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1

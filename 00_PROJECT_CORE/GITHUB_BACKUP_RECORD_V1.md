@@ -5,6 +5,35 @@
 
 ---
 
+## Backup #26 — Observed-Evidence Replay Readiness COMPLETE-ENOUGH (51 bridges, 9 branches)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-replay-readiness` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-replay-readiness` |
+| Pushed commit hash | `f120356` (pending user push — sandbox proxy 403) |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 (pending) |
+
+### What This Backup Contains
+
+Snapshot at the Observed-Evidence Replay Readiness branch COMPLETE-ENOUGH milestone. Includes:
+
+- 51 bridge milestones across 9 branches (18 static + 10 temporal + 4 coherence + 4 view-dep + 4 VSA + 4 integration + 4 observed evidence + 1 user handoff + 2 replay readiness)
+- 6358 standalone assertions across 61 runners
+- 64 V1 modules
+- Nine branch capstones verified
+- Zip with 108 files (~347 KB) selective V1-only build
+- Authored fixture pack (6 fixtures), replay harness (bridge 50), outcome contract (bridge 51)
+- Dry-run evidence report surface, replay capstone
+
+### Push Instructions
+
+Run `_github_backup.bat` from File Explorer on Windows. The sandbox proxy blocks direct push (403). The batch script is pre-configured with the correct branch/tag names.
+
+---
+
 ## Backup #25 — Real Capture User Handoff COMPLETE-ENOUGH (49 bridges, 8 branches)
 
 | Field | Value |
