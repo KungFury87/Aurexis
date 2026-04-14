@@ -162,3 +162,28 @@ Sole inventor and owner: Vincent Anderson.
 ## Honest Framing
 
 This is the **first official release** of Aurexis Core, in its current honest state. It is a narrow, law-bearing V1 Substrate Candidate — a foundation layer, not a finished system. The bridges are deterministic and verified; the pytest surface is green; the package is self-describing. The real-world camera validation step is the explicit next forward direction and requires user action (real capture photographs) rather than more code.
+
+---
+
+## Provenance / Copyright / Clean-Room Audit
+
+Before this release was tagged, the repository went through a repo-wide provenance and copyright-risk audit.
+
+Key findings:
+
+- **No third-party source code is shipped inside the ACOR-1 release zip.** All 67 source modules, 19 pytest test modules, and 61 standalone runners are authored by Vincent Anderson.
+- **One optional third-party dependency** is referenced through its public API only: **Pillow (PIL)**, used inside a `try` block in `raster_law_bridge_v1.py` with a full stdlib PNG-decode fallback. Pillow itself is not redistributed. Pillow is HPND-licensed.
+- **pytest** is optionally supported on the host. A lightweight pytest-compatible runner (`run_pytest_surface.py`) ships in the release and does not require pytest to be installed.
+- No `HIGH-RISK POSSIBLE COPY / PROTECTED CODE` findings in the release zip.
+- Personal items like `ChatGPT-*.json` conversation exports and legacy scratch files are **not** included in the release zip and have been added to `.gitignore` for public-repo hygiene.
+
+Full audit:
+
+- `00_PROJECT_CORE/CODE_PROVENANCE_AUDIT_V1.md` — human-readable audit report
+- `00_PROJECT_CORE/CODE_PROVENANCE_AUDIT_V1.json` — machine-readable audit summary
+- `00_PROJECT_CORE/THIRD_PARTY_LICENSE_NOTES_V1.md` — third-party usage notes
+- `00_PROJECT_CORE/CLEAN_ROOM_REMEDIATION_LOG_V1.md` — decision log for this pass
+
+Honest disclaimer: this audit is an engineering-grade repo review, not a formal legal opinion. See each document for full framing.
+
+License: see `LICENSE` at repo root (© 2026 Vincent Anderson, all rights reserved).

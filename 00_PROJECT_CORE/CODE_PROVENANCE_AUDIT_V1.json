@@ -1,0 +1,114 @@
+{
+  "audit_name": "Aurexis Core V1 Substrate Candidate — Provenance Audit",
+  "audit_version": "V1.0",
+  "audit_date": "2026-04-14",
+  "audited_by": "engineering repo review (not a formal legal opinion)",
+  "owner": "Vincent Anderson",
+  "release": "Aurexis Core Official Release 1 — V1 Substrate Candidate",
+  "release_short_label": "ACOR-1",
+  "release_tag": "core-v1-substrate-candidate-or1",
+  "scope": "ACOR-1 release zip contents only (188 files)",
+  "release_zip_files": 188,
+  "findings": [
+    {
+      "area": "V1 source modules (src/aurexis_lang/)",
+      "file_count": 67,
+      "risk": "LOW_RISK_CLEARLY_ORIGINAL",
+      "action": "retained",
+      "note": "Authored by Vincent Anderson. No external imports except optional Pillow (see below)."
+    },
+    {
+      "area": "Pillow usage in raster_law_bridge_v1.py",
+      "file_count": 1,
+      "risk": "THIRD_PARTY_BUT_APPARENTLY_ACCEPTABLE",
+      "action": "retained",
+      "note": "Optional try/except import with stdlib fallback. Public API only. HPND license. No source redistribution."
+    },
+    {
+      "area": "Standalone runners (run_v1_*.py, run_pytest_surface.py)",
+      "file_count": 62,
+      "risk": "LOW_RISK_CLEARLY_ORIGINAL",
+      "action": "retained",
+      "note": "Authored project runners."
+    },
+    {
+      "area": "Pytest test modules (tests/)",
+      "file_count": 19,
+      "risk": "LOW_RISK_CLEARLY_ORIGINAL",
+      "action": "retained",
+      "note": "Authored project tests. Uses pytest public API; pytest itself is not shipped."
+    },
+    {
+      "area": "Top-level truth surface documentation",
+      "file_count": 38,
+      "risk": "LOW_RISK_CLEARLY_ORIGINAL",
+      "action": "retained",
+      "note": "Authored project documentation."
+    }
+  ],
+  "repo_tree_flags": [
+    {
+      "path": "ChatGPT-*.json and 03_HANDOFFS_AND_CONTEXT/ChatGPT-*.json",
+      "risk": "PROVENANCE_UNCLEAR_NOT_FOR_PUBLIC_RELEASE",
+      "action": "added to .gitignore",
+      "in_release_zip": false,
+      "note": "Personal ChatGPT conversation exports. Never inspected in audit. Flagged for privacy/public-repo hygiene."
+    },
+    {
+      "path": "ziqHxpn5",
+      "risk": "GENERATED_TOOL_OUTPUT",
+      "action": "added to .gitignore",
+      "in_release_zip": false,
+      "note": "Misnamed legacy local snapshot zip of project's own files. Not third-party."
+    },
+    {
+      "path": ".buildozer/",
+      "risk": "GENERATED_TOOL_OUTPUT",
+      "action": "added to .gitignore",
+      "in_release_zip": false,
+      "note": "Buildozer/python-for-android local toolchain scratch directory."
+    },
+    {
+      "path": "BACKUPS/ and 01_RELEASES/",
+      "risk": "LOW_RISK_CLEARLY_ORIGINAL",
+      "action": "retained",
+      "in_release_zip": false,
+      "note": "Project's own older release zips."
+    }
+  ],
+  "third_party_dependencies_shipped_in_zip": [],
+  "third_party_dependencies_optionally_used": [
+    {
+      "name": "Pillow",
+      "license": "HPND",
+      "usage": "public-API call with stdlib fallback in raster_law_bridge_v1.py",
+      "shipped_in_zip": false
+    },
+    {
+      "name": "pytest",
+      "license": "MIT",
+      "usage": "optional host-side test runner; fallback run_pytest_surface.py ships in zip",
+      "shipped_in_zip": false
+    }
+  ],
+  "remediation_summary": {
+    "clean_room_rewrites_performed": 0,
+    "files_removed_from_release_zip": 0,
+    "files_retained_as_authored": 188,
+    "repo_tree_files_added_to_gitignore": 5,
+    "new_files_created": [
+      "LICENSE",
+      ".gitignore",
+      "00_PROJECT_CORE/CODE_PROVENANCE_AUDIT_V1.md",
+      "00_PROJECT_CORE/CODE_PROVENANCE_AUDIT_V1.json",
+      "00_PROJECT_CORE/THIRD_PARTY_LICENSE_NOTES_V1.md",
+      "00_PROJECT_CORE/CLEAN_ROOM_REMEDIATION_LOG_V1.md"
+    ]
+  },
+  "remaining_uncertainty": [
+    "This audit is an engineering-grade review, not a formal legal opinion.",
+    "ChatGPT-*.json personal exports were intentionally NOT opened or inspected.",
+    "Final public-redistribution legal determination is the owner's responsibility."
+  ],
+  "honest_verdict": "ACOR-1 release zip contains no third-party source code and no HIGH-RISK / PROVENANCE-UNCLEAR findings. Clean-room rewrites were not needed. Repo-tree hygiene items are addressed via .gitignore."
+}
