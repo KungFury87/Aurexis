@@ -5,6 +5,50 @@
 
 ---
 
+## Backup #27 — Final Package Handoff Hardening — HANDOFF-READY (51 bridges, 9 branches)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260413-193001` |
+| Remote tag name | `backup-v1-substrate-candidate-20260413-193001` |
+| Pushed commit hash | `df10653` (pending user push — sandbox proxy 403) |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 13, 2026 (pending) |
+
+### What This Backup Contains
+
+Snapshot at the Final Package Handoff Hardening milestone. Release-hardened handoff-ready V1 substrate candidate. Includes:
+
+- 51 bridge milestones across 9 branches
+- 6358 standalone assertions across 61 runners
+- 67 source modules (64 V1 + 2 fixture support + __init__.py)
+- Nine branch capstones verified
+- Zip with 184 files (~2.2 MB) including full truth surface, pytest discovery, package map, handoff capstone
+- Human-facing truth surface: ROADMAP, PROJECT_STATUS, manifests, audit capstone, release hardening, backup record
+- Real-capture intake surface: session template (MD+JSON), fixture pack JSON, intake pack, handoff surface
+- Pytest discovery: 19 test modules + conftest.py + __init__.py
+- Package map and handoff capstone
+
+### Push Instructions
+
+Run `_github_backup.bat` from File Explorer on Windows. The sandbox proxy blocks direct push (403). The batch script is pre-configured with the correct branch/tag names.
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260413-193001
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260413-193001
+# Delete local branch (optional):
+git branch -D backup/v1-substrate-candidate-20260413-193001
+# Delete local tag (optional):
+git tag -d backup-v1-substrate-candidate-20260413-193001
+```
+
+---
+
 ## Backup #26 — Observed-Evidence Replay Readiness COMPLETE-ENOUGH (51 bridges, 9 branches)
 
 | Field | Value |
