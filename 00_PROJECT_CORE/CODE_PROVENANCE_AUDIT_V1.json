@@ -110,5 +110,15 @@
     "ChatGPT-*.json personal exports were intentionally NOT opened or inspected.",
     "Final public-redistribution legal determination is the owner's responsibility."
   ],
-  "honest_verdict": "ACOR-1 release zip contains no third-party source code and no HIGH-RISK / PROVENANCE-UNCLEAR findings. Clean-room rewrites were not needed. Repo-tree hygiene items are addressed via .gitignore."
+  "honest_verdict": "ACOR-1 release zip contains no third-party source code and no HIGH-RISK / PROVENANCE-UNCLEAR findings. Clean-room rewrites were not needed. Repo-tree hygiene items are addressed via .gitignore.",
+  "re_verification": {
+    "date": "2026-04-14",
+    "pass_number": 2,
+    "scope": "Full re-scan of 66 V1 source modules + 2 fixture-support modules + pytest tests + standalone runners + run_pytest_surface.py",
+    "external_imports_found_in_release_zip": {"PIL": "optional, public-API only, stdlib fallback, HPND license"},
+    "risky_copy_markers_found": 0,
+    "new_third_party_source_introduced": 0,
+    "new_clean_room_rewrites_required": 0,
+    "verdict": "First-pass audit findings remain valid; ACOR-1 release zip still clean for public release under original framing."
+  }
 }

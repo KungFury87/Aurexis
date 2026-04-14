@@ -2,6 +2,7 @@
 
 **Owner:** Vincent Anderson
 **Date:** April 14, 2026
+**Re-verified:** April 14, 2026 (second pass — see "Re-Verification Stamp" at the bottom of this file)
 **Scope:** All code and artifacts shipped in `aurexis_core_v1_substrate_candidate_locked.zip` (the ACOR-1 release zip)
 **Companion docs:** `THIRD_PARTY_LICENSE_NOTES_V1.md`, `CLEAN_ROOM_REMEDIATION_LOG_V1.md`
 
@@ -161,6 +162,24 @@ The project owner is responsible for any final legal determination before public
 | Files flagged for public-repo hygiene (not in zip) | ChatGPT JSON exports, ziqHxpn5, .buildozer/ |
 
 **Audit verdict:** The ACOR-1 release zip is clean-enough for public release under Vincent Anderson's sole authorship, with Pillow noted as an optional permissively-licensed dependency. Repo-tree items flagged for `.gitignore` have been addressed.
+
+---
+
+## Re-Verification Stamp
+
+**Re-verified on:** April 14, 2026 (second pass, post-ACOR-1 release sync)
+
+**Re-verification scope:** Full re-scan of all 66 V1 source modules + 2 fixture-support modules + pytest tests + standalone runners + `run_pytest_surface.py` for:
+- external (non-stdlib, non-`aurexis_lang`) imports
+- copy/provenance markers: "Stack Overflow", "stackoverflow", "adapted from", "based on code from", "originally from", "copied from", "SPDX-License", "Licensed under", and URL-style attributions to github/pypi/gist
+
+**Re-verification findings:**
+- **External imports in release-zip code:** 1 (unchanged) — `PIL` (Pillow), inside a `try` block in `raster_law_bridge_v1.py` with a working stdlib fallback. Already documented in `THIRD_PARTY_LICENSE_NOTES_V1.md`.
+- **Risky copy markers:** 0.
+- **New third-party code introduced since the first audit:** 0.
+- **New clean-room rewrites required:** 0.
+
+**Re-verification verdict:** The audit findings from the first pass remain valid. The ACOR-1 release zip still ships no third-party source code and contains no HIGH-RISK / PROVENANCE-UNCLEAR findings. Repo-tree hygiene items (ChatGPT-*.json, ziqHxpn5, .buildozer/) remain `.gitignore`-flagged and not shipped.
 
 ---
 
