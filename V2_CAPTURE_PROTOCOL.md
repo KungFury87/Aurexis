@@ -60,10 +60,11 @@ The screen is the **sole artifact presenter**. Its role is:
 - Hold display parameters constant across the session and across pilot/validation runs
 
 **Screen — locked:**
-- **Monitor:** MSI curved monitor, ~23" class (exact model recorded in `session_manifest.json` at session time; treat the unit as fixed for the duration of V2)
-- **Panel output:** SDR only (HDR output OFF)
-- **OS:** Windows on the capture machine (prior context = Windows 11; verify and record the exact version in the session manifest)
-- **OS display scaling:** the system default on the capture machine at V2-M1 lock time (prior context = 125%). Whatever value is set at first pilot session is the locked V2 scaling; do not change it between pilot and validation.
+- **Monitor:** **MSI G27C4X** — 27" curved, confirmed via computer-use on 2026-04-14 (panel type / native resolution / native refresh rate: recorded per session from the MSI OSD at pilot start; treat the unit as fixed for the duration of V2).
+- **Dual-monitor setup:** Vincent's workstation has **two G27C4X units** attached. The **capture target monitor** is declared at pilot start (by port, position, or OSD label) and is the one displaying the benchmark artifact. The **secondary monitor** hosts the working tree / capture tooling and must be oriented or positioned so it does not appear in the capture frame or create reflections onto the capture path.
+- **Panel output:** SDR only (HDR output OFF).
+- **OS:** **Windows 11**, confirmed via computer-use on 2026-04-14 (exact build recorded at pilot start).
+- **OS display scaling:** the system default on the capture machine at V2-M1 lock time (prior context = 125%; **OSD/Settings verification at pilot start**, and the verified value is frozen into `V2_CAPTURE_PROTOCOL.md` session-scoped metadata for the remainder of V2). Do not change scaling between pilot and validation.
 - **Browser / viewer zoom:** 100% / fit-to-native; artifact displayed full-screen with black padding
 - **Brightness:** monitor's current default setting, unchanged throughout V2. If the OSD shows a numeric value, record it in the session manifest. Do not auto-adjust between pilot and validation.
 - **Night light / blue-light filter / color profile tweaks:** OFF
@@ -257,11 +258,11 @@ A **session passes** intake if it produced ≥ N usable captures for its artifac
 | Phone format | Device-default high-quality still (JPEG unless device writes otherwise) |
 | HDR | OFF |
 | Flash / Night / Scene Optimizer | OFF |
-| Monitor | MSI curved ~23" class (exact model recorded per session) |
+| Monitor | MSI G27C4X, 27" curved (dual-monitor setup; capture target monitor declared at pilot start) |
 | Monitor brightness | Current default, unchanged for all V2 |
 | Monitor HDR | OFF |
-| OS | Windows on capture workstation (version recorded per session; prior context = Win 11) |
-| OS display scaling | System default at lock time (prior context = 125%); unchanged for all V2 |
+| OS | Windows 11 (confirmed 2026-04-14; exact build recorded at pilot start) |
+| OS display scaling | System default (prior context 125%; verified at pilot start and frozen for all V2) |
 | Room | Vincent's home desk / home office |
 | Session window | Declared consistent indoor window, identical between pilot and validation |
 | Lighting | Normal home-desk / home-office fixtures, identical between pilot and validation |
