@@ -5,6 +5,50 @@
 
 ---
 
+## Backup #28 — Pytest Surface Green Pass — HANDOFF-READY (51 bridges, 9 branches, 327/327 pytest)
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Remote branch name | `backup/v1-substrate-candidate-20260414-000001` |
+| Remote tag name | `backup-v1-substrate-candidate-20260414-000001` |
+| Pushed commit hash | `e726e47` (pending user push — sandbox proxy 403) |
+| Push method | Git Credential Manager (device auth) via batch script |
+| Push date | April 14, 2026 (pending) |
+
+### What This Backup Contains
+
+Snapshot at the Pytest Surface Green Pass milestone. Release-hardened handoff-ready V1 substrate candidate with replay result/contract structure alignment verified. Includes:
+
+- 51 bridge milestones across 9 branches
+- 6358 standalone assertions across 61 runners
+- 67 source modules (64 V1 + 2 fixture support + __init__.py)
+- Nine branch capstones verified
+- Zip with 185 files (~2.2 MB) including the lightweight `run_pytest_surface.py` pytest-compatible runner
+- Pytest surface: 327 passed, 0 failed across 19 test modules
+- Replay result structure aligned: `ReplayResult.stages` (not `stage_results`)
+- Replay contract structure aligned: `OutcomeContract.checks` (not `global_checks`), `ContractCheck.name` (not `check_name`)
+- Fixed `validate_single_outcome(result, fixture)` argument order
+
+### Push Instructions
+
+Run `_github_backup.bat` from File Explorer on Windows. The sandbox proxy blocks direct push (403). The batch script is pre-configured with the correct branch/tag names.
+
+### Deletion Commands
+
+```bash
+# Delete remote branch:
+git push origin --delete backup/v1-substrate-candidate-20260414-000001
+# Delete remote tag:
+git push origin --delete backup-v1-substrate-candidate-20260414-000001
+# Delete local branch (optional):
+git branch -D backup/v1-substrate-candidate-20260414-000001
+# Delete local tag (optional):
+git tag -d backup-v1-substrate-candidate-20260414-000001
+```
+
+---
+
 ## Backup #27 — Final Package Handoff Hardening — HANDOFF-READY (51 bridges, 9 branches)
 
 | Field | Value |
