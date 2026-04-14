@@ -1,7 +1,7 @@
 # AUREXIS CORE — Master Project Status
 **Owner:** Vincent Anderson
-**Last Updated:** April 13, 2026 — Final Package Handoff Hardening COMPLETE-ENOUGH
-**Status:** Release-hardened handoff-ready V1 Substrate Candidate. Fifty-one bridge milestones complete (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release + 4 observed evidence + 1 user handoff + 2 replay readiness). All nine branch capstones verified. Final handoff hardening complete. 6358 standalone assertions across 61 runners, all passing. 184-file zip package with full truth surface, pytest discovery, and package map.
+**Last Updated:** April 14, 2026 — Pytest Surface Green Pass COMPLETE-ENOUGH
+**Status:** Release-hardened handoff-ready V1 Substrate Candidate with green pytest surface. Fifty-one bridge milestones complete (18 static substrate + 10 temporal transport + 4 higher-order coherence + 4 view-dependent markers + 4 VSA cleanup + 4 integration/release + 4 observed evidence + 1 user handoff + 2 replay readiness). All nine branch capstones verified. Replay result / contract structure alignment verified. Package-level pytest surface: 327 passed, 0 failed across 19 test modules (clean-room verified). 6358 standalone assertions across 61 runners, all passing. 185-file zip package.
 
 ---
 

@@ -1,7 +1,7 @@
 # AUREXIS CORE — Post-Foundation Roadmap
 **Owner:** Vincent Anderson
 **Created:** April 8, 2026
-**Updated:** April 13, 2026 — Final Package Handoff Hardening COMPLETE-ENOUGH (51 bridges, handoff-ready)
+**Updated:** April 14, 2026 — Pytest Surface Green Pass COMPLETE-ENOUGH (51 bridges, handoff-ready, 327/327 pytest pass)
 **Status:** LOCKED — follow this order, do not deviate
 
 ---
@@ -444,6 +444,10 @@ After M11, the project entered the V1 Substrate Bridge phase — proving narrow 
 - **Final V1 Candidate Handoff Capstone:** FINAL_V1_CANDIDATE_HANDOFF_CAPSTONE.md — what is complete-enough, what still requires real captures, what is deferred.
 
 **Package state:** 184 files in zip. 32 .md docs, 3 .json files, 61 standalone runners, 21 pytest test files, 67 source modules. Clean-room verified.
+
+### Follow-up: Pytest Surface Green Pass (April 14, 2026)
+
+Replay result / contract test alignment fixed. Two pytest files (`test_intake_to_delta_replay_harness_v1.py`, `test_replay_outcome_contract_bridge_v1.py`) had wrong API field references: `stage_results` vs real `stages`, `global_checks` vs real `checks`, `check_name` vs real `name`, reversed arg order in `validate_single_outcome`. All fixed. `run_pytest_surface.py` lightweight pytest-compatible runner added (works without pytest installed). Full pytest surface: 327 passed, 0 failed across 19 test modules. Clean-room verified from fresh zip extraction. Final zip: 185 files.
 
 **Honest limits:** This is a packaging/documentation pass. No new bridges or algorithmic code. The package is now self-describing and handoff-ready but still requires user-supplied real capture data to exercise the pipeline against real-world inputs.
 
