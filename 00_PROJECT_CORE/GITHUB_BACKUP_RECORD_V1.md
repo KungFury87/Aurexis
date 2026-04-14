@@ -5,6 +5,72 @@
 
 ---
 
+## Backup / Release #30 — Aurexis Core Official Release 1 (ACOR-1) — V1 Substrate Candidate
+
+| Field | Value |
+|-------|-------|
+| Repository URL | https://github.com/KungFury87/Aurexis |
+| Release name | Aurexis Core Official Release 1 — V1 Substrate Candidate |
+| Short label | ACOR-1 |
+| Release branch | `backup/v1-substrate-candidate-20260414-120000` |
+| Official release tag | `core-v1-substrate-candidate-or1` |
+| Companion backup tag | `backup-v1-substrate-candidate-20260414-120000` |
+| Pushed commit hash | `87a2617` (pending user push — sandbox proxy 403) |
+| Push method | Git Credential Manager (device auth) via `_github_backup.bat` |
+| Push date | April 14, 2026 (pending) |
+
+### What This Release Contains
+
+First official public-facing release of Aurexis Core as a V1 Substrate Candidate. Includes:
+
+- Rewritten `README.md` at repo root as public landing page
+- `00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.md` — official release notes
+- Zip with 188 files (~2.2 MB) including `README.md` and `RELEASE_NOTES_ACOR-1.md` at top level
+- 51 bridge milestones across 9 branches, all capstones verified
+- 6,358 standalone assertions across 61 runners, all passing
+- 67 source modules, 19 pytest test modules
+- Pytest surface: 327 passed, 0 failed (clean-room verified)
+
+This is NOT full Aurexis Core completion. It is the first official release of the V1 Substrate Candidate in its current honest state.
+
+### Push Instructions
+
+Run `_github_backup.bat` from File Explorer on Windows. The batch script now also pushes the official release tag `core-v1-substrate-candidate-or1`.
+
+### Verification Commands (run after push)
+
+```
+git ls-remote origin backup/v1-substrate-candidate-20260414-120000
+git ls-remote origin refs/tags/core-v1-substrate-candidate-or1
+git ls-remote origin refs/tags/backup-v1-substrate-candidate-20260414-120000
+```
+
+### Release Removal / Revision Commands
+
+```bash
+# Remove official release tag:
+git push origin --delete core-v1-substrate-candidate-or1
+git tag -d core-v1-substrate-candidate-or1
+
+# Remove companion backup tag:
+git push origin --delete backup-v1-substrate-candidate-20260414-120000
+git tag -d backup-v1-substrate-candidate-20260414-120000
+
+# Remove release branch (optional):
+git push origin --delete backup/v1-substrate-candidate-20260414-120000
+git branch -D backup/v1-substrate-candidate-20260414-120000
+```
+
+### GitHub Release Object
+
+If creating a GitHub Release object manually through the GitHub UI, use:
+- Tag: `core-v1-substrate-candidate-or1`
+- Title: `Aurexis Core Official Release 1 — V1 Substrate Candidate`
+- Body: contents of `00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.md`
+- Attach: `00_PROJECT_CORE/aurexis_core_v1_substrate_candidate_locked.zip`
+
+---
+
 ## Backup #29 — FINALIZED V1 Substrate Candidate — Freeze/Release Polish (51 bridges, 9 branches, 327/327 pytest, truth-surface polished)
 
 | Field | Value |

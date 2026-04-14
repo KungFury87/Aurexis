@@ -1,13 +1,14 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM ── Aurexis Core GitHub Backup Script ──
-REM Pushes current repo state to a removable backup branch + tag
-REM Final Package Handoff Hardening — Release-Hardened V1 Substrate Candidate (51 bridges, 61 runners)
+REM ── Aurexis Core GitHub Backup / Release Script ──
+REM Pushes current repo state to the official release branch + backup tag + official release tag
+REM Aurexis Core Official Release 1 (ACOR-1) — V1 Substrate Candidate (51 bridges, 61 runners, 327/327 pytest)
 
 set "REPO_DIR=%~dp0"
 set "BRANCH=backup/v1-substrate-candidate-20260414-120000"
 set "TAG=backup-v1-substrate-candidate-20260414-120000"
+set "RELEASE_TAG=core-v1-substrate-candidate-or1"
 set "LOG=%REPO_DIR%_backup_log.txt"
 set "GCM_GITHUBAUTHMODE=device"
 
@@ -48,15 +49,21 @@ if exist ".git" (
     git push -u origin "%BRANCH%" --force >> "%LOG%" 2>&1
     echo Push branch exit code: !errorlevel! >> "%LOG%"
 
-    REM Push tag
+    REM Push backup tag
     echo Pushing tag... >> "%LOG%"
     git push origin "%TAG%" --force >> "%LOG%" 2>&1
     echo Push tag exit code: !errorlevel! >> "%LOG%"
+
+    REM Push official release tag
+    echo Pushing official release tag %RELEASE_TAG%... >> "%LOG%"
+    git push origin "%RELEASE_TAG%" --force >> "%LOG%" 2>&1
+    echo Push release tag exit code: !errorlevel! >> "%LOG%"
 
     REM Verify
     echo Verifying remote... >> "%LOG%"
     git ls-remote origin "%BRANCH%" >> "%LOG%" 2>&1
     git ls-remote origin "refs/tags/%TAG%" >> "%LOG%" 2>&1
+    git ls-remote origin "refs/tags/%RELEASE_TAG%" >> "%LOG%" 2>&1
 
     echo ============================================ >> "%LOG%"
     echo DONE >> "%LOG%"
