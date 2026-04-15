@@ -11,7 +11,7 @@
 
 ## What Aurexis Core Is
 
-Aurexis Core is a new kind of programming language and computer interface layer with the physical world. The central idea:
+Aurexis Core is a new kind of Engine and computer interface layer with the physical world. The central idea:
 
 > **Aurexis Core is the code that sits between a computer's optic nerve and its brain.**
 
@@ -20,7 +20,7 @@ Aurexis Core is a new kind of programming language and computer interface layer 
 - The **phoxel field** is the machine's immediate observed stream
 - **Core** is the law that organizes that stream into structured, bounded, machine-usable reality
 
-This is not image processing. It is the deeper language layer for machine vision, grounded in physics, light, and structured observation.
+This is not image processing. It is the deeper Engine layer for machine vision, grounded in physics, light, and structured observation.
 
 ## What This Release Is
 

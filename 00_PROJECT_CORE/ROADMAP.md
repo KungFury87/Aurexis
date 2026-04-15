@@ -174,7 +174,7 @@ executable_reached, within_tech_floor).
 
 ### Milestone 11: Debugger and Inspector Tools — ✅ COMPLETE
 **Completed:** April 9, 2026
-**Priority:** SIXTH — development tools for the language
+**Priority:** SIXTH — development tools for the Engine
 
 **What:** Tools for developers (starting with Vincent) to step through
 Aurexis programs, inspect state, and diagnose issues.

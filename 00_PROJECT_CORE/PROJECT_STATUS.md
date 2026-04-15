@@ -7,7 +7,7 @@
 
 ## What Aurexis Core Is
 
-Aurexis Core is a **programming language and new computer interface layer** with the physical world.
+Aurexis Core is an **Engine and new computer interface layer** with the physical world.
 
 The core conceptual sentence: **Aurexis Core is the code that sits between a computer's optic nerve and its brain.**
 
@@ -16,7 +16,7 @@ The core conceptual sentence: **Aurexis Core is the code that sits between a com
 - The **phoxel field** is the machine's immediate observed stream
 - **Core** is the law that organizes that stream into structured, bounded, machine-usable reality
 
-This is not image processing. It is the deeper language layer for machine vision grounded in physics, light, and structured observation. The long-term vision is for Aurexis Core to become the underlying code of vision for computers.
+This is not image processing. It is the deeper Engine layer for machine vision grounded in physics, light, and structured observation. The long-term vision is for Aurexis Core to become the underlying code of vision for computers.
 
 ---
 
@@ -50,7 +50,7 @@ This is not image processing. It is the deeper language layer for machine vision
 1. **Phoxel Record** — Every visual claim must have pixel coordinates, camera metadata, evidence chain, timestamp. No synthetic data.
 2. **Native Relations** — Spatial relationships must be physically measurable (distance in px, angle in degrees). No abstract semantics.
 3. **World/Image Authority** — World is primary authority. Image is primary access. Neither overrides the other. Model cannot suppress observed image.
-4. **Executable Promotion** — Things only become "executable" after passing: evidence validated + multi-frame consistent + geometric coherent + cross-register consistent + language legal + bounded inference + confidence ≥ 0.7.
+4. **Executable Promotion** — Things only become "executable" after passing: evidence validated + multi-frame consistent + geometric coherent + cross-register consistent + law legal + bounded inference + confidence ≥ 0.7.
 5. **Illegal Inference** — Nine named blocked claim rules. Cannot claim world truth from single observation, cannot claim permanence from one frame, cannot claim identity from resemblance alone, etc.
 6. **Current Tech Floor** — Must run on current mobile hardware (≤30s processing, ≤500MB RAM, ≤5% battery/min). No exotic hardware dependencies.
 7. **Future Tech Ceiling** — Better hardware must improve precision/robustness without requiring core law rewrite or ontology change.
