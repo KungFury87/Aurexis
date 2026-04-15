@@ -1,5 +1,39 @@
 {
-  "_template_note": "Shape reference only. Copy this into V2_PILOT_RUN/raw/<session_id>/session_manifest.json at session close and fill in every field. Matches V2_CAPTURE_PROTOCOL.md §7. Delete this _template_note key before saving the real manifest.",
+  "_template_note": "Shape reference only. Copy this into V2_PILOT_RUN/raw/<session_id>/session_manifest.json at session close and fill in every field. Matches V2_CAPTURE_PROTOCOL.md §7. Delete this _template_note key AND the _first_pilot_guidance key before saving the real manifest.",
+
+  "_first_pilot_guidance": {
+    "pilot_code": "P1",
+    "session_plan": [
+      "P1-S01: b1-clean-solid",
+      "P1-S02: b1-edge-half",
+      "P1-S03: b1-grid-64",
+      "P1-S04: b1-gradient-h",
+      "P1-S05: b1-corners-fiducials"
+    ],
+    "n_captures_per_session": 3,
+    "viewer_locked_for_p1": "Windows Photos, full-screen (F11)",
+    "copy_fields_p1s01_to_p1s0n": [
+      "device.*",
+      "screen.*",
+      "environment.*",
+      "operator",
+      "rig.mount_type",
+      "rig.rig_profile_id",
+      "rig.phone_to_screen_distance",
+      "rig.orientation",
+      "rig.framing_fill_range"
+    ],
+    "fields_that_change_per_session": [
+      "session_id",
+      "benchmark_artifact_id",
+      "benchmark_artifact_checksum",
+      "captured_at_session_start",
+      "captured_at_session_end",
+      "captures",
+      "notes"
+    ],
+    "benchmark_checksum_source": "V2_BENCHMARK_SET/V2_BENCHMARK_SET_MANIFEST.json -> artifacts[].sha256 matching the artifact_id"
+  },
 
   "session_id": "V2S-YYYYMMDD-HHMM-<benchmark_artifact_id>-rigHH01-<pass_label>",
   "protocol_version": "V2-CAP-PROTO-1.0-LOCK",
