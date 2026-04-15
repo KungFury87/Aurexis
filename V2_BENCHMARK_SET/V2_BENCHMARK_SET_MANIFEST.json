@@ -1,0 +1,89 @@
+{
+  "set_id": "V2-BENCH-B1",
+  "set_version": "1.0.0",
+  "locked_on": "2026-04-14",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "resolution_note": "Locked target render resolution. Assumed native for MSI G27C4X per prior context (1920x1080). If pilot-start verification shows a different native resolution, the set must be re-rendered and the set_version must be bumped.",
+  "encoder": {
+    "name": "aurexis_lang.v2_benchmark.png_writer.encode_rgb_png",
+    "strategy": "uncompressed zlib (DEFLATE stored blocks)",
+    "reason": "Byte-deterministic across Python versions, platforms, and zlib implementations, so SHA-256 values stay stable."
+  },
+  "artifacts": [
+    {
+      "artifact_id": "b1-clean-solid",
+      "family": "B1-base-static-screen",
+      "generator_module": "aurexis_lang.v2_benchmark.generators",
+      "generator_function": "gen_clean_solid",
+      "generator_params": {
+        "gray_level": 128
+      },
+      "rendered_path": "V2_BENCHMARK_SET/assets/b1-clean-solid.png",
+      "sha256": "9b25e7fb7c48f147d94594ef514759844d31e146a072f6d379a9e7d4e7705eb5",
+      "byte_size": 6222418,
+      "measurement_target": "clean-detection baseline / sensor noise floor",
+      "mandatory": true,
+      "notes": "Solid mid-gray fill. Captures the noise floor and the AWB baseline before any spatial features are involved."
+    },
+    {
+      "artifact_id": "b1-edge-half",
+      "family": "B1-base-static-screen",
+      "generator_module": "aurexis_lang.v2_benchmark.generators",
+      "generator_function": "gen_edge_half",
+      "generator_params": {},
+      "rendered_path": "V2_BENCHMARK_SET/assets/b1-edge-half.png",
+      "sha256": "14218a94061d6ddae815cbc6c50371ef3159010a048d8df15ec4e9835124767b",
+      "byte_size": 6222418,
+      "measurement_target": "edge / boundary stability",
+      "mandatory": true,
+      "notes": "Sharp vertical edge at x = width // 2. Exercises edge detectors against a single high-contrast transition."
+    },
+    {
+      "artifact_id": "b1-grid-64",
+      "family": "B1-base-static-screen",
+      "generator_module": "aurexis_lang.v2_benchmark.generators",
+      "generator_function": "gen_grid_64",
+      "generator_params": {
+        "cell": 64
+      },
+      "rendered_path": "V2_BENCHMARK_SET/assets/b1-grid-64.png",
+      "sha256": "ef3a2588612bada51bf74afce2a51e11fe08549f89ae91c116e7d5bfe5cef889",
+      "byte_size": 6222418,
+      "measurement_target": "routing stability / moire observation",
+      "mandatory": true,
+      "notes": "64 px checkerboard. Reveals moire and aliasing between the panel pixel grid and the phone sensor grid."
+    },
+    {
+      "artifact_id": "b1-gradient-h",
+      "family": "B1-base-static-screen",
+      "generator_module": "aurexis_lang.v2_benchmark.generators",
+      "generator_function": "gen_gradient_h",
+      "generator_params": {},
+      "rendered_path": "V2_BENCHMARK_SET/assets/b1-gradient-h.png",
+      "sha256": "a33a0692501767d4b54d70c2690d37f50271ed85ca7fa209a23474ce5e0553f7",
+      "byte_size": 6222418,
+      "measurement_target": "gradient / signature stability",
+      "mandatory": true,
+      "notes": "Horizontal luminance ramp 0 -> 255. Surfaces display and sensor non-linearities and banding."
+    },
+    {
+      "artifact_id": "b1-corners-fiducials",
+      "family": "B1-base-static-screen",
+      "generator_module": "aurexis_lang.v2_benchmark.generators",
+      "generator_function": "gen_corners_fiducials",
+      "generator_params": {
+        "marker_size": 32,
+        "inset": 10
+      },
+      "rendered_path": "V2_BENCHMARK_SET/assets/b1-corners-fiducials.png",
+      "sha256": "3d3c178acac36d8f13eb6dde578b92b68274725c18aa26a4a7d111eb5a51a051",
+      "byte_size": 6222418,
+      "measurement_target": "angle / geometry baseline",
+      "mandatory": true,
+      "notes": "Four white corner markers on a black field. Marker centroids give a perspective / keystone reference."
+    }
+  ]
+}
