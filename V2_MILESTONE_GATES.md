@@ -8,7 +8,7 @@
 |---|---|---|---|
 | G0 | V2-M0 Charter Lock | **CLOSED** (2026-04-14) | `39d1c38` |
 | G1 | V2-M1 Capture Protocol | **CLOSED** (2026-04-14) | `19f2fa1` (bundled with paper dry-run + template + tightens) |
-| G2 | V2-M2 Benchmark Artifact Set | **CLOSED** (2026-04-14) | pending commit (B1 set locked, 5 mandatory artifacts, 21/21 V2 tests green, 636 total suite green) |
+| G2 | V2-M2 Benchmark Artifact Set | **CLOSED** (2026-04-14) | `75f0fec` (B1 set locked, 5 mandatory artifacts, 21/21 V2 tests green, 636 total suite green) |
 | G3 | V2-M3 First Capture Pilot | open | — |
 | G4 | V2-M4 Failure Taxonomy | open | — |
 | G5 | V2-M5 Evidence-Driven Calibration | open | — |
