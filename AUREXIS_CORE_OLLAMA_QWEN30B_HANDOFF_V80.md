@@ -42,13 +42,13 @@ If a decision would change project law, pause and ask Vincent right before the b
 ## 1. Canonical project identity
 
 ### What Aurexis Core fundamentally is
-Aurexis Core is a **programming language** and a **new computer interface layer with the physical world**.
+Aurexis Core is an **Engine** and a **new computer interface layer with the physical world**.
 
 It is meant to become the **underlying code of vision for computers**.
 
 The world is already governed by physics. Light is part of that physics. Humans can interpret visual information from that physical reality. Aurexis Core exists to let computers interpret that same visual information lawfully, at human-like scale or better, using current technology now and future technology later.
 
-This is not merely “image processing.” It is the deeper language layer for machine vision grounded in physics, light, and structured observation.
+This is not merely “image processing.” It is the deeper Engine layer for machine vision grounded in physics, light, and structured observation.
 
 ### Core conceptual sentence
 Aurexis Core is the code that sits conceptually in the stream **between a computer’s optic nerve and its brain**.
@@ -90,7 +90,7 @@ Desired future consequences of Core:
 - future software ecosystems built **on top of** the new computer vision law
 
 Important distinction:
-- **Core itself** = the language/law layer
+- **Core itself** = the Engine / law layer
 - **future apps/products built on top of Core** = downstream applications
 
 Do not collapse those into each other.
@@ -105,7 +105,7 @@ Aurexis Core must be:
 - possible with **current technology**
 - adoptable on **current mobile technology**
 - not capped by current technology
-- scalable upward into future cameras/sensors/robots without rewriting the core language law
+- scalable upward into future cameras/sensors/robots without rewriting the core Engine law
 
 Correct design stance:
 - **current-tech floor**
@@ -321,7 +321,7 @@ Best honest framing:
 - it has a serious visual/runtime spine
 - it already contains meaningful law-facing code
 - it contains a large amount of evidence/reporting/export/checklist/health-pack infrastructure
-- it is still **not** the completed final machine-vision language promised by the long-term vision
+- it is still **not** the completed final machine-vision Engine promised by the long-term vision
 
 ### The repo is farther along than a toy
 Already present in real code:
@@ -351,7 +351,7 @@ Still not honestly proven as fully complete:
 - complete multi-frame and world strengthening rules
 - final transform-heavy semantics
 - fully earned broad physical-world trust
-- final public-ready machine-vision language implementation
+- final public-ready machine-vision Engine implementation
 
 ---
 
@@ -385,7 +385,7 @@ This is one of the most important inflection points.
 
 From V21 onward, the project was reclassified:
 - the old repo became implementation substrate, not project-defining truth
-- Core was reaffirmed as a world-anchored, image-accessed language under physics/current tech
+- Core was reaffirmed as a world-anchored, image-accessed Engine under physics/current tech
 - lawful phoxel schema was added
 - later token/runtime/output layers were forced to inherit that law more honestly
 
@@ -470,7 +470,7 @@ These are **inferred operational percentages**, not mystical truth. They are int
 
 Reason:
 - the repo now has broad real code coverage across extraction, runtime, reporting, export, and verification surfaces
-- but there are still important deep-language and live-world gaps
+- but there are still important deep-Engine and live-world gaps
 
 ### Law-grounded prototype maturity
 **~68%**
@@ -525,7 +525,7 @@ Key files:
 - `transforms.py`
 - `weak_signal_recovery.py`
 
-### Language assembly / meaning / execution
+### Engine assembly / meaning / execution
 - `tokenization.py`
 - `token_disambiguation.py`
 - `statement_layout.py`
@@ -675,7 +675,7 @@ A local model must not drift into false completion here.
 - full raw-video/live-camera machine-vision runtime is incomplete
 - deeper physical-world trust is incomplete
 - final transform-heavy semantics are incomplete
-- full final language implementation against Vincent’s long-term vision is incomplete
+- full final Engine implementation against Vincent’s long-term vision is incomplete
 
 ### Common drift risks
 Do **not** drift into:
@@ -755,7 +755,7 @@ Treat these as active project truths unless Vincent changes them.
 ### Ownership
 Vincent is the sole inventor and owner of:
 - the original Aurexis visual encoding system
-- the new Aurexis Core visual coding language
+- the new Aurexis Core visual Engine
 
 ### Copyright notice preference
 Use notices like:
@@ -823,5 +823,5 @@ Before the model starts coding, it should be able to say “yes” to all of the
 
 ## 24. Bottom-line summary for the local model
 
-Aurexis Core is a world-anchored, image-accessed, physics-grounded machine-vision language project. The current repo is a serious prototype substrate with real law-facing runtime code, strong reporting/export infrastructure, repaired fixture lineage, and a newly added repo verification surface. It is not yet the final embodiment of Vincent’s full vision. Continue from the next real seam honestly, preserve the project law, verify what you change, and report in the required format.
+Aurexis Core is a world-anchored, image-accessed, physics-grounded machine-vision Engine project. The current repo is a serious prototype substrate with real law-facing runtime code, strong reporting/export infrastructure, repaired fixture lineage, and a newly added repo verification surface. It is not yet the final embodiment of Vincent’s full vision. Continue from the next real seam honestly, preserve the project law, verify what you change, and report in the required format.
 
