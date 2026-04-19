@@ -295,6 +295,120 @@ function validateFinderQuad(fids) {
   return true;
 }
 
+// --------------------------------------------------------------------------
+// BR orientation pattern detection
+// --------------------------------------------------------------------------
+
+/**
+ * The 5x5 orientation bitmap expected at the bottom-right corner.
+ * 1 = dark, 0 = light.
+ */
+const ORIENT_BITMAP = [
+  [1,1,1,1,1],
+  [1,0,0,0,1],
+  [1,0,1,0,1],
+  [1,0,0,0,1],
+  [1,1,1,1,1],
+];
+
+/**
+ * Score a candidate BR center by matching the 5x5 orientation pattern.
+ * Uses the grayscale image and estimated module size to check each cell.
+ *
+ * @param {Uint8Array} gray - grayscale image
+ * @param {number} W - image width
+ * @param {number} H - image height
+ * @param {number} cx - candidate center x
+ * @param {number} cy - candidate center y
+ * @param {number} modPx - estimated module size in pixels
+ * @param {number} threshold - binarization threshold
+ * @returns {number} score 0..1 (fraction of cells matching expected pattern)
+ */
+function scoreOrientAt(gray, W, H, cx, cy, modPx, threshold) {
+  let match = 0, total = 0;
+  for (let r = 0; r < 5; r++) {
+    for (let c = 0; c < 5; c++) {
+      // Sample center of this cell relative to the orient pattern center (cell 2,2)
+      const px = Math.round(cx + (c - 2) * modPx);
+      const py = Math.round(cy + (r - 2) * modPx);
+      if (px < 0 || py < 0 || px >= W || py >= H) continue;
+      const lum = gray[py * W + px];
+      const isDark = lum < threshold;
+      const shouldBeDark = ORIENT_BITMAP[r][c] === 1;
+      if (isDark === shouldBeDark) match++;
+      total++;
+    }
+  }
+  return total > 0 ? match / total : 0;
+}
+
+/**
+ * Search for the 5x5 orientation pattern near an estimated BR position.
+ * Returns the refined BR center or the original estimate if not found.
+ *
+ * @param {Uint8Array|Uint8ClampedArray} imgData - RGBA image data
+ * @param {number} W - image width
+ * @param {number} H - image height
+ * @param {object} estBR - { x, y } estimated BR center (parallelogram)
+ * @param {number} estModPx - estimated module size in image pixels
+ * @param {object} [opts]
+ * @param {number} [opts.searchRadius] - search radius in pixels (default: estModPx * 8)
+ * @param {number} [opts.step] - search step in pixels (default: max(1, estModPx/4))
+ * @param {number} [opts.minScore] - minimum match score to accept (default: 0.72)
+ * @returns {{ x: number, y: number, score: number, refined: boolean }}
+ */
+function detectOrientPattern(imgData, W, H, estBR, estModPx, opts = {}) {
+  const searchRadius = opts.searchRadius || Math.round(estModPx * 8);
+  const step = opts.step || Math.max(1, Math.round(estModPx / 4));
+  const minScore = opts.minScore || 0.72;
+
+  // Build grayscale for the search region
+  const gray = toGrayscale(imgData, W, H);
+  const threshold = otsuThreshold(gray, gray.length);
+
+  let bestScore = 0, bestX = estBR.x, bestY = estBR.y;
+
+  const x0 = Math.max(0, Math.round(estBR.x - searchRadius));
+  const x1 = Math.min(W - 1, Math.round(estBR.x + searchRadius));
+  const y0 = Math.max(0, Math.round(estBR.y - searchRadius));
+  const y1 = Math.min(H - 1, Math.round(estBR.y + searchRadius));
+
+  for (let py = y0; py <= y1; py += step) {
+    for (let px = x0; px <= x1; px += step) {
+      const s = scoreOrientAt(gray, W, H, px, py, estModPx, threshold);
+      if (s > bestScore) {
+        bestScore = s;
+        bestX = px;
+        bestY = py;
+      }
+    }
+  }
+
+  // Sub-pixel refinement: search ±step around best with step=1
+  if (bestScore >= minScore && step > 1) {
+    const rx0 = Math.max(0, Math.round(bestX - step));
+    const rx1 = Math.min(W - 1, Math.round(bestX + step));
+    const ry0 = Math.max(0, Math.round(bestY - step));
+    const ry1 = Math.min(H - 1, Math.round(bestY + step));
+    for (let py = ry0; py <= ry1; py++) {
+      for (let px = rx0; px <= rx1; px++) {
+        const s = scoreOrientAt(gray, W, H, px, py, estModPx, threshold);
+        if (s > bestScore) {
+          bestScore = s;
+          bestX = px;
+          bestY = py;
+        }
+      }
+    }
+  }
+
+  return {
+    x: bestX, y: bestY,
+    score: bestScore,
+    refined: bestScore >= minScore,
+  };
+}
+
 /**
  * Full finder detection: detect patterns, cluster, find triangles, validate with timing.
  *
@@ -318,33 +432,49 @@ function detectFinders(imgData, W, H, bounds, opts = {}) {
   if (triangles.length === 0) return null;
 
   const { computeHomography, applyHomography } = require("./homography");
-  const { computeSymbolLayout } = require("./format");
+  const { computeSymbolLayout, HD_CONFIGS } = require("./format");
+
+  // Candidate totalMod values: all known HD configs + estimate from module size
+  const candidateTotalMods = new Set();
+  for (const [, cfg] of Object.entries(HD_CONFIGS)) {
+    candidateTotalMods.add(cfg.grid + 16);
+  }
 
   for (let ti = 0; ti < triangles.length; ti++) {
     const tri = triangles[ti];
-    const br = {
+    const brEst = {
       x: tri.TR.x + tri.BL.x - tri.TL.x,
       y: tri.TR.y + tri.BL.y - tri.TL.y,
     };
     const avgMod = (tri.TL.estModSize + tri.TR.estModSize + tri.BL.estModSize) / 3;
 
+    // Attempt explicit BR detection via 5x5 orientation pattern search
+    const brResult = detectOrientPattern(imgData, W, H, brEst, avgMod);
+    const br = brResult.refined ? { x: brResult.x, y: brResult.y } : brEst;
+
     const fids = {
       TL: { x: tri.TL.x, y: tri.TL.y, size: tri.TL.estModSize * 7 },
       TR: { x: tri.TR.x, y: tri.TR.y, size: tri.TR.estModSize * 7 },
       BL: { x: tri.BL.x, y: tri.BL.y, size: tri.BL.estModSize * 7 },
-      BR: { x: br.x, y: br.y, size: avgMod * 5 },
+      BR: { x: br.x, y: br.y, size: avgMod * 5, orientScore: brResult.score, orientRefined: brResult.refined },
     };
 
     if (!validateFinderQuad(fids)) continue;
 
-    // Timing strip validation
+    // Also add the noisy estimate
     const topSpan = Math.hypot(fids.TR.x - fids.TL.x, fids.TR.y - fids.TL.y);
-    const estTotalMod = Math.round(topSpan / avgMod) + 7;
+    candidateTotalMods.add(Math.round(topSpan / avgMod) + 7);
 
-    if (estTotalMod > 50 && imgData) {
-      const testCanvasPx = estTotalMod * 8;
-      const testLayout = computeSymbolLayout(estTotalMod - 16, testCanvasPx);
-      const tqz = testLayout.qzPx, tmod = testLayout.modPx, ttot = testLayout.totalMod;
+    // Try-all-configs timing validation: test each candidate totalMod,
+    // accept the triangle if ANY config's timing strip scores above threshold.
+    // This avoids promoting a noisy estModSize into a hard format decision.
+    let bestTimPct = 0;
+
+    for (const ttot of candidateTotalMods) {
+      if (ttot < 30) continue;
+      const testCanvasPx = ttot * 8;
+      const testLayout = computeSymbolLayout(ttot - 16, testCanvasPx);
+      const tqz = testLayout.qzPx, tmod = testLayout.modPx;
       const testCanon = [
         { x: tqz + 3.5 * tmod, y: tqz + 3.5 * tmod },
         { x: tqz + (ttot - 3.5) * tmod, y: tqz + 3.5 * tmod },
@@ -353,27 +483,29 @@ function detectFinders(imgData, W, H, bounds, opts = {}) {
       ];
       const testSrc = [fids.TL, fids.TR, fids.BL, fids.BR];
       const testH = computeHomography(testCanon, testSrc);
-      if (testH) {
-        let timOk = 0, timBad = 0;
-        const sampleStep = Math.max(1, Math.floor((ttot - 15) / 20));
-        for (let m = 8; m < ttot - 7; m += sampleStep) {
-          const cx = tqz + m * tmod + tmod / 2;
-          const cy = tqz + 6 * tmod + tmod / 2;
-          const sp = applyHomography(testH, { x: cx, y: cy });
-          const rx = Math.round(sp.x), ry = Math.round(sp.y);
-          if (rx < 0 || ry < 0 || rx >= W || ry >= H) continue;
-          const idx = (ry * W + rx) * 4;
-          const lum = 0.299 * imgData[idx] + 0.587 * imgData[idx + 1] + 0.114 * imgData[idx + 2];
-          const isDark = lum < 128;
-          const shouldBeDark = (m % 2 === 0);
-          if (isDark === shouldBeDark) timOk++; else timBad++;
-        }
-        const timTotal = timOk + timBad;
-        const timPct = timTotal > 0 ? timOk / timTotal : 0;
-        if (timPct < timingThreshold) continue;
+      if (!testH) continue;
+
+      let timOk = 0, timBad = 0;
+      const sampleStep = Math.max(1, Math.floor((ttot - 15) / 20));
+      for (let m = 8; m < ttot - 7; m += sampleStep) {
+        const cx = tqz + m * tmod + tmod / 2;
+        const cy = tqz + 6 * tmod + tmod / 2;
+        const sp = applyHomography(testH, { x: cx, y: cy });
+        const rx = Math.round(sp.x), ry = Math.round(sp.y);
+        if (rx < 0 || ry < 0 || rx >= W || ry >= H) continue;
+        const idx = (ry * W + rx) * 4;
+        const lum = 0.299 * imgData[idx] + 0.587 * imgData[idx + 1] + 0.114 * imgData[idx + 2];
+        const isDark = lum < 128;
+        const shouldBeDark = (m % 2 === 0);
+        if (isDark === shouldBeDark) timOk++; else timBad++;
       }
+      const timTotal = timOk + timBad;
+      const timPct = timTotal > 0 ? timOk / timTotal : 0;
+      if (timPct > bestTimPct) bestTimPct = timPct;
+      if (bestTimPct >= timingThreshold) break; // early exit
     }
 
+    if (bestTimPct < timingThreshold) continue;
     return fids;
   }
 
@@ -389,5 +521,7 @@ module.exports = {
   clusterFinderCandidates,
   findFinderTriangles,
   validateFinderQuad,
+  scoreOrientAt,
+  detectOrientPattern,
   detectFinders,
 };

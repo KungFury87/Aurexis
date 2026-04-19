@@ -72,7 +72,11 @@ function decodeFrame(imgData, W, H, opts = {}) {
   const u0 = homography.applyHomography(Hmat, { x: 0, y: 0 });
   const u1 = homography.applyHomography(Hmat, { x: layout.modPx, y: 0 });
   const moduleScalePx = Math.hypot(u1.x - u0.x, u1.y - u0.y);
-  const radius = Math.max(1, Math.round(moduleScalePx / 3));
+  // Conservative radius: stay well inside module interior to avoid boundary
+  // bleeding from bilinear interpolation in warped images.
+  // moduleScalePx / 6 keeps the sampling area within ~33% of center.
+  // Allow radius=0 (single center pixel) for small modules.
+  const radius = Math.max(0, Math.floor(moduleScalePx / 6));
 
   const modules = new Uint8Array(totalModules);
   for (let r = 0; r < gs; r++) {

@@ -193,8 +193,11 @@ function rsDecode(received, nsym) {
 function hdRsEncode(data, rawBytes) {
   const nsym = 32;
   const blockSize = 255;
-  const numBlocks = Math.ceil(rawBytes / blockSize);
-  const frameSize = numBlocks * blockSize; // full interleaved frame (no truncation)
+  // Use floor: the RS frame must fit within rawBytes (the module grid capacity).
+  // ceil would create an extra block whose tail bytes exceed the grid and get
+  // silently lost during module packing, wasting RS correction budget on phantom zeros.
+  const numBlocks = Math.max(1, Math.floor(rawBytes / blockSize));
+  const frameSize = numBlocks * blockSize;
   const frame = new Uint8Array(frameSize);
   const blockK = blockSize - nsym;
 
@@ -215,7 +218,7 @@ function hdRsEncode(data, rawBytes) {
 function hdRsDecode(frame, rawBytes) {
   const nsym = 32;
   const blockSize = 255;
-  const numBlocks = Math.ceil(rawBytes / blockSize);
+  const numBlocks = Math.max(1, Math.floor(rawBytes / blockSize));
   const blockK = blockSize - nsym;
   const dataCapacity = blockK * numBlocks;
   const data = new Uint8Array(dataCapacity);

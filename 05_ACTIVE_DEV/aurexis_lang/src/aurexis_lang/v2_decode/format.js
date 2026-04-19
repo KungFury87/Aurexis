@@ -55,11 +55,12 @@ const L2_GRID_MODULES = 48;
  * @returns {object} layout with modPx, qzPx, totalMod, dataOriginPx
  */
 function computeSymbolLayout(dataModules, canvasPx) {
-  const totalMod = dataModules + 16;
-  const modPx = canvasPx / totalMod;
-  const qzPx = modPx; // 1-module quiet zone
-  const dataOriginPx = qzPx + 8 * modPx; // after quiet + finder(7) + timing(1)
-  return { modPx, qzPx, totalMod, dataOriginPx, canvasPx };
+  const totalMod = dataModules + 16; // grid + 2*(finder7 + separator1)
+  const qzPx = Math.round(canvasPx * 0.03); // quiet zone: 3% of canvas
+  const symbolPx = canvasPx - 2 * qzPx;
+  const modPx = symbolPx / totalMod;
+  const dataOriginPx = qzPx + 8 * modPx; // after quiet + finder(7) + separator(1)
+  return { modPx, qzPx, totalMod, symbolPx, dataOriginPx, canvasPx, dataModules };
 }
 
 /**
@@ -88,9 +89,13 @@ function hdCalcCapacity(config) {
   const totalModules = config.grid * config.grid;
   const rawBits = totalModules * config.bpm;
   const rawBytes = Math.floor(rawBits / 8);
-  const rsRatio = 223 / 255;
-  const dataBytes = Math.floor(rawBytes * rsRatio);
-  return { totalModules, rawBytes, dataBytes, rawBits };
+  // numBlocks must use floor to match hdRsEncode/hdRsDecode — the RS frame
+  // must fit entirely within the module grid's byte capacity.
+  const blockSize = 255;
+  const numBlocks = Math.max(1, Math.floor(rawBytes / blockSize));
+  const blockK = blockSize - 32; // 223 data bytes per block
+  const dataBytes = blockK * numBlocks;
+  return { totalModules, rawBytes, dataBytes, rawBits, numBlocks };
 }
 
 // --------------------------------------------------------------------------
