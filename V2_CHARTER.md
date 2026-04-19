@@ -75,6 +75,10 @@ V2 may not:
 
 V2 inherits V1's clean-room provenance audit standard. No copyrighted, proprietary, or licensed code enters V2 in a form that requires paid licenses or unsupplyable attribution. If protected code is ever detected, it is rewritten to clean-room or dropped. V2 is not actively hunting for protected code, but the standard is maintained.
 
+## Charter Amendments
+
+- **Amendment 1 (2026-04-18):** Decode engine track added. V2 builds a standalone, DOM-free decode engine module (`v2_decode/`) extracting Core-level decode logic from the E/D client. E/D client files remain untouched. See `V2_CHARTER_AMENDMENTS.md` for full details.
+
 ## Execution constraints
 
 - Solo-feasible end to end

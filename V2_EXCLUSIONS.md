@@ -13,7 +13,7 @@ The following are explicitly out of scope for V2. If any of these appear in a ta
 3. **Multi-phone as a requirement.** Additional devices may appear in optional later expansions but are never a V2 completion requirement.
 4. **Exotic optics.** No macro lenses, no lab-grade optics, no camera rigs beyond a stable consumer phone mount.
 5. **Broad new theory branching.** V2 does not spawn new Core branches, new bridge families, or new substrate categories. V2 exercises what V1 already substrates.
-6. **E/D work.** The Aurexis E/D track belongs to GPT. V2 does not touch E/D files, docs, or runners.
+6. **E/D client work.** V2 does not touch E/D client files (UI, camera management, APK, `aurexis_ed_unified.html`). V2 *does* build a standalone decode engine module (`v2_decode/`) that extracts and proves Core-level decode logic (finder detection, homography, format selection, module sampling, RS decode, frame fusion) as a testable, DOM-free module. The decode engine is Core, not E/D. *(Amended 2026-04-18 — see `V2_CHARTER_AMENDMENTS.md` §1.)*
 7. **Full Core completion.** V2 is a calibration candidate, not the final Core.
 8. **Modifications to the frozen V1 backup folder** (`C:\Users\vince\Desktop\Aurexis evolved\back again`). Reads only.
 9. **Rewriting V1 substrate modules.** V1 is frozen. V2 may add modules and add evidence; V2 does not alter V1 substrate source.

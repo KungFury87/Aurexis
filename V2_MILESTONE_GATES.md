@@ -16,6 +16,12 @@
 | G6 | V2-M6 Before/After Validation | open | — |
 | G7 | V2-M7 Controlled Expansion | open | — |
 | G8 | V2-M8 V2 Candidate Release | open | — |
+| **Decode Engine Track** | | | |
+| GD0 | V2-D0 Decode Engine Extraction | open | — |
+| GD1 | V2-D1 Synthetic Test Harness | open | — |
+| GD2 | V2-D2 GPT-Recommended Improvements | open | — |
+| GD3 | V2-D3 E/D Client Integration | open | — |
+| GD4 | V2-D4 Decode Engine Validation | open | — |
 
 
 Each milestone has an explicit gate. A milestone is not "complete" until its gate passes. Gate failure re-opens the milestone; it does not downgrade the definition.
@@ -139,6 +145,77 @@ Any gate-level check must verify this rule has not been violated before passing.
 
 ---
 
+---
+
+# Decode Engine Track Gates (Amendment 1 — 2026-04-18)
+
+## GD0 — Decode Engine Extraction Gate  *(V2-D0)*
+
+**Passes when:**
+- `05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/v2_decode/` exists with stage-separated modules
+- Each module is pure JS (no DOM, no `document`, no `window` references)
+- Module loads in Node via `require()` without error
+- Each public function is callable with synthetic inputs and returns structured output
+- GF/RS codec, finder detection, homography, format selection, module sampling, color classification, payload parsing are all present
+
+**Fails if:** any module has DOM dependencies, any function can't be called standalone, or any decode stage is missing.
+
+---
+
+## GD1 — Synthetic Test Harness Gate  *(V2-D1)*
+
+**Passes when:**
+- Test suite exists and exercises each decode stage independently
+- Synthetic artifact generator produces known grids with known RS encoding
+- Finder detection test finds finders in synthetic warped images
+- Format selection test picks correct config from candidate set
+- Homography test achieves <0.5 module sampling error on synthetic warp
+- RS decode test achieves byte-exact match on synthetic encoded data
+- End-to-end test: synthetic artifact → full decode → byte-exact match
+
+**Fails if:** any stage lacks test coverage, or end-to-end synthetic decode fails.
+
+---
+
+## GD2 — GPT-Recommended Improvements Gate  *(V2-D2)*
+
+**Passes when:**
+- Candidate-scored format selection implemented and tested
+- BR explicit detection implemented (parallelogram only as fallback)
+- Robust frame fusion implemented (quality-weighted, frame rejection)
+- Better finder filtering (2D template or quiet-zone) implemented
+- Before/after accuracy comparison documented on synthetic test set
+- No regression on GD1 test cases
+
+**Fails if:** any improvement causes regression, or improvements are untested.
+
+---
+
+## GD3 — E/D Client Integration Gate  *(V2-D3)*
+
+**Passes when:**
+- E/D client imports Core v2 decode module for decode path
+- Encode path unchanged
+- Client-side decode delegates to Core functions
+- APK builds and runs
+
+**Fails if:** decode path still uses inline client logic, or encode behavior changes.
+
+---
+
+## GD4 — Decode Engine Validation Gate  *(V2-D4)*
+
+**Passes when:**
+- At least one HD config achieves byte-exact decode from real S23 Ultra camera capture
+- Per-stage diagnostic output documented (finder confidence, timing scores, homography residuals, RS stats)
+- `V2_DECODE_VALIDATION_REPORT.md` exists with honest metrics
+
+**Fails if:** no real-camera decode succeeds, or metrics are fabricated.
+
+---
+
 ## Recommended first coding milestone after charter lock
 
 **V2-M2 — Benchmark Artifact Set Lock.** M1 is documentation (capture protocol). M2 is where V2 code first lands on disk: deterministic generators for the on-screen benchmark artifacts under `05_ACTIVE_DEV/aurexis_lang/src/aurexis_lang/v2_benchmark/`. M2 is the first gate that exercises V2 code and is the natural transition from planning into implementation.
+
+For the decode engine track, the first coding milestone is **V2-D0 (Decode Engine Extraction).**
