@@ -188,14 +188,95 @@ function rsDecode(received, nsym) {
 }
 
 // --------------------------------------------------------------------------
-// HD RS encode/decode (multi-block interleaved)
+// Spatial interleaver — pseudo-random byte permutation
+// Decorrelates spatially clustered errors across RS blocks.
+// Uses deterministic Fisher-Yates with seeded LCG.
+// --------------------------------------------------------------------------
+const _interleaveCache = new Map();
+
+function generateInterleaveTable(size) {
+  if (_interleaveCache.has(size)) return _interleaveCache.get(size);
+  const fwd = new Uint32Array(size);
+  for (let i = 0; i < size; i++) fwd[i] = i;
+  let state = (0x41555258 ^ size) >>> 0; // seed = "AURX" XOR size
+  for (let i = size - 1; i > 0; i--) {
+    state = ((state * 1664525 + 1013904223) & 0xFFFFFFFF) >>> 0;
+    const j = state % (i + 1);
+    const tmp = fwd[i]; fwd[i] = fwd[j]; fwd[j] = tmp;
+  }
+  const inv = new Uint32Array(size);
+  for (let i = 0; i < size; i++) inv[fwd[i]] = i;
+  const result = { fwd, inv };
+  _interleaveCache.set(size, result);
+  return result;
+}
+
+function interleaveFrame(frame, size) {
+  const { fwd } = generateInterleaveTable(size);
+  const out = new Uint8Array(frame.length);
+  for (let i = 0; i < size && i < frame.length; i++) out[fwd[i]] = frame[i];
+  for (let i = size; i < frame.length; i++) out[i] = frame[i];
+  return out;
+}
+
+function deinterleaveFrame(frame, size) {
+  const { inv } = generateInterleaveTable(size);
+  const out = new Uint8Array(frame.length);
+  for (let i = 0; i < size && i < frame.length; i++) out[inv[i]] = frame[i];
+  for (let i = size; i < frame.length; i++) out[i] = frame[i];
+  return out;
+}
+
+// --------------------------------------------------------------------------
+// Chase-II soft-decision RS decoding
+// Tries 2^K candidate codewords by flipping K least-reliable symbols.
+// --------------------------------------------------------------------------
+
+/**
+ * @param {Uint8Array} received - block to decode (length = blockSize)
+ * @param {number} nsym - parity symbols
+ * @param {Float32Array|null} reliability - per-symbol confidence (higher = more reliable)
+ * @param {Uint8Array|null} altValues - per-symbol alternative byte values
+ * @param {number} [K] - positions to trial-flip (default 4)
+ * @returns {object} { ok, data, corrected }
+ */
+function chaseRsDecode(received, nsym, reliability, altValues, K) {
+  K = K || 4;
+  const stdResult = rsDecode(received, nsym);
+  if (stdResult.ok) return stdResult;
+  if (!reliability || !altValues) return stdResult;
+
+  const n = received.length;
+  const indices = new Array(n);
+  for (let i = 0; i < n; i++) indices[i] = i;
+  indices.sort((a, b) => reliability[a] - reliability[b]);
+  const weakest = indices.slice(0, Math.min(K, n));
+  const numTrials = 1 << weakest.length;
+
+  let bestResult = stdResult;
+  let bestCorrected = Infinity;
+
+  for (let mask = 1; mask < numTrials; mask++) {
+    const trial = new Uint8Array(received);
+    for (let bit = 0; bit < weakest.length; bit++) {
+      if (mask & (1 << bit)) trial[weakest[bit]] = altValues[weakest[bit]];
+    }
+    const result = rsDecode(trial, nsym);
+    if (result.ok && result.corrected < bestCorrected) {
+      bestResult = result;
+      bestCorrected = result.corrected;
+      if (bestCorrected === 0) break;
+    }
+  }
+  return bestResult;
+}
+
+// --------------------------------------------------------------------------
+// HD RS encode/decode (multi-block interleaved + spatial interleaving)
 // --------------------------------------------------------------------------
 function hdRsEncode(data, rawBytes) {
   const nsym = 32;
   const blockSize = 255;
-  // Use floor: the RS frame must fit within rawBytes (the module grid capacity).
-  // ceil would create an extra block whose tail bytes exceed the grid and get
-  // silently lost during module packing, wasting RS correction budget on phantom zeros.
   const numBlocks = Math.max(1, Math.floor(rawBytes / blockSize));
   const frameSize = numBlocks * blockSize;
   const frame = new Uint8Array(frameSize);
@@ -212,13 +293,18 @@ function hdRsEncode(data, rawBytes) {
       frame[i * numBlocks + b] = encoded[i];
     }
   }
-  return { frame, numBlocks, nsym, blockSize, blockK, frameSize };
+
+  // Spatial interleaving: scatter frame bytes pseudo-randomly
+  const interleaved = interleaveFrame(frame, frameSize);
+  return { frame: interleaved, numBlocks, nsym, blockSize, blockK, frameSize };
 }
 
-function hdRsDecode(frame, rawBytes) {
+function hdRsDecode(frame, rawBytes, opts) {
+  opts = opts || {};
   const nsym = 32;
   const blockSize = 255;
   const numBlocks = Math.max(1, Math.floor(rawBytes / blockSize));
+  const frameSize = numBlocks * blockSize;
   const blockK = blockSize - nsym;
   const dataCapacity = blockK * numBlocks;
   const data = new Uint8Array(dataCapacity);
@@ -226,13 +312,43 @@ function hdRsDecode(frame, rawBytes) {
   let failedBlocks = 0;
   const blockResults = [];
 
+  // Spatial de-interleaving: undo pseudo-random scatter
+  const deinterleaved = deinterleaveFrame(frame, frameSize);
+
+  // Also de-interleave reliability and altValues if provided (for Chase-II)
+  let deintReliability = null, deintAltValues = null;
+  if (opts.byteReliability && opts.byteAltValues) {
+    deintReliability = new Float32Array(frameSize);
+    deintAltValues = new Uint8Array(frameSize);
+    const { inv } = generateInterleaveTable(frameSize);
+    for (let i = 0; i < frameSize && i < opts.byteReliability.length; i++) {
+      deintReliability[inv[i]] = opts.byteReliability[i];
+      deintAltValues[inv[i]] = opts.byteAltValues[i];
+    }
+  }
+
   for (let b = 0; b < numBlocks; b++) {
     const block = new Uint8Array(blockSize);
     for (let i = 0; i < blockSize; i++) {
       const srcIdx = i * numBlocks + b;
-      block[i] = srcIdx < frame.length ? frame[srcIdx] : 0;
+      block[i] = srcIdx < deinterleaved.length ? deinterleaved[srcIdx] : 0;
     }
-    const dec = rsDecode(block, nsym);
+
+    let dec;
+    if (deintReliability) {
+      // Extract per-block reliability and alt values
+      const blockRel = new Float32Array(blockSize);
+      const blockAlt = new Uint8Array(blockSize);
+      for (let i = 0; i < blockSize; i++) {
+        const srcIdx = i * numBlocks + b;
+        blockRel[i] = srcIdx < deintReliability.length ? deintReliability[srcIdx] : 1.0;
+        blockAlt[i] = srcIdx < deintAltValues.length ? deintAltValues[srcIdx] : 0;
+      }
+      dec = chaseRsDecode(block, nsym, blockRel, blockAlt, opts.chaseK || 4);
+    } else {
+      dec = rsDecode(block, nsym);
+    }
+
     blockResults.push({ ok: dec.ok, corrected: dec.ok ? dec.corrected : -1 });
     if (!dec.ok) {
       failedBlocks++;
@@ -252,6 +368,7 @@ function hdRsDecode(frame, rawBytes) {
 module.exports = {
   gfExp, gfLog, gfMul, gfDiv, gfPow, gfInv,
   polyMul, polyEval, generatorPoly,
-  rsEncode, rsDecode,
+  rsEncode, rsDecode, chaseRsDecode,
+  generateInterleaveTable, interleaveFrame, deinterleaveFrame,
   hdRsEncode, hdRsDecode,
 };

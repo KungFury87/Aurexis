@@ -79,6 +79,8 @@ function decodeFrame(imgData, W, H, opts = {}) {
   const radius = Math.max(0, Math.floor(moduleScalePx / 6));
 
   const modules = new Uint8Array(totalModules);
+  const moduleConfidence = new Float32Array(totalModules);
+  const moduleSecondBest = new Uint8Array(totalModules);
   for (let r = 0; r < gs; r++) {
     for (let c = 0; c < gs; c++) {
       const idx = r * gs + c;
@@ -87,18 +89,51 @@ function decodeFrame(imgData, W, H, opts = {}) {
       const sp = homography.applyHomography(Hmat, { x: cxc, y: cyc });
       const rgb = sampler.sampleAvg(imgData, W, H, sp.x, sp.y, radius);
 
-      if (config.colors <= 4) {
-        modules[idx] = sampler.classifyModuleHsv(rgb, palette);
-      } else {
-        modules[idx] = sampler.classifyModuleRgb(rgb, palette);
-      }
+      // CIELab classification with confidence output
+      const labResult = sampler.classifyModuleLab(rgb, palette);
+      modules[idx] = labResult.index;
+      moduleConfidence[idx] = labResult.confidence;
+      moduleSecondBest[idx] = labResult.secondIndex;
     }
   }
 
-  // Stage 5: RS decode
+  // Stage 5: RS decode — with spatial de-interleaving + Chase-II
   const cap = format.hdCalcCapacity(config);
   const frame = sampler.hdPackModules(modules, config.bpm);
-  const rsResult = gfRs.hdRsDecode(frame, cap.rawBytes);
+
+  // Build per-byte reliability and alt-value arrays for Chase-II
+  const bpm = config.bpm;
+  const numPackedBytes = Math.ceil(totalModules * bpm / 8);
+  const byteReliability = new Float32Array(numPackedBytes).fill(1.0);
+  const byteAltValues = new Uint8Array(numPackedBytes);
+
+  // For bpm=2: 4 modules per byte, clean alignment
+  // For other bpm: modules may span bytes; use primary byte of each module
+  const altModules = new Uint8Array(modules);
+  for (let b = 0; b < numPackedBytes; b++) {
+    let minConf = 1.0, weakestMod = -1;
+    // Find modules contributing to this byte
+    const bitStart = b * 8;
+    const bitEnd = bitStart + 7;
+    const modStart = Math.floor(bitStart / bpm);
+    const modEnd = Math.min(totalModules - 1, Math.floor(bitEnd / bpm));
+    for (let m = modStart; m <= modEnd; m++) {
+      if (moduleConfidence[m] < minConf) {
+        minConf = moduleConfidence[m];
+        weakestMod = m;
+      }
+    }
+    byteReliability[b] = minConf;
+    if (weakestMod >= 0) altModules[weakestMod] = moduleSecondBest[weakestMod];
+  }
+  const altFrame = sampler.hdPackModules(altModules, bpm);
+  byteAltValues.set(altFrame.subarray(0, numPackedBytes));
+
+  const rsResult = gfRs.hdRsDecode(frame, cap.rawBytes, {
+    byteReliability,
+    byteAltValues,
+    chaseK: 4,
+  });
 
   if (rsResult.data === null) {
     return {

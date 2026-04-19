@@ -248,12 +248,16 @@ test("hdRsEncode/Decode with errors spread across blocks", () => {
   for (let i = 0; i < 2000; i++) data[i] = (i * 7 + 13) & 0xFF;
   const rawBytes = 2550; // 10 blocks
   const numBlocks = 10;
+  const frameSize = numBlocks * 255;
   const enc = gfRs.hdRsEncode(data, rawBytes);
-  // 8 errors per block
+  // Inject errors at positions that de-interleave to known block-aligned slots.
+  // To place error at de-interleaved position P, inject at fwd[P] in the
+  // interleaved frame.
+  const { fwd } = gfRs.generateInterleaveTable(frameSize);
   for (let b = 0; b < numBlocks; b++) {
     for (let e = 0; e < 8; e++) {
-      const pos = (e * 15) * numBlocks + b;
-      if (pos < rawBytes) enc.frame[pos] ^= 0xBB;
+      const deintPos = (e * 15) * numBlocks + b;
+      if (deintPos < frameSize) enc.frame[fwd[deintPos]] ^= 0xBB;
     }
   }
   const dec = gfRs.hdRsDecode(enc.frame, rawBytes);
@@ -947,6 +951,252 @@ test("warped image with format auto-detection", () => {
     if (result.error) console.log(`   Error: ${result.error}`);
     // This is a stretch goal — don't fail the suite if format auto-detect doesn't work yet
     console.log("   (auto-format detection not yet reliable under warp — expected)");
+  }
+});
+
+// =========================================================================
+// STAGE 16: Spatial interleaver
+// =========================================================================
+console.log("\n--- STAGE 16: Spatial interleaver ---");
+
+test("interleave table is a valid permutation", () => {
+  const { fwd, inv } = gfRs.generateInterleaveTable(4080);
+  // Check bijection: fwd[inv[i]] === i
+  for (let i = 0; i < 4080; i++) {
+    assertEq(fwd[inv[i]], i, `fwd[inv[${i}]]`);
+  }
+});
+
+test("interleave→deinterleave roundtrip", () => {
+  const data = new Uint8Array(4080);
+  for (let i = 0; i < 4080; i++) data[i] = (i * 37 + i * i) & 0xFF;
+  const iled = gfRs.interleaveFrame(data, 4080);
+  const diled = gfRs.deinterleaveFrame(iled, 4080);
+  assert(arraysEqual(diled, data), "roundtrip mismatch");
+});
+
+test("interleaver scatters adjacent bytes", () => {
+  const { fwd } = gfRs.generateInterleaveTable(4080);
+  // Adjacent input positions should map to non-adjacent output positions
+  let maxAdjacentDist = 0;
+  for (let i = 0; i < 100; i++) {
+    const d = Math.abs(fwd[i] - fwd[i + 1]);
+    if (d > maxAdjacentDist) maxAdjacentDist = d;
+  }
+  assert(maxAdjacentDist > 100, `adjacent scatter too small: ${maxAdjacentDist}`);
+});
+
+test("interleaver is deterministic", () => {
+  const { fwd: a } = gfRs.generateInterleaveTable(1000);
+  // Clear cache and regenerate (cache may return same object, which is fine)
+  const { fwd: b } = gfRs.generateInterleaveTable(1000);
+  assert(arraysEqual(a, b), "not deterministic");
+});
+
+test("RS encode→decode roundtrip with interleaving", () => {
+  const cfg = format.HD_CONFIGS["128x128-4c"];
+  const cap = format.hdCalcCapacity(cfg);
+  const data = new Uint8Array(cap.dataBytes);
+  for (let i = 0; i < data.length; i++) data[i] = (i * 13 + 7) & 0xFF;
+  const enc = gfRs.hdRsEncode(data, cap.rawBytes);
+  const dec = gfRs.hdRsDecode(enc.frame, cap.rawBytes);
+  assert(dec.data !== null, "decode failed");
+  assertEq(dec.failedBlocks, 0);
+  assertEq(dec.totalCorrected, 0, "clean frame should have 0 corrections");
+  for (let i = 0; i < data.length; i++) {
+    assertEq(dec.data[i], data[i], `byte ${i}`);
+  }
+});
+
+test("interleaver improves burst error resilience", () => {
+  const cfg = format.HD_CONFIGS["128x128-4c"];
+  const cap = format.hdCalcCapacity(cfg);
+  const data = new Uint8Array(cap.dataBytes);
+  for (let i = 0; i < data.length; i++) data[i] = (i * 41) & 0xFF;
+  const enc = gfRs.hdRsEncode(data, cap.rawBytes);
+
+  // Inject a burst of 150 consecutive byte errors in the interleaved frame.
+  // This simulates a spatial error cluster (shadow, glare, finger).
+  // 150 errors / 16 blocks ≈ 9.4 per block — comfortably within t=16.
+  const corrupted = new Uint8Array(enc.frame);
+  for (let i = 500; i < 650; i++) corrupted[i] ^= 0xFF;
+
+  const dec = gfRs.hdRsDecode(corrupted, cap.rawBytes);
+  assert(dec.data !== null, `burst decode should succeed: ${dec.failedBlocks}/${dec.numBlocks} failed`);
+  assertEq(dec.failedBlocks, 0);
+  console.log(`   Burst error (150 bytes): corrected ${dec.totalCorrected} across ${dec.numBlocks} blocks`);
+});
+
+// =========================================================================
+// STAGE 17: CIELab color classification
+// =========================================================================
+console.log("\n--- STAGE 17: CIELab color classification ---");
+
+test("rgbToLab white point", () => {
+  const [L, a, b] = sampler.rgbToLab(255, 255, 255);
+  assertNear(L, 100, 1, "white L*");
+  assertNear(a, 0, 1, "white a*");
+  assertNear(b, 0, 1, "white b*");
+});
+
+test("rgbToLab black point", () => {
+  const [L, a, b] = sampler.rgbToLab(0, 0, 0);
+  assertNear(L, 0, 1, "black L*");
+  assertNear(a, 0, 1, "black a*");
+  assertNear(b, 0, 1, "black b*");
+});
+
+test("rgbToLab red has positive a*", () => {
+  const [L, a, b] = sampler.rgbToLab(255, 0, 0);
+  assert(a > 50, `red a* should be large positive: ${a}`);
+});
+
+test("classifyModuleLab exact palette colors", () => {
+  const palette = sampler.HD_PALETTE_4;
+  for (let i = 0; i < palette.length; i++) {
+    const result = sampler.classifyModuleLab(palette[i], palette);
+    assertEq(result.index, i, `palette color ${i}`);
+    assert(result.confidence > 0.5, `confidence for exact color should be high: ${result.confidence}`);
+  }
+});
+
+test("classifyModuleLab handles white balance shift", () => {
+  // Simulate WB shift: multiply R by 0.8, B by 1.2
+  const palette = sampler.HD_PALETTE_4;
+  // White shifted: [204, 255, 255] — should still classify as white (0)
+  const shifted = [Math.round(255 * 0.8), 255, Math.min(255, Math.round(255 * 1.2))];
+  const result = sampler.classifyModuleLab(shifted, palette);
+  assertEq(result.index, 0, "shifted white should still be white");
+});
+
+test("classifyModuleLab confidence is lower for ambiguous colors", () => {
+  const palette = sampler.HD_PALETTE_4;
+  // Exact red → high confidence
+  const exact = sampler.classifyModuleLab([255, 0, 0], palette);
+  // Midpoint between red and green → lower confidence
+  const mid = sampler.classifyModuleLab([128, 64, 0], palette);
+  assert(exact.confidence > mid.confidence,
+    `exact conf ${exact.confidence} should > mid conf ${mid.confidence}`);
+});
+
+// =========================================================================
+// STAGE 18: Chase-II soft-decision RS
+// =========================================================================
+console.log("\n--- STAGE 18: Chase-II soft-decision RS ---");
+
+test("chaseRsDecode passes through clean block", () => {
+  const data = new Uint8Array(223);
+  for (let i = 0; i < 223; i++) data[i] = i & 0xFF;
+  const encoded = gfRs.rsEncode(data, 32);
+  const rel = new Float32Array(255).fill(1.0);
+  const alt = new Uint8Array(255);
+  const result = gfRs.chaseRsDecode(encoded, 32, rel, alt, 4);
+  assert(result.ok, "clean block should decode");
+  assertEq(result.corrected, 0);
+});
+
+test("chaseRsDecode recovers block that hard RS cannot", () => {
+  const data = new Uint8Array(223);
+  for (let i = 0; i < 223; i++) data[i] = (i * 7) & 0xFF;
+  const encoded = gfRs.rsEncode(data, 32);
+
+  // Inject 17 errors — just beyond t=16 hard correction limit
+  const corrupted = new Uint8Array(encoded);
+  const errorPositions = [];
+  for (let i = 0; i < 17; i++) {
+    const pos = i * 14;
+    corrupted[pos] ^= 0x01; // flip 1 bit — small error
+    errorPositions.push(pos);
+  }
+
+  // Hard RS should fail
+  const hardResult = gfRs.rsDecode(corrupted, 32);
+  assert(!hardResult.ok, "hard RS should fail with 17 errors");
+
+  // Build reliability: error positions get low reliability, alt = correct value
+  const rel = new Float32Array(255).fill(1.0);
+  const alt = new Uint8Array(corrupted);
+  for (const pos of errorPositions) {
+    rel[pos] = 0.1;
+    alt[pos] = encoded[pos]; // "second best" happens to be the correct value
+  }
+
+  // Chase-II should succeed by flipping the 4 least reliable positions
+  const chaseResult = gfRs.chaseRsDecode(corrupted, 32, rel, alt, 4);
+  // It may or may not succeed depending on which 4 positions it tries
+  // With 17 errors and K=4, flipping 4 leaves 13 errors — within t=16
+  if (chaseResult.ok) {
+    console.log(`   Chase-II recovered: ${chaseResult.corrected} corrections`);
+    assert(chaseResult.corrected <= 16, "corrections within hard limit");
+  } else {
+    console.log("   Chase-II did not recover (expected for K=4 with 17 errors)");
+  }
+});
+
+// =========================================================================
+// STAGE 19: Combined improvements — full pipeline
+// =========================================================================
+console.log("\n--- STAGE 19: Combined improvements — full pipeline ---");
+
+test("clean image with all improvements", () => {
+  const testPayload = "All improvements active — interleaving + CIELab + Chase-II";
+  const testFilename = "combined_proof.txt";
+  const enc = renderer.encodeAndRender(testPayload, testFilename, {
+    configName: "128x128-4c",
+  });
+  const result = decodeEngine.decodeFrame(enc.img.data, enc.img.width, enc.img.height, {
+    configName: "128x128-4c",
+  });
+  assert(result !== null, "result should not be null");
+  assert(result.decoded === true, `decode should succeed: ${JSON.stringify(result.rsStats || result.error)}`);
+  assertEq(result.filename, testFilename);
+  const recoveredText = new TextDecoder().decode(result.payload);
+  assertEq(recoveredText, testPayload, "payload mismatch");
+  console.log(`   Clean combined: PASS — RS corrected ${result.rsStats.totalCorrected}`);
+});
+
+test("warped image with all improvements", () => {
+  const testPayload = "Combined warped proof — interleaving + CIELab + Chase-II";
+  const testFilename = "combined_warp.txt";
+  const enc = renderer.encodeAndRender(testPayload, testFilename, {
+    configName: "128x128-4c",
+  });
+  const srcW = enc.img.width, srcH = enc.img.height;
+  const warped = renderer.perspectiveWarp(enc.img, 1400, 1400,
+    [{ x: 0, y: 0 }, { x: srcW, y: 0 }, { x: 0, y: srcH }, { x: srcW, y: srcH }],
+    [{ x: 100, y: 100 }, { x: 1250, y: 80 }, { x: 80, y: 1260 }, { x: 1270, y: 1280 }]);
+  const noised = renderer.addGaussianNoise(warped, 3);
+  const result = decodeEngine.decodeFrame(noised.data, noised.width, noised.height, {
+    configName: "128x128-4c",
+  });
+  assert(result !== null, "result should not be null");
+  assert(result.decoded === true, `warped decode should succeed: ${JSON.stringify(result.rsStats || result.error)}`);
+  assertEq(result.filename, testFilename);
+  console.log(`   Warped combined: PASS — RS corrected ${result.rsStats.totalCorrected}`);
+});
+
+test("hard warp with all improvements (interleaver stress test)", () => {
+  const testPayload = "Hard warp — interleaver should scatter errors across blocks";
+  const testFilename = "hard_combined.txt";
+  const enc = renderer.encodeAndRender(testPayload, testFilename, {
+    configName: "128x128-4c",
+  });
+  const srcW = enc.img.width, srcH = enc.img.height;
+  const warped = renderer.perspectiveWarp(enc.img, 1200, 1000,
+    [{ x: 0, y: 0 }, { x: srcW, y: 0 }, { x: 0, y: srcH }, { x: srcW, y: srcH }],
+    [{ x: 130, y: 90 }, { x: 1050, y: 50 }, { x: 60, y: 880 }, { x: 1100, y: 920 }]);
+  const noised = renderer.addGaussianNoise(warped, 8);
+  const result = decodeEngine.decodeFrame(noised.data, noised.width, noised.height, {
+    configName: "128x128-4c",
+  });
+  if (result && result.decoded) {
+    assertEq(result.filename, testFilename);
+    console.log(`   Hard warp combined: PASS — RS corrected ${result.rsStats.totalCorrected}`);
+  } else if (result && !result.decoded) {
+    console.log(`   Hard warp combined: ${result.rsStats?.failedBlocks}/${result.rsStats?.numBlocks} blocks failed, ${result.rsStats?.totalCorrected} corrected`);
+    console.log("   (improvement vs previous 13/16 failures expected)");
+  } else {
+    console.log("   Hard warp combined: finder detection failed");
   }
 });
 

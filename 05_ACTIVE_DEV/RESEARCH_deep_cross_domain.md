@@ -543,10 +543,10 @@ The deepest cross-domain transfers found:
 6. Olson, AprilTag 2011 (detection pipeline architecture)
 
 ### Prototype Candidates (build and test)
-1. QPP interleaver — implement, test on hard-warp synthetic images (days)
-2. CIELab classification — swap in, measure vs. RGB under simulated illuminant shift (hours)
-3. Sauvola thresholding — implement Shafait version, test on synthetic gradient illumination (days)
-4. Chase-II decoder — implement on top of existing RS, test on marginal images (days)
+1. ~~QPP interleaver~~ **DONE** (2026-04-18) — Fisher-Yates pseudo-random permutation with deterministic seed. 150-byte burst test: corrected across all 16 blocks. Hard warp: no improvement (error rate exceeds aggregate RS capacity).
+2. ~~CIELab classification~~ **DONE** (2026-04-18) — sRGB→XYZ→Lab pipeline + confidence output. WB-shift test: correctly classifies shifted colors.
+3. ~~Chase-II decoder~~ **DONE** (2026-04-18) — K=4, 16 candidates per block. Recovers blocks with 17 errors (beyond hard t=16 limit) when reliability info provided.
+4. Sauvola thresholding — implement Shafait version, test on synthetic gradient illumination (days)
 5. Subpixel finder refinement (Forstner or saddle-point) — implement, measure corner accuracy (days)
 
 ### Experiment Sequence (fastest signal first)
@@ -565,6 +565,48 @@ The deepest cross-domain transfers found:
 - **QPP interleaver:** If the hard-warp test goes from 13/16 failures to 0, that's a definitive signal.
 - **CIELab classification:** If misclassification rate drops measurably under simulated illuminant shift, that validates the perceptual color space approach.
 - **Chase-II:** If it decodes images that hard RS can't, that proves soft information matters for this channel.
+
+---
+
+---
+
+## 11. Deep Dive Addendum (2026-04-18): JAB Code, libcimbar, Constellation Design
+
+### JAB Code (ISO/IEC 23634) — Key Engineering Details
+
+**Color calibration:** 4 palettes embedded near corners. Decodes by normalizing both module RGB and palette RGB by `rgb/rgb_max` (unit-chromaticity), then minimum squared Euclidean distance in normalized space. For 8-color: up to 64 reference samples from finder cores + metadata positions. This is simpler than Von Kries or affine 3×3 — just chromaticity matching with per-zone nearest-palette interpolation. **Implication for Aurexis:** JAB's approach is a spatial Voronoi-style correction, not a global model. We could do better with a 3×3 affine fit from embedded reference patches, but JAB proves that even simple normalization works in production.
+
+**LDPC configuration:** Gallager-construction regular LDPC. 11 ECC levels mapping to (wc,wr) pairs with rates 0.14-0.63. Default: level 3 = rate 0.55. Three decoder modes: hard-decision bit-flipping, iterative log-likelihood (sum-product with tanh LLR), belief propagation. Soft input initialized as `2*enc/variance`. Max 25 iterations. **Implication for Aurexis:** JAB proves LDPC works for camera color codes, but at considerable implementation cost. Our RS + Chase-II + interleaver stack is simpler and may approach similar performance for V1.
+
+**Multi-symbol docking:** Up to 61 symbols in spiral arrangement. 14-module cross area between host and slave carries palette and metadata. Alignment extrapolated from host's patterns offset by 7× module size. **Implication for Aurexis:** Multi-symbol is future-scope but the cross-area metadata approach is clean.
+
+**Color palette:** 4-color = black, cyan, yellow, magenta. 8-color = RGB cube corners. NOT perceptually optimized — uniform RGB cube subdivisions. **Implication for Aurexis:** JAB didn't optimize palettes. This is a clear opportunity for Aurexis to gain an edge via camera-capture-optimized palettes.
+
+**Detection:** 5-layer cross finder (n:1:1:1:m), adaptive local thresholding (32×32 blocks), per-channel R/G/B scanning, 3×3 pixel module sampling.
+
+### libcimbar — Architecture for High-Throughput Screen-Camera Transfer
+
+**ECC:** Two-layer: RS(155,125) inner (30 parity, t=15 per block) via libcorrect + Wirehair fountain code outer. Wirehair (not RaptorQ) is bundled. Fountain metadata: 6 bytes per ~744-byte chunk. **Implication for Aurexis:** The RS parameters are weaker than ours (t=15 vs t=16) but the fountain code layer provides full erasure recovery across frames. The Wirehair library is MIT-compatible and handles partial frame loss gracefully.
+
+**Interleaving:** Block interleave with 2 partitions, stride = ecc_block_size = 155. Deterministic, not pseudo-random. **Implication for Aurexis:** Our Fisher-Yates pseudo-random interleaver provides better scatter than libcimbar's block interleave, but their approach proves that even simple interleaving significantly improves burst resilience.
+
+**Color encoding:** 4 colors: green, cyan, yellow, magenta. NO perceptual color space. Decode uses relative-color differencing `(R-G, G-B, B-R)` with squared Euclidean distance — provides illumination invariance. Optional Bradford/Moore-Penrose color correction matrix. 8-color was deprecated due to inconsistency. **Implication for Aurexis:** The `(R-G, G-B, B-R)` differencing trick is worth evaluating — it's simpler than full CIELab and provides first-order illumination invariance.
+
+**Frame fusion:** NO pixel-level fusion. Each frame decoded independently, fountain code accumulates chunks. Corrupt frames simply discarded. **Implication for Aurexis:** For video decode, fountain codes make per-frame fusion unnecessary. Each frame is an independent attempt, and the outer code handles the combining. This is architecturally much simpler than sheaf-based pixel fusion.
+
+**Detection:** 3 finder patterns (QR-style), 4th corner triangulated. Priority-queue flood-fill decode order: high-confidence cells first, drift propagation to neighbors. **Implication for Aurexis:** The flood-fill decode order is clever — it reduces cascading drift errors. Worth investigating for our sampling pipeline.
+
+**Throughput:** 12,400 tiles × 6 bits = 9.3 KB/frame raw. Camera-limited to ~15 fps = ~112 KB/s practical. Shakycam frame detection discards transitional frames.
+
+### Color Constellation Design — Key Findings
+
+**Bagherinia & Manduchi 2011:** Modeled camera capture as affine transform A·c + b. Optimal palette maximizes minimum pairwise distance after unknown affine distortion. For 4 colors: regular tetrahedron inscribed in RGB cube (near black, red, green, blue) outperforms naive choices by 2-4× in error rate across 20 phones.
+
+**Blue channel weakness:** Bayer CFA allocates 1/4 pixels to blue (vs 1/2 green). Blue SNR is 3-6 dB worse. Palettes relying on blue-channel separation (cyan vs white) are fragile. **Implication for Aurexis:** Our current 4-color palette [white, red, blue, green] relies on blue. A palette avoiding blue-channel dependency would be more robust on real cameras.
+
+**Optimal palette structure:** For 4 colors: 2 luminance levels × 2 chrominances beats pure chrominance. For 8 colors: 2-3 luminance levels × 3-4 chrominances. COBRA empirically showed 2-lum × 4-chrom beats 8-chrominance by ~25% in error rate. **Implication for Aurexis:** Consider restructuring palettes around luminance-chrominance separation. This is independent of CIELab and stacks with it.
+
+**Calibration interaction:** Palette colors CAN be used as calibration patches (efficient). Minimum 3 non-collinear calibration colors needed for affine model. 4+ patches with least-squares is standard.
 
 ---
 

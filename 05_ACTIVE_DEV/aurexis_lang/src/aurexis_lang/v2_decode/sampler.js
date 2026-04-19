@@ -60,6 +60,76 @@ function hdGetPalette(numColors) {
 }
 
 // --------------------------------------------------------------------------
+// CIELab color space conversion (sRGB → XYZ D65 → CIELab)
+// --------------------------------------------------------------------------
+
+function srgbToLinear(c) {
+  c = c / 255;
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+
+function rgbToXyz(r, g, b) {
+  const lr = srgbToLinear(r), lg = srgbToLinear(g), lb = srgbToLinear(b);
+  return [
+    0.4124564 * lr + 0.3575761 * lg + 0.1804375 * lb,
+    0.2126729 * lr + 0.7151522 * lg + 0.0721750 * lb,
+    0.0193339 * lr + 0.1191920 * lg + 0.9503041 * lb,
+  ];
+}
+
+const D65_X = 0.95047, D65_Y = 1.00000, D65_Z = 1.08883;
+
+function labF(t) {
+  return t > 0.008856 ? Math.cbrt(t) : (903.3 * t + 16) / 116;
+}
+
+function rgbToLab(r, g, b) {
+  const [x, y, z] = rgbToXyz(r, g, b);
+  const fx = labF(x / D65_X), fy = labF(y / D65_Y), fz = labF(z / D65_Z);
+  return [116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)];
+}
+
+function labDistSq(a, b) {
+  const dL = a[0] - b[0], da = a[1] - b[1], db = a[2] - b[2];
+  return dL * dL + da * da + db * db;
+}
+
+// Pre-compute Lab palette cache (keyed by palette identity)
+const _labPaletteCache = new WeakMap();
+
+function getLabPalette(palette) {
+  if (_labPaletteCache.has(palette)) return _labPaletteCache.get(palette);
+  const labPal = palette.map(c => rgbToLab(c[0], c[1], c[2]));
+  _labPaletteCache.set(palette, labPal);
+  return labPal;
+}
+
+/**
+ * Classify a module by nearest CIELab distance.
+ * Returns { index, confidence, secondIndex }
+ *   confidence = 1 - (bestDist / secondDist), range [0, 1)
+ *   Higher confidence = more certain classification.
+ */
+function classifyModuleLab(rgb, palette) {
+  palette = palette || HD_PALETTE_4;
+  const labPal = getLabPalette(palette);
+  const lab = rgbToLab(rgb[0], rgb[1], rgb[2]);
+  let best = 0, bestD = Infinity;
+  let second = 0, secondD = Infinity;
+  for (let i = 0; i < labPal.length; i++) {
+    const d = labDistSq(lab, labPal[i]);
+    if (d < bestD) {
+      second = best; secondD = bestD;
+      best = i; bestD = d;
+    } else if (d < secondD) {
+      second = i; secondD = d;
+    }
+  }
+  const confidence = secondD > 0 ? 1 - (bestD / secondD) : 1;
+  return { index: best, confidence: Math.max(0, confidence), secondIndex: second };
+}
+
+// --------------------------------------------------------------------------
 // Sampling
 // --------------------------------------------------------------------------
 
@@ -266,6 +336,8 @@ module.exports = {
   hdGetPalette,
   sampleAvg, colorDistSq, rgbToHsv,
   classifyModuleRgb, classifyModuleHsv, softClassifyN,
+  // CIELab classification
+  rgbToLab, labDistSq, getLabPalette, classifyModuleLab,
   hdPackModules, hdUnpackModules,
   createFusionAccumulator, addFrameToAccumulator, getConsensusModules,
 };
