@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.2",
+  "interaction_capture": {
+    "scale": 1.0,
+    "rotate_deg": 0.0,
+    "perspective": 0.0,
+    "blur_sigma": 1.5,
+    "motion_blur_len": 0,
+    "motion_blur_angle": 0.0,
+    "rolling_shutter_shift": 0,
+    "exposure": 1.0,
+    "gamma": 1.0,
+    "contrast": 1.0,
+    "gauss_noise": 0.02,
+    "shot_noise": 0.0,
+    "bit_depth": 8,
+    "sensor": {
+      "enabled": true,
+      "pattern": "RGGB",
+      "blur_sigma_r": 0.0,
+      "blur_sigma_g": 0.0,
+      "blur_sigma_b": 0.0,
+      "noise_r": 0.02,
+      "noise_g": 0.015,
+      "noise_b": 0.02
+    }
+  },
+  "thresholds": {
+    "robust_thr": 0.8
+  },
+  "soft_modes": [
+    "perfect",
+    "dilate_extra",
+    "erode",
+    "shift_px",
+    "noisy_10pct"
+  ],
+  "per_composite": {
+    "composite_ordering_role_zone": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "relation_kind": "ordering",
+          "unbound_survival": 1.0,
+          "mode_survival": {
+            "perfect": 1.0,
+            "dilate_extra": 1.0,
+            "erode": 1.0,
+            "shift_px": 1.0,
+            "noisy_10pct": 1.0
+          },
+          "worst_soft_mode": "dilate_extra",
+          "worst_soft_score": 1.0,
+          "verdict": "ROBUST_TO_SOFT_BINDING"
+        },
+        {
+          "sub_primitive": "role_zone",
+          "relation_kind": "role_zone",
+          "unbound_survival": 1.0,
+          "mode_survival": {
+            "perfect": 1.0,
+            "dilate_extra": 1.0,
+            "erode": 1.0,
+            "shift_px": 1.0,
+            "noisy_10pct": 1.0
+          },
+          "worst_soft_mode": "dilate_extra",
+          "worst_soft_score": 1.0,
+          "verdict": "ROBUST_TO_SOFT_BINDING"
+        }
+      ],
+      "overall_verdict": "ROBUST_TO_SOFT_BINDING"
+    },
+    "composite_repetition_cardinality": {
+      "sub_relations": [
+        {
+          "sub_primitive": "repetition",
+          "relation_kind": "repetition",
+          "unbound_survival": 0.9213250446789193,
+          "mode_survival": {
+            "perfect": 0.958186859846888,
+            "dilate_extra": 0.9213250446789193,
+            "erode": 0.5230938985859122,
+            "shift_px": 0.9945094388665174,
+            "noisy_10pct": 0.604993705064409
+          },
+          "worst_soft_mode": "erode",
+          "worst_soft_score": 0.5230938985859122,
+          "verdict": "NEEDS_TIGHT_BINDING"
+        },
+        {
+          "sub_primitive": "cardinality",
+          "relation_kind": "cardinality",
+          "unbound_survival": 0.0,
+          "mode_survival": {
+            "perfect": 1.0,
+            "dilate_extra": 1.0,
+            "erode": 1.0,
+            "shift_px": 1.0,
+            "noisy_10pct": 0.0
+          },
+          "worst_soft_mode": "noisy_10pct",
+          "worst_soft_score": 0.0,
+          "verdict": "NEEDS_TIGHT_BINDING"
+        }
+      ],
+      "overall_verdict": "NEEDS_TIGHT_BINDING"
+    },
+    "composite_ordering_crowded_by_adjacency": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "relation_kind": "ordering",
+          "unbound_survival": 1.0,
+          "mode_survival": {
+            "perfect": 1.0,
+            "dilate_extra": 1.0,
+            "erode": 1.0,
+            "shift_px": 1.0,
+            "noisy_10pct": 1.0
+          },
+          "worst_soft_mode": "dilate_extra",
+          "worst_soft_score": 1.0,
+          "verdict": "ROBUST_TO_SOFT_BINDING"
+        },
+        {
+          "sub_primitive": "adjacency",
+          "relation_kind": "adjacency",
+          "unbound_survival": 1.0,
+          "mode_survival": {
+            "perfect": 1.0,
+            "dilate_extra": 1.0,
+            "erode": 1.0,
+            "shift_px": 1.0,
+            "noisy_10pct": 1.0
+          },
+          "worst_soft_mode": "dilate_extra",
+          "worst_soft_score": 1.0,
+          "verdict": "ROBUST_TO_SOFT_BINDING"
+        }
+      ],
+      "overall_verdict": "ROBUST_TO_SOFT_BINDING"
+    }
+  }
+}

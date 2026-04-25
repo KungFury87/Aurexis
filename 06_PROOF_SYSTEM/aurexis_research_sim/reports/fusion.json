@@ -1,0 +1,189 @@
+{
+  "schema_version": "1.6",
+  "interaction_capture": {
+    "scale": 1.0,
+    "rotate_deg": 0.0,
+    "perspective": 0.0,
+    "blur_sigma": 1.5,
+    "motion_blur_len": 0,
+    "motion_blur_angle": 0.0,
+    "rolling_shutter_shift": 0,
+    "exposure": 1.0,
+    "gamma": 1.0,
+    "contrast": 1.0,
+    "gauss_noise": 0.02,
+    "shot_noise": 0.0,
+    "bit_depth": 8,
+    "sensor": {
+      "enabled": true,
+      "pattern": "RGGB",
+      "blur_sigma_r": 0.0,
+      "blur_sigma_g": 0.0,
+      "blur_sigma_b": 0.0,
+      "noise_r": 0.02,
+      "noise_g": 0.015,
+      "noise_b": 0.02
+    }
+  },
+  "single_rankers": [
+    "area",
+    "mean_intensity",
+    "edge_density",
+    "compactness"
+  ],
+  "fused_rankers": [
+    "normalized_sum",
+    "borda"
+  ],
+  "thresholds": {
+    "robust_thr": 0.8
+  },
+  "per_composite": {
+    "composite_cardinality_with_decoy": {
+      "sub_relations": [
+        {
+          "sub_primitive": "cardinality",
+          "relation_kind": "cardinality",
+          "n_candidates": 8,
+          "oracle_best": 1.0,
+          "oracle_idx": 1,
+          "single_top1": {
+            "area": 0.33333333333333337,
+            "mean_intensity": 0.33333333333333337,
+            "edge_density": 0.33333333333333337,
+            "compactness": 0.0
+          },
+          "single_top1_idx": {
+            "area": 4,
+            "mean_intensity": 0,
+            "edge_density": 0,
+            "compactness": 5
+          },
+          "fused_top1": {
+            "normalized_sum": 0.33333333333333337,
+            "borda": 0.33333333333333337
+          },
+          "fused_top1_idx": {
+            "normalized_sum": 4,
+            "borda": 0
+          },
+          "attributions": {
+            "area": {
+              "per_feature_z_diff": {
+                "area": 1.883326892566641,
+                "mean_intensity": 0.6564867791382225,
+                "edge_density": -0.15169545686372377,
+                "compactness": 0.6815912380989743
+              },
+              "dominant_misleading": "area"
+            },
+            "mean_intensity": {
+              "per_feature_z_diff": {
+                "area": 1.0499547426059024,
+                "mean_intensity": 1.4901648311675932,
+                "edge_density": 0.6486084250847408,
+                "compactness": -0.12225972714723432
+              },
+              "dominant_misleading": "mean_intensity"
+            },
+            "edge_density": {
+              "per_feature_z_diff": {
+                "area": 1.0499547426059024,
+                "mean_intensity": 1.4901648311675932,
+                "edge_density": 0.6486084250847408,
+                "compactness": -0.12225972714723432
+              },
+              "dominant_misleading": "mean_intensity"
+            },
+            "compactness": {
+              "per_feature_z_diff": {
+                "area": -0.802297256233389,
+                "mean_intensity": -1.2800526893086557,
+                "edge_density": -1.9748508084063374,
+                "compactness": 3.2514168904590957
+              },
+              "dominant_misleading": "compactness"
+            }
+          },
+          "confidence": {
+            "area": 1.4254807692307692,
+            "mean_intensity": 1.2717806506931377,
+            "edge_density": 1.2644303741501906,
+            "compactness": 1.765625
+          },
+          "verdict": "FUSION_INSUFFICIENT"
+        }
+      ],
+      "overall_verdict": "FUSION_INSUFFICIENT"
+    },
+    "composite_cardinality_ranker_split": {
+      "sub_relations": [
+        {
+          "sub_primitive": "cardinality",
+          "relation_kind": "cardinality",
+          "n_candidates": 19,
+          "oracle_best": 1.0,
+          "oracle_idx": 15,
+          "single_top1": {
+            "area": 1.0,
+            "mean_intensity": 0.33333333333333337,
+            "edge_density": 0.33333333333333337,
+            "compactness": 0.0
+          },
+          "single_top1_idx": {
+            "area": 15,
+            "mean_intensity": 0,
+            "edge_density": 0,
+            "compactness": 7
+          },
+          "fused_top1": {
+            "normalized_sum": 0.33333333333333337,
+            "borda": 0.33333333333333337
+          },
+          "fused_top1_idx": {
+            "normalized_sum": 0,
+            "borda": 1
+          },
+          "attributions": {
+            "area": null,
+            "mean_intensity": {
+              "per_feature_z_diff": {
+                "area": -1.4996775581067754,
+                "mean_intensity": 1.7007981512632129,
+                "edge_density": 1.7238496249462842,
+                "compactness": 0.43272977918996425
+              },
+              "dominant_misleading": "edge_density"
+            },
+            "edge_density": {
+              "per_feature_z_diff": {
+                "area": -1.4996775581067754,
+                "mean_intensity": 1.7007981512632129,
+                "edge_density": 1.7238496249462842,
+                "compactness": 0.43272977918996425
+              },
+              "dominant_misleading": "edge_density"
+            },
+            "compactness": {
+              "per_feature_z_diff": {
+                "area": -3.3390098106857535,
+                "mean_intensity": -1.2815769838819513,
+                "edge_density": -1.2972424552942914,
+                "compactness": 2.979668662671747
+              },
+              "dominant_misleading": "compactness"
+            }
+          },
+          "confidence": {
+            "area": 1.1890547263681592,
+            "mean_intensity": 1.22353767141858,
+            "edge_density": 1.352542284172888,
+            "compactness": 1.0
+          },
+          "verdict": "FUSION_INSUFFICIENT"
+        }
+      ],
+      "overall_verdict": "FUSION_INSUFFICIENT"
+    }
+  }
+}

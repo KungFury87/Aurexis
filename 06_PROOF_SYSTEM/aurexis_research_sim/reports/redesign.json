@@ -1,0 +1,137 @@
+{
+  "schema_version": "0.9",
+  "attribution_capture": {
+    "scale": 1.0,
+    "rotate_deg": 4.0,
+    "perspective": 0.0,
+    "blur_sigma": 3.0,
+    "motion_blur_len": 0,
+    "motion_blur_angle": 0.0,
+    "rolling_shutter_shift": 0,
+    "exposure": 1.0,
+    "gamma": 1.0,
+    "contrast": 1.0,
+    "gauss_noise": 0.05,
+    "shot_noise": 0.0,
+    "bit_depth": 8,
+    "sensor": {
+      "enabled": true,
+      "pattern": "RGGB",
+      "blur_sigma_r": 0.0,
+      "blur_sigma_g": 0.0,
+      "blur_sigma_b": 0.0,
+      "noise_r": 0.04,
+      "noise_g": 0.03,
+      "noise_b": 0.04
+    }
+  },
+  "challenge_properties_per_primitive": {
+    "ordering": [
+      "low_contrast",
+      "tight_spacing",
+      "small_markers"
+    ],
+    "repetition": [
+      "low_contrast",
+      "tight_period",
+      "small_markers"
+    ],
+    "role_zone": [
+      "low_contrast",
+      "many_secondaries",
+      "tight_anchor_margin"
+    ]
+  },
+  "per_primitive": {
+    "ordering": {
+      "baseline_survival_under_attribution_capture": 0.8606060606060606,
+      "challenge_survivals": {
+        "baseline": 0.8606060606060606,
+        "low_contrast": 0.6848484848484848,
+        "tight_spacing": 0.8,
+        "small_markers": 0.9030303030303031
+      },
+      "property_sensitivities": {
+        "low_contrast": 0.17575757575757578,
+        "tight_spacing": 0.06060606060606055,
+        "small_markers": -0.042424242424242475
+      },
+      "ranked_properties": [
+        [
+          "low_contrast",
+          0.17575757575757578
+        ],
+        [
+          "tight_spacing",
+          0.06060606060606055
+        ],
+        [
+          "small_markers",
+          -0.042424242424242475
+        ]
+      ],
+      "dominant_weakness": "low_contrast",
+      "suggested_redesign": "increase intensity separation OR encode with color / shape / spatial cue rather than intensity alone"
+    },
+    "repetition": {
+      "baseline_survival_under_attribution_capture": 0.9213118350613775,
+      "challenge_survivals": {
+        "baseline": 0.9213118350613775,
+        "low_contrast": 0.8282745889122196,
+        "tight_period": 0.6319883105705526,
+        "small_markers": 0.310114607205977
+      },
+      "property_sensitivities": {
+        "low_contrast": 0.09303724614915787,
+        "tight_period": 0.2893235244908249,
+        "small_markers": 0.6111972278554005
+      },
+      "ranked_properties": [
+        [
+          "small_markers",
+          0.6111972278554005
+        ],
+        [
+          "tight_period",
+          0.2893235244908249
+        ],
+        [
+          "low_contrast",
+          0.09303724614915787
+        ]
+      ],
+      "dominant_weakness": "small_markers",
+      "suggested_redesign": "require a minimum marker radius relative to expected PSF; scale-floor the primitive"
+    },
+    "role_zone": {
+      "baseline_survival_under_attribution_capture": 1.0,
+      "challenge_survivals": {
+        "baseline": 1.0,
+        "low_contrast": 0.5,
+        "many_secondaries": 1.0,
+        "tight_anchor_margin": 0.3333333333333333
+      },
+      "property_sensitivities": {
+        "low_contrast": 0.5,
+        "many_secondaries": 0.0,
+        "tight_anchor_margin": 0.6666666666666667
+      },
+      "ranked_properties": [
+        [
+          "tight_anchor_margin",
+          0.6666666666666667
+        ],
+        [
+          "low_contrast",
+          0.5
+        ],
+        [
+          "many_secondaries",
+          0.0
+        ]
+      ],
+      "dominant_weakness": "tight_anchor_margin",
+      "suggested_redesign": "widen anchor/companion contrast OR add a second cue (color, shape, position) so role survives when intensity contrast collapses"
+    }
+  }
+}

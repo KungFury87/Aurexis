@@ -1,0 +1,312 @@
+{
+  "schema_version": "0.6",
+  "thresholds": {
+    "mild_robust": 0.9,
+    "mild_conditional": 0.8,
+    "hostile_robust": 0.7,
+    "hostile_conditional": 0.4,
+    "confusion_near_tie": 0.05,
+    "soft_failure": 0.8,
+    "hard_failure": 0.5
+  },
+  "captures_used": {
+    "mild": {
+      "scale": 1.0,
+      "rotate_deg": 0.0,
+      "perspective": 0.0,
+      "blur_sigma": 1.2,
+      "motion_blur_len": 0,
+      "motion_blur_angle": 0.0,
+      "rolling_shutter_shift": 0,
+      "exposure": 1.0,
+      "gamma": 1.0,
+      "contrast": 1.0,
+      "gauss_noise": 0.015,
+      "shot_noise": 0.0,
+      "bit_depth": 8,
+      "sensor": {
+        "enabled": true,
+        "pattern": "RGGB",
+        "blur_sigma_r": 0.0,
+        "blur_sigma_g": 0.0,
+        "blur_sigma_b": 0.0,
+        "noise_r": 0.015,
+        "noise_g": 0.01,
+        "noise_b": 0.015
+      }
+    },
+    "moderate": {
+      "scale": 1.0,
+      "rotate_deg": 0.0,
+      "perspective": 0.0,
+      "blur_sigma": 1.5,
+      "motion_blur_len": 0,
+      "motion_blur_angle": 0.0,
+      "rolling_shutter_shift": 0,
+      "exposure": 1.0,
+      "gamma": 1.0,
+      "contrast": 1.0,
+      "gauss_noise": 0.02,
+      "shot_noise": 0.0,
+      "bit_depth": 8,
+      "sensor": {
+        "enabled": true,
+        "pattern": "RGGB",
+        "blur_sigma_r": 0.0,
+        "blur_sigma_g": 0.0,
+        "blur_sigma_b": 0.0,
+        "noise_r": 0.02,
+        "noise_g": 0.015,
+        "noise_b": 0.02
+      }
+    },
+    "hostile": {
+      "scale": 1.0,
+      "rotate_deg": 4.0,
+      "perspective": 0.0,
+      "blur_sigma": 3.0,
+      "motion_blur_len": 0,
+      "motion_blur_angle": 0.0,
+      "rolling_shutter_shift": 0,
+      "exposure": 1.0,
+      "gamma": 1.0,
+      "contrast": 1.0,
+      "gauss_noise": 0.05,
+      "shot_noise": 0.0,
+      "bit_depth": 8,
+      "sensor": {
+        "enabled": true,
+        "pattern": "RGGB",
+        "blur_sigma_r": 0.0,
+        "blur_sigma_g": 0.0,
+        "blur_sigma_b": 0.0,
+        "noise_r": 0.04,
+        "noise_g": 0.03,
+        "noise_b": 0.04
+      }
+    }
+  },
+  "per_relation": {
+    "ordering_probe_hard": {
+      "classification": "ROBUST",
+      "tags": [],
+      "mild_hard_survival": 1.0,
+      "hostile_hard_survival": 0.8606060606060606,
+      "stage_first_below_0_8": null,
+      "stage_first_below_0_5": null,
+      "stage_trace_moderate": {
+        "source": 1.0,
+        "geometric": 1.0,
+        "optical_blur": 1.0,
+        "motion_blur": 1.0,
+        "rolling_shutter": 1.0,
+        "photometric": 1.0,
+        "sensor_pre_cfa": 1.0,
+        "sensor_mosaic": 1.0,
+        "sensor_mosaic_noisy": 1.0,
+        "sensor_demosaiced": 1.0,
+        "noise": 1.0,
+        "quantize": 1.0,
+        "captured": 1.0
+      },
+      "right_axis_frontier": {
+        "axis": "gauss_noise",
+        "sweep_name": "ordering_hard_vs_noise",
+        "collapse_at_0_5": null,
+        "collapse_at_0_8": null,
+        "curve_tail_survival": 0.9757575757575758
+      },
+      "grid_collapse_fraction": {
+        "grid_name": "ordering_hard_blur_x_noise",
+        "axis_a": "blur_sigma",
+        "axis_b": "sensor_noise",
+        "collapse_fraction_below_0_5": 0.0
+      }
+    },
+    "adjacency_probe_hard": {
+      "classification": "FRAGILE",
+      "tags": [],
+      "mild_hard_survival": 0.6666666666666666,
+      "hostile_hard_survival": 0.0,
+      "stage_first_below_0_8": "noise",
+      "stage_first_below_0_5": null,
+      "stage_trace_moderate": {
+        "source": 1.0,
+        "geometric": 1.0,
+        "optical_blur": 1.0,
+        "motion_blur": 1.0,
+        "rolling_shutter": 1.0,
+        "photometric": 1.0,
+        "sensor_pre_cfa": 1.0,
+        "sensor_mosaic": 1.0,
+        "sensor_mosaic_noisy": 1.0,
+        "sensor_demosaiced": 1.0,
+        "noise": 0.6666666666666666,
+        "quantize": 0.6666666666666666,
+        "captured": 0.6666666666666666
+      },
+      "right_axis_frontier": {
+        "axis": "sensor_noise",
+        "sweep_name": "adjacency_hard_vs_sensor_noise",
+        "collapse_at_0_5": [
+          0.08,
+          0.5
+        ],
+        "collapse_at_0_8": [
+          0.05333333333333334,
+          0.6666666666666666
+        ],
+        "curve_tail_survival": 0.5
+      },
+      "grid_collapse_fraction": {
+        "grid_name": "adjacency_hard_blur_x_sensornoise",
+        "axis_a": "blur_sigma",
+        "axis_b": "sensor_noise",
+        "collapse_fraction_below_0_5": 0.4375
+      }
+    },
+    "symmetry_probe_hard": {
+      "classification": "CONDITIONAL",
+      "tags": [],
+      "mild_hard_survival": 0.8739088387742595,
+      "hostile_hard_survival": 0.5181348901024775,
+      "stage_first_below_0_8": "noise",
+      "stage_first_below_0_5": null,
+      "stage_trace_moderate": {
+        "source": 0.9988416649671705,
+        "geometric": 0.9986788960338882,
+        "optical_blur": 0.9996514668155708,
+        "motion_blur": 0.9996514668155708,
+        "rolling_shutter": 0.9996514668155708,
+        "photometric": 0.9996514670785268,
+        "sensor_pre_cfa": 0.9996514670785268,
+        "sensor_mosaic": 0.9996514670599234,
+        "sensor_mosaic_noisy": 0.8251715536992847,
+        "sensor_demosaiced": 0.8873436122776135,
+        "noise": 0.7825647179325135,
+        "quantize": 0.7821710100602619,
+        "captured": 0.7821710100602619
+      },
+      "right_axis_frontier": {
+        "axis": "rotate_deg",
+        "sweep_name": "symmetry_hard_vs_rotate",
+        "collapse_at_0_5": null,
+        "collapse_at_0_8": [
+          2.0,
+          0.5747072393778728
+        ],
+        "curve_tail_survival": 0.5630133624750476
+      },
+      "grid_collapse_fraction": {}
+    },
+    "orientation_probe_hard": {
+      "classification": "ROBUST",
+      "tags": [],
+      "mild_hard_survival": 1.0,
+      "hostile_hard_survival": 0.75,
+      "stage_first_below_0_8": null,
+      "stage_first_below_0_5": null,
+      "stage_trace_moderate": {
+        "source": 1.0,
+        "geometric": 1.0,
+        "optical_blur": 1.0,
+        "motion_blur": 1.0,
+        "rolling_shutter": 1.0,
+        "photometric": 1.0,
+        "sensor_pre_cfa": 1.0,
+        "sensor_mosaic": 1.0,
+        "sensor_mosaic_noisy": 1.0,
+        "sensor_demosaiced": 1.0,
+        "noise": 1.0,
+        "quantize": 1.0,
+        "captured": 1.0
+      },
+      "right_axis_frontier": {
+        "axis": "blur_sigma",
+        "sweep_name": "orientation_hard_vs_blur",
+        "collapse_at_0_5": [
+          6.0,
+          0.5
+        ],
+        "collapse_at_0_8": [
+          4.0,
+          0.75
+        ],
+        "curve_tail_survival": 0.5
+      },
+      "grid_collapse_fraction": {}
+    },
+    "hierarchy_probe_hard": {
+      "classification": "FRAGILE",
+      "tags": [],
+      "mild_hard_survival": 1.0,
+      "hostile_hard_survival": 0.3333333333333333,
+      "stage_first_below_0_8": null,
+      "stage_first_below_0_5": null,
+      "stage_trace_moderate": {
+        "source": 1.0,
+        "geometric": 1.0,
+        "optical_blur": 1.0,
+        "motion_blur": 1.0,
+        "rolling_shutter": 1.0,
+        "photometric": 1.0,
+        "sensor_pre_cfa": 1.0,
+        "sensor_mosaic": 1.0,
+        "sensor_mosaic_noisy": 1.0,
+        "sensor_demosaiced": 1.0,
+        "noise": 1.0,
+        "quantize": 1.0,
+        "captured": 1.0
+      },
+      "right_axis_frontier": {
+        "axis": "gauss_noise",
+        "sweep_name": "hierarchy_hard_vs_noise",
+        "collapse_at_0_5": null,
+        "collapse_at_0_8": null,
+        "curve_tail_survival": 0.8020833333333334
+      },
+      "grid_collapse_fraction": {
+        "grid_name": "hierarchy_hard_blur_x_sensornoise",
+        "axis_a": "blur_sigma",
+        "axis_b": "sensor_noise",
+        "collapse_fraction_below_0_5": 0.0625
+      }
+    }
+  },
+  "ranked_fragility_under_hostile": [
+    [
+      "adjacency_probe_hard",
+      0.0
+    ],
+    [
+      "hierarchy_probe_hard",
+      0.3333333333333333
+    ],
+    [
+      "symmetry_probe_hard",
+      0.5181348901024775
+    ],
+    [
+      "orientation_probe_hard",
+      0.75
+    ],
+    [
+      "ordering_probe_hard",
+      0.8606060606060606
+    ]
+  ],
+  "mild_confusion": {
+    "ordering_probe_hard": 1.0,
+    "adjacency_probe_hard": 0.6666666666666666,
+    "symmetry_probe_hard": 0.8739088387742595,
+    "orientation_probe_hard": 1.0,
+    "hierarchy_probe_hard": 1.0
+  },
+  "hostile_confusion": {
+    "ordering_probe_hard": 0.8606060606060606,
+    "adjacency_probe_hard": 0.0,
+    "symmetry_probe_hard": 0.5181348901024775,
+    "orientation_probe_hard": 0.75,
+    "hierarchy_probe_hard": 0.3333333333333333
+  }
+}

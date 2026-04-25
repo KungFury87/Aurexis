@@ -1,0 +1,103 @@
+> ## ✅ Current official release
+>
+> **This is the current official public release of Aurexis Core in the V1 Substrate Candidate line, as of April 14, 2026.**
+>
+> **Supersedes:** [Aurexis Core Official Release 1 — V1 Substrate Candidate](https://github.com/KungFury87/Aurexis/releases/tag/core-v1-substrate-candidate-or1) (ACOR-1). ACOR-1.1 ships the same audited build plus a second-pass provenance re-verification stamp. See below for the exact diff.
+>
+> This is NOT full Aurexis Core completion — it is a finalized V1 Substrate Candidate bundle, nothing more.
+
+---
+
+# Aurexis Core Official Release 1.1 — V1 Substrate Candidate (ACOR-1.1)
+
+**Release name:** Aurexis Core Official Release 1.1 — V1 Substrate Candidate
+**Short label:** ACOR-1.1
+**Release date:** April 14, 2026
+**Release tag:** `core-v1-substrate-candidate-or1.1`
+**Release branch:** `backup/v1-substrate-candidate-20260414-120000`
+**Release commit:** `e2c2bccc6ba19612459bef4a065e87373cce315a`
+**Relationship to ACOR-1:** supersedes. Same audited build, plus a second-pass provenance re-verification stamp in the audit documents and the release zip. See "What changed" below.
+**Owner:** Vincent Anderson
+
+---
+
+## Summary
+
+This is the **current official public-facing release** of Aurexis Core. It packages a finalized **V1 Substrate Candidate** — a narrow, law-bearing foundation layer with 51 bridge milestones across 9 branch families, 6,358 standalone assertions, 61 runners, and a green package-level pytest surface (327 / 327).
+
+This release is **NOT** full Aurexis Core completion. It is a release-hardened, handoff-ready V1 Substrate Candidate.
+
+## What Is Included
+
+### The 9 bounded branch families (all capstones verified)
+
+| # | Branch | Bridges | Notes |
+|---|--------|---------|-------|
+| 1 | Static Artifact Substrate | 1–18 | Raster, capture tolerance, localization, orientation/perspective, composition, dispatch, multi-artifact layout, contracts and signatures, global consistency |
+| 2 | Screen-to-Camera Temporal Transport | 19–28 | Rolling shutter, complementary color, dispatch, consistency, frame-accurate, RS+CC fusion, payload contracts/signatures, global consistency |
+| 3 | Higher-Order Coherence / Sheaf-Style Composition | 29–32 | Overlap detection, local sections, global composition, cohomological obstructions |
+| 4 | View-Dependent Markers / 3D Moment Invariants | 33–36 | 4 markers × 4 viewpoints, stable identity hashes, recovery, contract validation |
+| 5 | VSA / Hyperdimensional Cleanup | 37–40 | 1024-dim bipolar hypervectors, cleanup retrieval, VSA-vs-substrate consistency |
+| 6 | Integration / Release Hardening | 41–44 | Machine-readable manifest, unified entrypoint, cross-branch compatibility, release audit |
+| 7 | Observed Evidence Loop / Real Capture Calibration | 45–48 | Ingest profile, session manifest, delta analysis, calibration recommendations |
+| 8 | Real Capture User Handoff | 49 | 10-check structural preflight of session manifests |
+| 9 | Observed-Evidence Dry-Run / Replay Readiness | 50–51 | 6 authored fixtures, 5-stage pipeline replay, outcome contract validation |
+
+### Test surfaces
+
+- **Standalone runners:** 61 individual `run_v1_*.py` files, all passing, 6,358 total assertions
+- **Pytest surface:** 19 test modules in `tests/`, 327 passed / 0 failed (clean-room verified)
+- **Lightweight pytest runner:** `run_pytest_surface.py` — works without pytest installed
+
+## What Changed vs ACOR-1
+
+Only the audit documents and the release zip changed:
+
+- `00_PROJECT_CORE/CODE_PROVENANCE_AUDIT_V1.md` — added Re-Verification Stamp section
+- `00_PROJECT_CORE/CODE_PROVENANCE_AUDIT_V1.json` — added `re_verification` object
+- `00_PROJECT_CORE/RELEASE_NOTES_ACOR-1.1.md` — release notes
+- `00_PROJECT_CORE/aurexis_core_v1_substrate_candidate_locked.zip` — rebuilt to include the above
+- `00_PROJECT_CORE/GITHUB_BACKUP_RECORD_V1.md` — release #32 entry for the ACOR-1.1 follow-up release
+
+**No bridge source code changed. No tests changed. No architecture changed.**
+
+## Installation / Verification
+
+```bash
+git clone https://github.com/KungFury87/Aurexis.git
+cd Aurexis
+git checkout core-v1-substrate-candidate-or1.1
+
+cd 05_ACTIVE_DEV/aurexis_lang
+export PYTHONPATH=src
+python3 run_pytest_surface.py
+# Expected: TOTAL: 327 passed, 0 failed
+```
+
+## Release Line
+
+| Release | Tag | Status |
+|---------|-----|--------|
+| ACOR-1 | `core-v1-substrate-candidate-or1` | Superseded by ACOR-1.1 |
+| ACOR-1.1 | `core-v1-substrate-candidate-or1.1` | **Current official latest (this release)** |
+
+## Release Removal / Revision
+
+```bash
+# Remove the ACOR-1.1 Release Object:
+gh release delete core-v1-substrate-candidate-or1.1 --repo KungFury87/Aurexis --yes
+
+# Remove the ACOR-1.1 tag:
+git push origin --delete core-v1-substrate-candidate-or1.1
+git tag -d core-v1-substrate-candidate-or1.1
+```
+
+See `00_PROJECT_CORE/GITHUB_BACKUP_RECORD_V1.md` entry #32 for the full revision path.
+
+## Honest Verdict
+
+This is the first official release of Aurexis Core, honestly packaged as a V1 Substrate Candidate. Deterministic bridges, verified branches, green pytest surface, and a self-describing public-facing surface. It is NOT full Core completion. The forward path — real-capture validation — is the next user-action-dependent step.
+
+---
+
+© 2026 Vincent Anderson — Aurexis Core. All rights reserved.

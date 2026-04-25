@@ -1,0 +1,33 @@
+{
+  "name": "sensor_bayer_degraded",
+  "truth": {
+    "kind": "color_relation_probe",
+    "kwargs": { "size": 256, "seed": 0 }
+  },
+  "params": {
+    "scale": 0.8,
+    "rotate_deg": 2.0,
+    "perspective": 0.04,
+    "blur_sigma": 0.6,
+    "motion_blur_len": 0,
+    "motion_blur_angle": 0.0,
+    "rolling_shutter_shift": 0,
+    "exposure": 1.05,
+    "gamma": 1.1,
+    "contrast": 1.05,
+    "gauss_noise": 0.005,
+    "shot_noise": 0.0,
+    "bit_depth": 8,
+    "sensor": {
+      "enabled": true,
+      "pattern": "RGGB",
+      "blur_sigma_r": 0.9,
+      "blur_sigma_g": 0.5,
+      "blur_sigma_b": 0.9,
+      "noise_r": 0.025,
+      "noise_g": 0.015,
+      "noise_b": 0.025
+    }
+  },
+  "seed": 7
+}

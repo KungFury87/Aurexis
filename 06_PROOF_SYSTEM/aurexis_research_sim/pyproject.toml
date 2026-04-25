@@ -1,0 +1,9 @@
+[build-system]
+# No build step required — this is a local research harness, not a distribution.
+# pyproject.toml exists primarily to anchor pytest's rootdir and pythonpath.
+requires = []
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+pythonpath = ["."]
+testpaths = ["tests"]

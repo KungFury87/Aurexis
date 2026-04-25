@@ -1,0 +1,285 @@
+{
+  "schema_version": "0.6",
+  "categories": {
+    "VISUAL_RELATIONSHIP": {
+      "title": "Visual relationship proofs",
+      "question": "Does each visual relationship primitive survive the display/capture chain, and by how much?"
+    },
+    "PHOXEL_RASTER_LAW": {
+      "title": "Phoxel/raster law proofs",
+      "question": "Does primitive evaluation depend on ROI/phoxel-cell choice? When does ROI matter, when does it not, and how does inferred ROI compare to oracle ROI?"
+    },
+    "SEMANTIC_STABILITY": {
+      "title": "Semantic stability proofs",
+      "question": "Is the SEMANTIC VALUE recovered (cardinality count, repetition period, ordering axis, symmetry axis, etc.) stable across capture scenarios, or does it drift?"
+    },
+    "CALIBRATION_CONFIDENCE": {
+      "title": "Calibration and confidence proofs",
+      "question": "What is the calibrated trust state per primitive family given all available evidence: TRUST / HOLD / DOWNGRADE / REJECT / NEED_MORE_EVIDENCE?"
+    },
+    "PHYSICAL_SIMULATION": {
+      "title": "Simulator-supported physical proofs",
+      "question": "How do primitive scores change under display/capture stress (blur, motion blur, rolling shutter, sensor Bayer, noise, quantize)?"
+    },
+    "REAL_EVIDENCE_ANCHORING": {
+      "title": "Real-evidence anchoring",
+      "question": "Does synthetic prediction match real captured imagery for the same primitives?"
+    },
+    "LANGUAGE_CONSTRUCTION": {
+      "title": "Language-construction proofs",
+      "question": "Should this primitive be promoted, redesigned, or rejected as a visual-language unit? Does target-conditioned arbitration help, or is generic enough?"
+    }
+  },
+  "category_status": {
+    "VISUAL_RELATIONSHIP": "STRONG",
+    "PHYSICAL_SIMULATION": "STRONG",
+    "PHOXEL_RASTER_LAW": "PARTIAL",
+    "SEMANTIC_STABILITY": "PARTIAL",
+    "CALIBRATION_CONFIDENCE": "PARTIAL",
+    "LANGUAGE_CONSTRUCTION": "STRONG",
+    "REAL_EVIDENCE_ANCHORING": "STUB"
+  },
+  "category_index": {
+    "VISUAL_RELATIONSHIP": [
+      "SUMMARY.md",
+      "stress_report.json",
+      "stress_grids.json",
+      "confusion_tables.json",
+      "ATLAS.md",
+      "atlas.json",
+      "SCENARIO_ATLAS.md",
+      "scenario_atlas.json",
+      "VALIDATION.md",
+      "validation.json",
+      "INTERACTION.md",
+      "interaction.json",
+      "PRIMITIVE_AWARE.md",
+      "primitive_aware.json",
+      "COVERAGE.md",
+      "coverage.json",
+      "BOUNDARY.md",
+      "boundary.json",
+      "UNLOCK.md",
+      "unlock.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "PHOXEL_RASTER_LAW": [
+      "BINDING.md",
+      "binding.json",
+      "SOFT_BINDING.md",
+      "soft_binding.json",
+      "INFERRED_BINDING.md",
+      "inferred_binding.json",
+      "COVERAGE.md",
+      "coverage.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "SEMANTIC_STABILITY": [
+      "SCENARIO_ATLAS.md",
+      "scenario_atlas.json",
+      "INTERACTION.md",
+      "interaction.json",
+      "SEMANTIC_STABILITY.md",
+      "semantic_stability.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "CALIBRATION_CONFIDENCE": [
+      "VALIDATION.md",
+      "validation.json",
+      "REDESIGN.md",
+      "redesign.json",
+      "ARBITRATION.md",
+      "arbitration.json",
+      "DISTRACTOR_ARBITRATION.md",
+      "distractor_arbitration.json",
+      "FUSION.md",
+      "fusion.json",
+      "BOUNDARY.md",
+      "boundary.json",
+      "UNLOCK.md",
+      "unlock.json",
+      "CONFIDENCE.md",
+      "confidence.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "PHYSICAL_SIMULATION": [
+      "SUMMARY.md",
+      "stress_report.json",
+      "stress_grids.json",
+      "confusion_tables.json",
+      "ATLAS.md",
+      "atlas.json",
+      "SCENARIO_ATLAS.md",
+      "scenario_atlas.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "REAL_EVIDENCE_ANCHORING": [
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "LANGUAGE_CONSTRUCTION": [
+      "REDESIGN.md",
+      "redesign.json",
+      "ARBITRATION.md",
+      "arbitration.json",
+      "DISTRACTOR_ARBITRATION.md",
+      "distractor_arbitration.json",
+      "FUSION.md",
+      "fusion.json",
+      "PRIMITIVE_AWARE.md",
+      "primitive_aware.json",
+      "COVERAGE.md",
+      "coverage.json",
+      "BOUNDARY.md",
+      "boundary.json",
+      "UNLOCK.md",
+      "unlock.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ]
+  },
+  "family_table": {
+    "adjacency": {
+      "boundary_tag": "METRIC_GAP_ROI_INSENSITIVE",
+      "validation_verdict": null,
+      "confidence_state": "NEED_MORE_EVIDENCE",
+      "semantic_stability": null
+    },
+    "cardinality": {
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+      "validation_verdict": null,
+      "confidence_state": "HOLD",
+      "semantic_stability": "SEMANTIC_STABLE"
+    },
+    "hierarchy": {
+      "boundary_tag": "METRIC_GAP_ROI_INSENSITIVE",
+      "validation_verdict": null,
+      "confidence_state": "NEED_MORE_EVIDENCE",
+      "semantic_stability": null
+    },
+    "ordering": {
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+      "validation_verdict": "SUSPECT",
+      "confidence_state": "REJECT",
+      "semantic_stability": null
+    },
+    "orientation": {
+      "boundary_tag": "METRIC_GAP_ROI_INSENSITIVE",
+      "validation_verdict": null,
+      "confidence_state": "NEED_MORE_EVIDENCE",
+      "semantic_stability": null
+    },
+    "repetition": {
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+      "validation_verdict": "WEAK_ROBUST",
+      "confidence_state": "HOLD",
+      "semantic_stability": "SEMANTIC_UNSTABLE"
+    },
+    "role_zone": {
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+      "validation_verdict": "WEAK_ROBUST",
+      "confidence_state": "HOLD",
+      "semantic_stability": null
+    },
+    "symmetry": {
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+      "validation_verdict": null,
+      "confidence_state": "HOLD",
+      "semantic_stability": null
+    }
+  },
+  "confidence": {
+    "schema_version": "0.6",
+    "states": [
+      "TRUST",
+      "HOLD",
+      "DOWNGRADE",
+      "REJECT",
+      "NEED_MORE_EVIDENCE"
+    ],
+    "family_states": {
+      "adjacency": {
+        "boundary_tag": "METRIC_GAP_ROI_INSENSITIVE",
+        "validation_verdict": null,
+        "confidence_state": "NEED_MORE_EVIDENCE"
+      },
+      "cardinality": {
+        "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+        "validation_verdict": null,
+        "confidence_state": "HOLD"
+      },
+      "hierarchy": {
+        "boundary_tag": "METRIC_GAP_ROI_INSENSITIVE",
+        "validation_verdict": null,
+        "confidence_state": "NEED_MORE_EVIDENCE"
+      },
+      "ordering": {
+        "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+        "validation_verdict": "SUSPECT",
+        "confidence_state": "REJECT"
+      },
+      "orientation": {
+        "boundary_tag": "METRIC_GAP_ROI_INSENSITIVE",
+        "validation_verdict": null,
+        "confidence_state": "NEED_MORE_EVIDENCE"
+      },
+      "repetition": {
+        "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+        "validation_verdict": "WEAK_ROBUST",
+        "confidence_state": "HOLD"
+      },
+      "role_zone": {
+        "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+        "validation_verdict": "WEAK_ROBUST",
+        "confidence_state": "HOLD"
+      },
+      "symmetry": {
+        "boundary_tag": "PRIMITIVE_AWARE_HELPS",
+        "validation_verdict": null,
+        "confidence_state": "HOLD"
+      }
+    }
+  },
+  "semantic_stability": {
+    "schema_version": "0.6",
+    "scenarios": [
+      "SIM_MILD",
+      "SIM_HOSTILE"
+    ],
+    "per_primitive": {
+      "cardinality": {
+        "primitive": "cardinality",
+        "truth_value": 4,
+        "recovered": {
+          "SIM_MILD": 4,
+          "SIM_HOSTILE": 4
+        },
+        "matches": [
+          true,
+          true
+        ],
+        "stability_score": 1.0,
+        "verdict": "SEMANTIC_STABLE"
+      },
+      "repetition": {
+        "primitive": "repetition",
+        "truth_value": 21.333333333333332,
+        "recovered": {
+          "SIM_MILD": 1,
+          "SIM_HOSTILE": 1
+        },
+        "matches": [
+          false,
+          false
+        ],
+        "stability_score": 0.0,
+        "verdict": "SEMANTIC_UNSTABLE"
+      }
+    }
+  }
+}
