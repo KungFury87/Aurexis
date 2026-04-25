@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.3",
+  "interaction_capture": {
+    "scale": 1.0,
+    "rotate_deg": 0.0,
+    "perspective": 0.0,
+    "blur_sigma": 1.5,
+    "motion_blur_len": 0,
+    "motion_blur_angle": 0.0,
+    "rolling_shutter_shift": 0,
+    "exposure": 1.0,
+    "gamma": 1.0,
+    "contrast": 1.0,
+    "gauss_noise": 0.02,
+    "shot_noise": 0.0,
+    "bit_depth": 8,
+    "sensor": {
+      "enabled": true,
+      "pattern": "RGGB",
+      "blur_sigma_r": 0.0,
+      "blur_sigma_g": 0.0,
+      "blur_sigma_b": 0.0,
+      "noise_r": 0.02,
+      "noise_g": 0.015,
+      "noise_b": 0.02
+    }
+  },
+  "proposals": [
+    "propose_threshold",
+    "propose_edges"
+  ],
+  "thresholds": {
+    "robust_thr": 0.8
+  },
+  "per_composite": {
+    "composite_ordering_role_zone": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "relation_kind": "ordering",
+          "unbound": 1.0,
+          "perfect": 1.0,
+          "soft_worst": 1.0,
+          "inferred": {
+            "propose_threshold": 1.0,
+            "propose_edges": 1.0
+          },
+          "best_inferred": 1.0,
+          "best_proposal": "propose_threshold",
+          "verdict": "SURVIVES_WITH_INFERENCE"
+        },
+        {
+          "sub_primitive": "role_zone",
+          "relation_kind": "role_zone",
+          "unbound": 1.0,
+          "perfect": 1.0,
+          "soft_worst": 1.0,
+          "inferred": {
+            "propose_threshold": 1.0,
+            "propose_edges": 1.0
+          },
+          "best_inferred": 1.0,
+          "best_proposal": "propose_threshold",
+          "verdict": "SURVIVES_WITH_INFERENCE"
+        }
+      ],
+      "overall_verdict": "SURVIVES_WITH_INFERENCE"
+    },
+    "composite_repetition_cardinality": {
+      "sub_relations": [
+        {
+          "sub_primitive": "repetition",
+          "relation_kind": "repetition",
+          "unbound": 0.9213250446789193,
+          "perfect": 0.958186859846888,
+          "soft_worst": 0.5230938985859122,
+          "inferred": {
+            "propose_threshold": 0.9564897048927355,
+            "propose_edges": 0.9287927360877469
+          },
+          "best_inferred": 0.9564897048927355,
+          "best_proposal": "propose_threshold",
+          "verdict": "SURVIVES_WITH_INFERENCE"
+        },
+        {
+          "sub_primitive": "cardinality",
+          "relation_kind": "cardinality",
+          "unbound": 0.0,
+          "perfect": 1.0,
+          "soft_worst": 0.0,
+          "inferred": {
+            "propose_threshold": 0.0,
+            "propose_edges": 0.0
+          },
+          "best_inferred": 0.0,
+          "best_proposal": "propose_threshold",
+          "verdict": "NEEDS_TIGHT_INFERENCE"
+        }
+      ],
+      "overall_verdict": "NEEDS_TIGHT_INFERENCE"
+    },
+    "composite_ordering_crowded_by_adjacency": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "relation_kind": "ordering",
+          "unbound": 1.0,
+          "perfect": 1.0,
+          "soft_worst": 1.0,
+          "inferred": {
+            "propose_threshold": 1.0,
+            "propose_edges": 1.0
+          },
+          "best_inferred": 1.0,
+          "best_proposal": "propose_threshold",
+          "verdict": "SURVIVES_WITH_INFERENCE"
+        },
+        {
+          "sub_primitive": "adjacency",
+          "relation_kind": "adjacency",
+          "unbound": 1.0,
+          "perfect": 1.0,
+          "soft_worst": 1.0,
+          "inferred": {
+            "propose_threshold": 1.0,
+            "propose_edges": 1.0
+          },
+          "best_inferred": 1.0,
+          "best_proposal": "propose_threshold",
+          "verdict": "SURVIVES_WITH_INFERENCE"
+        }
+      ],
+      "overall_verdict": "SURVIVES_WITH_INFERENCE"
+    }
+  }
+}

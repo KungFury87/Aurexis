@@ -1,0 +1,316 @@
+{
+  "schema_version": "0.6",
+  "categories": {
+    "VISUAL_RELATIONSHIP": {
+      "title": "Visual relationship proofs",
+      "question": "Does each visual relationship primitive survive the display/capture chain, and by how much?"
+    },
+    "PHOXEL_RASTER_LAW": {
+      "title": "Phoxel/raster law proofs",
+      "question": "Does primitive evaluation depend on ROI/phoxel-cell choice? When does ROI matter, when does it not, and how does inferred ROI compare to oracle ROI?"
+    },
+    "SEMANTIC_STABILITY": {
+      "title": "Semantic stability proofs",
+      "question": "Is the SEMANTIC VALUE recovered (cardinality count, repetition period, ordering axis, symmetry axis, etc.) stable across capture scenarios, or does it drift?"
+    },
+    "CALIBRATION_CONFIDENCE": {
+      "title": "Calibration and confidence proofs",
+      "question": "What is the calibrated trust state per primitive family given all available evidence: TRUST / HOLD / DOWNGRADE / REJECT / NEED_MORE_EVIDENCE?"
+    },
+    "PHYSICAL_SIMULATION": {
+      "title": "Simulator-supported physical proofs",
+      "question": "How do primitive scores change under display/capture stress (blur, motion blur, rolling shutter, sensor Bayer, noise, quantize)?"
+    },
+    "REAL_EVIDENCE_ANCHORING": {
+      "title": "Real-evidence anchoring",
+      "question": "Does synthetic prediction match real captured imagery for the same primitives?"
+    },
+    "LANGUAGE_CONSTRUCTION": {
+      "title": "Language-construction proofs",
+      "question": "Should this primitive be promoted, redesigned, or rejected as a visual-language unit? Does target-conditioned arbitration help, or is generic enough?"
+    }
+  },
+  "category_status": {
+    "VISUAL_RELATIONSHIP": "STRONG",
+    "PHYSICAL_SIMULATION": "STRONG",
+    "PHOXEL_RASTER_LAW": "PARTIAL",
+    "SEMANTIC_STABILITY": "PARTIAL",
+    "CALIBRATION_CONFIDENCE": "PARTIAL",
+    "LANGUAGE_CONSTRUCTION": "STRONG",
+    "REAL_EVIDENCE_ANCHORING": "STUB"
+  },
+  "category_index": {
+    "VISUAL_RELATIONSHIP": [
+      "SUMMARY.md",
+      "stress_report.json",
+      "stress_grids.json",
+      "confusion_tables.json",
+      "ATLAS.md",
+      "atlas.json",
+      "SCENARIO_ATLAS.md",
+      "scenario_atlas.json",
+      "VALIDATION.md",
+      "validation.json",
+      "INTERACTION.md",
+      "interaction.json",
+      "PRIMITIVE_AWARE.md",
+      "primitive_aware.json",
+      "COVERAGE.md",
+      "coverage.json",
+      "BOUNDARY.md",
+      "boundary.json",
+      "UNLOCK.md",
+      "unlock.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "PHOXEL_RASTER_LAW": [
+      "BINDING.md",
+      "binding.json",
+      "SOFT_BINDING.md",
+      "soft_binding.json",
+      "INFERRED_BINDING.md",
+      "inferred_binding.json",
+      "COVERAGE.md",
+      "coverage.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "SEMANTIC_STABILITY": [
+      "SCENARIO_ATLAS.md",
+      "scenario_atlas.json",
+      "INTERACTION.md",
+      "interaction.json",
+      "SEMANTIC_STABILITY.md",
+      "semantic_stability.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "CALIBRATION_CONFIDENCE": [
+      "VALIDATION.md",
+      "validation.json",
+      "REDESIGN.md",
+      "redesign.json",
+      "ARBITRATION.md",
+      "arbitration.json",
+      "DISTRACTOR_ARBITRATION.md",
+      "distractor_arbitration.json",
+      "FUSION.md",
+      "fusion.json",
+      "BOUNDARY.md",
+      "boundary.json",
+      "UNLOCK.md",
+      "unlock.json",
+      "CONFIDENCE.md",
+      "confidence.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "PHYSICAL_SIMULATION": [
+      "SUMMARY.md",
+      "stress_report.json",
+      "stress_grids.json",
+      "confusion_tables.json",
+      "ATLAS.md",
+      "atlas.json",
+      "SCENARIO_ATLAS.md",
+      "scenario_atlas.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "REAL_EVIDENCE_ANCHORING": [
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ],
+    "LANGUAGE_CONSTRUCTION": [
+      "REDESIGN.md",
+      "redesign.json",
+      "ARBITRATION.md",
+      "arbitration.json",
+      "DISTRACTOR_ARBITRATION.md",
+      "distractor_arbitration.json",
+      "FUSION.md",
+      "fusion.json",
+      "PRIMITIVE_AWARE.md",
+      "primitive_aware.json",
+      "COVERAGE.md",
+      "coverage.json",
+      "BOUNDARY.md",
+      "boundary.json",
+      "UNLOCK.md",
+      "unlock.json",
+      "PROOF_INDEX.md",
+      "proof_index.json"
+    ]
+  },
+  "report_to_categories": {
+    "SUMMARY.md": [
+      "VISUAL_RELATIONSHIP",
+      "PHYSICAL_SIMULATION"
+    ],
+    "stress_report.json": [
+      "VISUAL_RELATIONSHIP",
+      "PHYSICAL_SIMULATION"
+    ],
+    "stress_grids.json": [
+      "VISUAL_RELATIONSHIP",
+      "PHYSICAL_SIMULATION"
+    ],
+    "confusion_tables.json": [
+      "VISUAL_RELATIONSHIP",
+      "PHYSICAL_SIMULATION"
+    ],
+    "ATLAS.md": [
+      "VISUAL_RELATIONSHIP",
+      "PHYSICAL_SIMULATION"
+    ],
+    "atlas.json": [
+      "VISUAL_RELATIONSHIP",
+      "PHYSICAL_SIMULATION"
+    ],
+    "SCENARIO_ATLAS.md": [
+      "VISUAL_RELATIONSHIP",
+      "PHYSICAL_SIMULATION",
+      "SEMANTIC_STABILITY"
+    ],
+    "scenario_atlas.json": [
+      "VISUAL_RELATIONSHIP",
+      "PHYSICAL_SIMULATION",
+      "SEMANTIC_STABILITY"
+    ],
+    "VALIDATION.md": [
+      "VISUAL_RELATIONSHIP",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "validation.json": [
+      "VISUAL_RELATIONSHIP",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "REDESIGN.md": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "redesign.json": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "INTERACTION.md": [
+      "VISUAL_RELATIONSHIP",
+      "SEMANTIC_STABILITY"
+    ],
+    "interaction.json": [
+      "VISUAL_RELATIONSHIP",
+      "SEMANTIC_STABILITY"
+    ],
+    "BINDING.md": [
+      "PHOXEL_RASTER_LAW"
+    ],
+    "binding.json": [
+      "PHOXEL_RASTER_LAW"
+    ],
+    "SOFT_BINDING.md": [
+      "PHOXEL_RASTER_LAW"
+    ],
+    "soft_binding.json": [
+      "PHOXEL_RASTER_LAW"
+    ],
+    "INFERRED_BINDING.md": [
+      "PHOXEL_RASTER_LAW"
+    ],
+    "inferred_binding.json": [
+      "PHOXEL_RASTER_LAW"
+    ],
+    "ARBITRATION.md": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "arbitration.json": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "DISTRACTOR_ARBITRATION.md": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "distractor_arbitration.json": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "FUSION.md": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "fusion.json": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "PRIMITIVE_AWARE.md": [
+      "LANGUAGE_CONSTRUCTION",
+      "VISUAL_RELATIONSHIP"
+    ],
+    "primitive_aware.json": [
+      "LANGUAGE_CONSTRUCTION",
+      "VISUAL_RELATIONSHIP"
+    ],
+    "COVERAGE.md": [
+      "LANGUAGE_CONSTRUCTION",
+      "VISUAL_RELATIONSHIP",
+      "PHOXEL_RASTER_LAW"
+    ],
+    "coverage.json": [
+      "LANGUAGE_CONSTRUCTION",
+      "VISUAL_RELATIONSHIP",
+      "PHOXEL_RASTER_LAW"
+    ],
+    "BOUNDARY.md": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE",
+      "VISUAL_RELATIONSHIP"
+    ],
+    "boundary.json": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE",
+      "VISUAL_RELATIONSHIP"
+    ],
+    "UNLOCK.md": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE",
+      "VISUAL_RELATIONSHIP"
+    ],
+    "unlock.json": [
+      "LANGUAGE_CONSTRUCTION",
+      "CALIBRATION_CONFIDENCE",
+      "VISUAL_RELATIONSHIP"
+    ],
+    "SEMANTIC_STABILITY.md": [
+      "SEMANTIC_STABILITY"
+    ],
+    "semantic_stability.json": [
+      "SEMANTIC_STABILITY"
+    ],
+    "CONFIDENCE.md": [
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "confidence.json": [
+      "CALIBRATION_CONFIDENCE"
+    ],
+    "PROOF_INDEX.md": [
+      "VISUAL_RELATIONSHIP",
+      "PHOXEL_RASTER_LAW",
+      "SEMANTIC_STABILITY",
+      "CALIBRATION_CONFIDENCE",
+      "PHYSICAL_SIMULATION",
+      "REAL_EVIDENCE_ANCHORING",
+      "LANGUAGE_CONSTRUCTION"
+    ],
+    "proof_index.json": [
+      "VISUAL_RELATIONSHIP",
+      "PHOXEL_RASTER_LAW",
+      "SEMANTIC_STABILITY",
+      "CALIBRATION_CONFIDENCE",
+      "PHYSICAL_SIMULATION",
+      "REAL_EVIDENCE_ANCHORING",
+      "LANGUAGE_CONSTRUCTION"
+    ]
+  }
+}

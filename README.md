@@ -1,3 +1,136 @@
+# Aurexis Core
+
+**Repo:** `https://github.com/KungFury87/Aurexis`
+**Owner:** Vincent Anderson
+**State:** `core v1 incomplete` — unified working tree
+**Current official release:** **ACOR-1.1** (V1 Substrate Candidate),
+tag `core-v1-substrate-candidate-or1.1`. UNCHANGED by this pass.
+
+---
+
+## What Aurexis Core is
+
+Aurexis Core is a new kind of Engine and computer interface layer
+with the physical world.
+
+> **Aurexis Core is the code that sits between a computer's optic
+> nerve and its brain.**
+
+- The **world** is primary reality
+- The **camera** is the sensory intake surface
+- The **phoxel field** is the machine's immediate observed stream
+- **Core** is the law that organizes that stream into structured,
+  bounded, machine-usable reality
+
+This is not image processing. It is the deeper Engine layer for
+machine vision, grounded in physics, light, and structured
+observation.
+
+`Aurexis Core` (this repo) is the **Engine / Codec / Standard**.
+It is distinct from `Aurexis E/D` (the Client / Wrapper / Runtime),
+which lives outside this repo.
+
+---
+
+## What this repo contains (unified `core v1 incomplete` tree)
+
+This repo holds **one unified Core body**, structured into three
+preservation-grade lanes that live side by side:
+
+| lane | role | location |
+|---|---|---|
+| **Frozen V1 release surface** | ACOR-1.1 audited release artifacts | `00_PROJECT_CORE/`, `01_RELEASES/`, `BACKUPS/`, tags `core-v1-substrate-candidate-or1*`, 26 `backup/v1-substrate-candidate-*` branches |
+| **V2 research lane** | screen-based real-evidence calibration loop | `V2_*.md`, `V2_BENCHMARK_SET/`, `05_ACTIVE_DEV/aurexis_lang/.../v2_decode/`, branch `working/core-v2` |
+| **Engine-semantics proof system (current research)** | controlled evidence + calibrated trust per primitive family | `06_PROOF_SYSTEM/aurexis_research_sim/` (NEW) |
+
+These are not separate projects. They are one unified Core body
+called **"core v1 incomplete"** — the working tree from which the
+next official Core release will eventually be cut.
+
+For a full tree map, see [`CORE_TREE_MAP.md`](CORE_TREE_MAP.md).
+For the unification report (what was combined, what stayed frozen,
+collisions and resolutions), see
+[`CORE_UNIFICATION_REPORT.md`](CORE_UNIFICATION_REPORT.md).
+For the unified roadmap, see [`ROADMAP.md`](ROADMAP.md).
+For the unified status, see [`PROJECT_STATUS.md`](PROJECT_STATUS.md).
+For the Grok auditor lane, see [`GROK_AUDIT_LANE.md`](GROK_AUDIT_LANE.md).
+
+---
+
+## Quick start
+
+### Verify the V1 substrate candidate (frozen, audited):
+
+```bash
+git clone https://github.com/KungFury87/Aurexis.git
+cd Aurexis
+git checkout core-v1-substrate-candidate-or1.1
+cd 05_ACTIVE_DEV/aurexis_lang
+PYTHONPATH=src python3 run_pytest_surface.py
+# Expected: TOTAL: 327 passed, 0 failed
+```
+
+### Run the current Engine-semantics proof system:
+
+```bash
+git checkout working/core-v1-incomplete    # after Vincent pushes it
+cd 06_PROOF_SYSTEM/aurexis_research_sim
+pip install -r requirements.txt
+python3 -m pytest tests -q                  # expect 221 passed
+python3 -m aurexis_sim.proof_index          # master Engine-semantics index
+python3 -m streamlit run app.py             # interactive UI
+```
+
+---
+
+## What is FROZEN (do not modify)
+
+- `00_PROJECT_CORE/` — ACOR-1.1 truth surface (gate verifications,
+  capstones, audits, locked release zip, manifests).
+- `01_RELEASES/` — older V84/V85/V86 release zips.
+- `BACKUPS/` — older backup zips.
+- All git tags (33 total): `core-v1-substrate-candidate-or1`,
+  `core-v1-substrate-candidate-or1.1`, `core-v2-decode-engine-d3`,
+  26 `backup-v1-substrate-candidate-*`, 4 `v1-substrate-20260413-*`.
+- All 26 `backup/v1-substrate-candidate-*` branches.
+
+This pass touched none of them.
+
+---
+
+## Release line
+
+| Release | Tag | Status |
+|---------|-----|--------|
+| ACOR-1.1 | `core-v1-substrate-candidate-or1.1` | **Current official latest** |
+| ACOR-1 | `core-v1-substrate-candidate-or1` | Superseded by ACOR-1.1 |
+
+ACOR-1.1 proves bounded, deterministic, law-governed visual
+computing properties through 51 bridge milestones across 9 branch
+families, with a green pytest surface (327 passed) and a removable
+GitHub backup. See `00_PROJECT_CORE/` for the full audit set.
+
+---
+
+## What this repo is NOT
+
+- **Not full Aurexis Core completion.** State is "core v1 incomplete."
+- **Not a production deployment.**
+- **Not a real-camera-validated system** (V2 research lane addresses
+  this; `06_PROOF_SYSTEM/` REAL_EVIDENCE_ANCHORING is currently STUB).
+- **Not an exotic-optics system.**
+- **Not Aurexis E/D.** That lives in `Aurexis_ED/` outside this repo.
+
+---
+
+## Below this line is the original ACOR-1.1 release-surface README
+
+The text below was the README at ACOR-1.1 release time. It is
+preserved verbatim. The unified-tree framing above does not
+contradict it; it adds context.
+
+---
+
 # Aurexis Core — Official Release 1.1 (ACOR-1.1) — V1 Substrate Candidate
 
 **Owner:** Vincent Anderson

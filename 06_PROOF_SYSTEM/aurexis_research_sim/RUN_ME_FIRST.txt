@@ -1,0 +1,111 @@
+Aurexis Research Simulation Suite v0.6 - start here
+
+** Engine-semantics proof system. **
+
+Aurexis Core = Engine / Codec / Standard.
+Aurexis E/D = Client / Wrapper / Runtime.
+
+The suite is NOT "simulate everything" or "generate fake camera wins."
+It is an Engine-semantics proof system organized around seven proof
+categories.
+
+Requires Python 3.10+. The delivered checkback zip expands to a
+folder named Aurexis_Research_Sim_v0_6/.
+
+1. Install:
+     pip install -r requirements.txt
+
+2. Launch UI:
+     run.bat / ./run.sh
+     python -m streamlit run app.py
+
+3. Headless smoke (ends with v0.6 Engine-semantics proof index):
+     run_smoke.bat
+     python -m aurexis_sim.smoke
+
+4. Top-level v0.6 Engine-semantics outputs:
+     python -m aurexis_sim.proof_index
+        - master Engine-semantics index across all 7 proof categories
+     python -m aurexis_sim.proof_taxonomy
+        - 7-category registry + per-report category mapping
+     python -m aurexis_sim.confidence
+        - per-family TRUST/HOLD/DOWNGRADE/REJECT/NEED_MORE_EVIDENCE
+     python -m aurexis_sim.semantic_stability
+        - recovered-semantic-value-vs-truth across capture scenarios
+
+5. Lineage modules (v0.1 - v2.0, unchanged):
+     python -m aurexis_sim.stress
+     python -m aurexis_sim.atlas
+     python -m aurexis_sim.validation
+     python -m aurexis_sim.redesign
+     python -m aurexis_sim.interaction
+     python -m aurexis_sim.binding
+     python -m aurexis_sim.soft_binding
+     python -m aurexis_sim.inferred_binding
+     python -m aurexis_sim.arbitration
+     python -m aurexis_sim.distractor_arbitration
+     python -m aurexis_sim.fusion
+     python -m aurexis_sim.primitive_aware
+     python -m aurexis_sim.coverage
+     python -m aurexis_sim.boundary
+     python -m aurexis_sim.unlock
+
+6. Tests:
+     python -m pytest tests -q   (expect: 221 passed)
+
+7. Shipped artifacts to inspect WITHOUT running anything:
+     reports/PROOF_INDEX.md            (v0.6 master Engine-semantics index)
+     reports/proof_index.json
+     reports/PROOF_TAXONOMY.md         (v0.6 7-category registry)
+     reports/proof_taxonomy.json
+     reports/CONFIDENCE.md             (v0.6 per-family confidence states)
+     reports/confidence.json
+     reports/SEMANTIC_STABILITY.md     (v0.6 recovered-value stability)
+     reports/semantic_stability.json
+     reports/UNLOCK.md / unlock.json   (v2.0 boundary 5-of-8 confirmed)
+     reports/BOUNDARY.md / boundary.json
+     reports/COVERAGE.md / coverage.json
+     reports/PRIMITIVE_AWARE.md / primitive_aware.json
+     reports/FUSION.md / fusion.json
+     reports/DISTRACTOR_ARBITRATION.md / distractor_arbitration.json
+     reports/ARBITRATION.md / arbitration.json
+     reports/INFERRED_BINDING.md / inferred_binding.json
+     reports/SOFT_BINDING.md / soft_binding.json
+     reports/BINDING.md / binding.json
+     reports/INTERACTION.md / interaction.json
+     reports/REDESIGN.md / redesign.json
+     reports/VALIDATION.md / validation.json
+     reports/SCENARIO_ATLAS.md / scenario_atlas.json
+     reports/ATLAS.md / atlas.json
+     reports/SUMMARY.md / stress_report.*  (v0.5 stress bundle)
+     reports/*.json artifacts
+     examples/<preset>/...
+
+v0.6 reframing summary:
+
+  Seven proof categories (status):
+    VISUAL_RELATIONSHIP        STRONG
+    PHOXEL_RASTER_LAW          PARTIAL
+    SEMANTIC_STABILITY         PARTIAL  (v0.6 introduces explicit metric)
+    CALIBRATION_CONFIDENCE     PARTIAL  (v0.6 introduces explicit state)
+    PHYSICAL_SIMULATION        STRONG
+    REAL_EVIDENCE_ANCHORING    STUB     (not implemented)
+    LANGUAGE_CONSTRUCTION      STRONG
+
+  v0.6 master per-family table:
+    cardinality   PRIMITIVE_AWARE_HELPS  -  HOLD  SEMANTIC_STABLE
+    repetition    PRIMITIVE_AWARE_HELPS  WEAK_ROBUST  HOLD  SEMANTIC_UNSTABLE
+    role_zone     PRIMITIVE_AWARE_HELPS  WEAK_ROBUST  HOLD  -
+    ordering      PRIMITIVE_AWARE_HELPS  SUSPECT      REJECT  -
+    symmetry      PRIMITIVE_AWARE_HELPS  -            HOLD  -
+    adjacency     METRIC_GAP_ROI_INSENSITIVE  -  NEED_MORE_EVIDENCE  -
+    orientation   METRIC_GAP_ROI_INSENSITIVE  -  NEED_MORE_EVIDENCE  -
+    hierarchy     METRIC_GAP_ROI_INSENSITIVE  -  NEED_MORE_EVIDENCE  -
+
+  -> Multi-evidence calibration: ordering's confidence is REJECT
+     (boundary helps but validation flagged SUSPECT). Repetition is
+     SEMANTIC_UNSTABLE under naive full-row autocorr; the v1.8
+     strip-based metric is what gives it stability. The Engine-
+     semantics index surfaces these tensions explicitly.
+
+Read STATUS.md for the full v0.6 checkback.

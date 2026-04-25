@@ -188,6 +188,184 @@ function rsDecode(received, nsym) {
 }
 
 // --------------------------------------------------------------------------
+// RS decode with erasures — errors + known-bad positions
+// Erasures cost 1 parity symbol each (vs 2 for errors).
+// Capacity: 2*errors + erasures ≤ nsym
+// --------------------------------------------------------------------------
+
+/**
+ * RS decode with erasure support.
+ *
+ * Erasure positions are byte indices in the block known to be unreliable.
+ * The decoder treats them as "known wrong" — each erasure costs 1 parity symbol
+ * instead of 2 for a blind error. With nsym=32: up to 32 pure erasures,
+ * or 16 pure errors, or any mix where 2*errors + erasures ≤ 32.
+ *
+ * Algorithm:
+ *   1. Compute syndromes
+ *   2. Build erasure locator from known positions
+ *   3. Compute Forney syndromes (recursive multiply S(x)·Λ_e(x))
+ *   4. Run BM on Forney syndromes → error-only locator
+ *   5. Full locator = erasure × error locators
+ *   6. Chien search + Forney algorithm for magnitudes
+ *
+ * @param {Uint8Array} received - block to decode
+ * @param {number} nsym - parity symbols
+ * @param {number[]} erasurePositions - byte indices declared as erasures
+ * @returns {{ ok, data, corrected }}
+ */
+function rsDecodeWithErasures(received, nsym, erasurePositions) {
+  const n = received.length;
+  const r = new Uint8Array(received);
+  erasurePositions = erasurePositions || [];
+  const v = erasurePositions.length;
+
+  if (v > nsym) {
+    return { ok: false, data: r.slice(0, n - nsym), corrected: -1 };
+  }
+
+  // Step 1: Syndromes
+  const S = new Array(nsym);
+  let hasErr = false;
+  for (let i = 0; i < nsym; i++) {
+    S[i] = polyEval(r, gfPow(2, i));
+    if (S[i] !== 0) hasErr = true;
+  }
+  if (!hasErr) {
+    return { ok: true, data: r.slice(0, n - nsym), corrected: 0 };
+  }
+
+  // If only erasures and no additional capacity, skip BM
+  if (v === 0) {
+    // No erasures — fall back to standard decode
+    return rsDecode(received, nsym);
+  }
+
+  // Step 2: Build erasure locator polynomial Λ_e(x) = ∏(1 + X_j·x)
+  // where X_j = α^(n-1-pos_j), in big-endian representation
+  let sigmaE = new Uint8Array([1]);
+  const erasureXi = [];
+  for (const pos of erasurePositions) {
+    const Xi = gfPow(2, n - 1 - pos);
+    erasureXi.push(Xi);
+    sigmaE = polyMul(sigmaE, new Uint8Array([Xi, 1]));
+  }
+
+  // Step 3: Compute Forney syndromes via recursive update
+  // For each erasure locator X_i: S[k] ← S[k] ⊕ X_i·S[k-1] (k from high to low)
+  // After v erasures, fS[v..nsym-1] are the Forney syndromes for BM.
+  const fS = S.slice();
+  for (const Xi of erasureXi) {
+    for (let k = nsym - 1; k >= 1; k--) {
+      fS[k] ^= gfMul(Xi, fS[k - 1]);
+    }
+  }
+
+  // Step 4: BM on Forney syndromes to find error-only locator
+  const numForney = nsym - v;
+  let C = [1], B = [1], L = 0, m = 1, b = 1;
+
+  if (numForney > 0) {
+    for (let nn = 0; nn < numForney; nn++) {
+      let d = fS[nn + v];
+      for (let i = 1; i <= L; i++) {
+        if (i < C.length && nn - i >= 0) d ^= gfMul(C[i], fS[nn + v - i]);
+      }
+      if (d === 0) {
+        m++;
+      } else if (2 * L <= nn) {
+        const T = C.slice();
+        const coef = gfDiv(d, b);
+        const shB = new Array(m).fill(0).concat(B);
+        while (C.length < shB.length) C.push(0);
+        for (let i = 0; i < shB.length; i++) C[i] ^= gfMul(coef, shB[i]);
+        L = nn + 1 - L;
+        B = T;
+        b = d;
+        m = 1;
+      } else {
+        const coef = gfDiv(d, b);
+        const shB = new Array(m).fill(0).concat(B);
+        while (C.length < shB.length) C.push(0);
+        for (let i = 0; i < shB.length; i++) C[i] ^= gfMul(coef, shB[i]);
+        m++;
+      }
+    }
+  }
+
+  while (C.length > 1 && C[C.length - 1] === 0) C.pop();
+  const numErrors = L;
+
+  // Capacity check: 2*errors + erasures ≤ nsym
+  if (2 * numErrors + v > nsym) {
+    return { ok: false, data: r.slice(0, n - nsym), corrected: -1 };
+  }
+
+  // Step 5: Find error positions via Chien search on error-only locator
+  const errLocH = C.slice().reverse();
+  const errPos = [];
+  const erasureSet = new Set(erasurePositions);
+  for (let j = 0; j < n; j++) {
+    if (polyEval(new Uint8Array(errLocH), gfPow(2, 255 - j)) === 0) {
+      const pos = n - 1 - j;
+      if (!erasureSet.has(pos)) {
+        errPos.push(pos);
+      }
+    }
+  }
+  if (errPos.length !== numErrors) {
+    return { ok: false, data: r.slice(0, n - nsym), corrected: -1 };
+  }
+
+  // Step 6: Full locator = Λ_e · Λ_err (ascending convention)
+  // sigmaE is big-endian from polyMul; convert to ascending to match C
+  const sigmaE_asc = Array.from(sigmaE).reverse();
+  // Ascending convolution
+  const fullC = new Array(sigmaE_asc.length + C.length - 1).fill(0);
+  for (let i = 0; i < sigmaE_asc.length; i++)
+    for (let j = 0; j < C.length; j++)
+      fullC[i + j] ^= gfMul(sigmaE_asc[i], C[j]);
+
+  // All correction positions
+  const allPos = [...erasurePositions, ...errPos];
+
+  // Step 7: Error evaluator ω(x) = S(x) · σ(x) mod x^nsym
+  const omFull = new Array(S.length + fullC.length - 1).fill(0);
+  for (let i = 0; i < S.length; i++)
+    for (let j = 0; j < fullC.length; j++)
+      omFull[i + j] ^= gfMul(S[i], fullC[j]);
+  const omH = omFull.slice(0, nsym).reverse();
+
+  // Formal derivative of full locator (odd-indexed coefficients)
+  const dLow = [];
+  for (let k = 1; k < fullC.length; k += 2) {
+    while (dLow.length < k) dLow.push(0);
+    dLow[k - 1] = fullC[k];
+  }
+  if (dLow.length === 0) dLow.push(0);
+  const dH = dLow.slice().reverse();
+
+  // Step 8: Forney algorithm for all positions (erasures + errors)
+  for (const pos of allPos) {
+    const Xi = gfPow(2, n - 1 - pos);
+    const XiInv = gfInv(Xi);
+    const omVal = polyEval(new Uint8Array(omH), XiInv);
+    const dVal = polyEval(new Uint8Array(dH), XiInv);
+    if (dVal === 0) return { ok: false, data: r.slice(0, n - nsym), corrected: -1 };
+    r[pos] ^= gfMul(Xi, gfDiv(omVal, dVal));
+  }
+
+  // Verify syndromes are zero
+  for (let i = 0; i < nsym; i++) {
+    if (polyEval(r, gfPow(2, i)) !== 0) {
+      return { ok: false, data: r.slice(0, n - nsym), corrected: -1 };
+    }
+  }
+
+  return { ok: true, data: r.slice(0, n - nsym), corrected: allPos.length };
+}
+
+// --------------------------------------------------------------------------
 // Spatial interleaver — pseudo-random byte permutation
 // Decorrelates spatially clustered errors across RS blocks.
 // Uses deterministic Fisher-Yates with seeded LCG.
@@ -233,16 +411,24 @@ function deinterleaveFrame(frame, size) {
 // --------------------------------------------------------------------------
 
 /**
+ * Chase-II soft-decision RS decoding with optional erasure support.
+ *
  * @param {Uint8Array} received - block to decode (length = blockSize)
  * @param {number} nsym - parity symbols
  * @param {Float32Array|null} reliability - per-symbol confidence (higher = more reliable)
  * @param {Uint8Array|null} altValues - per-symbol alternative byte values
  * @param {number} [K] - positions to trial-flip (default 4)
+ * @param {number[]} [erasurePositions] - byte indices declared as erasures
  * @returns {object} { ok, data, corrected }
  */
-function chaseRsDecode(received, nsym, reliability, altValues, K) {
+function chaseRsDecode(received, nsym, reliability, altValues, K, erasurePositions) {
   K = K || 4;
-  const stdResult = rsDecode(received, nsym);
+  erasurePositions = erasurePositions || [];
+
+  // Try erasure-aware decode first
+  const stdResult = erasurePositions.length > 0
+    ? rsDecodeWithErasures(received, nsym, erasurePositions)
+    : rsDecode(received, nsym);
   if (stdResult.ok) return stdResult;
   if (!reliability || !altValues) return stdResult;
 
@@ -261,7 +447,9 @@ function chaseRsDecode(received, nsym, reliability, altValues, K) {
     for (let bit = 0; bit < weakest.length; bit++) {
       if (mask & (1 << bit)) trial[weakest[bit]] = altValues[weakest[bit]];
     }
-    const result = rsDecode(trial, nsym);
+    const result = erasurePositions.length > 0
+      ? rsDecodeWithErasures(trial, nsym, erasurePositions)
+      : rsDecode(trial, nsym);
     if (result.ok && result.corrected < bestCorrected) {
       bestResult = result;
       bestCorrected = result.corrected;
@@ -274,8 +462,18 @@ function chaseRsDecode(received, nsym, reliability, altValues, K) {
 // --------------------------------------------------------------------------
 // HD RS encode/decode (multi-block interleaved + spatial interleaving)
 // --------------------------------------------------------------------------
-function hdRsEncode(data, rawBytes) {
-  const nsym = 32;
+/**
+ * HD RS encode with configurable parity.
+ *
+ * @param {Uint8Array} data - payload data
+ * @param {number} rawBytes - total raw byte capacity of the module grid
+ * @param {object} [opts]
+ * @param {number} [opts.nsym=32] - parity symbols per block (32 = standard t=16, 64 = high-redundancy t=32)
+ * @returns {object} { frame, numBlocks, nsym, blockSize, blockK, frameSize }
+ */
+function hdRsEncode(data, rawBytes, opts) {
+  opts = opts || {};
+  const nsym = opts.nsym || 32;
   const blockSize = 255;
   const numBlocks = Math.max(1, Math.floor(rawBytes / blockSize));
   const frameSize = numBlocks * blockSize;
@@ -299,9 +497,21 @@ function hdRsEncode(data, rawBytes) {
   return { frame: interleaved, numBlocks, nsym, blockSize, blockK, frameSize };
 }
 
+/**
+ * HD RS decode with configurable parity.
+ *
+ * @param {Uint8Array} frame - interleaved RS frame
+ * @param {number} rawBytes - total raw byte capacity
+ * @param {object} [opts]
+ * @param {number} [opts.nsym=32] - parity symbols per block (must match encode)
+ * @param {Float32Array} [opts.byteReliability] - per-byte confidence for Chase-II
+ * @param {Uint8Array} [opts.byteAltValues] - per-byte alternative values for Chase-II
+ * @param {number} [opts.chaseK=4] - Chase-II trial positions
+ * @returns {object} { data, totalCorrected, failedBlocks, numBlocks, blockResults }
+ */
 function hdRsDecode(frame, rawBytes, opts) {
   opts = opts || {};
-  const nsym = 32;
+  const nsym = opts.nsym || 32;
   const blockSize = 255;
   const numBlocks = Math.max(1, Math.floor(rawBytes / blockSize));
   const frameSize = numBlocks * blockSize;
@@ -315,15 +525,35 @@ function hdRsDecode(frame, rawBytes, opts) {
   // Spatial de-interleaving: undo pseudo-random scatter
   const deinterleaved = deinterleaveFrame(frame, frameSize);
 
-  // Also de-interleave reliability and altValues if provided (for Chase-II)
+  // Also de-interleave reliability, altValues, and erasure positions if provided
   let deintReliability = null, deintAltValues = null;
+  const { inv } = generateInterleaveTable(frameSize);
   if (opts.byteReliability && opts.byteAltValues) {
     deintReliability = new Float32Array(frameSize);
     deintAltValues = new Uint8Array(frameSize);
-    const { inv } = generateInterleaveTable(frameSize);
     for (let i = 0; i < frameSize && i < opts.byteReliability.length; i++) {
       deintReliability[inv[i]] = opts.byteReliability[i];
       deintAltValues[inv[i]] = opts.byteAltValues[i];
+    }
+  }
+
+  // De-interleave erasure positions: map from interleaved frame indices to
+  // de-interleaved frame indices, then to per-block positions.
+  // erasurePositions are indices in the interleaved frame; inv[] maps them
+  // to de-interleaved positions. Then deint_pos = i * numBlocks + b means
+  // block b, position i within that block.
+  const blockErasures = new Array(numBlocks);
+  for (let b = 0; b < numBlocks; b++) blockErasures[b] = [];
+
+  if (opts.erasurePositions && opts.erasurePositions.length > 0) {
+    for (const ep of opts.erasurePositions) {
+      if (ep >= frameSize) continue;
+      const deintPos = inv[ep]; // position in de-interleaved frame
+      const b = deintPos % numBlocks;
+      const i = Math.floor(deintPos / numBlocks);
+      if (i < blockSize) {
+        blockErasures[b].push(i);
+      }
     }
   }
 
@@ -335,6 +565,7 @@ function hdRsDecode(frame, rawBytes, opts) {
     }
 
     let dec;
+    const blockEr = blockErasures[b];
     if (deintReliability) {
       // Extract per-block reliability and alt values
       const blockRel = new Float32Array(blockSize);
@@ -344,14 +575,24 @@ function hdRsDecode(frame, rawBytes, opts) {
         blockRel[i] = srcIdx < deintReliability.length ? deintReliability[srcIdx] : 1.0;
         blockAlt[i] = srcIdx < deintAltValues.length ? deintAltValues[srcIdx] : 0;
       }
-      dec = chaseRsDecode(block, nsym, blockRel, blockAlt, opts.chaseK || 4);
+      dec = chaseRsDecode(block, nsym, blockRel, blockAlt, opts.chaseK || 4, blockEr);
+    } else if (blockEr.length > 0) {
+      dec = rsDecodeWithErasures(block, nsym, blockEr);
     } else {
       dec = rsDecode(block, nsym);
     }
 
-    blockResults.push({ ok: dec.ok, corrected: dec.ok ? dec.corrected : -1 });
+    blockResults.push({
+      ok: dec.ok,
+      corrected: dec.ok ? dec.corrected : -1,
+      blockData: dec.ok ? dec.data : null,  // per-block decoded data for feedback
+    });
     if (!dec.ok) {
       failedBlocks++;
+      // Write uncorrected data for partial decode (better than zeros)
+      for (let i = 0; i < blockK; i++) {
+        data[i * numBlocks + b] = block[i];
+      }
       continue;
     }
     totalCorrected += dec.corrected;
@@ -359,16 +600,87 @@ function hdRsDecode(frame, rawBytes, opts) {
       data[i * numBlocks + b] = dec.data[i];
     }
   }
-  if (failedBlocks > 0) {
-    return { data: null, totalCorrected, failedBlocks, numBlocks, blockResults };
+
+  // Multi-strategy block recovery for failed blocks:
+  // 1. Per-block erasure escalation: auto-declare the N least-reliable bytes as
+  //    erasures for increasing N. Each erasure costs 1 parity symbol (vs 2 for
+  //    errors), so marking unreliable bytes as erasures frees correction capacity.
+  // 2. Chase-K depth escalation: retry with K=6 (64 trials), K=8 (256 trials).
+  // 3. Cross-strategy: combine auto-erasure with deeper Chase.
+  if (failedBlocks > 0 && deintReliability) {
+    // Pre-extract per-block data once for reuse
+    const blockDataCache = new Array(numBlocks);
+    for (let b = 0; b < numBlocks; b++) {
+      if (blockResults[b].ok) continue;
+      const block = new Uint8Array(blockSize);
+      const blockRel = new Float32Array(blockSize);
+      const blockAlt = new Uint8Array(blockSize);
+      for (let i = 0; i < blockSize; i++) {
+        const srcIdx = i * numBlocks + b;
+        block[i] = srcIdx < deinterleaved.length ? deinterleaved[srcIdx] : 0;
+        blockRel[i] = srcIdx < deintReliability.length ? deintReliability[srcIdx] : 1.0;
+        blockAlt[i] = srcIdx < deintAltValues.length ? deintAltValues[srcIdx] : 0;
+      }
+      blockDataCache[b] = { block, blockRel, blockAlt };
+    }
+
+    // Strategy matrix: [erasure count fractions] × [Chase-K depths]
+    // Keep Chase-K ≤ 6 when combined with erasures to bound runtime.
+    // K=8 alone (eFrac=0) is the deepest single-strategy attempt.
+    const erasureFractions = [0, 0.25, 0.50]; // fraction of nsym to declare as erasures
+    const chaseKs = [6, 8];
+
+    for (const eFrac of erasureFractions) {
+      for (const deepK of chaseKs) {
+        if (failedBlocks === 0) break;
+        // Skip K=8 when combined with erasures — too expensive for marginal gain
+        if (eFrac > 0 && deepK > 6) continue;
+
+        for (let b = 0; b < numBlocks; b++) {
+          if (blockResults[b].ok) continue;
+          const { block, blockRel, blockAlt } = blockDataCache[b];
+
+          // Build per-block auto-erasure: sort by reliability, take worst N
+          let blockEr;
+          if (eFrac > 0) {
+            const maxErase = Math.floor(nsym * eFrac);
+            const indices = new Array(blockSize);
+            for (let i = 0; i < blockSize; i++) indices[i] = i;
+            indices.sort((a, bb) => blockRel[a] - blockRel[bb]);
+            blockEr = indices.slice(0, maxErase);
+          } else {
+            blockEr = blockErasures[b]; // Use original global erasures
+          }
+
+          const dec = chaseRsDecode(block, nsym, blockRel, blockAlt, deepK, blockEr);
+          if (dec.ok) {
+            blockResults[b] = {
+              ok: true,
+              corrected: dec.corrected,
+              blockData: dec.data,
+            };
+            totalCorrected += dec.corrected;
+            failedBlocks--;
+            for (let i = 0; i < blockK; i++) {
+              data[i * numBlocks + b] = dec.data[i];
+            }
+          }
+        }
+      }
+      if (failedBlocks === 0) break;
+    }
   }
-  return { data, totalCorrected, failedBlocks: 0, numBlocks, blockResults };
+
+  if (failedBlocks > 0) {
+    return { data: null, partialData: data, totalCorrected, failedBlocks, numBlocks, blockResults, blockK, frameSize };
+  }
+  return { data, partialData: data, totalCorrected, failedBlocks: 0, numBlocks, blockResults, blockK, frameSize };
 }
 
 module.exports = {
   gfExp, gfLog, gfMul, gfDiv, gfPow, gfInv,
   polyMul, polyEval, generatorPoly,
-  rsEncode, rsDecode, chaseRsDecode,
+  rsEncode, rsDecode, rsDecodeWithErasures, chaseRsDecode,
   generateInterleaveTable, interleaveFrame, deinterleaveFrame,
   hdRsEncode, hdRsDecode,
 };

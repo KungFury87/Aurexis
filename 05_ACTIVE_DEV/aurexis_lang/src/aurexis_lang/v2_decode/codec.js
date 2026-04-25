@@ -40,16 +40,10 @@ function deltaDecode(data) {
 
 function bytePlaneEncode(data) {
   const len = data.length;
-  const out = new Uint8Array(len);
-  for (let bit = 0; bit < 8; bit++) {
-    const off = bit * Math.ceil(len / 8);
-    for (let i = 0; i < len && off + i < len; i++) {
-      out[off + i] = (out[off + i] || 0) | (((data[i] >> (7 - bit)) & 1) << (7 - (i & 7)));
-    }
-  }
-  // Simplified: use the original E/D approach
+  const planeSize = Math.ceil(len / 8);
+  const totalSize = 8 * planeSize;
   const planes = new Array(8);
-  for (let b = 0; b < 8; b++) planes[b] = new Uint8Array(Math.ceil(len / 8));
+  for (let b = 0; b < 8; b++) planes[b] = new Uint8Array(planeSize);
   for (let i = 0; i < len; i++) {
     for (let b = 0; b < 8; b++) {
       if (data[i] & (1 << (7 - b))) {
@@ -57,13 +51,13 @@ function bytePlaneEncode(data) {
       }
     }
   }
-  const result = new Uint8Array(len);
+  const result = new Uint8Array(totalSize);
   let pos = 0;
   for (let b = 0; b < 8; b++) {
     result.set(planes[b], pos);
-    pos += planes[b].length;
+    pos += planeSize;
   }
-  return result.subarray(0, pos);
+  return result;
 }
 
 function bytePlaneDecode(data) {
@@ -162,10 +156,36 @@ function decompressPayload(payloadData, compFlag, opts = {}) {
   return inflated;
 }
 
+// --------------------------------------------------------------------------
+// SHA-256 payload integrity verification
+// --------------------------------------------------------------------------
+
+/**
+ * Verify that a decoded payload matches the SHA-256 hash stored in the header.
+ *
+ * @param {Uint8Array} payload - decompressed payload bytes
+ * @param {Uint8Array} expectedHash - 32-byte SHA-256 from the AHDX header
+ * @returns {{ valid: boolean, expected: string, actual: string }}
+ */
+function verifySha256(payload, expectedHash) {
+  const crypto = require("crypto");
+  const actualHash = new Uint8Array(crypto.createHash("sha256").update(payload).digest());
+  let valid = true;
+  for (let i = 0; i < 32; i++) {
+    if (actualHash[i] !== expectedHash[i]) { valid = false; break; }
+  }
+  const toHex = (arr) => Array.from(arr).map(b => b.toString(16).padStart(2, "0")).join("");
+  return {
+    valid,
+    expected: toHex(expectedHash),
+    actual: toHex(actualHash),
+  };
+}
+
 module.exports = {
   COMPRESS_FLAG_NONE, COMPRESS_FLAG_DEFLATE,
   COMPRESS_FLAG_DELTA_DEFLATE, COMPRESS_FLAG_BYTEPLANE_DEFLATE,
   deltaEncode, deltaDecode,
   bytePlaneEncode, bytePlaneDecode,
-  parseHdHeader, decompressPayload,
+  parseHdHeader, decompressPayload, verifySha256,
 };

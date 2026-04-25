@@ -1,0 +1,383 @@
+{
+  "schema_version": "1.4",
+  "interaction_capture": {
+    "scale": 1.0,
+    "rotate_deg": 0.0,
+    "perspective": 0.0,
+    "blur_sigma": 1.5,
+    "motion_blur_len": 0,
+    "motion_blur_angle": 0.0,
+    "rolling_shutter_shift": 0,
+    "exposure": 1.0,
+    "gamma": 1.0,
+    "contrast": 1.0,
+    "gauss_noise": 0.02,
+    "shot_noise": 0.0,
+    "bit_depth": 8,
+    "sensor": {
+      "enabled": true,
+      "pattern": "RGGB",
+      "blur_sigma_r": 0.0,
+      "blur_sigma_g": 0.0,
+      "blur_sigma_b": 0.0,
+      "noise_r": 0.02,
+      "noise_g": 0.015,
+      "noise_b": 0.02
+    }
+  },
+  "proposals": [
+    "propose_threshold",
+    "propose_edges"
+  ],
+  "ranker": "largest_area",
+  "thresholds": {
+    "robust_thr": 0.8
+  },
+  "per_composite": {
+    "composite_ordering_role_zone": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "relation_kind": "ordering",
+          "per_method": {
+            "propose_threshold": {
+              "n_candidates": 7,
+              "candidate_scores": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "top1_score": 1.0,
+              "oracle_best_score": 1.0,
+              "worst_score": 1.0,
+              "top1_rank_area": 629
+            },
+            "propose_edges": {
+              "n_candidates": 20,
+              "candidate_scores": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "top1_score": 1.0,
+              "oracle_best_score": 1.0,
+              "worst_score": 1.0,
+              "top1_rank_area": 1897
+            }
+          },
+          "n_candidates_total": 27,
+          "oracle_best": 1.0,
+          "top1": 1.0,
+          "worst": 1.0,
+          "spread": 0.0,
+          "verdict": "SURVIVES_WITH_TOP1"
+        },
+        {
+          "sub_primitive": "role_zone",
+          "relation_kind": "role_zone",
+          "per_method": {
+            "propose_threshold": {
+              "n_candidates": 7,
+              "candidate_scores": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "top1_score": 1.0,
+              "oracle_best_score": 1.0,
+              "worst_score": 1.0,
+              "top1_rank_area": 629
+            },
+            "propose_edges": {
+              "n_candidates": 20,
+              "candidate_scores": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "top1_score": 1.0,
+              "oracle_best_score": 1.0,
+              "worst_score": 1.0,
+              "top1_rank_area": 1897
+            }
+          },
+          "n_candidates_total": 27,
+          "oracle_best": 1.0,
+          "top1": 1.0,
+          "worst": 1.0,
+          "spread": 0.0,
+          "verdict": "SURVIVES_WITH_TOP1"
+        }
+      ],
+      "overall_verdict": "SURVIVES_WITH_TOP1"
+    },
+    "composite_repetition_cardinality": {
+      "sub_relations": [
+        {
+          "sub_primitive": "repetition",
+          "relation_kind": "repetition",
+          "per_method": {
+            "propose_threshold": {
+              "n_candidates": 12,
+              "candidate_scores": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.9213250446789193,
+                0.9213250446789193,
+                0.9213250446789193,
+                0.9213250446789193,
+                0.9213250446789193
+              ],
+              "top1_score": 0.9213250446789193,
+              "oracle_best_score": 0.9213250446789193,
+              "worst_score": 0.0,
+              "top1_rank_area": 239
+            },
+            "propose_edges": {
+              "n_candidates": 7,
+              "candidate_scores": [
+                0.9213250446789193,
+                0.9213250446789193,
+                0.9213250446789193,
+                0.9213250446789193,
+                0.9213250446789193,
+                0.9213250446789193,
+                0.9213250446789193
+              ],
+              "top1_score": 0.9213250446789193,
+              "oracle_best_score": 0.9213250446789193,
+              "worst_score": 0.9213250446789193,
+              "top1_rank_area": 2501
+            }
+          },
+          "n_candidates_total": 19,
+          "oracle_best": 0.9213250446789193,
+          "top1": 0.9213250446789193,
+          "worst": 0.0,
+          "spread": 0.9213250446789193,
+          "verdict": "SURVIVES_WITH_TOP1"
+        },
+        {
+          "sub_primitive": "cardinality",
+          "relation_kind": "cardinality",
+          "per_method": {
+            "propose_threshold": {
+              "n_candidates": 12,
+              "candidate_scores": [
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996
+              ],
+              "top1_score": 0.19999999999999996,
+              "oracle_best_score": 0.19999999999999996,
+              "worst_score": 0.19999999999999996,
+              "top1_rank_area": 239
+            },
+            "propose_edges": {
+              "n_candidates": 7,
+              "candidate_scores": [
+                0.6,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.19999999999999996,
+                0.0
+              ],
+              "top1_score": 0.6,
+              "oracle_best_score": 0.6,
+              "worst_score": 0.0,
+              "top1_rank_area": 2501
+            }
+          },
+          "n_candidates_total": 19,
+          "oracle_best": 0.6,
+          "top1": 0.6,
+          "worst": 0.0,
+          "spread": 0.6,
+          "verdict": "FAILS_UNDER_COMPETITION"
+        }
+      ],
+      "overall_verdict": "FAILS_UNDER_COMPETITION"
+    },
+    "composite_ordering_crowded_by_adjacency": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "relation_kind": "ordering",
+          "per_method": {
+            "propose_threshold": {
+              "n_candidates": 3,
+              "candidate_scores": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "top1_score": 1.0,
+              "oracle_best_score": 1.0,
+              "worst_score": 1.0,
+              "top1_rank_area": 979
+            },
+            "propose_edges": {
+              "n_candidates": 26,
+              "candidate_scores": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "top1_score": 1.0,
+              "oracle_best_score": 1.0,
+              "worst_score": 1.0,
+              "top1_rank_area": 2410
+            }
+          },
+          "n_candidates_total": 29,
+          "oracle_best": 1.0,
+          "top1": 1.0,
+          "worst": 1.0,
+          "spread": 0.0,
+          "verdict": "SURVIVES_WITH_TOP1"
+        },
+        {
+          "sub_primitive": "adjacency",
+          "relation_kind": "adjacency",
+          "per_method": {
+            "propose_threshold": {
+              "n_candidates": 3,
+              "candidate_scores": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "top1_score": 1.0,
+              "oracle_best_score": 1.0,
+              "worst_score": 1.0,
+              "top1_rank_area": 979
+            },
+            "propose_edges": {
+              "n_candidates": 26,
+              "candidate_scores": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "top1_score": 1.0,
+              "oracle_best_score": 1.0,
+              "worst_score": 1.0,
+              "top1_rank_area": 2410
+            }
+          },
+          "n_candidates_total": 29,
+          "oracle_best": 1.0,
+          "top1": 1.0,
+          "worst": 1.0,
+          "spread": 0.0,
+          "verdict": "SURVIVES_WITH_TOP1"
+        }
+      ],
+      "overall_verdict": "SURVIVES_WITH_TOP1"
+    }
+  }
+}

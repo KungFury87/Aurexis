@@ -1,0 +1,276 @@
+{
+  "schema_version": "2.0",
+  "interaction_capture": {
+    "scale": 1.0,
+    "rotate_deg": 0.0,
+    "perspective": 0.0,
+    "blur_sigma": 1.5,
+    "motion_blur_len": 0,
+    "motion_blur_angle": 0.0,
+    "rolling_shutter_shift": 0,
+    "exposure": 1.0,
+    "gamma": 1.0,
+    "contrast": 1.0,
+    "gauss_noise": 0.02,
+    "shot_noise": 0.0,
+    "bit_depth": 8,
+    "sensor": {
+      "enabled": true,
+      "pattern": "RGGB",
+      "blur_sigma_r": 0.0,
+      "blur_sigma_g": 0.0,
+      "blur_sigma_b": 0.0,
+      "noise_r": 0.02,
+      "noise_g": 0.015,
+      "noise_b": 0.02
+    }
+  },
+  "single_rankers": [
+    "area",
+    "mean_intensity",
+    "edge_density",
+    "compactness"
+  ],
+  "fused_rankers": [
+    "normalized_sum",
+    "borda"
+  ],
+  "primitive_aware_rankers": [
+    "cardinality_target",
+    "repetition_target_strip",
+    "role_zone_target",
+    "ordering_target",
+    "symmetry_target"
+  ],
+  "thresholds": {
+    "robust_thr": 0.8
+  },
+  "per_composite": {
+    "composite_cardinality_with_decoy": {
+      "sub_relations": [
+        {
+          "sub_primitive": "cardinality",
+          "relation_kind": "cardinality",
+          "n_candidates": 8,
+          "target_params": {
+            "target_count": 3
+          },
+          "label_scoped_no_roi": false,
+          "oracle_best": 1.0,
+          "oracle_idx": 1,
+          "generic_top1": {
+            "area": 0.33333333333333337,
+            "mean_intensity": 0.33333333333333337,
+            "edge_density": 0.33333333333333337,
+            "compactness": 0.0,
+            "normalized_sum": 0.33333333333333337,
+            "borda": 0.33333333333333337
+          },
+          "best_generic": 0.33333333333333337,
+          "best_generic_name": "area",
+          "primitive_aware": 1.0,
+          "primitive_aware_idx": 1,
+          "verdict": "PRIMITIVE_AWARE_HELPS"
+        }
+      ],
+      "overall_verdict": "PRIMITIVE_AWARE_HELPS"
+    },
+    "composite_cardinality_ranker_split": {
+      "sub_relations": [
+        {
+          "sub_primitive": "cardinality",
+          "relation_kind": "cardinality",
+          "n_candidates": 19,
+          "target_params": {
+            "target_count": 3
+          },
+          "label_scoped_no_roi": false,
+          "oracle_best": 1.0,
+          "oracle_idx": 15,
+          "generic_top1": {
+            "area": 1.0,
+            "mean_intensity": 0.33333333333333337,
+            "edge_density": 0.33333333333333337,
+            "compactness": 0.0,
+            "normalized_sum": 0.33333333333333337,
+            "borda": 0.33333333333333337
+          },
+          "best_generic": 1.0,
+          "best_generic_name": "area",
+          "primitive_aware": 1.0,
+          "primitive_aware_idx": 15,
+          "verdict": "GENERIC_FUSION_SUFFICIENT"
+        }
+      ],
+      "overall_verdict": "GENERIC_FUSION_SUFFICIENT"
+    },
+    "composite_repetition_distractor": {
+      "sub_relations": [
+        {
+          "sub_primitive": "repetition",
+          "relation_kind": "repetition",
+          "n_candidates": 11,
+          "target_params": {
+            "target_period": 21.0,
+            "row_y": 96
+          },
+          "label_scoped_no_roi": false,
+          "oracle_best": 0.8126403461975622,
+          "oracle_idx": 8,
+          "generic_top1": {
+            "area": 0.0,
+            "mean_intensity": 0.0,
+            "edge_density": 0.0,
+            "compactness": 0.0,
+            "normalized_sum": 0.0,
+            "borda": 0.0
+          },
+          "best_generic": 0.0,
+          "best_generic_name": "area",
+          "primitive_aware": 0.8126403461975622,
+          "primitive_aware_idx": 8,
+          "verdict": "PRIMITIVE_AWARE_HELPS"
+        }
+      ],
+      "overall_verdict": "PRIMITIVE_AWARE_HELPS"
+    },
+    "composite_role_zone_decoy": {
+      "sub_relations": [
+        {
+          "sub_primitive": "role_zone",
+          "relation_kind": "role_zone",
+          "n_candidates": 12,
+          "target_params": {
+            "target_satellites": 4
+          },
+          "label_scoped_no_roi": false,
+          "oracle_best": 1.0,
+          "oracle_idx": 9,
+          "generic_top1": {
+            "area": 0.0,
+            "mean_intensity": 0.0,
+            "edge_density": 0.0,
+            "compactness": 0.0,
+            "normalized_sum": 0.0,
+            "borda": 0.0
+          },
+          "best_generic": 0.0,
+          "best_generic_name": "area",
+          "primitive_aware": 1.0,
+          "primitive_aware_idx": 9,
+          "verdict": "PRIMITIVE_AWARE_HELPS"
+        }
+      ],
+      "overall_verdict": "PRIMITIVE_AWARE_HELPS"
+    },
+    "composite_ordering_distractor": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "relation_kind": "ordering",
+          "n_candidates": 13,
+          "target_params": {
+            "target_count": 5
+          },
+          "label_scoped_no_roi": false,
+          "oracle_best": 1.0,
+          "oracle_idx": 12,
+          "generic_top1": {
+            "area": 0.7,
+            "mean_intensity": 0.0,
+            "edge_density": 0.0,
+            "compactness": 0.0,
+            "normalized_sum": 0.0,
+            "borda": 0.0
+          },
+          "best_generic": 0.7,
+          "best_generic_name": "area",
+          "primitive_aware": 1.0,
+          "primitive_aware_idx": 12,
+          "verdict": "PRIMITIVE_AWARE_HELPS"
+        }
+      ],
+      "overall_verdict": "PRIMITIVE_AWARE_HELPS"
+    },
+    "composite_symmetry_distractor": {
+      "sub_relations": [
+        {
+          "sub_primitive": "symmetry",
+          "relation_kind": "symmetry",
+          "n_candidates": 12,
+          "target_params": {
+            "axis": "vertical"
+          },
+          "label_scoped_no_roi": false,
+          "oracle_best": 0.980413746233824,
+          "oracle_idx": 10,
+          "generic_top1": {
+            "area": 0.3832395844405316,
+            "mean_intensity": 0.0,
+            "edge_density": 0.0,
+            "compactness": 0.0,
+            "normalized_sum": 0.0,
+            "borda": 0.0
+          },
+          "best_generic": 0.3832395844405316,
+          "best_generic_name": "area",
+          "primitive_aware": 0.980413746233824,
+          "primitive_aware_idx": 10,
+          "verdict": "PRIMITIVE_AWARE_HELPS"
+        }
+      ],
+      "overall_verdict": "PRIMITIVE_AWARE_HELPS"
+    }
+  },
+  "family_boundary_map": {
+    "adjacency": {
+      "per_composite_verdicts": [
+        "METRIC_GAP_ROI_INSENSITIVE"
+      ],
+      "boundary_tag": "METRIC_GAP_ROI_INSENSITIVE"
+    },
+    "cardinality": {
+      "per_composite_verdicts": [
+        "PRIMITIVE_AWARE_HELPS",
+        "GENERIC_FUSION_SUFFICIENT"
+      ],
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS"
+    },
+    "hierarchy": {
+      "per_composite_verdicts": [
+        "METRIC_GAP_ROI_INSENSITIVE"
+      ],
+      "boundary_tag": "METRIC_GAP_ROI_INSENSITIVE"
+    },
+    "ordering": {
+      "per_composite_verdicts": [
+        "PRIMITIVE_AWARE_HELPS"
+      ],
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS"
+    },
+    "orientation": {
+      "per_composite_verdicts": [
+        "METRIC_GAP_ROI_INSENSITIVE"
+      ],
+      "boundary_tag": "METRIC_GAP_ROI_INSENSITIVE"
+    },
+    "repetition": {
+      "per_composite_verdicts": [
+        "PRIMITIVE_AWARE_HELPS"
+      ],
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS"
+    },
+    "role_zone": {
+      "per_composite_verdicts": [
+        "PRIMITIVE_AWARE_HELPS"
+      ],
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS"
+    },
+    "symmetry": {
+      "per_composite_verdicts": [
+        "PRIMITIVE_AWARE_HELPS"
+      ],
+      "boundary_tag": "PRIMITIVE_AWARE_HELPS"
+    }
+  }
+}

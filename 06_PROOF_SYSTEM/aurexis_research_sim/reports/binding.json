@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.1",
+  "interaction_capture": {
+    "scale": 1.0,
+    "rotate_deg": 0.0,
+    "perspective": 0.0,
+    "blur_sigma": 1.5,
+    "motion_blur_len": 0,
+    "motion_blur_angle": 0.0,
+    "rolling_shutter_shift": 0,
+    "exposure": 1.0,
+    "gamma": 1.0,
+    "contrast": 1.0,
+    "gauss_noise": 0.02,
+    "shot_noise": 0.0,
+    "bit_depth": 8,
+    "sensor": {
+      "enabled": true,
+      "pattern": "RGGB",
+      "blur_sigma_r": 0.0,
+      "blur_sigma_g": 0.0,
+      "blur_sigma_b": 0.0,
+      "noise_r": 0.02,
+      "noise_g": 0.015,
+      "noise_b": 0.02
+    }
+  },
+  "thresholds": {
+    "robust_thr": 0.8,
+    "binding_boost_tag_threshold": 0.3
+  },
+  "per_composite": {
+    "composite_ordering_role_zone": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "relation_kind": "ordering",
+          "unbound_survival": 1.0,
+          "bound_survival": 1.0,
+          "binding_boost": 0.0,
+          "verdict": "SURVIVES_GLOBAL",
+          "tags": []
+        },
+        {
+          "sub_primitive": "role_zone",
+          "relation_kind": "role_zone",
+          "unbound_survival": 1.0,
+          "bound_survival": 1.0,
+          "binding_boost": 0.0,
+          "verdict": "SURVIVES_GLOBAL",
+          "tags": []
+        }
+      ],
+      "overall_verdict": "SURVIVES_GLOBAL"
+    },
+    "composite_repetition_cardinality": {
+      "sub_relations": [
+        {
+          "sub_primitive": "repetition",
+          "relation_kind": "repetition",
+          "unbound_survival": 0.9213250446789193,
+          "bound_survival": 0.958186859846888,
+          "binding_boost": 0.036861815167968714,
+          "verdict": "SURVIVES_GLOBAL",
+          "tags": []
+        },
+        {
+          "sub_primitive": "cardinality",
+          "relation_kind": "cardinality",
+          "unbound_survival": 0.0,
+          "bound_survival": 1.0,
+          "binding_boost": 1.0,
+          "verdict": "NEEDS_BINDING",
+          "tags": [
+            "SCENE_AMBIGUITY"
+          ]
+        }
+      ],
+      "overall_verdict": "NEEDS_BINDING"
+    },
+    "composite_ordering_crowded_by_adjacency": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "relation_kind": "ordering",
+          "unbound_survival": 1.0,
+          "bound_survival": 1.0,
+          "binding_boost": 0.0,
+          "verdict": "SURVIVES_GLOBAL",
+          "tags": []
+        },
+        {
+          "sub_primitive": "adjacency",
+          "relation_kind": "adjacency",
+          "unbound_survival": 1.0,
+          "bound_survival": 1.0,
+          "binding_boost": 0.0,
+          "verdict": "SURVIVES_GLOBAL",
+          "tags": []
+        }
+      ],
+      "overall_verdict": "SURVIVES_GLOBAL"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.6",
+  "scenarios": [
+    "SIM_MILD",
+    "SIM_HOSTILE"
+  ],
+  "per_primitive": {
+    "cardinality": {
+      "primitive": "cardinality",
+      "truth_value": 4,
+      "recovered": {
+        "SIM_MILD": 4,
+        "SIM_HOSTILE": 4
+      },
+      "matches": [
+        true,
+        true
+      ],
+      "stability_score": 1.0,
+      "verdict": "SEMANTIC_STABLE"
+    },
+    "repetition": {
+      "primitive": "repetition",
+      "truth_value": 21.333333333333332,
+      "recovered": {
+        "SIM_MILD": 1,
+        "SIM_HOSTILE": 1
+      },
+      "matches": [
+        false,
+        false
+      ],
+      "stability_score": 0.0,
+      "verdict": "SEMANTIC_UNSTABLE"
+    }
+  }
+}

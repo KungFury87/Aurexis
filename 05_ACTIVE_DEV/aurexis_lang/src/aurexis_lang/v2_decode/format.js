@@ -81,21 +81,104 @@ function computeCanonicalFinderPoints(layout) {
 }
 
 /**
- * Calculate HD capacity for a config.
- * @param {object} config - HD config entry
- * @returns {object} { totalModules, rawBytes, dataBytes, rawBits }
+ * Compute alignment pattern center positions within the data grid.
+ *
+ * Alignment patterns are 3×3 module patterns (dark center, light ring, dark border)
+ * placed on a regular grid within the data area. They provide distributed geometric
+ * anchor points for local homography correction under perspective warp.
+ *
+ * Placement: centers are spaced approximately every `step` modules, avoiding the
+ * edges (at least 4 modules from the data boundary). For gs=128 with step≈32,
+ * this gives a 3×3 grid of alignment patterns = 9 anchors in the data region.
+ *
+ * @param {number} gs - grid size (data modules per axis)
+ * @returns {{ centers: Array<{r:number, c:number}>, mask: Uint8Array, count: number }}
+ *   centers: array of {r,c} center positions (data-grid-relative, 0-indexed)
+ *   mask: gs*gs Uint8Array, 1 for modules occupied by alignment patterns
+ *   count: total modules occupied
  */
-function hdCalcCapacity(config) {
-  const totalModules = config.grid * config.grid;
-  const rawBits = totalModules * config.bpm;
+function computeAlignmentPatternPositions(gs) {
+  // Target spacing: place alignment centers ~every gs/4 modules, clamped to [24,64]
+  const idealStep = Math.round(gs / 4);
+  const step = Math.max(24, Math.min(64, idealStep));
+
+  // Generate center positions: start at step/2, step to gs - step/2
+  const starts = [];
+  const margin = Math.max(4, Math.floor(step / 2));
+  for (let p = margin; p < gs - margin + 1; p += step) {
+    starts.push(p);
+  }
+  // Ensure we always have at least the endpoints
+  if (starts.length === 0) return { centers: [], mask: new Uint8Array(gs * gs), count: 0 };
+  if (starts[starts.length - 1] < gs - margin) starts.push(gs - margin);
+
+  const centers = [];
+  const mask = new Uint8Array(gs * gs);
+  let count = 0;
+
+  for (const cr of starts) {
+    for (const cc of starts) {
+      centers.push({ r: cr, c: cc });
+      // Mark the 3×3 region around center
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          const mr = cr + dr, mc = cc + dc;
+          if (mr >= 0 && mr < gs && mc >= 0 && mc < gs) {
+            if (!mask[mr * gs + mc]) {
+              mask[mr * gs + mc] = 1;
+              count++;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return { centers, mask, count };
+}
+
+/**
+ * Get the 3×3 alignment pattern bitmap.
+ * 1 = dark (black), 0 = light (white).
+ * Pattern: dark ring, light inner, dark center — high contrast cross-hair.
+ */
+const ALIGNMENT_BITMAP = [
+  [1, 1, 1],
+  [1, 0, 1],
+  [1, 1, 1],
+];
+
+// Actually, use inverted for better detectability (dark center, white ring, dark border
+// makes a clear target visible against any color background):
+const ALIGNMENT_PATTERN = [
+  [0, 0, 0],
+  [0, 1, 0],
+  [0, 0, 0],
+];
+
+/**
+ * Calculate HD capacity for a config, accounting for alignment pattern modules.
+ *
+ * @param {object} config - HD config entry
+ * @param {object} [opts]
+ * @param {number} [opts.nsym=32] - RS parity symbols per block (32=standard, 64=high-redundancy)
+ * @returns {object} { totalModules, rawBytes, dataBytes, rawBits, numBlocks, alignInfo, nsym, blockK }
+ */
+function hdCalcCapacity(config, opts) {
+  opts = opts || {};
+  const nsym = opts.nsym || 32;
+  const gs = config.grid;
+  const alignInfo = computeAlignmentPatternPositions(gs);
+  const dataModules = gs * gs - alignInfo.count;
+  const rawBits = dataModules * config.bpm;
   const rawBytes = Math.floor(rawBits / 8);
   // numBlocks must use floor to match hdRsEncode/hdRsDecode — the RS frame
   // must fit entirely within the module grid's byte capacity.
   const blockSize = 255;
   const numBlocks = Math.max(1, Math.floor(rawBytes / blockSize));
-  const blockK = blockSize - 32; // 223 data bytes per block
+  const blockK = blockSize - nsym;
   const dataBytes = blockK * numBlocks;
-  return { totalModules, rawBytes, dataBytes, rawBits, numBlocks };
+  return { totalModules: gs * gs, dataModules, rawBytes, dataBytes, rawBits, numBlocks, alignInfo, nsym, blockK };
 }
 
 // --------------------------------------------------------------------------
@@ -173,9 +256,7 @@ function scoreConfigTiming(fids, imgData, W, H, config) {
  * @returns {object|null} { config, name, score, totalMod } or null
  */
 function estimateFormat(fids, imgData, W, H, opts = {}) {
-  const candidates = opts.candidates || [
-    "128x128-4c", "192x192-4c", "256x256-4c", "384x384-4c", "512x512-4c",
-  ];
+  const candidates = opts.candidates || Object.keys(HD_CONFIGS);
   const minScore = opts.minScore || 0.70;
 
   // Quick reject: if quad is too small, likely standard L2
@@ -186,14 +267,30 @@ function estimateFormat(fids, imgData, W, H, opts = {}) {
   if (avgSide < 200) return null;
 
   let bestScore = -1, bestConfig = null, bestName = "", bestTotalMod = 0;
+  const allCandidates = [];
+
+  // Compute actual finder quad side length for canvasPx tiebreaking
+  const avgSideLen = (
+    Math.hypot(fids.TR.x - fids.TL.x, fids.TR.y - fids.TL.y) +
+    Math.hypot(fids.BL.x - fids.TL.x, fids.BL.y - fids.TL.y) +
+    Math.hypot(fids.TR.x - fids.BR.x, fids.TR.y - fids.BR.y) +
+    Math.hypot(fids.BL.x - fids.BR.x, fids.BL.y - fids.BR.y)
+  ) / 4;
 
   for (const name of candidates) {
     const cfg = HD_CONFIGS[name];
     if (!cfg) continue;
     const result = scoreConfigTiming(fids, imgData, W, H, cfg);
     if (!result) continue;
-    if (result.score > bestScore) {
-      bestScore = result.score;
+    // Tiebreak: when timing scores are equal, prefer config whose canvasPx
+    // best matches the actual image size. Finder-quad side ≈ canvasPx*(1-0.06)
+    // (after quiet zone). Use ratio closeness as secondary score.
+    const expectedSide = cfg.canvasPx * 0.94; // approximate after quiet zone
+    const sizeRatio = Math.min(avgSideLen, expectedSide) / Math.max(avgSideLen, expectedSide);
+    const combinedScore = result.score + sizeRatio * 0.001; // tiny tiebreaker
+    allCandidates.push({ name, combinedScore, grid: cfg.grid });
+    if (combinedScore > bestScore) {
+      bestScore = combinedScore;
       bestConfig = cfg;
       bestName = name;
       bestTotalMod = result.totalMod;
@@ -208,7 +305,40 @@ function estimateFormat(fids, imgData, W, H, opts = {}) {
     score: bestScore,
     totalMod: bestTotalMod,
     dataModules: bestConfig.grid,
+    // Ranked candidates: all configs above minScore, sorted by combined score
+    candidates: allCandidates
+      .filter(c => c.combinedScore >= minScore)
+      .sort((a, b) => b.combinedScore - a.combinedScore)
+      .slice(0, 5)
+      .map(c => ({ name: c.name, score: c.combinedScore, grid: c.grid })),
   };
+}
+
+/**
+ * Build data-index ↔ grid-position mapping that skips alignment pattern modules.
+ *
+ * dataToGrid[i] = { r, c } — the grid position of the i-th data module
+ * gridToData[r*gs+c] = data index, or -1 if alignment pattern
+ *
+ * @param {number} gs - grid size
+ * @param {Uint8Array} alignMask - gs*gs mask (1 = alignment, 0 = data)
+ * @returns {{ dataToGrid: Array<{r:number,c:number}>, gridToData: Int32Array, dataCount: number }}
+ */
+function buildAlignmentMapping(gs, alignMask) {
+  const gridToData = new Int32Array(gs * gs).fill(-1);
+  const dataToGrid = [];
+  let di = 0;
+  for (let r = 0; r < gs; r++) {
+    for (let c = 0; c < gs; c++) {
+      const gi = r * gs + c;
+      if (!alignMask[gi]) {
+        gridToData[gi] = di;
+        dataToGrid.push({ r, c });
+        di++;
+      }
+    }
+  }
+  return { dataToGrid, gridToData, dataCount: di };
 }
 
 module.exports = {
@@ -216,6 +346,9 @@ module.exports = {
   L2_CANVAS_PX, L2_GRID_MODULES,
   computeSymbolLayout,
   computeCanonicalFinderPoints,
+  computeAlignmentPatternPositions,
+  ALIGNMENT_PATTERN,
+  buildAlignmentMapping,
   hdCalcCapacity,
   scoreConfigTiming,
   estimateFormat,

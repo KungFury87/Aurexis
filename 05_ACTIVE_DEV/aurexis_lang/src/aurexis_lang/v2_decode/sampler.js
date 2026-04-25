@@ -331,6 +331,66 @@ function getConsensusModules(accum, numColors, palette) {
   return modules;
 }
 
+// --------------------------------------------------------------------------
+// Multi-point module sampling with majority-vote classification
+// --------------------------------------------------------------------------
+
+/**
+ * Sample a module at center + 4 cardinal offsets and classify via CIELab
+ * majority vote. Returns the same shape as classifyModuleLab but with
+ * improved accuracy under sub-module misalignment from perspective warp.
+ *
+ * @param {Uint8Array|Uint8ClampedArray} imgData - RGBA pixel data
+ * @param {number} W - image width
+ * @param {number} H - image height
+ * @param {number} cx - center x in image coords
+ * @param {number} cy - center y in image coords
+ * @param {number} radius - single-point sampling radius
+ * @param {number} offsetPx - offset from center for cardinal samples (typically modPx * 0.2)
+ * @param {number[][]} palette - color palette
+ * @returns {{ index: number, confidence: number, secondIndex: number }}
+ */
+function classifyModuleMultipoint(imgData, W, H, cx, cy, radius, offsetPx, palette) {
+  // 5 sample points: center + N/S/E/W
+  const offsets = [
+    [0, 0],
+    [offsetPx, 0], [-offsetPx, 0],
+    [0, offsetPx], [0, -offsetPx],
+  ];
+
+  // Collect CIELab classifications from each sample point
+  const votes = new Uint8Array(palette.length);
+  let bestConf = 0, bestSecond = 0;
+  let centerResult = null;
+
+  for (let i = 0; i < offsets.length; i++) {
+    const rgb = sampleAvg(imgData, W, H, cx + offsets[i][0], cy + offsets[i][1], radius);
+    const result = classifyModuleLab(rgb, palette);
+    votes[result.index]++;
+    if (i === 0) {
+      centerResult = result;
+    }
+  }
+
+  // Find majority winner
+  let winner = 0, winnerVotes = 0;
+  let runner = 0, runnerVotes = 0;
+  for (let i = 0; i < votes.length; i++) {
+    if (votes[i] > winnerVotes) {
+      runner = winner; runnerVotes = winnerVotes;
+      winner = i; winnerVotes = votes[i];
+    } else if (votes[i] > runnerVotes) {
+      runner = i; runnerVotes = votes[i];
+    }
+  }
+
+  // Confidence: proportion of votes for winner minus noise
+  const totalVotes = offsets.length;
+  const confidence = (winnerVotes - runnerVotes) / totalVotes;
+
+  return { index: winner, confidence: Math.max(0, confidence), secondIndex: runner };
+}
+
 module.exports = {
   HD_PALETTE_4, HD_PALETTE_8, HD_PALETTE_16,
   hdGetPalette,
@@ -338,6 +398,8 @@ module.exports = {
   classifyModuleRgb, classifyModuleHsv, softClassifyN,
   // CIELab classification
   rgbToLab, labDistSq, getLabPalette, classifyModuleLab,
+  // Multi-point classification
+  classifyModuleMultipoint,
   hdPackModules, hdUnpackModules,
   createFusionAccumulator, addFrameToAccumulator, getConsensusModules,
 };

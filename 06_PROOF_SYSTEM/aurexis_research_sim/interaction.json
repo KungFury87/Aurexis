@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "interaction_capture": {
+    "scale": 1.0,
+    "rotate_deg": 0.0,
+    "perspective": 0.0,
+    "blur_sigma": 1.5,
+    "motion_blur_len": 0,
+    "motion_blur_angle": 0.0,
+    "rolling_shutter_shift": 0,
+    "exposure": 1.0,
+    "gamma": 1.0,
+    "contrast": 1.0,
+    "gauss_noise": 0.02,
+    "shot_noise": 0.0,
+    "bit_depth": 8,
+    "sensor": {
+      "enabled": true,
+      "pattern": "RGGB",
+      "blur_sigma_r": 0.0,
+      "blur_sigma_g": 0.0,
+      "blur_sigma_b": 0.0,
+      "noise_r": 0.02,
+      "noise_g": 0.015,
+      "noise_b": 0.02
+    }
+  },
+  "per_composite": {
+    "composite_ordering_role_zone": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "survival_in_composite": 1.0,
+          "survival_alone": 1.0,
+          "interference": 0.0,
+          "flag": "BINDING_OK"
+        },
+        {
+          "sub_primitive": "role_zone",
+          "survival_in_composite": 1.0,
+          "survival_alone": 1.0,
+          "interference": 0.0,
+          "flag": "BINDING_OK"
+        }
+      ],
+      "overall_flag": "BINDING_OK"
+    },
+    "composite_repetition_cardinality": {
+      "sub_relations": [
+        {
+          "sub_primitive": "repetition",
+          "survival_in_composite": 0.9213250446789193,
+          "survival_alone": 0.931900496291845,
+          "interference": 0.010575451612925724,
+          "flag": "BINDING_OK"
+        },
+        {
+          "sub_primitive": "cardinality",
+          "survival_in_composite": 0.0,
+          "survival_alone": 1.0,
+          "interference": 1.0,
+          "flag": "BINDING_FAILURE"
+        }
+      ],
+      "overall_flag": "BINDING_FAILURE"
+    },
+    "composite_ordering_crowded_by_adjacency": {
+      "sub_relations": [
+        {
+          "sub_primitive": "ordering",
+          "survival_in_composite": 1.0,
+          "survival_alone": 1.0,
+          "interference": 0.0,
+          "flag": "BINDING_OK"
+        },
+        {
+          "sub_primitive": "adjacency",
+          "survival_in_composite": 1.0,
+          "survival_alone": 1.0,
+          "interference": 0.0,
+          "flag": "BINDING_OK"
+        }
+      ],
+      "overall_flag": "BINDING_OK"
+    }
+  }
+}

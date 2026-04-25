@@ -1,0 +1,340 @@
+{
+  "schema_version": "0.7",
+  "scenarios": {
+    "phone_mild": {
+      "scale": 1.0,
+      "rotate_deg": 0.0,
+      "perspective": 0.0,
+      "blur_sigma": 1.0,
+      "motion_blur_len": 0,
+      "motion_blur_angle": 0.0,
+      "rolling_shutter_shift": 0,
+      "exposure": 1.0,
+      "gamma": 1.0,
+      "contrast": 1.0,
+      "gauss_noise": 0.01,
+      "shot_noise": 0.0,
+      "bit_depth": 8,
+      "sensor": {
+        "enabled": true,
+        "pattern": "RGGB",
+        "blur_sigma_r": 0.0,
+        "blur_sigma_g": 0.0,
+        "blur_sigma_b": 0.0,
+        "noise_r": 0.01,
+        "noise_g": 0.008,
+        "noise_b": 0.01
+      }
+    },
+    "phone_moderate": {
+      "scale": 1.0,
+      "rotate_deg": 0.0,
+      "perspective": 0.0,
+      "blur_sigma": 1.5,
+      "motion_blur_len": 0,
+      "motion_blur_angle": 0.0,
+      "rolling_shutter_shift": 0,
+      "exposure": 1.0,
+      "gamma": 1.0,
+      "contrast": 1.0,
+      "gauss_noise": 0.02,
+      "shot_noise": 0.0,
+      "bit_depth": 8,
+      "sensor": {
+        "enabled": true,
+        "pattern": "RGGB",
+        "blur_sigma_r": 0.0,
+        "blur_sigma_g": 0.0,
+        "blur_sigma_b": 0.0,
+        "noise_r": 0.02,
+        "noise_g": 0.015,
+        "noise_b": 0.02
+      }
+    },
+    "phone_hostile": {
+      "scale": 1.0,
+      "rotate_deg": 4.0,
+      "perspective": 0.0,
+      "blur_sigma": 3.0,
+      "motion_blur_len": 0,
+      "motion_blur_angle": 0.0,
+      "rolling_shutter_shift": 0,
+      "exposure": 1.0,
+      "gamma": 1.0,
+      "contrast": 1.0,
+      "gauss_noise": 0.05,
+      "shot_noise": 0.0,
+      "bit_depth": 8,
+      "sensor": {
+        "enabled": true,
+        "pattern": "RGGB",
+        "blur_sigma_r": 0.0,
+        "blur_sigma_g": 0.0,
+        "blur_sigma_b": 0.0,
+        "noise_r": 0.04,
+        "noise_g": 0.03,
+        "noise_b": 0.04
+      }
+    },
+    "low_light": {
+      "scale": 1.0,
+      "rotate_deg": 0.0,
+      "perspective": 0.0,
+      "blur_sigma": 1.2,
+      "motion_blur_len": 0,
+      "motion_blur_angle": 0.0,
+      "rolling_shutter_shift": 0,
+      "exposure": 0.6,
+      "gamma": 1.3,
+      "contrast": 1.0,
+      "gauss_noise": 0.04,
+      "shot_noise": 0.04,
+      "bit_depth": 7,
+      "sensor": {
+        "enabled": true,
+        "pattern": "RGGB",
+        "blur_sigma_r": 0.0,
+        "blur_sigma_g": 0.0,
+        "blur_sigma_b": 0.0,
+        "noise_r": 0.035,
+        "noise_g": 0.025,
+        "noise_b": 0.035
+      }
+    },
+    "fast_motion": {
+      "scale": 1.0,
+      "rotate_deg": 0.0,
+      "perspective": 0.0,
+      "blur_sigma": 0.8,
+      "motion_blur_len": 9,
+      "motion_blur_angle": 15.0,
+      "rolling_shutter_shift": 6,
+      "exposure": 1.0,
+      "gamma": 1.0,
+      "contrast": 1.0,
+      "gauss_noise": 0.02,
+      "shot_noise": 0.0,
+      "bit_depth": 8,
+      "sensor": {
+        "enabled": true,
+        "pattern": "RGGB",
+        "blur_sigma_r": 0.0,
+        "blur_sigma_g": 0.0,
+        "blur_sigma_b": 0.0,
+        "noise_r": 0.02,
+        "noise_g": 0.015,
+        "noise_b": 0.02
+      }
+    }
+  },
+  "probe_kinds": [
+    "ordering_probe_hard",
+    "adjacency_probe_hard",
+    "symmetry_probe_hard",
+    "orientation_probe_hard",
+    "hierarchy_probe_hard",
+    "repetition_probe",
+    "cardinality_probe",
+    "role_zone_probe"
+  ],
+  "per_scenario": {
+    "phone_mild": {
+      "ordering_probe_hard": 1.0,
+      "adjacency_probe_hard": 1.0,
+      "symmetry_probe_hard": 0.927628209043946,
+      "orientation_probe_hard": 1.0,
+      "hierarchy_probe_hard": 1.0,
+      "repetition_probe": 0.9393498898352723,
+      "cardinality_probe": 1.0,
+      "role_zone_probe": 1.0
+    },
+    "phone_moderate": {
+      "ordering_probe_hard": 1.0,
+      "adjacency_probe_hard": 0.6666666666666666,
+      "symmetry_probe_hard": 0.7821710100602619,
+      "orientation_probe_hard": 1.0,
+      "hierarchy_probe_hard": 1.0,
+      "repetition_probe": 0.931900496291845,
+      "cardinality_probe": 1.0,
+      "role_zone_probe": 1.0
+    },
+    "phone_hostile": {
+      "ordering_probe_hard": 0.8606060606060606,
+      "adjacency_probe_hard": 0.0,
+      "symmetry_probe_hard": 0.5181348901024775,
+      "orientation_probe_hard": 0.75,
+      "hierarchy_probe_hard": 0.3333333333333333,
+      "repetition_probe": 0.9213118350613775,
+      "cardinality_probe": 0.0,
+      "role_zone_probe": 1.0
+    },
+    "low_light": {
+      "ordering_probe_hard": 0.9212121212121211,
+      "adjacency_probe_hard": 0.16666666666666666,
+      "symmetry_probe_hard": 0.5312884347073032,
+      "orientation_probe_hard": 1.0,
+      "hierarchy_probe_hard": 0.7708333333333334,
+      "repetition_probe": 0.9335256065673397,
+      "cardinality_probe": 0.0,
+      "role_zone_probe": 1.0
+    },
+    "fast_motion": {
+      "ordering_probe_hard": 0.9878787878787878,
+      "adjacency_probe_hard": 0.0,
+      "symmetry_probe_hard": 0.6020154291591747,
+      "orientation_probe_hard": 0.5,
+      "hierarchy_probe_hard": 0.8854166666666666,
+      "repetition_probe": 0.8503334166531893,
+      "cardinality_probe": 1.0,
+      "role_zone_probe": 1.0
+    }
+  },
+  "per_probe_classification": {
+    "ordering_probe_hard": {
+      "phone_mild": "ROBUST",
+      "phone_moderate": "ROBUST",
+      "phone_hostile": "ROBUST",
+      "low_light": "ROBUST",
+      "fast_motion": "ROBUST"
+    },
+    "adjacency_probe_hard": {
+      "phone_mild": "ROBUST",
+      "phone_moderate": "CONDITIONAL",
+      "phone_hostile": "FRAGILE",
+      "low_light": "FRAGILE",
+      "fast_motion": "FRAGILE"
+    },
+    "symmetry_probe_hard": {
+      "phone_mild": "ROBUST",
+      "phone_moderate": "CONDITIONAL",
+      "phone_hostile": "CONDITIONAL",
+      "low_light": "CONDITIONAL",
+      "fast_motion": "CONDITIONAL"
+    },
+    "orientation_probe_hard": {
+      "phone_mild": "ROBUST",
+      "phone_moderate": "ROBUST",
+      "phone_hostile": "CONDITIONAL",
+      "low_light": "ROBUST",
+      "fast_motion": "CONDITIONAL"
+    },
+    "hierarchy_probe_hard": {
+      "phone_mild": "ROBUST",
+      "phone_moderate": "ROBUST",
+      "phone_hostile": "FRAGILE",
+      "low_light": "CONDITIONAL",
+      "fast_motion": "ROBUST"
+    },
+    "repetition_probe": {
+      "phone_mild": "ROBUST",
+      "phone_moderate": "ROBUST",
+      "phone_hostile": "ROBUST",
+      "low_light": "ROBUST",
+      "fast_motion": "ROBUST"
+    },
+    "cardinality_probe": {
+      "phone_mild": "ROBUST",
+      "phone_moderate": "ROBUST",
+      "phone_hostile": "FRAGILE",
+      "low_light": "FRAGILE",
+      "fast_motion": "ROBUST"
+    },
+    "role_zone_probe": {
+      "phone_mild": "ROBUST",
+      "phone_moderate": "ROBUST",
+      "phone_hostile": "ROBUST",
+      "low_light": "ROBUST",
+      "fast_motion": "ROBUST"
+    }
+  },
+  "stability_summary": {
+    "ordering_probe_hard": {
+      "robust_count": 5,
+      "conditional_count": 0,
+      "fragile_count": 0,
+      "n_scenarios": 5,
+      "range": 0.1393939393939394,
+      "mean": 0.9539393939393939,
+      "is_stable": true,
+      "majority_bucket": "ROBUST",
+      "stable_verdict": "STABLE_ROBUST"
+    },
+    "adjacency_probe_hard": {
+      "robust_count": 1,
+      "conditional_count": 1,
+      "fragile_count": 3,
+      "n_scenarios": 5,
+      "range": 1.0,
+      "mean": 0.36666666666666664,
+      "is_stable": false,
+      "majority_bucket": "FRAGILE",
+      "stable_verdict": "SCENARIO_DEPENDENT"
+    },
+    "symmetry_probe_hard": {
+      "robust_count": 1,
+      "conditional_count": 4,
+      "fragile_count": 0,
+      "n_scenarios": 5,
+      "range": 0.40949331894146856,
+      "mean": 0.6722475946146327,
+      "is_stable": false,
+      "majority_bucket": "CONDITIONAL",
+      "stable_verdict": "SCENARIO_DEPENDENT"
+    },
+    "orientation_probe_hard": {
+      "robust_count": 3,
+      "conditional_count": 2,
+      "fragile_count": 0,
+      "n_scenarios": 5,
+      "range": 0.5,
+      "mean": 0.85,
+      "is_stable": false,
+      "majority_bucket": "ROBUST",
+      "stable_verdict": "SCENARIO_DEPENDENT"
+    },
+    "hierarchy_probe_hard": {
+      "robust_count": 3,
+      "conditional_count": 1,
+      "fragile_count": 1,
+      "n_scenarios": 5,
+      "range": 0.6666666666666667,
+      "mean": 0.7979166666666667,
+      "is_stable": false,
+      "majority_bucket": "ROBUST",
+      "stable_verdict": "SCENARIO_DEPENDENT"
+    },
+    "repetition_probe": {
+      "robust_count": 5,
+      "conditional_count": 0,
+      "fragile_count": 0,
+      "n_scenarios": 5,
+      "range": 0.08901647318208306,
+      "mean": 0.9152842488818049,
+      "is_stable": true,
+      "majority_bucket": "ROBUST",
+      "stable_verdict": "STABLE_ROBUST"
+    },
+    "cardinality_probe": {
+      "robust_count": 3,
+      "conditional_count": 0,
+      "fragile_count": 2,
+      "n_scenarios": 5,
+      "range": 1.0,
+      "mean": 0.6,
+      "is_stable": false,
+      "majority_bucket": "ROBUST",
+      "stable_verdict": "SCENARIO_DEPENDENT"
+    },
+    "role_zone_probe": {
+      "robust_count": 5,
+      "conditional_count": 0,
+      "fragile_count": 0,
+      "n_scenarios": 5,
+      "range": 0.0,
+      "mean": 1.0,
+      "is_stable": true,
+      "majority_bucket": "ROBUST",
+      "stable_verdict": "STABLE_ROBUST"
+    }
+  }
+}
