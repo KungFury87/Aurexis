@@ -1,0 +1,269 @@
+# ============================================================
+# Aurexis Vision Vocabulary v0.1
+#
+# Predicates expressed in the Workbench surface DSL. Each
+# predicate composes vision_ops operators (registered by
+# aurexis_workbench.vision_ops.register_all) over typed fields.
+# Loading this file via the intake CLI accepts each predicate
+# into the vision vocabulary and persists it to vision_vocab.json.
+#
+# Predicates here REPLACE the Python predicates from
+# Aurexis_RawVisionLab_v0_1/raw_vision_lab/predicates.py.
+# That module is now subordinate; this file is canonical.
+# ============================================================
+
+predicate has_subframe_motion
+  expects burst:image_stack
+  returns bool
+  intent  detect_motion_within_subframe_integration
+  body    AND(gt(temporal_diff(burst), 0.0045), gt(temporal_diff_coherence(burst), 8.0))
+
+
+predicate has_global_brightness_drift
+  expects burst:image_stack
+  returns bool
+  intent  detect_isp_brightness_drift_confound
+  body    gt(temporal_uniform_ratio(burst), 0.55)
+
+
+predicate has_anisotropy_in_brightest_patch
+  expects scene:image, patch_size:int
+  returns bool
+  intent  detect_local_oriented_structure_anywhere_in_frame
+  body    gt(max_coherence_patch_coh(scene, patch_size), 0.60)
+
+
+predicate has_structural_anisotropy_whole_image
+  expects scene:image
+  returns bool
+  intent  whole_image_oriented_texture_test_legacy
+  body    gt(structure_tensor_coherence(scene), 0.45)
+
+
+predicate has_polarization_signal
+  expects cap_axis_0:image, cap_axis_90:image
+  returns bool
+  intent  detect_polarization_pair_anisotropy
+  body    gt(abs_s(rotated_pair_anisotropy(cap_axis_0, cap_axis_90)), 0.10)
+
+
+predicate has_subpixel_periodicity
+  expects raw_bayer:image
+  returns bool
+  intent  detect_periodicity_above_demosaic_nyquist
+  body    AND(gt(fft_peak_to_floor(bayer_R(raw_bayer)), 5.0), gt(div_s(fft_peak_to_floor(bayer_R(raw_bayer)), fft_peak_to_floor(block_avg_2x2(raw_bayer))), 1.6))
+
+
+predicate has_spectral_band_anomaly
+  expects raw_bayer:image
+  returns bool
+  intent  detect_off_pipeline_spectral_response
+  body    OR(gt(green_imbalance(raw_bayer), 0.02), gt(channel_spread_norm(raw_bayer), 0.05))
+
+# ============================================================
+# Vocabulary v0.2 - generic-image predicates (added 2026-04-27)
+#
+# These predicates do NOT depend on raw sensor data, polarization
+# pairs, or burst-specific surfaces. They run on ANY image: phone
+# photos, screenshots, paintings, satellite imagery, microscope
+# slides. The substrate is image; the inputs are arbitrary.
+# ============================================================
+
+predicate has_gradient_energy
+  expects scene:image
+  returns bool
+  intent  scene_contains_any_oriented_structure
+  body    gt(gradient_energy(scene), 0.0001)
+
+
+predicate is_uniform_field
+  expects scene:image
+  returns bool
+  intent  scene_is_blank_sky_wall_fog_or_out_of_focus
+  body    lt(gradient_energy(scene), 0.0001)
+
+
+predicate has_repetitive_horizontal_structure
+  expects scene:image, row_y:int
+  returns bool
+  intent  detect_periodicity_along_a_chosen_row
+  body    gt(row_autocorr_peak(scene, row_y), 0.30)
+
+
+predicate has_high_frequency_residual
+  expects scene:image
+  returns bool
+  intent  detect_sharp_or_detailed_image_vs_blur_or_smooth
+  body    gt(high_frequency_residual(scene), 0.30)
+
+
+predicate has_centered_subject
+  expects scene:image
+  returns bool
+  intent  detect_subject_concentrated_in_centre_of_frame
+  body    gt(center_gradient_concentration(scene), 0.40)
+
+# ============================================================
+# Vocabulary v0.3 - directional, density, contrast, symmetry
+# ============================================================
+
+predicate has_horizontal_dominant_edges
+  expects scene:image
+  returns bool
+  intent  scene_dominated_by_horizontal_edges_horizon_floors
+  body    gt(directional_gradient_energy(scene, "horizontal"), mul_s(directional_gradient_energy(scene, "vertical"), 1.5))
+
+
+predicate has_vertical_dominant_edges
+  expects scene:image
+  returns bool
+  intent  scene_dominated_by_vertical_edges_trees_columns
+  body    gt(directional_gradient_energy(scene, "vertical"), mul_s(directional_gradient_energy(scene, "horizontal"), 1.5))
+
+
+predicate has_high_edge_density
+  expects scene:image
+  returns bool
+  intent  detect_high_complexity_busy_scene
+  body    gt(edge_density(scene, 1.0), 0.20)
+
+
+predicate has_low_edge_density
+  expects scene:image
+  returns bool
+  intent  detect_low_complexity_simple_or_blurry_scene
+  body    lt(edge_density(scene, 1.0), 0.05)
+
+
+predicate has_high_dynamic_range
+  expects scene:image
+  returns bool
+  intent  detect_high_contrast_scene
+  body    gt(dynamic_range(scene), 0.65)
+
+
+predicate has_mirror_symmetry_horizontal_axis
+  expects scene:image
+  returns bool
+  intent  scene_mirrors_top_to_bottom
+  body    gt(mirror_correlation(scene, "horizontal"), 0.70)
+
+
+predicate has_mirror_symmetry_vertical_axis
+  expects scene:image
+  returns bool
+  intent  scene_mirrors_left_to_right
+  body    gt(mirror_correlation(scene, "vertical"), 0.70)
+
+# ============================================================
+# Vocabulary v0.4 - composite predicates that name concepts
+#
+# These predicates compose existing operators into single-claim
+# verdicts about scene content. No new operators were added in
+# this round - the substrate is now sufficient to express named
+# visual concepts directly.
+# ============================================================
+
+predicate has_face_like_signature
+  expects scene:image, patch_size:int
+  returns bool
+  intent  vertically_symmetric_centred_locally_oriented_subject
+  body    AND(AND(gt(mirror_correlation(scene, "vertical"), 0.50), gt(center_gradient_concentration(scene), 0.40)), gt(max_coherence_patch_coh(scene, patch_size), 0.45))
+
+
+predicate has_text_like_signature
+  expects scene:image, row_y:int
+  returns bool
+  intent  fine_horizontal_repetition_with_high_frequency_and_dense_edges
+  body    AND(AND(gt(row_autocorr_peak(scene, row_y), 0.30), gt(high_frequency_residual(scene), 0.15)), gt(edge_density(scene, 1.0), 0.10))
+
+
+predicate has_screen_like_signature
+  expects scene:image, row_y:int
+  returns bool
+  intent  pixel_grid_signature_high_freq_high_periodicity_high_contrast
+  body    AND(AND(gt(high_frequency_residual(scene), 0.30), gt(row_autocorr_peak(scene, row_y), 0.50)), gt(dynamic_range(scene), 0.60))
+
+
+predicate has_horizon_line_signature
+  expects scene:image
+  returns bool
+  intent  landscape_with_horizontal_mirror_and_horizontal_edge_dominance
+  body    AND(gt(mirror_correlation(scene, "horizontal"), 0.40), gt(directional_gradient_energy(scene, "horizontal"), mul_s(directional_gradient_energy(scene, "vertical"), 1.20)))
+
+
+predicate has_real_motion_validated
+  expects burst:image_stack
+  returns bool
+  intent  motion_present_AND_coherent_AND_not_global_brightness_drift
+  body    AND(AND(gt(temporal_diff(burst), 0.0045), gt(temporal_diff_coherence(burst), 8.0)), lt(temporal_uniform_ratio(burst), 0.55))
+
+# ============================================================
+# Vocabulary v0.5 - meta-composites: dominance + disambiguation
+#
+# These predicates compose continuous-score operators into
+# single-best-guess concept verdicts. The key claim: which of
+# the named concepts is the strongest signal in this scene?
+# ============================================================
+
+predicate face_is_dominant_concept
+  expects scene:image, patch_size:int, row_y:int
+  returns bool
+  intent  face_score_exceeds_text_screen_horizon
+  body    gt(face_likeness_score(scene, patch_size), max_s(text_likeness_score(scene, row_y), max_s(screen_likeness_score(scene, row_y), horizon_likeness_score(scene))))
+
+
+predicate text_is_dominant_concept
+  expects scene:image, patch_size:int, row_y:int
+  returns bool
+  intent  text_score_exceeds_face_screen_horizon
+  body    gt(text_likeness_score(scene, row_y), max_s(face_likeness_score(scene, patch_size), max_s(screen_likeness_score(scene, row_y), horizon_likeness_score(scene))))
+
+
+predicate screen_is_dominant_concept
+  expects scene:image, patch_size:int, row_y:int
+  returns bool
+  intent  screen_score_exceeds_face_text_horizon
+  body    gt(screen_likeness_score(scene, row_y), max_s(face_likeness_score(scene, patch_size), max_s(text_likeness_score(scene, row_y), horizon_likeness_score(scene))))
+
+
+predicate horizon_is_dominant_concept
+  expects scene:image, patch_size:int, row_y:int
+  returns bool
+  intent  horizon_score_exceeds_face_text_screen
+  body    gt(horizon_likeness_score(scene), max_s(face_likeness_score(scene, patch_size), max_s(text_likeness_score(scene, row_y), screen_likeness_score(scene, row_y))))
+
+
+predicate has_genuine_face_not_screen
+  expects scene:image, patch_size:int, row_y:int
+  returns bool
+  intent  face_score_clearly_higher_than_screen_score
+  body    AND(gt(face_likeness_score(scene, patch_size), 0.50), gt(sub_s(face_likeness_score(scene, patch_size), screen_likeness_score(scene, row_y)), 0.05))
+
+
+predicate has_screen_displaying_face
+  expects scene:image, patch_size:int, row_y:int
+  returns bool
+  intent  face_and_screen_scores_both_high_and_within_margin
+  body    AND(AND(gt(face_likeness_score(scene, patch_size), 0.60), gt(screen_likeness_score(scene, row_y), 0.60)), lt(abs_s(sub_s(face_likeness_score(scene, patch_size), screen_likeness_score(scene, row_y))), 0.05))
+
+
+predicate has_genuine_text_not_screen
+  expects scene:image, row_y:int
+  returns bool
+  intent  text_score_clearly_higher_than_screen_score
+  body    AND(gt(text_likeness_score(scene, row_y), 0.50), gt(sub_s(text_likeness_score(scene, row_y), screen_likeness_score(scene, row_y)), 0.05))
+
+
+predicate has_screen_displaying_text
+  expects scene:image, row_y:int
+  returns bool
+  intent  text_and_screen_scores_both_high_and_within_margin
+  body    AND(AND(gt(text_likeness_score(scene, row_y), 0.60), gt(screen_likeness_score(scene, row_y), 0.60)), lt(abs_s(sub_s(text_likeness_score(scene, row_y), screen_likeness_score(scene, row_y))), 0.05))
+
+
+predicate no_named_concept_dominant
+  expects scene:image, patch_size:int, row_y:int
+  returns bool
+  intent  all_concept_scores_below_recognition_threshold
+  body    AND(AND(lt(face_likeness_score(scene, patch_size), 0.40), lt(text_likeness_score(scene, row_y), 0.40)), AND(lt(screen_likeness_score(scene, row_y), 0.40), lt(horizon_likeness_score(scene), 0.40)))
