@@ -445,3 +445,54 @@ predicate has_largely_achromatic_scene
   returns bool
   intent  most_pixels_grey_black_or_white_no_meaningful_color
   body    lt(meaningfully_colored_fraction(color_scene), 0.10)
+
+# ============================================================
+# Vocabulary v0.7 - Shape primitives via gradient orientation
+#
+# Circle/blob:    gradient orientations distributed uniformly
+# Rectangle:      orientations cluster at horizontal AND vertical
+# Diagonal:       orientations cluster at 45 / 135 deg
+# Curved:         orientations smooth (no peak, not uniform)
+# Many small blobs: high connected-component count
+# ============================================================
+
+predicate has_circular_signature
+  expects scene:image
+  returns bool
+  intent  isotropic_gradient_orientation_distribution
+  body    AND(gt(orientation_uniformity(scene), 0.40), gt(gradient_energy(scene), 0.0005))
+
+
+predicate has_rectilinear_signature
+  expects scene:image
+  returns bool
+  intent  gradient_concentrated_at_h_AND_v_AND_LOW_diagonal
+  body    AND(AND(gt(orientation_horizontal_mass(scene), 0.30), gt(orientation_vertical_mass(scene), 0.30)), lt(orientation_diagonal_mass(scene), 0.30))
+
+
+predicate has_diagonal_signature
+  expects scene:image
+  returns bool
+  intent  diagonal_mass_high_AND_horizontal_vertical_LOW
+  body    AND(AND(gt(orientation_diagonal_mass(scene), 0.50), lt(orientation_horizontal_mass(scene), 0.20)), lt(orientation_vertical_mass(scene), 0.20))
+
+
+predicate has_curved_signature
+  expects scene:image
+  returns bool
+  intent  smoothly_distributed_orientations_no_sharp_peaks_not_isotropic
+  body    AND(AND(lt(orientation_uniformity(scene), 0.40), lt(orientation_horizontal_mass(scene), 0.20)), AND(lt(orientation_vertical_mass(scene), 0.20), lt(orientation_diagonal_mass(scene), 0.40)))
+
+
+predicate has_many_small_blobs
+  expects scene:image
+  returns bool
+  intent  many_distinct_high_contrast_regions
+  body    gt_int(blob_count_thresh(scene, 1.5), 15)
+
+
+predicate has_few_large_blobs
+  expects scene:image
+  returns bool
+  intent  small_number_of_distinct_high_contrast_regions
+  body    AND(gt_int(blob_count_thresh(scene, 1.5), 0), lt_int(blob_count_thresh(scene, 1.5), 5))

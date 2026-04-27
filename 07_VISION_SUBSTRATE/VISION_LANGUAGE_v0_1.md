@@ -1026,3 +1026,97 @@ to other pixels).
 
 These are the four hardware unlocks beyond the current phone
 harness. Each is a known path forward, not a substrate gap.
+
+---
+
+## Round 11: shape primitives via gradient orientation (2026-04-27)
+
+The vocabulary so far measured edge-direction (horizontal vs vertical),
+periodicity, ROI coherence. None of those answer "what shape is in the
+scene?" Round 11 adds shape-class predicates by analysing the
+distribution of gradient orientations in [0, pi).
+
+### 5 new operators
+
+  orientation_uniformity(image)              -> scalar  (1 = isotropic)
+  orientation_horizontal_mass(image)         -> scalar  (90 deg energy)
+  orientation_vertical_mass(image)           -> scalar  (0 deg energy)
+  orientation_diagonal_mass(image)           -> scalar  (45 + 135 deg)
+  blob_count_thresh(image, k)                -> int     (CCs above mean+k*std)
+
+### 6 new shape predicates
+
+  has_circular_signature       isotropic distribution + non-zero gradient
+  has_rectilinear_signature    BOTH h and v dominant AND diagonals weak
+  has_diagonal_signature       diagonal dominant AND h/v weak
+  has_curved_signature         smooth distribution, no peaks, not isotropic
+  has_many_small_blobs         > 15 thresholded connected components
+  has_few_large_blobs          1-4 thresholded connected components
+
+The mutual-exclusion constraints (rectilinear excludes diagonal mass,
+diagonal excludes h/v mass) were the key fix - without them, a
+circle's near-uniform orientation distribution false-positively
+fires both rectilinear AND diagonal.
+
+### 4 shape synthetic scenes
+
+circle_scene, rectangle_scene, diagonal_lines_scene, many_circles_scene.
+Each fires only its target shape predicates, no false positives.
+
+### Round 11 verdicts on synthetics
+
+  circle_scene:           has_circular + has_few_large_blobs
+  rectangle_scene:        has_rectilinear + has_few_large_blobs
+  diagonal_lines_scene:   has_diagonal only
+  many_circles_scene:     has_circular + has_many_small_blobs
+
+### Real-photo shape distribution (38-input corpus, 62 predicates)
+
+  has_circular_signature    66 percent (natural photos have varied
+                            edge orientations, often near-isotropic
+                            in patches)
+  has_rectilinear_signature 13 percent (architectural / document photos)
+  has_diagonal_signature     3 percent (only the synthetic)
+  has_curved_signature       0 percent (predicate too strict)
+  has_many_small_blobs      76 percent (natural photos are texture-rich)
+  has_few_large_blobs        5 percent (subject-on-clean-background photos)
+
+### Finding: has_curved_signature is too restrictive
+
+The four-clause AND requires uniformity < 0.40 AND horizontal_mass < 0.20
+AND vertical_mass < 0.20 AND diagonal_mass < 0.40. Most natural images
+have SOME mass at h/v even when curve-dominated, so the predicate
+never fires. A more permissive curved-detection would require a
+specific signature for curves that is NOT just "everything else."
+
+Filed as a vocabulary-design task: curves need their own positive
+test (e.g. low-energy bins between peaks, smoothness of histogram
+across adjacent bins) rather than negation of all other shape signatures.
+
+### Round 11 totals
+
+  62 predicates / 48 vision operators / 19 synthetic scenes
+  Substrate unchanged from Round 9 (color_image dtype is most recent)
+  5 equivalence classes (same count as Round 10 - new shape predicates
+  carry independent information, no new structural redundancies)
+
+The vocabulary now spans:
+  motion / temporal      (3 burst predicates)
+  structure / texture    (5 directional + density + dynamic-range)
+  symmetry               (2 mirror predicates)
+  named-concept signatures (5 composites + 5 dominance + 4 disambig)
+  color RGB              (10 predicates)
+  hue / wavelength labels (13 predicates)
+  shape primitives       (6 predicates)
+  blocked at hardware    (3 predicates: subpixel, spectral, polarization)
+
+What remains for human-vision parity:
+  depth cues             (perspective convergence, atmospheric haze,
+                          focus blur gradient, occlusion edges)
+  position / composition  (rule of thirds, leading lines, eye level)
+  motion direction       (vector field of optical flow, not just
+                          presence)
+  identity recognition   (face IDENTITY, object IDENTITY - this
+                          requires learned models, not predicates)
+
+Depth cues are the clear next round.

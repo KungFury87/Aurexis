@@ -590,6 +590,110 @@ def _hue_diversity_score(color_image,
     return float(n_present) / 8.0
 
 
+
+# ---------- Shape primitives via gradient-orientation distribution (v0.7) ----------
+#
+# Strategy: classify shapes by their gradient orientation distribution.
+#   Circle / blob: gradients radiate uniformly (no preferred orientation)
+#   Rectangle:    gradients concentrate at 0 deg AND 90 deg
+#   Diagonal:     gradients concentrate at 45 deg / 135 deg
+#   Curve:        gradients smoothly distributed, no sharp peaks, not uniform
+
+def _gradient_orientation_hist(image, n_bins=18):
+    """Magnitude-weighted gradient orientation histogram. Bins span
+    [0, pi) since gradients are direction-symmetric. Returns
+    normalised ndarray summing to 1.0 (or all zeros if no gradient)."""
+    gx, gy = _gradients(image)
+    mag = np.sqrt(gx * gx + gy * gy)
+    ang = np.arctan2(gy, gx)
+    ang_pos = np.mod(ang, np.pi)
+    bins = np.linspace(0.0, np.pi, n_bins + 1)
+    hist, _ = np.histogram(ang_pos.ravel(), bins=bins,
+                              weights=mag.ravel())
+    total = float(hist.sum())
+    if total < 1e-12:
+        return np.zeros(n_bins)
+    return hist / total
+
+
+def _orientation_uniformity(image):
+    """[0,1] score: 1.0 = histogram bins all equal (isotropic / circular),
+    0.0 = single bin holds all energy (perfectly oriented line)."""
+    h = _gradient_orientation_hist(image, n_bins=18)
+    if h.sum() < 1e-12:
+        return 0.0
+    expected = 1.0 / len(h)
+    # std measures deviation from uniform; normalize by expected
+    deviation = float(np.std(h))
+    # 0 deviation = perfect uniform = 1.0; large deviation = 0.0
+    return max(0.0, 1.0 - 5.0 * deviation)
+
+
+def _orientation_mass_at_angle(image, angle_deg, tol_deg=15.0):
+    """Fraction of gradient energy within +/- tol_deg of angle_deg
+    (mod 180). Used to detect peaks at specific orientations."""
+    gx, gy = _gradients(image)
+    mag = np.sqrt(gx * gx + gy * gy)
+    total = float(mag.sum())
+    if total < 1e-12:
+        return 0.0
+    ang = np.arctan2(gy, gx)
+    ang_deg_arr = np.degrees(np.mod(ang, np.pi))
+    target = float(angle_deg) % 180.0
+    diff = np.minimum(np.abs(ang_deg_arr - target),
+                       180.0 - np.abs(ang_deg_arr - target))
+    in_band = diff < float(tol_deg)
+    return float(mag[in_band].sum()) / total
+
+
+def _orientation_horizontal_mass(image):
+    """Energy of HORIZONTAL LINES in the image. A horizontal line's
+    gradient is perpendicular to the line, i.e. at 90 deg. Matches
+    the directional_gradient_energy convention from earlier rounds."""
+    return _orientation_mass_at_angle(image, 90.0, 15.0)
+
+
+def _orientation_vertical_mass(image):
+    """Energy of VERTICAL LINES (gradient at 0 deg)."""
+    return _orientation_mass_at_angle(image, 0.0, 15.0)
+
+
+def _orientation_diagonal_mass(image):
+    """Combined 45 deg + 135 deg mass."""
+    return (_orientation_mass_at_angle(image, 45.0, 15.0)
+             + _orientation_mass_at_angle(image, 135.0, 15.0))
+
+
+def _blob_count_thresh(image, k_threshold=1.5):
+    """Count connected components in a binary mask of the image
+    thresholded at mean + k*std. Numpy-only flood fill."""
+    a = np.asarray(image, dtype=np.float64)
+    if a.std() < 1e-9:
+        return 0
+    thr = float(a.mean() + float(k_threshold) * a.std())
+    binary = a > thr
+    if binary.sum() == 0:
+        return 0
+    h, w = binary.shape
+    visited = np.zeros_like(binary)
+    count = 0
+    for y in range(h):
+        for x in range(w):
+            if binary[y, x] and not visited[y, x]:
+                count += 1
+                stack = [(y, x)]
+                while stack:
+                    cy, cx = stack.pop()
+                    if cy < 0 or cy >= h or cx < 0 or cx >= w:
+                        continue
+                    if visited[cy, cx] or not binary[cy, cx]:
+                        continue
+                    visited[cy, cx] = True
+                    stack.extend([(cy + 1, cx), (cy - 1, cx),
+                                    (cy, cx + 1), (cy, cx - 1)])
+    return int(count)
+
+
 def register_all() -> None:
     """Register all vision operators into the Workbench registry.
     Safe to call multiple times - re-registration is a no-op overwrite."""
@@ -703,3 +807,19 @@ def register_all() -> None:
     R("hue_diversity_score", ("color_image",), "scalar",
        _hue_diversity_score,
        "[0,1] score for how many of 8 hue buckets exceed 5% presence.")
+    # Vocabulary v0.7 operators (shape primitives via orientation histogram)
+    R("orientation_uniformity", ("image",), "scalar",
+       _orientation_uniformity,
+       "[0,1] score: 1=isotropic gradient distribution (circles/blobs).")
+    R("orientation_horizontal_mass", ("image",), "scalar",
+       _orientation_horizontal_mass,
+       "Fraction of gradient energy at horizontal-axis orientation.")
+    R("orientation_vertical_mass", ("image",), "scalar",
+       _orientation_vertical_mass,
+       "Fraction of gradient energy at vertical-axis orientation.")
+    R("orientation_diagonal_mass", ("image",), "scalar",
+       _orientation_diagonal_mass,
+       "Combined fraction at 45 deg + 135 deg.")
+    R("blob_count_thresh", ("image", "scalar"), "int",
+       _blob_count_thresh,
+       "Connected-component count in thresholded image.")

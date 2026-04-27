@@ -242,3 +242,59 @@ def write_pure_hue_scenes(out_dir):
         scene = gen()
         arr = (np.clip(scene, 0.0, 1.0) * 255).astype(np.uint8)
         Image.fromarray(arr, mode="RGB").save(out / (name + ".png"))
+
+
+# ---------- Shape primitive synthetic scenes (v0.7) ----------
+
+def circle_scene(size=256, seed=0):
+    """Single white filled circle on black background."""
+    yy, xx = np.indices((size, size)).astype(np.float64)
+    cx, cy = size / 2, size / 2
+    r = size / 4
+    dist = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
+    return np.where(dist < r, 1.0, 0.0)
+
+
+def rectangle_scene(size=256, seed=0):
+    """White centred rectangle on black background."""
+    scene = np.zeros((size, size))
+    a = size // 4; b = 3 * size // 4
+    scene[a:b, a:b] = 1.0
+    return scene
+
+
+def diagonal_lines_scene(size=256, seed=0):
+    """Parallel diagonal lines at 45 deg."""
+    yy, xx = np.indices((size, size)).astype(np.float64)
+    return 0.5 + 0.4 * np.cos(2 * np.pi * 0.04 * (xx + yy))
+
+
+def many_circles_scene(size=256, seed=0):
+    """Many small circles (dotted/spotted pattern)."""
+    rng = np.random.default_rng(seed)
+    scene = np.zeros((size, size))
+    yy, xx = np.indices((size, size)).astype(np.float64)
+    for _ in range(40):
+        cx = rng.uniform(15, size - 15)
+        cy = rng.uniform(15, size - 15)
+        r = rng.uniform(4, 9)
+        dist = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
+        scene = np.where(dist < r, 1.0, scene)
+    return scene
+
+
+SHAPE_GENERATORS = {
+    "circle_scene":         circle_scene,
+    "rectangle_scene":      rectangle_scene,
+    "diagonal_lines_scene": diagonal_lines_scene,
+    "many_circles_scene":   many_circles_scene,
+}
+
+
+def write_shape_scenes(out_dir):
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    for name, gen in SHAPE_GENERATORS.items():
+        scene = gen()
+        arr = (np.clip(scene, 0.0, 1.0) * 255).astype(np.uint8)
+        Image.fromarray(arr, mode="L").save(out / (name + ".png"))
