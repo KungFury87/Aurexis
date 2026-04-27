@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aurexis-workbench"
+version = "2.0.0"
+requires-python = ">=3.8"
+dependencies = ["numpy>=1.20"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

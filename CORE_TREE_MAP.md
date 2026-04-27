@@ -52,6 +52,20 @@ Aurexis/                                        repo root
 |       README.md, STATUS.md, RUN_ME_FIRST.txt
 |       ...
 |
+|-- 07_VISION_SUBSTRATE/                        NEW V2 vision language
+|     aurexis_workbench/                        V2 substrate package
+|       fields.py, operators.py, predicates.py, runtime.py
+|       dsl.py, vocabulary.py, independence.py, intake.py
+|       vision_ops.py                           32 vision operators
+|       visual_intake.py                        any image/video -> FieldBundle
+|       vision_bridge.py                        .aurex-session -> FieldBundle
+|       cli_vision.py, cli_visual.py            two runners
+|     data/vision/vocab.aurex                   33-predicate vocabulary
+|     VISION_LANGUAGE_AUDIT.md                  what Workbench already provided
+|     VISION_LANGUAGE_v0_1.md                   language definition + growth log
+|     reports/IR_RUN_2026-04-27.md              independence-ratio analysis
+|     README.md                                 entry point
+|
 |-- BACKUPS/                                    older backup zips (FROZEN)
 |
 |-- V2_BENCHMARK_SET/                           V2 benchmark artifacts
