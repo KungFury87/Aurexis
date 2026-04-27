@@ -939,3 +939,90 @@ What's still missing for a full human-vision analogue:
 These are the natural Round 10+ extensions. The substrate is
 sufficient for all of them - additions remain operators + DSL
 predicates, no architectural changes.
+
+---
+
+## Round 10: HSV hue identification (perceptual wavelength labels) + multispectral honesty (2026-04-27)
+
+The Round 9 RGB predicates were CHANNEL-MEAN comparisons (R > G AND
+R > B) - a relative measure. They did not classify pixels by hue,
+they classified scenes by which channel dominated. Round 10 adds the
+per-pixel absolute hue identification that maps a single pixel to a
+named wavelength bucket via HSV conversion.
+
+### The metamerism caveat (filed as WAVELENGTH_LIMITS.md)
+
+An RGB sensor cannot recover specific monochromatic wavelengths.
+Multiple physical spectra produce identical RGB triples. Human eyes
+have the same limit (3 cones). What both DO recover is perceptual
+hue labels via cone-ratio (or RGB-ratio) classification.
+
+True wavelength resolution requires multispectral or hyperspectral
+hardware, which is a fourth BLOCKED-predicate class parallel to raw
+Bayer and polarization-pair unlocks. Documented honestly.
+
+### 3 new operators
+
+  hue_fraction(color_image, label) -> scalar
+  meaningfully_colored_fraction(color_image) -> scalar
+  hue_diversity_score(color_image) -> scalar
+
+### 13 new predicates
+
+8 has_significant_X_hue (red/orange/yellow/green/cyan/blue/violet/magenta)
+3 has_dominant_X_hue (red/green/blue, fires when X owns >50% of saturated pixels)
+1 has_polychromatic_palette
+1 has_largely_achromatic_scene
+
+### 5 pure-hue synthetic scenes
+
+pure_orange_scene (HSV 30°), pure_yellow_scene (60°),
+pure_green_scene (120°), pure_cyan_scene (180°),
+pure_violet_scene (270°). All five fire ONLY their target bucket -
+per-pixel hue classification works absolutely (no relative comparison
+to other pixels).
+
+### Round 10 IR results (34 inputs / 56 predicates)
+
+  has_significant_orange_hue: 53 percent of real phone photos
+    (skin tones, paper under warm indoor lighting)
+  has_significant_blue_hue: 53 percent (sky, screens, cool light)
+  has_dominant_blue_hue: 15 percent (strong blue scenes)
+  has_largely_achromatic_scene: 26 percent (low-light or close-up
+    shots that lose chroma)
+
+### 3 new equivalence classes (structural)
+
+  {has_green_dominant, has_significant_green_hue} - tautological
+    on this corpus: if green channel dominates in RGB mean, the
+    saturated pixels are predominantly in the green bucket.
+
+  {has_largely_achromatic_scene, has_low_saturation, has_monochrome}
+    - all measure "no color presence" via different formulas.
+    Tautological.
+
+  {has_polychromatic_palette, has_significant_magenta_hue} -
+    coincidental on this corpus (4+ hue buckets present implies
+    the magenta wrap-around bucket is likely one of them). Could
+    break on a richer corpus.
+
+### Round 10 totals
+
+  56 predicates / 43 vision operators / 15 synthetic scenes.
+  Substrate unchanged from Round 9 (color_image dtype).
+  The vocabulary now does what human vision does: per-pixel
+  absolute named-hue identification at the precision a 3-band
+  sensor permits.
+
+### What's still blocked at the hardware layer
+
+  raw_bayer:                has_subpixel_periodicity,
+                            has_spectral_band_anomaly
+  cap_axis_0/90 pair:       has_polarization_signal
+  multispectral_image:      has_multispectral_anomaly_score
+                            (placeholder, no operator yet)
+  hyperspectral_image:      has_hyperspectral_signature
+                            (placeholder, no operator yet)
+
+These are the four hardware unlocks beyond the current phone
+harness. Each is a known path forward, not a substrate gap.

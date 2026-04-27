@@ -343,3 +343,105 @@ predicate has_low_color_diversity
   returns bool
   intent  pixels_share_a_narrow_color_palette
   body    lt(rgb_palette_diversity(color_scene), 0.08)
+
+# ============================================================
+# Vocabulary v0.6 - HSV hue identification (named wavelength buckets)
+#
+# Each pixel classified absolutely by HSV hue angle into one of 8
+# named buckets corresponding to peak-wavelength labels:
+#   red ~625nm, orange ~605nm, yellow ~575nm, green ~525nm,
+#   cyan ~485nm, blue ~445nm, violet ~410nm, magenta (R+B mix).
+#
+# Significant_X_hue: bucket has > 10% of saturated pixels.
+# Dominant_X_hue:    bucket has > 50% of saturated pixels.
+# ============================================================
+
+predicate has_significant_red_hue
+  expects color_scene:color_image
+  returns bool
+  intent  red_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "red"), 0.10)
+
+
+predicate has_significant_orange_hue
+  expects color_scene:color_image
+  returns bool
+  intent  orange_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "orange"), 0.10)
+
+
+predicate has_significant_yellow_hue
+  expects color_scene:color_image
+  returns bool
+  intent  yellow_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "yellow"), 0.10)
+
+
+predicate has_significant_green_hue
+  expects color_scene:color_image
+  returns bool
+  intent  green_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "green"), 0.10)
+
+
+predicate has_significant_cyan_hue
+  expects color_scene:color_image
+  returns bool
+  intent  cyan_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "cyan"), 0.10)
+
+
+predicate has_significant_blue_hue
+  expects color_scene:color_image
+  returns bool
+  intent  blue_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "blue"), 0.10)
+
+
+predicate has_significant_violet_hue
+  expects color_scene:color_image
+  returns bool
+  intent  violet_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "violet"), 0.10)
+
+
+predicate has_significant_magenta_hue
+  expects color_scene:color_image
+  returns bool
+  intent  magenta_band_present
+  body    gt(hue_fraction(color_scene, "magenta"), 0.10)
+
+
+predicate has_dominant_red_hue
+  expects color_scene:color_image
+  returns bool
+  intent  red_dominates_saturated_pixels
+  body    gt(hue_fraction(color_scene, "red"), 0.50)
+
+
+predicate has_dominant_green_hue
+  expects color_scene:color_image
+  returns bool
+  intent  green_dominates_saturated_pixels
+  body    gt(hue_fraction(color_scene, "green"), 0.50)
+
+
+predicate has_dominant_blue_hue
+  expects color_scene:color_image
+  returns bool
+  intent  blue_dominates_saturated_pixels
+  body    gt(hue_fraction(color_scene, "blue"), 0.50)
+
+
+predicate has_polychromatic_palette
+  expects color_scene:color_image
+  returns bool
+  intent  multiple_hue_buckets_above_threshold
+  body    gt(hue_diversity_score(color_scene), 0.50)
+
+
+predicate has_largely_achromatic_scene
+  expects color_scene:color_image
+  returns bool
+  intent  most_pixels_grey_black_or_white_no_meaningful_color
+  body    lt(meaningfully_colored_fraction(color_scene), 0.10)

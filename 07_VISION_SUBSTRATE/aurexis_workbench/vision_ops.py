@@ -478,6 +478,118 @@ def _rgb_dominant_channel_excess(color_image):
     return float(top - others / 2.0)
 
 
+
+# ---------- HSV / wavelength-perceptual hue operators (vocabulary v0.6) ----------
+#
+# An RGB phone sensor cannot recover specific monochromatic wavelengths
+# (metamerism: multiple spectra produce the same RGB triple). What it
+# CAN recover is hue-bucket classification analogous to what human
+# vision does: three broad bands -> perceptual hue label.
+#
+# HSV hue angles map (approximately) to peak wavelength labels:
+#   0  / 360 deg   = red           (~625 nm)
+#   30 deg         = orange        (~605 nm)
+#   60 deg         = yellow        (~575 nm)
+#   120 deg        = green         (~525 nm)
+#   180 deg        = cyan          (~485 nm)
+#   240 deg        = blue          (~445 nm)
+#   270 deg        = violet        (~410 nm)
+#   300 deg        = magenta       (no single wavelength; 400+700 mix)
+#
+# These operators classify EACH pixel into a named hue bucket
+# absolutely (no relative comparison), gated by saturation+value so
+# near-grey and near-black pixels do not contribute. This is the
+# wavelength-identification signal a 3-band sensor permits.
+#
+# For TRUE multispectral identification (recovering specific
+# wavelengths a 3-band RGB cannot distinguish), the harness would
+# need a multispectral or hyperspectral sensor. That is a hardware
+# unlock parallel to raw_bayer / polarization_pair, not a substrate
+# extension. Documented in the BLOCKED predicates list.
+
+HUE_BUCKETS = {
+    "red":     None,         # special-case: wraps around 360/0
+    "orange":  (15.0,  45.0),
+    "yellow":  (45.0,  70.0),
+    "green":   (70.0,  165.0),
+    "cyan":    (165.0, 195.0),
+    "blue":    (195.0, 255.0),
+    "violet":  (255.0, 285.0),
+    "magenta": (285.0, 345.0),
+}
+
+
+def _rgb_to_hsv_arrays(color_image):
+    """Vectorised RGB->HSV. Returns (H, S, V) each HxW.
+    H in [0, 360); S in [0, 1]; V in [0, 1]."""
+    a = _ensure_color(color_image)
+    r = a[..., 0]; g = a[..., 1]; b = a[..., 2]
+    cmax = a.max(axis=-1)
+    cmin = a.min(axis=-1)
+    delta = cmax - cmin
+    h = np.zeros_like(cmax)
+    mask = delta > 1e-9
+    rmax = mask & (np.isclose(cmax, r))
+    gmax = mask & ~rmax & (np.isclose(cmax, g))
+    bmax = mask & ~rmax & ~gmax
+    h[rmax] = ((g[rmax] - b[rmax]) / (delta[rmax] + 1e-12)) % 6.0
+    h[gmax] = (b[gmax] - r[gmax]) / (delta[gmax] + 1e-12) + 2.0
+    h[bmax] = (r[bmax] - g[bmax]) / (delta[bmax] + 1e-12) + 4.0
+    h = h * 60.0  # convert to degrees [0, 360)
+    s = np.where(cmax > 1e-9, delta / (cmax + 1e-12), 0.0)
+    v = cmax
+    return h, s, v
+
+
+def _hue_fraction(color_image, hue_label,
+                    sat_min=0.15, val_min=0.10):
+    """Fraction of meaningfully-colored pixels (saturation > sat_min
+    AND value > val_min) that fall in the named hue bucket.
+
+    'Meaningfully-colored' filter excludes near-grey, near-black, and
+    near-white pixels which have undefined hue.
+
+    Returns 0.0 if no pixels are meaningfully colored.
+    Returns 1.0 if every meaningfully-colored pixel is in the bucket."""
+    h, s, v = _rgb_to_hsv_arrays(color_image)
+    valid = (s > float(sat_min)) & (v > float(val_min))
+    valid_count = int(valid.sum())
+    if valid_count == 0:
+        return 0.0
+    label = str(hue_label).lower()
+    if label == "red":
+        in_bucket = (h >= 345.0) | (h < 15.0)
+    elif label in HUE_BUCKETS and HUE_BUCKETS[label] is not None:
+        lo, hi = HUE_BUCKETS[label]
+        in_bucket = (h >= lo) & (h < hi)
+    else:
+        raise ValueError(f"unknown hue label: {label}")
+    return float((valid & in_bucket).sum()) / float(valid_count)
+
+
+def _meaningfully_colored_fraction(color_image,
+                                     sat_min=0.15, val_min=0.10):
+    """Fraction of pixels that are NOT near-grey/black/white. Used as
+    a gate: if this is below ~0.10, the scene is mostly achromatic."""
+    h, s, v = _rgb_to_hsv_arrays(color_image)
+    valid = (s > float(sat_min)) & (v > float(val_min))
+    return float(valid.sum()) / float(valid.size)
+
+
+def _hue_diversity_score(color_image,
+                            sat_min=0.15, val_min=0.10):
+    """[0,1] score for how many DIFFERENT hue buckets fire above 5%.
+    1.0 = all 8 hues present at >5%; 0.0 = single hue dominates.
+    Polychromatic-vs-monochromatic-but-saturated discriminator."""
+    bucket_fractions = []
+    for label in ["red", "orange", "yellow", "green",
+                   "cyan", "blue", "violet", "magenta"]:
+        f = _hue_fraction(color_image, label, sat_min, val_min)
+        bucket_fractions.append(f)
+    n_present = sum(1 for f in bucket_fractions if f > 0.05)
+    return float(n_present) / 8.0
+
+
 def register_all() -> None:
     """Register all vision operators into the Workbench registry.
     Safe to call multiple times - re-registration is a no-op overwrite."""
@@ -581,3 +693,13 @@ def register_all() -> None:
     R("rgb_dominant_channel_excess", ("color_image",), "scalar",
        _rgb_dominant_channel_excess,
        "Top channel mean minus average of others.")
+    # Vocabulary v0.6 operators (HSV hue buckets - perceptual wavelength labels)
+    R("hue_fraction", ("color_image", "label"), "scalar", _hue_fraction,
+       "Fraction of saturated pixels in named hue bucket "
+       "(red/orange/yellow/green/cyan/blue/violet/magenta).")
+    R("meaningfully_colored_fraction", ("color_image",), "scalar",
+       _meaningfully_colored_fraction,
+       "Fraction of pixels that are not near-grey/black/white.")
+    R("hue_diversity_score", ("color_image",), "scalar",
+       _hue_diversity_score,
+       "[0,1] score for how many of 8 hue buckets exceed 5% presence.")

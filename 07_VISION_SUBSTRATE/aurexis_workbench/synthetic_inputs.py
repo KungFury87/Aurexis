@@ -188,3 +188,57 @@ def write_color_scenes(out_dir):
         scene = gen()
         arr = (np.clip(scene, 0.0, 1.0) * 255).astype(np.uint8)
         Image.fromarray(arr, mode="RGB").save(out / (name + ".png"))
+
+
+# ---------- Pure-hue synthetic scenes (v0.6) ----------
+# Each scene is a uniform high-saturation patch at a known HSV hue
+# angle. Used to verify the named-hue predicates classify correctly.
+
+def _hsv_to_rgb(h_deg, s, v):
+    """h in [0,360), s in [0,1], v in [0,1] -> (R,G,B) in [0,1]."""
+    h = h_deg / 60.0
+    c = v * s
+    x = c * (1 - abs((h % 2) - 1))
+    m = v - c
+    if 0 <= h < 1:    r, g, b = c, x, 0
+    elif 1 <= h < 2:  r, g, b = x, c, 0
+    elif 2 <= h < 3:  r, g, b = 0, c, x
+    elif 3 <= h < 4:  r, g, b = 0, x, c
+    elif 4 <= h < 5:  r, g, b = x, 0, c
+    else:             r, g, b = c, 0, x
+    return r + m, g + m, b + m
+
+
+def _pure_hue_scene(hue_deg, size=256, sat=0.85, val=0.85, seed=0):
+    rng = np.random.default_rng(seed)
+    r, g, b = _hsv_to_rgb(hue_deg, sat, val)
+    rgb = np.zeros((size, size, 3))
+    rgb[..., 0] = r + rng.normal(0, 0.02, size=(size, size))
+    rgb[..., 1] = g + rng.normal(0, 0.02, size=(size, size))
+    rgb[..., 2] = b + rng.normal(0, 0.02, size=(size, size))
+    return np.clip(rgb, 0.0, 1.0)
+
+
+def pure_orange_scene(size=256, seed=0):  return _pure_hue_scene(30, size, seed=seed)
+def pure_yellow_scene(size=256, seed=0):  return _pure_hue_scene(60, size, seed=seed)
+def pure_green_scene(size=256, seed=0):   return _pure_hue_scene(120, size, seed=seed)
+def pure_cyan_scene(size=256, seed=0):    return _pure_hue_scene(180, size, seed=seed)
+def pure_violet_scene(size=256, seed=0):  return _pure_hue_scene(270, size, seed=seed)
+
+
+PURE_HUE_GENERATORS = {
+    "pure_orange_scene": pure_orange_scene,
+    "pure_yellow_scene": pure_yellow_scene,
+    "pure_green_scene":  pure_green_scene,
+    "pure_cyan_scene":   pure_cyan_scene,
+    "pure_violet_scene": pure_violet_scene,
+}
+
+
+def write_pure_hue_scenes(out_dir):
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    for name, gen in PURE_HUE_GENERATORS.items():
+        scene = gen()
+        arr = (np.clip(scene, 0.0, 1.0) * 255).astype(np.uint8)
+        Image.fromarray(arr, mode="RGB").save(out / (name + ".png"))
