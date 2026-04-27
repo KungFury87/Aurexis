@@ -713,3 +713,117 @@ These are concrete next-round actions, not bugs.
 
 Total: 33 predicates, all type-checked, all running.
 Substrate unchanged from Round 4. Thresholds tightened in Round 7.
+
+---
+
+## Round 8: scoring sharpening + synthetic generator fixes (2026-04-27)
+
+The Round 7 IR run identified two structural problems:
+
+  - 5 predicates still always-False because synthetic inputs didn't
+    trip them (horizon scene had noisy ground; high-edge scene had
+    cancelling overlapping strokes; no_named_concept threshold was
+    too lenient because every input had at least one saturated score).
+  - Likeness scores saturated near 1.0 because they were means of
+    3 components and any single strong component (typically mirror
+    correlation, near-1.0 on uniform-ish images) drove the mean.
+
+This round addressed both at the substrate level.
+
+### Likeness scoring rewrite: mean -> min
+
+`face_likeness_score`, `text_likeness_score`, `screen_likeness_score`,
+`horizon_likeness_score` now return the **minimum** of their clamped
+indicator components. The semantic is "all components present" -
+which is what these named-concept signatures actually require.
+
+A face needs vertical mirror AND centred subject AND local oriented
+structure. If any of the three is missing, the signature is not
+present, and the score should not be high. min() enforces that.
+
+This is itself a methodology rule: **likeness scores that combine
+indicators by averaging dilute the absence of any one indicator
+into the average; min() preserves the "all required" semantic.**
+
+### Horizon predicate fix: drop mirror requirement
+
+A horizon scene is NOT horizontally mirror-symmetric. Sky and ground
+differ - the mirror correlation is anti-correlated, not correlated.
+The original `horizon_likeness_score` used `mirror_correlation > 0.4`
+which required something the geometry actually forbids.
+
+Replaced with single-component score on horizontal-vs-vertical edge
+ratio: `(h_edges / v_edges - 1.0)` clamped to [0, 1]. A horizon
+scene with horizontal banding has h_edges >> v_edges (h_dom large);
+a balanced scene has h_dom ~ 0.
+
+### Synthetic generator fixes
+
+`horizon_scene`: replaced random-noise ground with parallel
+horizontal bands so all gradients are in y-direction (horizontal
+edges only). Now scores 1.000 on horizon_likeness.
+
+`high_edge_density_scene`: replaced 50 overlapping cosine strokes
+with a fine binary halftone (2-pixel cells, randomly black/white).
+edge_density now 0.248 (>0.20 threshold).
+
+### Round 8 IR results vs Round 7
+
+| metric                                      | Round 7 | Round 8 |
+|---------------------------------------------|---------|---------|
+| redundant pairs                              | 10      | 4       |
+| equivalence classes                          | 1       | 2       |
+| predicates with 0% firing rate              | 5       | 0       |
+| has_horizontal_dominant_edges firing         | 0.00    | 0.04    |
+| has_high_edge_density firing                | 0.00    | 0.04    |
+| has_horizon_line_signature firing            | 0.00    | 0.04    |
+| horizon_is_dominant_concept firing           | 0.00    | 0.04    |
+| no_named_concept_dominant firing             | 0.00    | 0.08    |
+| has_genuine_face_not_screen firing           | 0.05    | 0.28    |
+| has_genuine_text_not_screen firing           | 0.42    | 0.60    |
+| has_screen_displaying_face firing            | 0.47    | 0.04    |
+
+**Every predicate now fires on at least one corpus member.** The
+vocabulary is empirically exercised end-to-end.
+
+### The 2 remaining equivalence classes are STRUCTURAL
+
+Round 8's residual redundancy is intrinsic to the vocabulary's
+design, not an empirical artifact:
+
+  Class A: {has_horizon_line_signature, has_horizontal_dominant_edges,
+           horizon_is_dominant_concept} - all measure horizontal-edge
+           dominance; on the only corpus member that fires (horizon
+           scene), they all fire. To split them needs a scene with
+           horizontal edges dominant but NO horizon (e.g., a fence
+           shot from the side).
+
+  Class B: {face_is_dominant_concept, has_face_like_signature} -
+           dominant requires face_score > all others; with min-based
+           scoring face_score is high only when ALL components fire,
+           which IS the face_like signature definition. To split
+           them needs a face-like scene where text/screen scores
+           rank higher (e.g., text on a face poster).
+
+These are research findings about the predicate library: they
+identify what new corpus inputs would distinguish predicates that
+currently agree by construction.
+
+### Vocabulary status (Round 8 final)
+
+Total: 33 predicates, all type-checked, all firing at least once.
+Substrate unchanged from Round 4. Scoring functions sharpened in
+Round 8. Synthetic generators fixed in Round 8.
+
+The 7-round growth log:
+  Round 0: 7 base predicates ported from Python lab
+  Round 1: 5 generic-image predicates added
+  Round 2: 7 directional/density/contrast/mirror predicates
+  Round 5: 5 named-concept composites
+  Round 6: 9 dominance + disambiguation meta-composites
+  Round 7: threshold tightening + 6 synthetic corpus pumps
+  Round 8: scoring sharpening (min not mean) + 2 generator fixes
+  Total: 33 predicates / 32 vision operators / 6 synthetic scenes
+
+The substrate is now sufficient to grow vocabulary indefinitely
+by composition, with empirical IR feedback at every step.

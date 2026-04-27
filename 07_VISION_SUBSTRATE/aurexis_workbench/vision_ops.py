@@ -339,48 +339,49 @@ def _mirror_corr_inline(image, axis):
 
 
 def _face_likeness_score(image, patch_size):
-    """Continuous [0,1] score combining vertical mirror, centred subject,
-    and local oriented structure. 1.0 = strong evidence of face-like
-    geometric signature; 0.0 = none of the components fire."""
+    """[0,1] score: ALL three indicators must fire to get high score.
+    min() is the semantic of 'all components present', avoiding the
+    saturation problem where one strong component (typically mirror
+    correlation, near-1.0 on uniform-ish images) drives the mean."""
     mv = max(0.0, _mirror_corr_inline(image, "vertical"))
     centre = _center_gradient_concentration(image)
     patch_coh = _max_coherence_patch_coh(image, patch_size)
-    return (_clamp_unit(mv, 0.5)
-             + _clamp_unit(centre, 0.4)
-             + _clamp_unit(patch_coh, 0.45)) / 3.0
+    return min(_clamp_unit(mv, 0.5),
+                _clamp_unit(centre, 0.4),
+                _clamp_unit(patch_coh, 0.45))
 
 
 def _text_likeness_score(image, row_y):
-    """[0,1] score: fine periodic structure + high-frequency content
-    + dense edges (a printed-text or text-block signature)."""
+    """[0,1] score: ALL three indicators must fire (min)."""
     autocorr = _row_autocorr_peak(image, row_y)
     hfr = _high_frequency_residual(image)
     edens = _edge_density(image, 1.0)
-    return (_clamp_unit(autocorr, 0.30)
-             + _clamp_unit(hfr, 0.15)
-             + _clamp_unit(edens, 0.10)) / 3.0
+    return min(_clamp_unit(autocorr, 0.30),
+                _clamp_unit(hfr, 0.15),
+                _clamp_unit(edens, 0.10))
 
 
 def _screen_likeness_score(image, row_y):
-    """[0,1] score: very-high-frequency residual + strong autocorrelation
-    + high dynamic range (a pixel-grid / display signature)."""
+    """[0,1] score: ALL three indicators must fire (min)."""
     hfr = _high_frequency_residual(image)
     autocorr = _row_autocorr_peak(image, row_y)
     dynr = _dynamic_range(image)
-    return (_clamp_unit(hfr, 0.30)
-             + _clamp_unit(autocorr, 0.50)
-             + _clamp_unit(dynr, 0.60)) / 3.0
+    return min(_clamp_unit(hfr, 0.30),
+                _clamp_unit(autocorr, 0.50),
+                _clamp_unit(dynr, 0.60))
 
 
 def _horizon_likeness_score(image):
-    """[0,1] score: horizontal mirror correlation + horizontal edge
-    dominance over vertical (a landscape-with-horizon signature)."""
-    mh = max(0.0, _mirror_corr_inline(image, "horizontal"))
+    """[0,1] score: horizontal edges dominate vertical edges. A
+    horizon scene has strong horizontal-line content and weak
+    vertical structure. Mirror correlation is NOT a useful indicator
+    because sky and ground differ - they are anti-correlated, not
+    correlated. So this is a single-component score on the h/v
+    edge ratio."""
     h_edges = _directional_gradient_energy(image, "horizontal")
     v_edges = _directional_gradient_energy(image, "vertical")
-    h_dom = (h_edges / (v_edges + 1e-9)) - 1.0
-    return (_clamp_unit(mh, 0.4)
-             + _clamp_unit(max(0.0, h_dom), 0.2)) / 2.0
+    h_dom = (h_edges / (v_edges + 1e-9)) - 1.0  # 0 = balanced; 1 = 2x; etc.
+    return _clamp_unit(max(0.0, h_dom), 1.0)
 
 
 def _max_s(a, b):

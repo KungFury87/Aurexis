@@ -188,8 +188,8 @@ predicate has_screen_like_signature
 predicate has_horizon_line_signature
   expects scene:image
   returns bool
-  intent  landscape_with_horizontal_mirror_and_horizontal_edge_dominance
-  body    AND(gt(mirror_correlation(scene, "horizontal"), 0.40), gt(directional_gradient_energy(scene, "horizontal"), mul_s(directional_gradient_energy(scene, "vertical"), 1.20)))
+  intent  landscape_with_horizontal_edge_dominance_no_mirror_required
+  body    gt(horizon_likeness_score(scene), 0.30)
 
 
 predicate has_real_motion_validated

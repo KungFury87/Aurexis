@@ -18,22 +18,19 @@ from PIL import Image
 
 
 def horizon_scene(size: int = 512, seed: int = 0) -> np.ndarray:
-    """Smooth gradient sky over textured ground with a horizontal
-    boundary at y = size/2. Should fire has_horizon_line_signature
-    (horizontal mirror near the boundary + horizontal edge dominance)."""
-    rng = np.random.default_rng(seed)
+    """Smooth sky over horizontally-banded ground with a strong
+    horizontal boundary. Should fire has_horizontal_dominant_edges,
+    has_mirror_symmetry_horizontal_axis, has_horizon_line_signature.
+
+    Design: ALL gradients should be in y-direction (horizontal edges).
+    No x-direction gradient. Sky is gradient top-to-bottom (gy only).
+    Ground is parallel horizontal bands (gy only). Horizon line at
+    y=size/2 is a sharp transition (gy only)."""
     yy, xx = np.indices((size, size)).astype(np.float64)
-    # Sky: smooth top-down gradient
-    sky = 0.85 - 0.3 * (yy / size)
-    # Ground: textured (random but smoother in y than x for horizontal-edge bias)
-    ground_noise = rng.normal(0.0, 0.10, size=(size, size))
-    # smooth in y direction to bias horizontal edges
-    smoothed = ground_noise.copy()
-    for k in range(3):
-        smoothed[1:-1, :] = (smoothed[1:-1, :]
-                              + smoothed[:-2, :]
-                              + smoothed[2:, :]) / 3.0
-    ground = 0.35 + smoothed * 1.5
+    # Sky: smooth top-down gradient (only gy)
+    sky = 0.90 - 0.25 * (yy / size)
+    # Ground: parallel horizontal bands at fine pitch (only gy)
+    ground = 0.30 + 0.15 * np.cos(2 * np.pi * 0.04 * yy)
     scene = np.where(yy < size / 2, sky, ground)
     return np.clip(scene, 0.0, 1.0)
 
@@ -59,22 +56,21 @@ def vertically_symmetric_scene(size: int = 512, seed: int = 0) -> np.ndarray:
 
 
 def high_edge_density_scene(size: int = 512, seed: int = 0) -> np.ndarray:
-    """Many random oriented strokes at high spatial frequency. Should
-    fire has_high_edge_density."""
+    """High edge density: pseudo-halftone of fine binary cells. Each
+    2-pixel cell is randomly black or white, creating an edge between
+    nearly every pair of cells. Gradient magnitude is bimodal (~0
+    inside cells, very high at cell boundaries), and roughly half of
+    all pixels are at boundaries, which trips has_high_edge_density
+    (fraction > 0.20)."""
     rng = np.random.default_rng(seed)
-    yy, xx = np.indices((size, size)).astype(np.float64)
-    scene = np.full((size, size), 0.5)
-    # 50 oriented sinusoidal strokes at random angles + frequencies
-    for _ in range(50):
-        angle = rng.uniform(0, np.pi)
-        freq = rng.uniform(0.2, 0.5)
-        amp = rng.uniform(0.05, 0.20)
-        phase = rng.uniform(0, 2 * np.pi)
-        scene = scene + amp * np.cos(2 * np.pi * freq
-                                       * (xx * np.cos(angle) + yy * np.sin(angle))
-                                       + phase)
-    # add noise to break perfect periodicity
-    scene = scene + rng.normal(0, 0.02, size=(size, size))
+    cell = 2
+    cells_y = size // cell
+    cells_x = size // cell
+    grid = rng.integers(0, 2, size=(cells_y, cells_x)).astype(np.float64)
+    # Upsample by replication
+    scene = np.repeat(np.repeat(grid, cell, axis=0), cell, axis=1)
+    # Pad/crop to exact size
+    scene = scene[:size, :size]
     return np.clip(scene, 0.0, 1.0)
 
 
