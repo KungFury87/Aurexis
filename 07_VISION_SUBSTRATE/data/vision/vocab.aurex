@@ -267,3 +267,79 @@ predicate no_named_concept_dominant
   returns bool
   intent  all_concept_scores_below_recognition_threshold
   body    AND(AND(lt(face_likeness_score(scene, patch_size), 0.40), lt(text_likeness_score(scene, row_y), 0.40)), AND(lt(screen_likeness_score(scene, row_y), 0.40), lt(horizon_likeness_score(scene), 0.40)))
+
+# ============================================================
+# Vocabulary v0.5 - color predicates
+#
+# These run on color_scene (color_image, RGB). Half of human visual
+# signal is color; the previous 33 predicates were all luma-only.
+# ============================================================
+
+predicate has_red_dominant
+  expects color_scene:color_image
+  returns bool
+  intent  red_channel_mean_exceeds_others_by_margin
+  body    AND(gt(rgb_channel_mean(color_scene, "r"), rgb_channel_mean(color_scene, "g")), gt(rgb_channel_mean(color_scene, "r"), rgb_channel_mean(color_scene, "b")))
+
+
+predicate has_green_dominant
+  expects color_scene:color_image
+  returns bool
+  intent  green_channel_mean_exceeds_others
+  body    AND(gt(rgb_channel_mean(color_scene, "g"), rgb_channel_mean(color_scene, "r")), gt(rgb_channel_mean(color_scene, "g"), rgb_channel_mean(color_scene, "b")))
+
+
+predicate has_blue_dominant
+  expects color_scene:color_image
+  returns bool
+  intent  blue_channel_mean_exceeds_others
+  body    AND(gt(rgb_channel_mean(color_scene, "b"), rgb_channel_mean(color_scene, "r")), gt(rgb_channel_mean(color_scene, "b"), rgb_channel_mean(color_scene, "g")))
+
+
+predicate has_warm_palette
+  expects color_scene:color_image
+  returns bool
+  intent  warmth_score_dominates_coolness
+  body    gt(sub_s(rgb_warmth_score(color_scene), rgb_coolness_score(color_scene)), 0.10)
+
+
+predicate has_cool_palette
+  expects color_scene:color_image
+  returns bool
+  intent  coolness_score_dominates_warmth
+  body    gt(sub_s(rgb_coolness_score(color_scene), rgb_warmth_score(color_scene)), 0.10)
+
+
+predicate has_high_saturation
+  expects color_scene:color_image
+  returns bool
+  intent  vivid_colors_overall_mean_saturation
+  body    gt(rgb_saturation_mean(color_scene), 0.30)
+
+
+predicate has_low_saturation
+  expects color_scene:color_image
+  returns bool
+  intent  desaturated_or_near_grey
+  body    lt(rgb_saturation_mean(color_scene), 0.10)
+
+
+predicate has_monochrome
+  expects color_scene:color_image
+  returns bool
+  intent  near_greyscale_R_eq_G_eq_B
+  body    gt(rgb_monochrome_score(color_scene), 0.85)
+
+
+predicate has_high_color_diversity
+  expects color_scene:color_image
+  returns bool
+  intent  pixels_span_a_wide_range_of_colors
+  body    gt(rgb_palette_diversity(color_scene), 0.20)
+
+
+predicate has_low_color_diversity
+  expects color_scene:color_image
+  returns bool
+  intent  pixels_share_a_narrow_color_palette
+  body    lt(rgb_palette_diversity(color_scene), 0.08)

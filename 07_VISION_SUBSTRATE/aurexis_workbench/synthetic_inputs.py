@@ -124,3 +124,67 @@ if __name__ == "__main__":
     out = sys.argv[1] if len(sys.argv) > 1 else "data/vision/synthetic"
     write_all(out)
     print(f"wrote {len(GENERATORS)} synthetic scenes to {out}")
+
+
+# ---------- Color-targeted synthetic scenes (v0.5) ----------
+# Saved as .png so they go through normal visual_intake (with color).
+
+def red_dominant_scene(size: int = 256, seed: int = 0) -> np.ndarray:
+    """High-saturation red-dominant scene. R channel ~0.8, G~0.2, B~0.2."""
+    rng = np.random.default_rng(seed)
+    yy, xx = np.indices((size, size)).astype(np.float64)
+    base_r = 0.80 + rng.normal(0, 0.05, size=(size, size))
+    base_g = 0.20 + rng.normal(0, 0.05, size=(size, size))
+    base_b = 0.20 + rng.normal(0, 0.05, size=(size, size))
+    rgb = np.stack([base_r, base_g, base_b], axis=-1)
+    return np.clip(rgb, 0.0, 1.0)
+
+
+def cool_palette_scene(size: int = 256, seed: int = 0) -> np.ndarray:
+    """Blue/cyan dominant scene like sky or ocean."""
+    rng = np.random.default_rng(seed)
+    yy, xx = np.indices((size, size)).astype(np.float64)
+    base_r = 0.20 + rng.normal(0, 0.04, size=(size, size))
+    base_g = 0.45 + 0.10 * (yy / size) + rng.normal(0, 0.04, size=(size, size))
+    base_b = 0.75 + rng.normal(0, 0.05, size=(size, size))
+    rgb = np.stack([base_r, base_g, base_b], axis=-1)
+    return np.clip(rgb, 0.0, 1.0)
+
+
+def monochrome_color_scene(size: int = 256, seed: int = 0) -> np.ndarray:
+    """Pure greyscale - R = G = B at every pixel."""
+    rng = np.random.default_rng(seed)
+    base = 0.5 + rng.normal(0, 0.15, size=(size, size))
+    base = np.clip(base, 0.0, 1.0)
+    rgb = np.stack([base, base, base], axis=-1)
+    return rgb
+
+
+def high_diversity_color_scene(size: int = 256, seed: int = 0) -> np.ndarray:
+    """Many random colored patches - high palette diversity."""
+    rng = np.random.default_rng(seed)
+    rgb = np.zeros((size, size, 3))
+    cell = 16
+    for cy in range(0, size, cell):
+        for cx in range(0, size, cell):
+            color = rng.uniform(0.0, 1.0, size=3)
+            rgb[cy:cy + cell, cx:cx + cell] = color
+    return np.clip(rgb, 0.0, 1.0)
+
+
+# Override write_all to handle the color scenes too (RGB save mode)
+COLOR_GENERATORS = {
+    "red_dominant_scene":          red_dominant_scene,
+    "cool_palette_scene":          cool_palette_scene,
+    "monochrome_color_scene":      monochrome_color_scene,
+    "high_diversity_color_scene":  high_diversity_color_scene,
+}
+
+
+def write_color_scenes(out_dir):
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    for name, gen in COLOR_GENERATORS.items():
+        scene = gen()
+        arr = (np.clip(scene, 0.0, 1.0) * 255).astype(np.uint8)
+        Image.fromarray(arr, mode="RGB").save(out / (name + ".png"))

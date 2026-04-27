@@ -388,6 +388,96 @@ def _max_s(a, b):
     return float(max(float(a), float(b)))
 
 
+
+# ---------- Color operators (vocabulary v0.5) ----------
+# These take a color_image (3-D ndarray HxWx3 in [0,1]) and return scalar
+# measurements of channel means, saturation, palette properties.
+
+def _ensure_color(img):
+    a = np.asarray(img, dtype=np.float64)
+    if a.ndim == 2:
+        # grayscale -> stack to 3-channel
+        a = np.stack([a, a, a], axis=-1)
+    if a.ndim != 3 or a.shape[2] < 3:
+        raise ValueError(f"color_image needs 3 channels, got shape {a.shape}")
+    return a[..., :3]
+
+
+def _rgb_channel_mean(color_image, channel_label):
+    a = _ensure_color(color_image)
+    label = str(channel_label).lower()
+    if label == "r":   return float(a[..., 0].mean())
+    if label == "g":   return float(a[..., 1].mean())
+    if label == "b":   return float(a[..., 2].mean())
+    raise ValueError("channel must be 'r', 'g', or 'b'")
+
+
+def _rgb_saturation_mean(color_image):
+    """Mean HSV saturation. 1.0 = fully saturated colors; 0.0 = grey."""
+    a = _ensure_color(color_image)
+    cmax = a.max(axis=-1)
+    cmin = a.min(axis=-1)
+    sat = np.where(cmax > 1e-9, (cmax - cmin) / (cmax + 1e-9), 0.0)
+    return float(sat.mean())
+
+
+def _rgb_value_mean(color_image):
+    """Mean HSV value (= max RGB channel)."""
+    a = _ensure_color(color_image)
+    return float(a.max(axis=-1).mean())
+
+
+def _rgb_warmth_score(color_image):
+    """[0,1] proxy for warm-vs-cool: (R + 0.5*G - B + 1) / 2.5 clipped.
+    Sunset / fire / orange = high. Sky / ocean / forest = low."""
+    a = _ensure_color(color_image)
+    r = a[..., 0].mean(); g = a[..., 1].mean(); b = a[..., 2].mean()
+    raw = (r + 0.5 * g - b + 1.0) / 2.5
+    return max(0.0, min(1.0, raw))
+
+
+def _rgb_coolness_score(color_image):
+    """[0,1] proxy for cool-dominance. Inverse of warmth, but with a
+    blue/green floor that makes shaded scenes vs sunset distinct."""
+    a = _ensure_color(color_image)
+    r = a[..., 0].mean(); g = a[..., 1].mean(); b = a[..., 2].mean()
+    raw = (b + 0.5 * g - r + 1.0) / 2.5
+    return max(0.0, min(1.0, raw))
+
+
+def _rgb_palette_diversity(color_image):
+    """How spread out the color distribution is across pixels.
+    Computed as the std of (R,G,B) magnitudes across pixels.
+    A monochrome scene -> low; a vibrant varied scene -> high."""
+    a = _ensure_color(color_image)
+    flat = a.reshape(-1, 3)
+    # std of each channel across pixels, averaged
+    return float(flat.std(axis=0).mean())
+
+
+def _rgb_monochrome_score(color_image):
+    """[0,1] score: 1.0 if R == G == B everywhere; 0.0 if highly chromatic.
+    Direct measure of greyscale-ness. Mean of |max - min| across pixels,
+    inverted and clamped."""
+    a = _ensure_color(color_image)
+    chroma = a.max(axis=-1) - a.min(axis=-1)
+    mean_chroma = float(chroma.mean())
+    # high mean_chroma -> low monochrome score
+    return max(0.0, 1.0 - 4.0 * mean_chroma)
+
+
+def _rgb_dominant_channel_excess(color_image):
+    """How much the dominant channel exceeds the mean of the other two.
+    A red-dominated scene gives high positive excess; a balanced scene
+    gives near zero. Used as a discriminator for has_red/green/blue_dominant."""
+    a = _ensure_color(color_image)
+    r = a[..., 0].mean(); g = a[..., 1].mean(); b = a[..., 2].mean()
+    means = [r, g, b]
+    top = max(means)
+    others = sum(means) - top
+    return float(top - others / 2.0)
+
+
 def register_all() -> None:
     """Register all vision operators into the Workbench registry.
     Safe to call multiple times - re-registration is a no-op overwrite."""
@@ -466,3 +556,28 @@ def register_all() -> None:
        _horizon_likeness_score,
        "Continuous [0,1] landscape-with-horizon signature score.")
     R("max_s", ("scalar", "scalar"), "scalar", _max_s, "Scalar max.")
+    # Vocabulary v0.5 operators (color)
+    R("rgb_channel_mean", ("color_image", "label"), "scalar",
+       _rgb_channel_mean,
+       "Mean of R, G, or B channel.")
+    R("rgb_saturation_mean", ("color_image",), "scalar",
+       _rgb_saturation_mean,
+       "Mean HSV saturation. 0=grey, 1=fully saturated.")
+    R("rgb_value_mean", ("color_image",), "scalar",
+       _rgb_value_mean,
+       "Mean HSV value (max channel per pixel).")
+    R("rgb_warmth_score", ("color_image",), "scalar",
+       _rgb_warmth_score,
+       "[0,1] warm-palette proxy.")
+    R("rgb_coolness_score", ("color_image",), "scalar",
+       _rgb_coolness_score,
+       "[0,1] cool-palette proxy.")
+    R("rgb_palette_diversity", ("color_image",), "scalar",
+       _rgb_palette_diversity,
+       "Mean per-channel std across pixels (color spread).")
+    R("rgb_monochrome_score", ("color_image",), "scalar",
+       _rgb_monochrome_score,
+       "[0,1] greyscale-ness (1=R=G=B).")
+    R("rgb_dominant_channel_excess", ("color_image",), "scalar",
+       _rgb_dominant_channel_excess,
+       "Top channel mean minus average of others.")

@@ -827,3 +827,115 @@ The 7-round growth log:
 
 The substrate is now sufficient to grow vocabulary indefinitely
 by composition, with empirical IR feedback at every step.
+
+---
+
+## Round 9: COLOR EXTENSION (2026-04-27)
+
+The vocabulary so far has been luma-only. Half of human visual signal
+is color and the language could not reach it. This round adds the
+substrate and 10 color predicates that operate on a new typed field.
+
+### Substrate addition
+
+  New dtype:    `color_image`  (3-D ndarray HxWx3 in [0,1])
+  New field:    `color_scene`  (populated by visual_intake +
+                                vision_bridge from any RGB input)
+
+### 8 new operators (vision_ops.py)
+
+  rgb_channel_mean(color_image, label "r"|"g"|"b") -> scalar
+  rgb_saturation_mean(color_image)                 -> scalar
+  rgb_value_mean(color_image)                      -> scalar
+  rgb_warmth_score(color_image)                    -> scalar
+  rgb_coolness_score(color_image)                  -> scalar
+  rgb_palette_diversity(color_image)               -> scalar
+  rgb_monochrome_score(color_image)                -> scalar
+  rgb_dominant_channel_excess(color_image)         -> scalar
+
+### 10 new predicates (vocab.aurex)
+
+  has_red_dominant            R-mean exceeds G-mean and B-mean
+  has_green_dominant          G-mean dominates
+  has_blue_dominant           B-mean dominates
+  has_warm_palette            warmth - coolness > 0.10
+  has_cool_palette            coolness - warmth > 0.10
+  has_high_saturation         saturation_mean > 0.30
+  has_low_saturation          saturation_mean < 0.10
+  has_monochrome              monochrome_score > 0.85
+  has_high_color_diversity    palette_diversity > 0.20
+  has_low_color_diversity     palette_diversity < 0.08
+
+### 4 color synthetic scenes (corpus pumps)
+
+  red_dominant_scene
+  cool_palette_scene
+  monochrome_color_scene
+  high_diversity_color_scene
+
+All four trip their target predicates correctly.
+
+### Round 9 IR (29 inputs / 43 predicates)
+
+Color verdicts on real phone photos (13 inputs):
+  9 / 13 has_red_dominant         (afternoon document photos under
+                                    indoor lighting; skin tones in
+                                    portraits)
+  4 / 13 has_blue_dominant        (early-morning photos in cool light)
+  0 / 13 has_green_dominant
+  0 / 13 has_warm_palette         (warmth/coolness delta < 0.10 on
+                                    natural photos - need to lower
+                                    margin or use different metric)
+  0 / 13 has_cool_palette         (same)
+
+Color verdicts on synthetic inputs:
+  red_dominant_scene:    red, warm, high_sat                  ✓
+  cool_palette_scene:    blue, cool, high_sat                  ✓
+  monochrome_color_scene: low_sat, monochrome                  ✓
+  high_diversity_color_scene: green (random), high_sat, diverse ✓
+
+### New finding: a tautological equivalence pair
+
+`{has_low_saturation, has_monochrome}` always agree by definition.
+Monochrome IS low saturation - the two predicates measure
+identical quantities through different formulas. Cannot be broken
+by any corpus input. Worth noting in vocabulary maintenance: one
+of these is redundant and could be removed in a future cleanup
+pass, or kept because the threshold for each carries different
+semantic intent (low_saturation < 0.10; monochrome > 0.85).
+
+### Round 9 vs Round 8
+
+| metric                       | Round 8 | Round 9 |
+|------------------------------|---------|---------|
+| total predicates              | 33      | 43      |
+| total operators               | 32      | 40      |
+| total synthetic scenes        | 6       | 10      |
+| corpus inputs                 | 25      | 29      |
+| redundant pairs               | 4       | 5       |
+| equivalence classes           | 2       | 3       |
+| 0% firing predicates          | 0       | 0       |
+
+The 1 new equivalence class is the tautological color pair noted
+above. The vocabulary is empirically exercised end-to-end on real
+photos with both luma and color predicates contributing
+discriminating signal.
+
+### Vocabulary status (Round 9 final)
+
+43 predicates / 40 vision operators / 10 synthetic scenes. Every
+predicate fires on at least one corpus member. Color predicates
+operate on real phone photos through visual_intake; sessions
+through vision_bridge. The substrate now spans both luma and
+color signals - the conventional "what humans see" dimensions.
+
+What's still missing for a full human-vision analogue:
+  - shapes (circle / rectangle / curve detection)
+  - object recognition (face IDENTITY, not just face-like signature)
+  - depth cues (perspective, occlusion, focus blur)
+  - motion direction / velocity (only sub-frame motion is detected,
+    not its direction)
+
+These are the natural Round 10+ extensions. The substrate is
+sufficient for all of them - additions remain operators + DSL
+predicates, no architectural changes.

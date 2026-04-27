@@ -1,8 +1,9 @@
 """Bridge from raw captures (.aurex-session zips) to Workbench FieldBundles.
 
 Loads a session, builds a typed FieldBundle with the fields a vision
-vocabulary expects (scene, burst, raw_bayer, cap_axis_0, cap_axis_90,
-patch_size), then a runtime can evaluate the vocabulary against it.
+vocabulary expects (scene, color_scene, burst, raw_bayer, cap_axis_0,
+cap_axis_90, patch_size), then a runtime can evaluate the vocabulary
+against it.
 
 This is the seam between the world (real captured photons through the
 phone) and the language (typed predicates over instruments).
@@ -45,15 +46,16 @@ def load_session_bundle(zip_path: str | Path,
     """Load a .aurex-session zip into a typed FieldBundle.
 
     Always populated:
-        scene       (image)         middle frame as luminance
-        burst       (image_stack)   all decoded frames stacked
-        patch_size  (int)           parameter for ROI predicates
+        scene        (image)         middle frame as luminance
+        color_scene  (color_image)   middle frame as RGB color
+        burst        (image_stack)   all decoded frames stacked (luma)
+        patch_size   (int)           parameter for ROI predicates
 
     Conditionally populated (only if the harness captured the
-    relevant data; otherwise these fields are simply not present):
-        raw_bayer   (image)         raw Bayer mosaic (harness v3.0+)
-        cap_axis_0  (image)         polarization-pair axis 0 (v2.2+)
-        cap_axis_90 (image)         polarization-pair axis 90 (v2.2+)
+    relevant data):
+        raw_bayer    (image)         raw Bayer mosaic (harness v3.0+)
+        cap_axis_0   (image)         polarization-pair axis 0 (v2.2+)
+        cap_axis_90  (image)         polarization-pair axis 90 (v2.2+)
     """
     p = Path(zip_path)
     if not p.exists():
@@ -70,6 +72,7 @@ def load_session_bundle(zip_path: str | Path,
             frames_meta = frames_meta[:max_frames]
         all_names = zf.namelist()
         decoded: List[np.ndarray] = []
+        decoded_color: List[np.ndarray] = []
         axis_labels: List[Optional[str]] = []
         for fm in frames_meta:
             target = fm["filename"]
@@ -80,25 +83,36 @@ def load_session_bundle(zip_path: str | Path,
                 img = Image.open(io.BytesIO(fh.read()))
                 img.load()
             arr = np.asarray(img, dtype=np.float64) / 255.0
-            luma = _rgb_to_luma(arr[..., :3]) if arr.ndim == 3 else arr
+            if arr.ndim == 3:
+                color = arr[..., :3]
+                luma = _rgb_to_luma(color)
+            else:
+                luma = arr
+                color = np.stack([arr, arr, arr], axis=-1)
             if resize_to is not None:
                 long_side = max(luma.shape[0], luma.shape[1])
                 if long_side > resize_to:
                     step = max(1, long_side // resize_to)
                     luma = luma[::step, ::step]
+                    color = color[::step, ::step]
             decoded.append(luma.astype(np.float64))
+            decoded_color.append(color.astype(np.float64))
             axis_labels.append(fm.get("axisLabel"))
     if not decoded:
         raise ValueError(f"no frames decoded from {p.name}")
     h_min = min(a.shape[0] for a in decoded)
     w_min = min(a.shape[1] for a in decoded)
     decoded = [a[:h_min, :w_min] for a in decoded]
+    decoded_color = [c[:h_min, :w_min] for c in decoded_color]
     burst = np.stack(decoded, axis=0)
     scene = burst[len(decoded) // 2]
+    color_scene = decoded_color[len(decoded) // 2]
 
     bundle = FieldBundle(name=p.stem)
     bundle.add_value("scene", "image", scene,
                       description="middle-frame luminance")
+    bundle.add_value("color_scene", "color_image", color_scene,
+                      description="middle-frame color (RGB)")
     bundle.add_value("burst", "image_stack", burst,
                       description="decoded burst frames as luminance")
     bundle.add_value("patch_size", "int", int(patch_size),
@@ -118,11 +132,6 @@ def load_session_bundle(zip_path: str | Path,
                               description="axis-0 mean frame")
             bundle.add_value("cap_axis_90", "image", cap90,
                               description="axis-90 mean frame")
-
-    # raw_bayer field: not yet plumbed - the harness needs Camera2 RAW
-    # capture before this can be populated. The vocabulary's
-    # Bayer-dependent predicates will simply error with
-    # "field not in bundle" if asked to evaluate on a JPEG-only session.
 
     meta = SessionMeta(
         session_id=manifest.get("sessionId") or p.stem.split(".")[0],
