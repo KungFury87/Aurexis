@@ -665,8 +665,9 @@ def _orientation_diagonal_mass(image):
 
 
 def _blob_count_thresh(image, k_threshold=1.5):
-    """Count connected components in a binary mask of the image
-    thresholded at mean + k*std. Numpy-only flood fill."""
+    """Count connected components in a thresholded binary mask via
+    scipy.ndimage.label (fast). Falls back to numpy flood-fill if
+    scipy unavailable."""
     a = np.asarray(image, dtype=np.float64)
     if a.std() < 1e-9:
         return 0
@@ -674,6 +675,12 @@ def _blob_count_thresh(image, k_threshold=1.5):
     binary = a > thr
     if binary.sum() == 0:
         return 0
+    try:
+        from scipy.ndimage import label as _ndlabel
+        _, n = _ndlabel(binary)
+        return int(n)
+    except ImportError:
+        pass
     h, w = binary.shape
     visited = np.zeros_like(binary)
     count = 0
@@ -1003,6 +1010,201 @@ def _motion_velocity_mean(image_stack):
     return float(np.mean(mags))
 
 
+
+# ---------- Lighting / illumination primitives (vocabulary v0.11) ----------
+
+def _bright_pixel_fraction(image, threshold=0.85):
+    """Fraction of pixels with value above threshold (highlights)."""
+    a = np.asarray(image, dtype=np.float64)
+    return float((a > float(threshold)).sum()) / float(a.size)
+
+
+def _dark_pixel_fraction(image, threshold=0.15):
+    """Fraction of pixels with value below threshold (shadows)."""
+    a = np.asarray(image, dtype=np.float64)
+    return float((a < float(threshold)).sum()) / float(a.size)
+
+
+def _bright_spot_count(image, threshold=0.92):
+    """Count small connected regions of pixels above the very-bright
+    threshold. Specular highlights show up as multiple tiny hot spots
+    rather than one large bright area. Uses scipy.ndimage.label for
+    fast vectorised labeling."""
+    try:
+        from scipy.ndimage import label as _ndlabel
+    except ImportError:
+        return _bright_spot_count_slow(image, threshold)
+    a = np.asarray(image, dtype=np.float64)
+    binary = a > float(threshold)
+    if binary.sum() == 0:
+        return 0
+    labels, n = _ndlabel(binary)
+    if n == 0:
+        return 0
+    h, w = binary.shape
+    max_size = max(20, h * w // 1000)
+    sizes = np.bincount(labels.ravel())[1:]  # skip background label 0
+    return int(((sizes >= 1) & (sizes <= max_size)).sum())
+
+
+def _bright_spot_count_slow(image, threshold=0.92):
+    """Numpy-only fallback if scipy is unavailable."""
+    a = np.asarray(image, dtype=np.float64)
+    binary = a > float(threshold)
+    if binary.sum() == 0:
+        return 0
+    h, w = binary.shape
+    visited = np.zeros_like(binary)
+    count = 0
+    for y in range(h):
+        for x in range(w):
+            if binary[y, x] and not visited[y, x]:
+                stack = [(y, x)]
+                size = 0
+                while stack:
+                    cy, cx = stack.pop()
+                    if cy < 0 or cy >= h or cx < 0 or cx >= w:
+                        continue
+                    if visited[cy, cx] or not binary[cy, cx]:
+                        continue
+                    visited[cy, cx] = True
+                    size += 1
+                    stack.extend([(cy + 1, cx), (cy - 1, cx),
+                                    (cy, cx + 1), (cy, cx - 1)])
+                if 1 <= size <= max(20, h * w // 1000):
+                    count += 1
+    return int(count)
+
+
+def _center_minus_edge_brightness(image):
+    """Mean brightness of centre 50% region minus mean brightness of
+    edge ring. Positive = subject lit (portrait / spotlight).
+    Negative = vignette / rim lighting."""
+    a = np.asarray(image, dtype=np.float64)
+    h, w = a.shape
+    cy0, cy1 = h // 4, 3 * h // 4
+    cx0, cx1 = w // 4, 3 * w // 4
+    centre = a[cy0:cy1, cx0:cx1]
+    centre_mean = float(centre.mean())
+    centre_pixels = (cy1 - cy0) * (cx1 - cx0)
+    total_pixels = a.size
+    edge_pixels = total_pixels - centre_pixels
+    if edge_pixels <= 0:
+        return 0.0
+    edge_sum = float(a.sum()) - float(centre.sum())
+    edge_mean = edge_sum / float(edge_pixels)
+    return centre_mean - edge_mean
+
+
+
+# ---------- Curve detection redesign (vocabulary v0.12) ----------
+# Round 11's has_curved_signature was an AND of 4 negations and fired
+# 0% on the corpus. Round 18 replaces it with a positive test:
+# a curved object has gradient orientations distributed across a
+# CONTIGUOUS ARC of bins (smooth, neighboring bins similar) - neither
+# a single sharp peak (line) nor uniform (circle) nor 2 disjoint
+# clumps (rectangle / diagonal).
+
+def _orientation_distribution_continuity(image, n_bins=18):
+    """[0,1] score for curve signature: SINGLE broad peak in the
+    cyclic gradient orientation histogram.
+
+      Line:      single NARROW peak (1-2 bins)             -> low score
+      Curve:     single BROAD peak (3-10 bins)              -> HIGH score
+      Rectangle: TWO peaks separated by valleys              -> 0
+      Diagonal:  TWO peaks (45 + 135 deg)                    -> 0
+      Circle:    no clear peak (uniform)                     -> 0
+
+    Algorithm: count local maxima of the histogram cyclically. If
+    exactly 1, measure its width above half-max. Width 3-10 = curve."""
+    h = _gradient_orientation_hist(image, n_bins=n_bins)
+    if h.sum() < 1e-12:
+        return 0.0
+    h_max = float(h.max())
+    if h_max < 1e-9:
+        return 0.0
+    # Bins above 0.7 * max are "in the peak region"
+    threshold = h_max * 0.7
+    above = h > threshold
+    n_above = int(above.sum())
+    # Width 3-10: broad smooth peak (curve)
+    # Width 1-2: sharp narrow peak (line)
+    # Width 11+: uniform (circle)
+    if n_above < 3 or n_above > 10:
+        return 0.0
+    # Contiguity check (cyclic): all above-threshold bins form one arc
+    extended = np.concatenate([above, above])
+    runs = []
+    i = 0
+    while i < len(extended):
+        if extended[i]:
+            j = i
+            while j < len(extended) and extended[j]:
+                j += 1
+            runs.append(j - i)
+            i = j
+        else:
+            i += 1
+    longest_run = max(runs, default=0)
+    # Allow up to 1 stray noise bin outside the main arc
+    if longest_run < n_above - 1:
+        return 0.0  # peak split into multiple disjoint clumps (grid)
+    # Also reject if the main arc itself is 1-2 bins (line, not curve)
+    if longest_run < 3:
+        return 0.0
+    # Map width 3..10 to score 1.0..0.3
+    score = max(0.3, 1.0 - (n_above - 3) / 14.0)
+    return float(score)
+
+
+
+# ---------- Perspective convergence redesign (vocabulary v0.12) ----------
+# Round 12's _perspective_convergence_strength used L vs R diagonal
+# asymmetry which gave ~0 on perspective_road (lines symmetric around
+# centre vanishing point). This redesign uses TOP-vs-BOTTOM dominant
+# orientation: a road / hallway has near-vertical lines at the bottom
+# (close to camera) and near-horizontal lines at the top (where they
+# converge). The angle of the dominant orientation rotates between
+# the two strips.
+
+def _top_vs_bottom_orientation_difference(image):
+    """Absolute angular difference between the dominant orientation
+    in the top 1/3 and bottom 1/3 of the image, in [0, 90] degrees.
+    Larger = stronger perspective tilt."""
+    a = np.asarray(image, dtype=np.float64)
+    h, w = a.shape
+    if h < 24:
+        return 0.0
+    top = a[:h // 3]
+    bot = a[2 * h // 3:]
+    # Re-use structure-tensor-like dominant angle via gradient histogram
+    def _dominant_angle_deg(strip):
+        gx, gy = _gradients(strip)
+        mag = np.sqrt(gx * gx + gy * gy)
+        if mag.max() < 1e-9:
+            return None
+        ang = np.arctan2(gy, gx)
+        ang_pos = np.mod(ang, np.pi)
+        # weighted circular mean (in 2*ang space for axial average)
+        weights = mag.ravel()
+        a2 = 2.0 * ang_pos.ravel()
+        x = (weights * np.cos(a2)).sum()
+        y = (weights * np.sin(a2)).sum()
+        if x == 0 and y == 0:
+            return None
+        mean_ang_2 = np.arctan2(y, x)
+        mean_ang = mean_ang_2 / 2.0  # back to [0, pi)
+        return float(np.degrees(mean_ang) % 180.0)
+    a_top = _dominant_angle_deg(top)
+    a_bot = _dominant_angle_deg(bot)
+    if a_top is None or a_bot is None:
+        return 0.0
+    diff = abs(a_top - a_bot)
+    if diff > 90:
+        diff = 180 - diff
+    return float(diff)
+
+
 def register_all() -> None:
     """Register all vision operators into the Workbench registry.
     Safe to call multiple times - re-registration is a no-op overwrite."""
@@ -1165,6 +1367,30 @@ def register_all() -> None:
     R("horizon_position_estimate", ("image",), "scalar",
        _horizon_position_estimate,
        "[0,1]: y-position of strongest horizontal-edge row (0=top, 1=bottom).")
+    # Vocabulary v0.11 operators (lighting / illumination)
+    R("bright_pixel_fraction", ("image", "scalar"), "scalar",
+       _bright_pixel_fraction,
+       "Fraction of pixels above brightness threshold.")
+    R("dark_pixel_fraction", ("image", "scalar"), "scalar",
+       _dark_pixel_fraction,
+       "Fraction of pixels below brightness threshold.")
+    R("bright_spot_count", ("image", "scalar"), "int",
+       _bright_spot_count,
+       "Count of small (1-20px) connected high-brightness regions "
+       "(specular highlights).")
+    R("center_minus_edge_brightness", ("image",), "scalar",
+       _center_minus_edge_brightness,
+       "Centre mean brightness minus edge ring mean. + = subject lit.")
+    # Vocabulary v0.12 operators (curve / perspective redesign)
+    R("orientation_distribution_continuity", ("image",), "scalar",
+       _orientation_distribution_continuity,
+       "[0,1]: high when orientation histogram is smooth-contiguous "
+       "(curve); low for lines (single peak), grids (multiple peaks), "
+       "or isotropic (uniform).")
+    R("top_vs_bottom_orientation_difference", ("image",), "scalar",
+       _top_vs_bottom_orientation_difference,
+       "Angular difference (deg) between top-strip and bottom-strip "
+       "dominant orientations. Higher = stronger perspective tilt.")
     # Vocabulary v0.10 operators (motion direction via phase correlation)
     R("global_shift_estimate", ("image_stack", "label"), "scalar",
        _global_shift_estimate,

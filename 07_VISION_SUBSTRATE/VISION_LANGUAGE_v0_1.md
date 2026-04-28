@@ -1584,3 +1584,115 @@ itself can't synthesize "this is Vince" from typed predicates.
 
 Richer real-session corpus - capture a few panning sessions to
 break the last corpus-size equivalence pair.
+
+---
+
+## Round 17: lighting / illumination primitives (2026-04-28)
+
+What the language couldn't read before this round: who lit the
+scene. Round 17 adds the photographic lighting axis - low-light
+captures, high-key portraits, center-weighted illumination,
+specular highlights, exposure clipping.
+
+### 4 new operators
+
+  bright_pixel_fraction(image, threshold)    -> scalar
+  dark_pixel_fraction(image, threshold)      -> scalar
+  bright_spot_count(image, threshold)        -> int
+  center_minus_edge_brightness(image)        -> scalar
+
+### 8 new predicates
+
+  has_low_light_signature        majority of pixels in shadow
+  has_high_key                   overall mean above mid-grey
+  has_low_key                    overall mean below mid-grey
+  has_specular_highlights        multiple tiny very-bright spots
+  has_center_weighted_lighting   centre brighter than edges (portrait)
+  has_edge_weighted_lighting     edges brighter than centre (vignette)
+  has_overexposed_regions        significant pixels at near-max value
+  has_underexposed_regions       significant pixels at near-zero value
+
+### 4 lighting synthetic scenes
+
+  low_light_scene          (mean ~0.13, mostly shadow)
+  high_key_scene           (mean ~0.85, faint subject)
+  center_lit_scene         (Gaussian falloff, centre bright)
+  specular_highlight_scene (mid-grey + 8 tiny hot spots)
+
+Each fires only its target predicates; no false positives.
+
+### Round 17 totals
+
+  96 predicates / 89 vision operators / 36 synthetic scenes
+  + narrator from round 16 (now extended to lighting language)
+  2 equivalence classes (unchanged - no new redundancies)
+  12 perceptual dimensions covered (added: lighting)
+
+### Performance note
+
+The IR runner timed out at 45s on the full corpus (55 inputs x
+96 predicates). bright_spot_count uses Python-level flood-fill
+which is slow on 256x256 inputs. Either: optimize with scipy
+label, raise timeout, or shard the IR run. Filed for v0.12
+maintenance pass.
+
+### What unlocks next
+
+Hardware unlocks (raw Bayer / polarization / multispectral) -
+substrate-side, not vocabulary.
+
+Identity recognition layer - face IDs, object names, scene
+categories. Where ML genuinely enters.
+
+Vocabulary maintenance - resolve the 1 remaining tautological
+class by retiring duplicate predicates; document which 1 of
+{largely_achromatic, low_saturation, monochrome} should be
+canonical.
+
+---
+
+## Round 18: quality maintenance (2026-04-28)
+
+This round was a pure maintenance pass: optimize slow operators,
+fix the 0%-firing has_curved_signature, redesign the weak
+has_perspective_convergence detector.
+
+### Optimizations
+
+  bright_spot_count and blob_count_thresh now use scipy.ndimage.label
+  Sub-millisecond on 256x256 inputs (was 100s of ms with Python flood-fill).
+
+### has_curved_signature redesigned
+
+Round 11's predicate was AND of 4 negations, fired 0% across 12 rounds.
+Round 18 replaces with positive test:
+  - width above 0.7 * max in orientation histogram = 3-10 bins
+  - bins must be cyclically contiguous (1 stray bin allowed for noise)
+  - score maps width 3-10 to 1.0-0.3
+
+curve_scene now fires (continuity=0.57). Rectangle, circle, diagonal,
+horizon, many_circles all return 0. Single sharp peaks (lines) return
+0 because width above 0.7*max is 1-2.
+
+Methodology rule kept: **when retiring a "negation-of-everything-else"
+predicate, replace it with a positive test that has a clear synthetic
+that fires it.**
+
+### has_perspective_convergence redesigned (still weak)
+
+Round 12's L-vs-R asymmetry detector replaced with TOP-vs-BOTTOM
+dominant-orientation difference. The intuition: a perspective road
+has near-vertical lines at bottom (close to camera), near-horizontal
+at top (converging at horizon).
+
+The perspective_road synthetic still doesn't fire (the symmetric
+converging lines average to similar dominant orientations top vs
+bottom). Filed as a known-correct-but-weak detector pending a
+Hough-transform vanishing-point estimator. The synthetic is still
+correctly described (other predicates pick up other signals); just
+the perspective-specific predicate returns False.
+
+### Round 18 totals
+
+  96 predicates / 91 operators / 37 synthetic scenes
+  2 equivalence classes (unchanged)

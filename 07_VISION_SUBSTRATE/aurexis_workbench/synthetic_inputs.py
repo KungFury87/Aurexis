@@ -618,3 +618,101 @@ def write_cleanup_scenes(scenes_dir, bursts_dir):
         for i, f in enumerate(frames):
             arr = (np.clip(f, 0.0, 1.0) * 255).astype(np.uint8)
             Image.fromarray(arr, mode="L").save(burst_dir / f"{i + 1:04d}.png")
+
+
+# ---------- Lighting / illumination synthetic scenes (v0.11) ----------
+
+def low_light_scene(size=256, seed=0):
+    """Mostly very dark with subtle texture."""
+    rng = np.random.default_rng(seed)
+    base = 0.12 + 0.08 * np.cos(2 * np.pi * 0.02 * np.arange(size))[:, None]
+    base = np.broadcast_to(base, (size, size)).copy()
+    return np.clip(base + rng.normal(0, 0.03, size=(size, size)), 0.0, 1.0)
+
+
+def high_key_scene(size=256, seed=0):
+    """Mostly very bright with subtle subject."""
+    rng = np.random.default_rng(seed)
+    base = np.full((size, size), 0.85)
+    yy, xx = np.indices((size, size)).astype(np.float64)
+    cx, cy = size / 2, size / 2
+    dist = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
+    # Faint darker subject in centre
+    base[dist < size / 8] = 0.65
+    return np.clip(base + rng.normal(0, 0.02, size=(size, size)), 0.0, 1.0)
+
+
+def center_lit_scene(size=256, seed=0):
+    """Bright subject at centre, dark surround. Portrait / spotlight."""
+    rng = np.random.default_rng(seed)
+    yy, xx = np.indices((size, size)).astype(np.float64)
+    cx, cy = size / 2, size / 2
+    dist = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
+    # Smooth fall-off from 0.85 at centre to 0.12 at edges
+    falloff = np.exp(-(dist ** 2) / (2 * (size / 4) ** 2))
+    base = 0.12 + 0.73 * falloff
+    return np.clip(base + rng.normal(0, 0.02, size=(size, size)), 0.0, 1.0)
+
+
+def specular_highlight_scene(size=256, seed=0):
+    """Mid-grey overall with several tiny very-bright spots
+    (specular reflections on a glossy surface)."""
+    rng = np.random.default_rng(seed)
+    base = np.full((size, size), 0.45) + rng.normal(0, 0.05, size=(size, size))
+    # Place 8 tiny bright spots
+    for _ in range(8):
+        cy = int(rng.integers(10, size - 10))
+        cx = int(rng.integers(10, size - 10))
+        base[cy - 1:cy + 2, cx - 1:cx + 2] = 0.97
+    return np.clip(base, 0.0, 1.0)
+
+
+LIGHTING_GENERATORS = {
+    "low_light_scene":          low_light_scene,
+    "high_key_scene":           high_key_scene,
+    "center_lit_scene":         center_lit_scene,
+    "specular_highlight_scene": specular_highlight_scene,
+}
+
+
+def write_lighting_scenes(out_dir):
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    for name, gen in LIGHTING_GENERATORS.items():
+        scene = gen()
+        arr = (np.clip(scene, 0.0, 1.0) * 255).astype(np.uint8)
+        Image.fromarray(arr, mode="L").save(out / (name + ".png"))
+
+
+# ---------- Curve synthetic (v0.12) ----------
+
+def curve_scene(size=256, seed=0):
+    """A short ~90-degree arc - gradient orientations span a CONTIGUOUS
+    SUBSET of bins (not the full range, not a single peak). This is
+    the target signal for has_curved_signature."""
+    rng = np.random.default_rng(seed)
+    yy, xx = np.indices((size, size)).astype(np.float64)
+    # Quarter arc centred at upper-right, radius reaching lower-left
+    cx, cy = size * 0.95, size * 0.05
+    r = size * 0.85
+    dist = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
+    arc = np.exp(-((dist - r) ** 2) / (2 * 3 ** 2))
+    # Mask: only show the visible 90 deg arc (within the frame)
+    angle = np.arctan2(yy - cy, xx - cx)
+    # Quarter arc: angle between 90 and 180 degrees
+    angle_mask = (angle > np.pi / 2 - 0.4) & (angle < np.pi + 0.4)
+    arc = arc * angle_mask
+    return np.clip(0.25 + 0.65 * arc + rng.normal(0, 0.02, size=(size, size)),
+                    0.0, 1.0)
+
+
+CURVE_GENERATORS = {"curve_scene": curve_scene}
+
+
+def write_curve_scenes(out_dir):
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    for name, gen in CURVE_GENERATORS.items():
+        scene = gen()
+        arr = (np.clip(scene, 0.0, 1.0) * 255).astype(np.uint8)
+        Image.fromarray(arr, mode="L").save(out / (name + ".png"))

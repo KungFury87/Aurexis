@@ -480,8 +480,8 @@ predicate has_diagonal_signature
 predicate has_curved_signature
   expects scene:image
   returns bool
-  intent  smoothly_distributed_orientations_no_sharp_peaks_not_isotropic
-  body    AND(AND(lt(orientation_uniformity(scene), 0.40), lt(orientation_horizontal_mass(scene), 0.20)), AND(lt(orientation_vertical_mass(scene), 0.20), lt(orientation_diagonal_mass(scene), 0.40)))
+  intent  smooth_contiguous_arc_of_orientations_curve_signature
+  body    gt(orientation_distribution_continuity(scene), 0.30)
 
 
 predicate has_many_small_blobs
@@ -511,8 +511,8 @@ predicate has_few_large_blobs
 predicate has_perspective_convergence
   expects scene:image
   returns bool
-  intent  asymmetric_diagonal_line_distribution_signaling_perspective
-  body    gt(perspective_convergence_strength(scene), 0.10)
+  intent  top_strip_orientation_differs_from_bottom_strip_perspective_tilt
+  body    gt(top_vs_bottom_orientation_difference(scene), 25.0)
 
 
 predicate has_atmospheric_haze
@@ -705,3 +705,62 @@ predicate has_fast_motion
   returns bool
   intent  burst_mean_displacement_above_5_pixels_per_pair
   body    gt(motion_velocity_mean(burst), 5.0)
+
+# ============================================================
+# Vocabulary v0.11 - Lighting / illumination
+# ============================================================
+
+predicate has_low_light_signature
+  expects scene:image
+  returns bool
+  intent  most_pixels_below_mid_grey_low_light_capture
+  body    gt(dark_pixel_fraction(scene, 0.30), 0.50)
+
+
+predicate has_high_key
+  expects scene:image
+  returns bool
+  intent  most_pixels_bright_overall_mean_above_mid
+  body    gt(mean(scene), 0.65)
+
+
+predicate has_low_key
+  expects scene:image
+  returns bool
+  intent  most_pixels_dark_overall_mean_below_mid
+  body    lt(mean(scene), 0.30)
+
+
+predicate has_specular_highlights
+  expects scene:image
+  returns bool
+  intent  multiple_small_very_bright_spots_specular_reflections
+  body    gt_int(bright_spot_count(scene, 0.92), 3)
+
+
+predicate has_center_weighted_lighting
+  expects scene:image
+  returns bool
+  intent  centre_brighter_than_edges_subject_lit_or_spotlight
+  body    gt(center_minus_edge_brightness(scene), 0.10)
+
+
+predicate has_edge_weighted_lighting
+  expects scene:image
+  returns bool
+  intent  edges_brighter_than_centre_vignette_or_rim_lighting
+  body    lt(center_minus_edge_brightness(scene), -0.10)
+
+
+predicate has_overexposed_regions
+  expects scene:image
+  returns bool
+  intent  significant_pixels_at_or_near_max_value_clipped_highlights
+  body    gt(bright_pixel_fraction(scene, 0.97), 0.05)
+
+
+predicate has_underexposed_regions
+  expects scene:image
+  returns bool
+  intent  significant_pixels_at_or_near_zero_clipped_shadows
+  body    gt(dark_pixel_fraction(scene, 0.03), 0.05)
