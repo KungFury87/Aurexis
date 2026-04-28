@@ -1120,3 +1120,467 @@ What remains for human-vision parity:
                           requires learned models, not predicates)
 
 Depth cues are the clear next round.
+
+---
+
+## Round 12: depth cues from a single 2D image (2026-04-27)
+
+The vocabulary now reads color, hue/wavelength, shape, motion,
+structure, named concepts. What humans still get from a single
+photo that the language couldn't reach: depth. This round adds the
+single-image cues humans use to perceive 3D from a flat photo.
+
+### 5 new operators
+
+  perspective_convergence_strength(image)        -> scalar
+  atmospheric_haze_score(color_image)            -> scalar
+  focus_blur_gradient(image)                     -> scalar (centre vs edges)
+  corner_count_thresh(image, scalar)             -> int
+  texture_density_top_vs_bottom(image)           -> scalar
+
+### 7 new predicates
+
+  has_perspective_convergence       diagonal-line asymmetry L vs R
+  has_atmospheric_haze              top desaturated + blue-shifted
+  has_shallow_depth_of_field        centre sharpness >> edge sharpness
+  has_uniform_focus                 |focus_blur_gradient| < 0.20
+  has_many_corners                  > 50 Harris-style corners
+  has_texture_compression_gradient  top higher high-freq than bottom
+  has_depth_indicators              composite OR of perspective/haze/DOF
+
+### 3 depth synthetic scenes
+
+perspective_road_scene (lines converging to vanishing point at
+horizon), hazy_landscape_scene (top desaturated + blue-tinted),
+shallow_dof_scene (sharp central pattern, blurred surround).
+
+### Round 12 verdicts on synthetics
+
+  perspective_road_scene: nothing fires (perspective detector too weak)
+  hazy_landscape_scene:   has_atmospheric_haze + has_uniform_focus
+  shallow_dof_scene:      has_shallow_depth_of_field
+
+### Methodology finding: focus_blur_gradient redesign
+
+First implementation used variance-of-tile-sharpness across 4x4 grid.
+This gave high values for ANY scene with non-uniform structure
+(perspective road, landscape with foreground+sky), not specifically
+shallow-DOF scenes. Redesigned as centre-vs-edges sharpness ratio:
+(centre - edge) / (centre + edge). A shallow-DOF scene has subject
+in centre + blurred surround = high positive ratio. A landscape has
+edges sharper than centre = negative ratio. A uniform scene = near 0.
+
+This is a methodology rule worth keeping: **when designing a metric,
+test it on the negative cases as well as the positive ones**. The
+variance-of-tiles version positively detected shallow-DOF AND many
+other things; the centre-vs-edges version selectively detects
+shallow-DOF.
+
+### Known weak detector: perspective convergence
+
+The asymmetric-diagonal-mass heuristic gives only 0.016 on the
+perspective_road synthetic. The road has lines BOTH going to centre
+from left AND from right, so left and right halves see similar
+diagonal mass. A proper perspective detector needs Hough-transform-style
+vanishing-point estimation, which is more substantial than what
+fits in this round. Filed as a vocabulary-design task.
+
+### Round 12 IR (41 inputs / 69 predicates)
+
+Equivalence classes: 4 (was 5). The {face_is_dominant_concept,
+has_face_like_signature} pair from Round 6 no longer always agrees
+- the depth synthetic scenes have unusual gradient distributions
+that hit one but not the other. That is a real progress signal:
+adding diverse corpus inputs breaks structural redundancies that
+earlier looked tautological but were actually empirical.
+
+Real-photo depth verdicts:
+  has_uniform_focus:           63 percent (most casual photos)
+  has_many_corners:            85 percent (texture-rich scenes)
+  has_atmospheric_haze:         5 percent
+  has_shallow_depth_of_field:   5 percent
+  has_perspective_convergence:  5 percent
+
+### Round 12 totals
+
+  69 predicates / 53 vision operators / 22 synthetic scenes
+  4 equivalence classes (improvement: 5 to 4)
+
+### Vocabulary status across the project
+
+  motion / temporal:        3
+  structure / texture:     14
+  symmetry:                 2
+  named concepts:          14
+  color (RGB):             10
+  hue / wavelength labels: 13
+  shape primitives:         6
+  depth cues:               7
+  hardware-blocked:         3
+
+The vocabulary now spans 9 perceptual dimensions. What remains for
+human-vision parity: composition (rule of thirds, leading lines,
+framing balance), motion direction (optical flow, not just presence),
+and the parallel hardware-unlock track (raw Bayer, polarization
+pair, multispectral).
+
+---
+
+## Round 13: composition primitives (2026-04-27)
+
+What humans intuitively notice about photographic composition: where
+the subject sits in the frame, whether visual weight is balanced,
+how much negative space surrounds the subject, where the horizon
+line falls. None of this was reachable before this round.
+
+### 5 new operators
+
+  gradient_energy_at_thirds_point(image, label) -> scalar
+  horizontal_split_balance(image)               -> scalar  (top vs bottom)
+  vertical_split_balance(image)                 -> scalar  (left vs right)
+  negative_space_fraction(image)                -> scalar
+  horizon_position_estimate(image)              -> scalar  ([0,1] y-coord)
+
+### 12 new predicates
+
+Rule-of-thirds placement (4):
+  has_subject_at_thirds_top_left
+  has_subject_at_thirds_top_right
+  has_subject_at_thirds_bottom_left
+  has_subject_at_thirds_bottom_right
+
+Visual balance (4):
+  has_horizontal_balance / has_horizontal_imbalance
+  has_vertical_balance / has_vertical_imbalance
+
+Negative space + horizon position (4):
+  has_significant_negative_space
+  has_horizon_at_top_third
+  has_horizon_at_middle
+  has_horizon_at_bottom_third
+
+### 3 composition synthetic scenes
+
+rule_of_thirds_scene, balanced_composition_scene,
+negative_space_subject_scene. All three trip the predicates that
+target them, with no false positives on competing thirds positions.
+
+### Real-photo composition findings
+
+  has_vertical_balance:        89 percent
+  has_horizontal_balance:      77 percent
+  has_subject_at_thirds_TL:    36 percent  (Western-reading bias)
+  has_subject_at_thirds_TR:    30 percent
+  has_subject_at_thirds_BL:    32 percent
+  has_subject_at_thirds_BR:    20 percent  (least populated quadrant)
+  has_significant_negative_space: 48 percent (subject-on-bg shots)
+  has_horizon_at_top_third:    20 percent
+  has_horizon_at_middle:       16 percent
+  has_horizon_at_bottom_third: 30 percent  (sky-dominant shots)
+
+The thirds-point bias toward top-left and bottom-left over the
+right column is consistent with Western reading-order composition.
+
+### Round 13 IR (44 inputs / 81 predicates)
+
+Equivalence classes: 4 (same count as Round 12, BUT one shrunk).
+The Round 6 horizon class
+  {has_horizon_line_signature, has_horizontal_dominant_edges,
+   horizon_is_dominant_concept}
+became
+  {has_horizon_line_signature, has_horizontal_dominant_edges}
+in Round 13. has_horizon_is_dominant_concept now disagrees on at
+least one new corpus member. Two separate corpus-driven
+redundancy reductions across rounds 12 and 13. The IR loop is
+producing real progress on the structural-redundancy front,
+not just adding signal.
+
+### Composition synthetic finding
+
+balanced_composition_scene fires ALL FOUR thirds-point predicates
+because the two subject blobs span enough area to register near
+each intersection point with the half_width_frac=0.10 window. A
+finer thirds window (5 percent of frame width) would discriminate
+better. Filed as a calibration knob for v0.10.
+
+### Round 13 totals
+
+  81 predicates / 58 vision operators / 25 synthetic scenes
+  4 equivalence classes (improved from Round 12 by shrinking one)
+
+### Vocabulary status across the project
+
+  motion / temporal:        3
+  structure / texture:     14
+  symmetry:                 2
+  named concepts:          14
+  color (RGB):             10
+  hue / wavelength labels: 13
+  shape primitives:         6
+  depth cues:               7
+  composition:             12
+  hardware-blocked:         3
+
+10 perceptual dimensions covered. The vocabulary now spans the
+visual content humans describe when looking at a photo:
+  - what's there (named concepts, shapes)
+  - what color it is (RGB + hue labels)
+  - how it moves (motion + drift)
+  - how the scene is structured (texture, edges, symmetry)
+  - how deep the scene feels (depth cues)
+  - how the photo is composed (thirds, balance, negative space)
+
+What remains for human-vision parity:
+  - motion direction / vector field (Round 14)
+  - vocabulary cleanup (resolve remaining structural redundancies)
+  - hardware unlocks (raw Bayer, polarization, multispectral)
+
+---
+
+## Round 14: motion direction via FFT phase correlation (2026-04-27)
+
+Round 11's has_subframe_motion only detected motion presence. This
+round resolves DIRECTION: leftward, rightward, upward, downward,
+and coherence (panning vs shaking) via 2-D FFT phase correlation
+between adjacent burst frames.
+
+### 3 new operators
+
+  global_shift_estimate(image_stack, label) -> scalar
+    label = "x" or "y"; positive = motion in that direction
+  motion_coherence(image_stack)              -> scalar
+    [0,1]: 1 = all frame-pair shifts agree (panning); 0 = chaotic
+  motion_velocity_mean(image_stack)          -> scalar
+    mean magnitude of frame-pair shifts in pixels
+
+### 7 new predicates
+
+  has_motion_leftward / rightward / upward / downward
+  has_coherent_motion          (coherence > 0.7 AND velocity > 0.5)
+  has_chaotic_motion           (coherence < 0.4 AND velocity > 1.0)
+  has_fast_motion              (velocity > 5 px/pair)
+
+### 3 burst synthetic scenes (saved as image dirs)
+
+panning_right_burst, panning_down_burst, shaking_burst. Each
+correctly fires its direction predicate(s); shaking fires
+chaotic_motion. No false positives.
+
+### Real-session motion-direction findings
+
+  747e9951 dark cal grid:  dx=-1.4  dy=+0.7  coh=0.44  vel=3.59
+  773bad8e rep strip:      dx=+1.0  dy=+1.9  coh=0.34  vel=6.22
+  773bad8e sym test:       dx=+1.9  dy=-2.3  coh=0.42  vel=7.12
+  a6064077 bright cal grid: dx=+5.2  dy=+0.4  coh=0.91  vel=5.73
+
+The bright calibration grid was captured with COHERENT RIGHTWARD
+camera motion (panning) - coh=0.91, dx=+5.2 px/pair. The other three
+sessions show low coherence (0.34-0.44), consistent with hand-shake.
+The language detected this without being told to look for it; this
+is a real-capture finding the previous rounds couldn't have made
+because they only knew motion was present, not what direction.
+
+### Methodology finding: phase-correlation sign convention
+
+Phase correlation peak indicates the shift required to align frame
+B back to frame A, which is the NEGATIVE of the actual content
+motion direction. The operator now negates so positive sign matches
+human-direction intuition (positive x = motion-right; positive y =
+motion-down). Filed: when wrapping signal-processing primitives,
+make the public sign convention match the user-facing semantic,
+not the math literature default.
+
+### New structural redundancy: {fast_motion, real_motion_validated}
+
+These always agree on this corpus because both require "real
+meaningful motion exists" - real_motion_validated needs
+diff_coherence > 8 AND not-drift, fast_motion needs velocity > 5.
+Both fire only on the 3 burst synthetics + bright cal session.
+To break would need a slow-but-coherent burst (e.g. 0.5 px/frame
+panning) - not in current synthetic set. Filed for v0.11 corpus
+expansion.
+
+### Round 14 totals (after Round 14 added 7 predicates + 3 bursts)
+
+  88 predicates / 61 vision operators / 28 synthetic scenes
+  5 equivalence classes (one new but bounded; existing classes stable)
+
+### Vocabulary status across the project
+
+  motion / temporal:        10 (was 3 before round 14)
+  structure / texture:      14
+  symmetry:                  2
+  named concepts:           14
+  color (RGB):              10
+  hue / wavelength labels:  13
+  shape primitives:          6
+  depth cues:                7
+  composition:              12
+  hardware-blocked:          3
+
+11 perceptual dimensions covered. With motion direction now in,
+the language describes a video sequence in essentially the same
+terms a human narrator would: "the camera pans right while the
+subject is in the lower-right third, scene is largely
+text-dominant, warm-palette." Same level of detail as a careful
+human description, all auditable through the type-checked DSL.
+
+What remains:
+  - vocabulary cleanup (resolve remaining 5 equivalence classes
+    by adding targeted corpus inputs)
+  - hardware unlocks (raw Bayer, polarization pair, multispectral)
+  - identity / object recognition (this is where ML enters)
+
+---
+
+## Round 15: vocabulary cleanup - target the equivalence classes (2026-04-27)
+
+Round 14 left 5 structural equivalence classes - predicate pairs
+that always agreed across the corpus. This round added 4 targeted
+synthetic inputs designed to break them, plus fixed a phase-correlation
+issue that was inflating motion-velocity readings.
+
+### Methodology fix: phase correlation -> cross-correlation
+
+The motion-direction operators used phase-only correlation
+(R / |R|). On sparse signals (single moving blob, real low-light
+scenes) phase-only correlation fails because it normalises the
+amplitude away, leaving frequency noise to dominate the peak. A
+deliberate 1.5 px shift was reading as 21 px in the slow_coherent
+synthetic - 14x off.
+
+Replaced with standard cross-correlation (A * conj(B), no
+normalisation, mean-subtracted inputs). Slow burst now reads
+~1.0 px shift correctly. Real-session shift estimates also
+changed: dark cal grid now reads dy=-4.7 (consistent upward drift)
+where phase-corr saw +0.7 (near-zero); the bright cal grid drops
+from a wrong 5.2 px/pair to a more plausible 1.3 px/pair.
+
+This is a methodology rule worth keeping: **phase-only correlation
+fails on sparse signals; cross-correlation with mean subtraction
+is the safer default for visual content with localised features.**
+
+### 4 cleanup synthetics
+
+  edge_ratio_borderline_scene  (h/v ratio ~1.4 - between thresholds)
+  faint_green_tint_scene       (G channel slightly leads, all near-grey)
+  rainbow_no_magenta_scene     (6 hues, no magenta)
+  slow_coherent_burst          (1.5 px/frame coherent panning)
+
+### Equivalence classes broken
+
+Round 14: 5 classes:
+  {has_horizon_line_signature, has_horizontal_dominant_edges}     BROKEN
+  {has_fast_motion, has_real_motion_validated}                     BROKEN
+  {has_green_dominant, has_significant_green_hue}                  BROKEN
+  {has_largely_achromatic_scene, has_low_saturation, has_monochrome}  KEPT (tautological)
+  {has_polychromatic_palette, has_significant_magenta_hue}         BROKEN
+
+Round 15: 2 classes:
+  {has_largely_achromatic_scene, has_low_saturation, has_monochrome}  TAUTOLOGICAL by definition
+  {has_global_brightness_drift, has_motion_upward}                    CORPUS-SIZE ARTIFACT
+
+The motion-upward / drift pair fires on a single common input
+(dark cal grid). Not structural - both happen to fire on one
+session for unrelated reasons. With more motion-bearing sessions
+they would diverge.
+
+### Round 15 final IR (51 inputs / 95 predicates)
+
+  redundant pairs:        4 (was 7)
+  equivalence classes:    2 (was 5)
+  tautological classes:   1 (the achromatic triple)
+  corpus-artifact classes: 1 (drift / upward_motion)
+  empirical-redundancy:   0
+
+Of all the structural redundancies the IR loop has flagged across
+all 15 rounds, only 1 remains as truly tautological-by-definition.
+The vocabulary's predicates are now empirically distinct - new
+predicates carry independent information.
+
+### What's left for vocabulary completeness
+
+  - 0 always-False predicates
+  - 0 saturated predicates
+  - 0 empirical structural redundancies
+  - 1 tautological pair (accepted - removing one breaks audit trail)
+  - 1 corpus-size pair (will resolve when more motion data is added)
+
+The perceptual side of the vocabulary is empirically clean. Future
+rounds focus on:
+  1. hardware unlocks (raw Bayer / polarization / multispectral)
+  2. identity recognition layer (where ML enters)
+  3. richer real-session corpus to resolve the motion-direction
+     corpus-size artifact
+
+### Round 15 totals
+
+  95 predicates / 89 vision operators / 32 synthetic scenes
+  2 equivalence classes (one tautological, one corpus-limited)
+  11 perceptual dimensions covered
+
+---
+
+## Round 16: the narrator (2026-04-27)
+
+The vocabulary now runs through a rule-based composer that turns
+the verdict pattern from any visual input into a human-readable
+paragraph. No ML, no learned templates - just enumerated
+predicate verdicts assembled into sentences that describe the
+scene the way a careful observer would.
+
+### What it produces (real examples)
+
+  20260416_141509.jpg (afternoon photo):
+    "It presents orange hues, across a varied color range. Its
+    structure shows isotropic / round structure and many small
+    contrast regions and horizontal repetition. Compositionally,
+    it has a centered subject, subject content at the upper-left
+    third and upper-right third, and a high horizon (ground-
+    dominant view). Depth and tone: converging perspective lines."
+
+  panning_right_burst:
+    "...Motion is coherent and fast in the rightward direction."
+
+  shaking_burst:
+    "...Motion is chaotic / camera-shake and fast in the leftward
+    and downward direction."
+
+### Why this matters for the roadmap
+
+This is the user-facing artifact of the vision language. Earlier
+rounds proved the language could classify pixels and bundles into
+typed verdicts. Round 16 demonstrates those verdicts COMPOSE INTO
+DESCRIPTION - the way human language composes adjectives and
+phrases into sentences about a scene.
+
+The narrator is 200 lines of pure rule-based composition over the
+vocabulary. Adding a new predicate to vocab.aurex automatically
+makes it available to extend the narration, with no changes to
+the narrator code unless that predicate needs special phrasing.
+
+### CLI usage
+
+  python -m aurexis_workbench.narrator <PATH>
+
+Path can be any image, video, dir of images (becomes burst), or
+.aurex-session zip.
+
+### Round 16 totals
+
+  88 predicates / 85 vision operators / 32 synthetic scenes
+  + 1 narrator that turns predicate verdicts into paragraphs
+  2 equivalence classes (1 tautological, 1 corpus-size artifact)
+  11 perceptual dimensions covered
+
+### What unlocks next
+
+Hardware unlocks (raw Bayer / polarization / multispectral) -
+substrate-side, not vocabulary. ~3 BLOCKED predicates waiting.
+
+Identity recognition layer - face IDs, object names, scene
+categories. Where ML genuinely enters the project; the language
+itself can't synthesize "this is Vince" from typed predicates.
+
+Richer real-session corpus - capture a few panning sessions to
+break the last corpus-size equivalence pair.

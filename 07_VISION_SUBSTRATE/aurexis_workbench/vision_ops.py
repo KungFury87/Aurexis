@@ -694,6 +694,315 @@ def _blob_count_thresh(image, k_threshold=1.5):
     return int(count)
 
 
+
+# ---------- Depth cues (vocabulary v0.8) ----------
+# Single-image depth signals a human eye uses to perceive 3D from
+# a flat photo: linear perspective, atmospheric haze, focus blur,
+# corners (occlusion proxy), texture density gradient.
+
+def _perspective_convergence_strength(image):
+    """[0, ~1] score: asymmetric diagonal-line distribution between
+    left and right halves of the image. A perspective scene with a
+    road or hallway has 45-deg lines on one side and 135-deg lines
+    on the other; symmetric scenes have balanced diagonals."""
+    a = np.asarray(image, dtype=np.float64)
+    h, w = a.shape
+    left = a[:, :w // 2]
+    right = a[:, w // 2:]
+    left_45  = _orientation_mass_at_angle(left,  45.0, 20.0)
+    left_135 = _orientation_mass_at_angle(left,  135.0, 20.0)
+    right_45  = _orientation_mass_at_angle(right,  45.0, 20.0)
+    right_135 = _orientation_mass_at_angle(right,  135.0, 20.0)
+    # In a leftward-converging perspective scene, left half has more
+    # 135deg lines (top-right to bottom-left), right has more 45deg.
+    # The asymmetry is what we measure.
+    asym = abs((left_135 - left_45) - (right_45 - right_135))
+    return float(min(1.0, asym))
+
+
+def _atmospheric_haze_score(color_image):
+    """[0,1] score: top of image less saturated AND more blue-tinted
+    than bottom. A hazy landscape has this signature - distant hills
+    desaturate and shift cyan-blue, foreground stays saturated."""
+    a = _ensure_color(color_image)
+    h, w, _ = a.shape
+    top = a[:h // 3]
+    bottom = a[2 * h // 3:]
+    # saturation gradient
+    top_max = top.max(axis=-1); top_min = top.min(axis=-1)
+    bot_max = bottom.max(axis=-1); bot_min = bottom.min(axis=-1)
+    top_sat = float(np.where(top_max > 1e-6, (top_max - top_min) / (top_max + 1e-9), 0.0).mean())
+    bot_sat = float(np.where(bot_max > 1e-6, (bot_max - bot_min) / (bot_max + 1e-9), 0.0).mean())
+    sat_drop = bot_sat - top_sat
+    # blue-shift: top has more B relative to R compared to bottom
+    top_br_ratio = float(top[..., 2].mean() / (top[..., 0].mean() + 1e-9))
+    bot_br_ratio = float(bottom[..., 2].mean() / (bottom[..., 0].mean() + 1e-9))
+    blue_shift = top_br_ratio - bot_br_ratio
+    # combine: both must be positive for haze
+    score = max(0.0, sat_drop) * 2.0 + max(0.0, blue_shift) * 0.5
+    return float(min(1.0, score))
+
+
+def _focus_blur_gradient(image):
+    """Center-vs-edges sharpness ratio. A shallow-depth-of-field
+    scene has the subject (center) sharp and the surround blurred.
+    Returns (center_sharpness - edge_sharpness) / (center + edge).
+
+    Positive = subject sharp + surround blurred (DOF signature).
+    Near zero = uniform focus or even sharpness everywhere."""
+    a = np.asarray(image, dtype=np.float64)
+    h, w = a.shape
+    if h < 16 or w < 16:
+        return 0.0
+    gx, gy = _gradients(a)
+    mag = np.sqrt(gx * gx + gy * gy)
+    cy0, cy1 = h // 4, 3 * h // 4
+    cx0, cx1 = w // 4, 3 * w // 4
+    centre_mag = float(mag[cy0:cy1, cx0:cx1].mean())
+    # edge ring: complement of centre
+    full_sum = float(mag.sum())
+    centre_sum = float(mag[cy0:cy1, cx0:cx1].sum())
+    edge_pixels = mag.size - (cy1 - cy0) * (cx1 - cx0)
+    if edge_pixels <= 0:
+        return 0.0
+    edge_mag = (full_sum - centre_sum) / float(edge_pixels)
+    denom = centre_mag + edge_mag + 1e-9
+    return float((centre_mag - edge_mag) / denom)
+
+
+def _corner_count_thresh(image, k_threshold=0.04):
+    """Count Harris-style corners. A corner is a pixel where both
+    structure-tensor eigenvalues are large (i.e. R = det(M) - k*tr(M)^2
+    above threshold). Numpy-only."""
+    a = np.asarray(image, dtype=np.float64)
+    if a.std() < 1e-9:
+        return 0
+    gx, gy = _gradients(a)
+    # local sums via 3x3 box filter
+    Ixx = gx * gx
+    Iyy = gy * gy
+    Ixy = gx * gy
+    def _box3(arr):
+        out = arr.copy()
+        for k in range(2):
+            shifted = arr.copy()
+            shifted[1:-1, :] = (arr[:-2, :] + arr[1:-1, :] + arr[2:, :]) / 3.0
+            out = (out + shifted) * 0.5
+            shifted2 = out.copy()
+            shifted2[:, 1:-1] = (out[:, :-2] + out[:, 1:-1] + out[:, 2:]) / 3.0
+            out = shifted2
+        return out
+    sxx = _box3(Ixx); syy = _box3(Iyy); sxy = _box3(Ixy)
+    det = sxx * syy - sxy * sxy
+    trc = sxx + syy
+    R = det - float(k_threshold) * trc * trc
+    # threshold at 95th percentile to count strongest corners
+    if R.max() < 1e-12:
+        return 0
+    thr = float(np.percentile(R[R > 0], 95)) if (R > 0).sum() > 0 else 0
+    if thr <= 0:
+        return 0
+    return int((R > thr).sum())
+
+
+def _texture_density_top_vs_bottom(image):
+    """Difference in high-frequency residual between top and bottom
+    halves. Positive = top has finer texture (perspective compression
+    when viewing a uniform-textured plane like grass or pavement
+    receding into the distance)."""
+    a = np.asarray(image, dtype=np.float64)
+    h, w = a.shape
+    top = a[:h // 2]
+    bot = a[h // 2:]
+    top_hf = _high_frequency_residual(top)
+    bot_hf = _high_frequency_residual(bot)
+    return float(top_hf - bot_hf)
+
+
+
+# ---------- Composition primitives (vocabulary v0.9) ----------
+# What humans notice about photographic composition: rule-of-thirds
+# placement, left-right and top-bottom balance, negative space,
+# horizon-line position relative to the frame.
+
+def _thirds_point_window(image, label, half_width_frac=0.10):
+    """Return the (image_region, full_image_size) for the named
+    thirds intersection point. label is 'tl', 'tr', 'bl', 'br' for
+    top-left, top-right, bottom-left, bottom-right intersections
+    at the 1/3 and 2/3 lines."""
+    a = np.asarray(image, dtype=np.float64)
+    h, w = a.shape[:2]
+    cx_frac = 1.0 / 3.0 if label.lower() in ("tl", "bl") else 2.0 / 3.0
+    cy_frac = 1.0 / 3.0 if label.lower() in ("tl", "tr") else 2.0 / 3.0
+    cx = int(cx_frac * w); cy = int(cy_frac * h)
+    hw = int(half_width_frac * min(h, w))
+    y0, y1 = max(0, cy - hw), min(h, cy + hw)
+    x0, x1 = max(0, cx - hw), min(w, cx + hw)
+    return a[y0:y1, x0:x1], a.size
+
+
+def _gradient_energy_at_thirds_point(image, label):
+    """Fraction of total gradient energy concentrated at the named
+    thirds intersection point (1/3 or 2/3 of frame)."""
+    a = np.asarray(image, dtype=np.float64)
+    if a.ndim != 2:
+        return 0.0
+    gx, gy = _gradients(a)
+    mag2 = gx * gx + gy * gy
+    region, total_size = _thirds_point_window(a, label)
+    h, w = a.shape
+    cx_frac = 1.0 / 3.0 if str(label).lower() in ("tl", "bl") else 2.0 / 3.0
+    cy_frac = 1.0 / 3.0 if str(label).lower() in ("tl", "tr") else 2.0 / 3.0
+    cx = int(cx_frac * w); cy = int(cy_frac * h)
+    hw = int(0.10 * min(h, w))
+    y0, y1 = max(0, cy - hw), min(h, cy + hw)
+    x0, x1 = max(0, cx - hw), min(w, cx + hw)
+    region_energy = float(mag2[y0:y1, x0:x1].sum())
+    total_energy = float(mag2.sum()) + 1e-9
+    region_pixels = (y1 - y0) * (x1 - x0)
+    total_pixels = mag2.size
+    # density-normalized: how much MORE energy than expected from
+    # a uniform distribution. >1.0 = concentrated; ~1.0 = uniform.
+    expected_fraction = float(region_pixels) / float(total_pixels)
+    actual_fraction = region_energy / total_energy
+    return float(actual_fraction / (expected_fraction + 1e-9))
+
+
+def _horizontal_split_balance(image):
+    """[0,1] balance score for top-half vs bottom-half gradient energy.
+    1.0 = perfectly balanced, 0.0 = all energy on one side."""
+    a = np.asarray(image, dtype=np.float64)
+    gx, gy = _gradients(a)
+    mag = np.sqrt(gx * gx + gy * gy)
+    h = a.shape[0]
+    top = float(mag[:h // 2].sum())
+    bot = float(mag[h // 2:].sum())
+    if top + bot < 1e-9:
+        return 1.0
+    return float(min(top, bot) / max(top, bot))
+
+
+def _vertical_split_balance(image):
+    """[0,1] balance score for left-half vs right-half gradient energy."""
+    a = np.asarray(image, dtype=np.float64)
+    gx, gy = _gradients(a)
+    mag = np.sqrt(gx * gx + gy * gy)
+    w = a.shape[1]
+    left = float(mag[:, :w // 2].sum())
+    right = float(mag[:, w // 2:].sum())
+    if left + right < 1e-9:
+        return 1.0
+    return float(min(left, right) / max(left, right))
+
+
+def _negative_space_fraction(image, low_gradient_threshold=None):
+    """Fraction of pixels whose local gradient magnitude is below a
+    threshold (set automatically as 0.5 * mean gradient if not given).
+    Large negative space = subject-on-clean-background composition."""
+    a = np.asarray(image, dtype=np.float64)
+    gx, gy = _gradients(a)
+    mag = np.sqrt(gx * gx + gy * gy)
+    if low_gradient_threshold is None:
+        low_gradient_threshold = 0.5 * float(mag.mean())
+    return float((mag < float(low_gradient_threshold)).sum()) / float(mag.size)
+
+
+def _horizon_position_estimate(image):
+    """Estimate the y-coordinate (0-1) of the strongest horizontal-line
+    structure in the image. A horizon line is the row with maximum
+    horizontal-edge gradient energy. Returns 0.0 if undefined."""
+    a = np.asarray(image, dtype=np.float64)
+    gx, gy = _gradients(a)
+    # gy is the gradient in y direction = strongest at horizontal edges
+    row_energy = (gy * gy).sum(axis=1)
+    if row_energy.max() < 1e-9:
+        return 0.5
+    h = a.shape[0]
+    peak_row = int(np.argmax(row_energy))
+    return float(peak_row) / float(max(h - 1, 1))
+
+
+
+# ---------- Motion direction / optical flow (vocabulary v0.10) ----------
+# Round 11's has_subframe_motion only detects PRESENCE of motion.
+# This round detects DIRECTION via FFT phase correlation between
+# adjacent burst frames.
+
+def _phase_corr_shift(a, b):
+    """Returns (dy, dx) signed pixel shift such that B is shifted
+    by (dy, dx) from A. Uses 2-D FFT cross-correlation with mean
+    subtraction. (Standard phase-only correlation R/|R| fails on
+    sparse signals like single moving blobs because it treats noise
+    frequencies equally; cross-correlation weights by amplitude.)"""
+    a = np.asarray(a, dtype=np.float64)
+    b = np.asarray(b, dtype=np.float64)
+    A = np.fft.fft2(a - a.mean())
+    B = np.fft.fft2(b - b.mean())
+    R = A * np.conj(B)
+    corr = np.fft.ifft2(R).real
+    peak = np.unravel_index(int(np.argmax(corr)), corr.shape)
+    dy, dx = int(peak[0]), int(peak[1])
+    H, W = corr.shape
+    if dy > H // 2:
+        dy -= H
+    if dx > W // 2:
+        dx -= W
+    return float(dy), float(dx)
+
+
+def _global_shift_estimate(image_stack, axis_label):
+    """Mean signed shift in pixels along the named axis ('x' or 'y'),
+    where positive = motion in that direction (right for x, down for y).
+
+    Implementation note: phase correlation peak is at (-shift); we
+    negate so the returned sign matches motion direction intuitively."""
+    s = _stack_array(image_stack)
+    if s.shape[0] < 2:
+        return 0.0
+    label = str(axis_label).lower()
+    shifts_dy = []; shifts_dx = []
+    for k in range(s.shape[0] - 1):
+        dy, dx = _phase_corr_shift(s[k], s[k + 1])
+        shifts_dy.append(-dy); shifts_dx.append(-dx)
+    if label == "x":
+        return float(np.mean(shifts_dx))
+    if label == "y":
+        return float(np.mean(shifts_dy))
+    raise ValueError(f"axis must be 'x' or 'y'")
+
+
+def _motion_coherence(image_stack):
+    """[0,1] score: 1.0 = all frame-pair shifts agree in direction;
+    0.0 = shifts are random (chaotic / camera shake / panning back
+    and forth). Computed as |mean shift| / mean(|shift|)."""
+    s = _stack_array(image_stack)
+    if s.shape[0] < 2:
+        return 1.0
+    shifts_dy = []; shifts_dx = []
+    for k in range(s.shape[0] - 1):
+        dy, dx = _phase_corr_shift(s[k], s[k + 1])
+        shifts_dy.append(dy); shifts_dx.append(dx)
+    dy_arr = np.array(shifts_dy)
+    dx_arr = np.array(shifts_dx)
+    mag_per = np.sqrt(dy_arr ** 2 + dx_arr ** 2)
+    if mag_per.mean() < 1e-9:
+        return 1.0  # no motion at all = coherently motionless
+    mean_vec = np.sqrt(dy_arr.mean() ** 2 + dx_arr.mean() ** 2)
+    return float(mean_vec / (mag_per.mean() + 1e-9))
+
+
+def _motion_velocity_mean(image_stack):
+    """Mean magnitude (in pixels) of frame-pair shifts."""
+    s = _stack_array(image_stack)
+    if s.shape[0] < 2:
+        return 0.0
+    mags = []
+    for k in range(s.shape[0] - 1):
+        dy, dx = _phase_corr_shift(s[k], s[k + 1])
+        mags.append(float(np.sqrt(dy * dy + dx * dx)))
+    return float(np.mean(mags))
+
+
 def register_all() -> None:
     """Register all vision operators into the Workbench registry.
     Safe to call multiple times - re-registration is a no-op overwrite."""
@@ -823,3 +1132,46 @@ def register_all() -> None:
     R("blob_count_thresh", ("image", "scalar"), "int",
        _blob_count_thresh,
        "Connected-component count in thresholded image.")
+    # Vocabulary v0.8 operators (depth cues)
+    R("perspective_convergence_strength", ("image",), "scalar",
+       _perspective_convergence_strength,
+       "Asymmetric diagonal-line distribution L vs R (perspective).")
+    R("atmospheric_haze_score", ("color_image",), "scalar",
+       _atmospheric_haze_score,
+       "Top-region desaturation + blue-shift relative to bottom.")
+    R("focus_blur_gradient", ("image",), "scalar",
+       _focus_blur_gradient,
+       "Spread of local sharpness across 4x4 tiles (DOF signature).")
+    R("corner_count_thresh", ("image", "scalar"), "int",
+       _corner_count_thresh,
+       "Harris corner count above 95th-percentile threshold.")
+    R("texture_density_top_vs_bottom", ("image",), "scalar",
+       _texture_density_top_vs_bottom,
+       "High-freq residual top minus bottom (perspective compression).")
+    # Vocabulary v0.9 operators (composition primitives)
+    R("gradient_energy_at_thirds_point", ("image", "label"), "scalar",
+       _gradient_energy_at_thirds_point,
+       "Density-normalised gradient energy at named thirds-intersection "
+       "(label=tl/tr/bl/br). >1 = concentrated; ~1 = uniform.")
+    R("horizontal_split_balance", ("image",), "scalar",
+       _horizontal_split_balance,
+       "[0,1]: 1=top and bottom equally weighted; 0=one side dominates.")
+    R("vertical_split_balance", ("image",), "scalar",
+       _vertical_split_balance,
+       "[0,1]: 1=left and right equally weighted.")
+    R("negative_space_fraction", ("image",), "scalar",
+       _negative_space_fraction,
+       "Fraction of pixels with below-mean local gradient magnitude.")
+    R("horizon_position_estimate", ("image",), "scalar",
+       _horizon_position_estimate,
+       "[0,1]: y-position of strongest horizontal-edge row (0=top, 1=bottom).")
+    # Vocabulary v0.10 operators (motion direction via phase correlation)
+    R("global_shift_estimate", ("image_stack", "label"), "scalar",
+       _global_shift_estimate,
+       "Mean signed pixel shift along axis ('x' or 'y') across burst pairs.")
+    R("motion_coherence", ("image_stack",), "scalar",
+       _motion_coherence,
+       "[0,1]: 1=all frame-pair shifts agree (coherent); 0=chaotic/shake.")
+    R("motion_velocity_mean", ("image_stack",), "scalar",
+       _motion_velocity_mean,
+       "Mean magnitude of frame-pair shifts in pixels.")
