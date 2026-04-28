@@ -39,18 +39,34 @@ def _rgb_to_luma(arr: np.ndarray) -> np.ndarray:
 
 def _decode_image(path: str | Path,
                    resize_to: Optional[int] = 512) -> np.ndarray:
+    """Decode and return luma. Use _decode_image_color for RGB."""
+    luma, _ = _decode_image_color(path, resize_to=resize_to)
+    return luma
+
+
+def _decode_image_color(path: str | Path,
+                          resize_to: Optional[int] = 512
+                          ) -> tuple:
+    """Returns (luma, color_rgb). color_rgb is HxWx3 in [0,1]."""
     img = Image.open(str(path))
     img.load()
     arr = np.asarray(img, dtype=np.float64)
     if arr.max() > 1.5:
         arr = arr / 255.0
-    luma = _rgb_to_luma(arr)
+    if arr.ndim == 2:
+        # grayscale -> stack to RGB for color_image
+        color = np.stack([arr, arr, arr], axis=-1)
+        luma = arr.astype(np.float64)
+    else:
+        color = arr[..., :3].astype(np.float64)
+        luma = _rgb_to_luma(arr)
     if resize_to is not None:
         long_side = max(luma.shape[0], luma.shape[1])
         if long_side > resize_to:
             step = max(1, long_side // resize_to)
             luma = luma[::step, ::step]
-    return luma.astype(np.float64)
+            color = color[::step, ::step]
+    return luma.astype(np.float64), color.astype(np.float64)
 
 
 def _decode_video(path: str | Path,
@@ -124,12 +140,17 @@ def bundle_from_path(path: str | Path,
                           if f.suffix.lower() in IMAGE_EXTS])
         if not files:
             raise ValueError(f"no images in directory {p}")
-        frames = [_decode_image(f, resize_to=resize_to) for f in files]
+        decoded = [_decode_image_color(f, resize_to=resize_to) for f in files]
+        frames = [d[0] for d in decoded]
+        colors = [d[1] for d in decoded]
         h_min = min(a.shape[0] for a in frames)
         w_min = min(a.shape[1] for a in frames)
         frames = [a[:h_min, :w_min] for a in frames]
+        colors = [c[:h_min, :w_min] for c in colors]
+        mid = len(frames) // 2
         return _bundle_from_stack(np.stack(frames, axis=0), p.name,
-                                    "image_dir", patch_size)
+                                    "image_dir", patch_size,
+                                    color=colors[mid])
 
     suffix = p.suffix.lower()
     if suffix in VIDEO_EXTS:
@@ -138,8 +159,8 @@ def bundle_from_path(path: str | Path,
         return _bundle_from_stack(stack, p.name, "video", patch_size)
 
     if suffix in IMAGE_EXTS:
-        scene = _decode_image(p, resize_to=resize_to)
-        return _bundle_from_single(scene, p.name, patch_size)
+        scene, color = _decode_image_color(p, resize_to=resize_to)
+        return _bundle_from_single(scene, p.name, patch_size, color=color)
 
     raise ValueError(f"unrecognised visual input: {p} (suffix {suffix!r})")
 
@@ -168,23 +189,33 @@ def bundle_from_pair(path_axis_0: str | Path,
 
 
 def _bundle_from_single(scene: np.ndarray, name: str,
-                         patch_size: int) -> Tuple[FieldBundle, VisualMeta]:
+                         patch_size: int,
+                         color: Optional[np.ndarray] = None
+                         ) -> Tuple[FieldBundle, VisualMeta]:
     bundle = FieldBundle(name=name)
-    bundle.add_value("scene", "image", scene, "single image as scene")
+    bundle.add_value("scene", "image", scene, "single image as scene (luma)")
     bundle.add_value("burst", "image_stack",
                       np.stack([scene, scene], axis=0),
                       "single image broadcast to 2-frame stack")
+    if color is not None:
+        bundle.add_value("color_scene", "color_image", color,
+                          "single image as color_scene (RGB)")
     bundle.add_value("patch_size", "int", int(patch_size), "ROI size")
     return bundle, VisualMeta(source=name, kind="image", n_frames=1,
                                  resolution=scene.shape)
 
 
 def _bundle_from_stack(stack: np.ndarray, name: str, kind: str,
-                         patch_size: int) -> Tuple[FieldBundle, VisualMeta]:
+                         patch_size: int,
+                         color: Optional[np.ndarray] = None
+                         ) -> Tuple[FieldBundle, VisualMeta]:
     bundle = FieldBundle(name=name)
     scene = stack[stack.shape[0] // 2]
-    bundle.add_value("scene", "image", scene, "middle frame")
+    bundle.add_value("scene", "image", scene, "middle frame (luma)")
     bundle.add_value("burst", "image_stack", stack, "decoded stack")
+    if color is not None:
+        bundle.add_value("color_scene", "color_image", color,
+                          "middle-frame color")
     bundle.add_value("patch_size", "int", int(patch_size), "ROI size")
     return bundle, VisualMeta(source=name, kind=kind,
                                  n_frames=int(stack.shape[0]),

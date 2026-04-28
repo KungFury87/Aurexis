@@ -188,8 +188,8 @@ predicate has_screen_like_signature
 predicate has_horizon_line_signature
   expects scene:image
   returns bool
-  intent  landscape_with_horizontal_mirror_and_horizontal_edge_dominance
-  body    AND(gt(mirror_correlation(scene, "horizontal"), 0.40), gt(directional_gradient_energy(scene, "horizontal"), mul_s(directional_gradient_energy(scene, "vertical"), 1.20)))
+  intent  landscape_with_horizontal_edge_dominance_no_mirror_required
+  body    gt(horizon_likeness_score(scene), 0.30)
 
 
 predicate has_real_motion_validated
@@ -267,3 +267,528 @@ predicate no_named_concept_dominant
   returns bool
   intent  all_concept_scores_below_recognition_threshold
   body    AND(AND(lt(face_likeness_score(scene, patch_size), 0.40), lt(text_likeness_score(scene, row_y), 0.40)), AND(lt(screen_likeness_score(scene, row_y), 0.40), lt(horizon_likeness_score(scene), 0.40)))
+
+# ============================================================
+# Vocabulary v0.5 - color predicates
+#
+# These run on color_scene (color_image, RGB). Half of human visual
+# signal is color; the previous 33 predicates were all luma-only.
+# ============================================================
+
+predicate has_red_dominant
+  expects color_scene:color_image
+  returns bool
+  intent  red_channel_mean_exceeds_others_by_margin
+  body    AND(gt(rgb_channel_mean(color_scene, "r"), rgb_channel_mean(color_scene, "g")), gt(rgb_channel_mean(color_scene, "r"), rgb_channel_mean(color_scene, "b")))
+
+
+predicate has_green_dominant
+  expects color_scene:color_image
+  returns bool
+  intent  green_channel_mean_exceeds_others
+  body    AND(gt(rgb_channel_mean(color_scene, "g"), rgb_channel_mean(color_scene, "r")), gt(rgb_channel_mean(color_scene, "g"), rgb_channel_mean(color_scene, "b")))
+
+
+predicate has_blue_dominant
+  expects color_scene:color_image
+  returns bool
+  intent  blue_channel_mean_exceeds_others
+  body    AND(gt(rgb_channel_mean(color_scene, "b"), rgb_channel_mean(color_scene, "r")), gt(rgb_channel_mean(color_scene, "b"), rgb_channel_mean(color_scene, "g")))
+
+
+predicate has_warm_palette
+  expects color_scene:color_image
+  returns bool
+  intent  warmth_score_dominates_coolness
+  body    gt(sub_s(rgb_warmth_score(color_scene), rgb_coolness_score(color_scene)), 0.10)
+
+
+predicate has_cool_palette
+  expects color_scene:color_image
+  returns bool
+  intent  coolness_score_dominates_warmth
+  body    gt(sub_s(rgb_coolness_score(color_scene), rgb_warmth_score(color_scene)), 0.10)
+
+
+predicate has_high_saturation
+  expects color_scene:color_image
+  returns bool
+  intent  vivid_colors_overall_mean_saturation
+  body    gt(rgb_saturation_mean(color_scene), 0.30)
+
+
+predicate has_low_saturation
+  expects color_scene:color_image
+  returns bool
+  intent  desaturated_or_near_grey
+  body    lt(rgb_saturation_mean(color_scene), 0.10)
+
+
+predicate has_monochrome
+  expects color_scene:color_image
+  returns bool
+  intent  near_greyscale_R_eq_G_eq_B
+  body    gt(rgb_monochrome_score(color_scene), 0.85)
+
+
+predicate has_high_color_diversity
+  expects color_scene:color_image
+  returns bool
+  intent  pixels_span_a_wide_range_of_colors
+  body    gt(rgb_palette_diversity(color_scene), 0.20)
+
+
+predicate has_low_color_diversity
+  expects color_scene:color_image
+  returns bool
+  intent  pixels_share_a_narrow_color_palette
+  body    lt(rgb_palette_diversity(color_scene), 0.08)
+
+# ============================================================
+# Vocabulary v0.6 - HSV hue identification (named wavelength buckets)
+#
+# Each pixel classified absolutely by HSV hue angle into one of 8
+# named buckets corresponding to peak-wavelength labels:
+#   red ~625nm, orange ~605nm, yellow ~575nm, green ~525nm,
+#   cyan ~485nm, blue ~445nm, violet ~410nm, magenta (R+B mix).
+#
+# Significant_X_hue: bucket has > 10% of saturated pixels.
+# Dominant_X_hue:    bucket has > 50% of saturated pixels.
+# ============================================================
+
+predicate has_significant_red_hue
+  expects color_scene:color_image
+  returns bool
+  intent  red_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "red"), 0.10)
+
+
+predicate has_significant_orange_hue
+  expects color_scene:color_image
+  returns bool
+  intent  orange_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "orange"), 0.10)
+
+
+predicate has_significant_yellow_hue
+  expects color_scene:color_image
+  returns bool
+  intent  yellow_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "yellow"), 0.10)
+
+
+predicate has_significant_green_hue
+  expects color_scene:color_image
+  returns bool
+  intent  green_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "green"), 0.10)
+
+
+predicate has_significant_cyan_hue
+  expects color_scene:color_image
+  returns bool
+  intent  cyan_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "cyan"), 0.10)
+
+
+predicate has_significant_blue_hue
+  expects color_scene:color_image
+  returns bool
+  intent  blue_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "blue"), 0.10)
+
+
+predicate has_significant_violet_hue
+  expects color_scene:color_image
+  returns bool
+  intent  violet_wavelength_band_present
+  body    gt(hue_fraction(color_scene, "violet"), 0.10)
+
+
+predicate has_significant_magenta_hue
+  expects color_scene:color_image
+  returns bool
+  intent  magenta_band_present
+  body    gt(hue_fraction(color_scene, "magenta"), 0.10)
+
+
+predicate has_dominant_red_hue
+  expects color_scene:color_image
+  returns bool
+  intent  red_dominates_saturated_pixels
+  body    gt(hue_fraction(color_scene, "red"), 0.50)
+
+
+predicate has_dominant_green_hue
+  expects color_scene:color_image
+  returns bool
+  intent  green_dominates_saturated_pixels
+  body    gt(hue_fraction(color_scene, "green"), 0.50)
+
+
+predicate has_dominant_blue_hue
+  expects color_scene:color_image
+  returns bool
+  intent  blue_dominates_saturated_pixels
+  body    gt(hue_fraction(color_scene, "blue"), 0.50)
+
+
+predicate has_polychromatic_palette
+  expects color_scene:color_image
+  returns bool
+  intent  multiple_hue_buckets_above_threshold
+  body    gt(hue_diversity_score(color_scene), 0.50)
+
+
+predicate has_largely_achromatic_scene
+  expects color_scene:color_image
+  returns bool
+  intent  most_pixels_grey_black_or_white_no_meaningful_color
+  body    lt(meaningfully_colored_fraction(color_scene), 0.10)
+
+# ============================================================
+# Vocabulary v0.7 - Shape primitives via gradient orientation
+#
+# Circle/blob:    gradient orientations distributed uniformly
+# Rectangle:      orientations cluster at horizontal AND vertical
+# Diagonal:       orientations cluster at 45 / 135 deg
+# Curved:         orientations smooth (no peak, not uniform)
+# Many small blobs: high connected-component count
+# ============================================================
+
+predicate has_circular_signature
+  expects scene:image
+  returns bool
+  intent  isotropic_gradient_orientation_distribution
+  body    AND(gt(orientation_uniformity(scene), 0.40), gt(gradient_energy(scene), 0.0005))
+
+
+predicate has_rectilinear_signature
+  expects scene:image
+  returns bool
+  intent  gradient_concentrated_at_h_AND_v_AND_LOW_diagonal
+  body    AND(AND(gt(orientation_horizontal_mass(scene), 0.30), gt(orientation_vertical_mass(scene), 0.30)), lt(orientation_diagonal_mass(scene), 0.30))
+
+
+predicate has_diagonal_signature
+  expects scene:image
+  returns bool
+  intent  diagonal_mass_high_AND_horizontal_vertical_LOW
+  body    AND(AND(gt(orientation_diagonal_mass(scene), 0.50), lt(orientation_horizontal_mass(scene), 0.20)), lt(orientation_vertical_mass(scene), 0.20))
+
+
+predicate has_curved_signature
+  expects scene:image
+  returns bool
+  intent  smooth_contiguous_arc_of_orientations_curve_signature
+  body    gt(orientation_distribution_continuity(scene), 0.30)
+
+
+predicate has_many_small_blobs
+  expects scene:image
+  returns bool
+  intent  many_distinct_high_contrast_regions
+  body    gt_int(blob_count_thresh(scene, 1.5), 15)
+
+
+predicate has_few_large_blobs
+  expects scene:image
+  returns bool
+  intent  small_number_of_distinct_high_contrast_regions
+  body    AND(gt_int(blob_count_thresh(scene, 1.5), 0), lt_int(blob_count_thresh(scene, 1.5), 5))
+
+# ============================================================
+# Vocabulary v0.8 - Depth cues (single-image 3D from a flat photo)
+#
+# What humans use to perceive depth from one eye / one frame:
+#   linear perspective (lines converging to vanishing point)
+#   atmospheric haze (top desaturated + blue-shifted)
+#   focus blur (in-focus subject, blurred background = DOF)
+#   occlusion (T-junctions, corners)
+#   texture density gradient (uniform texture finer at distance)
+# ============================================================
+
+predicate has_perspective_convergence
+  expects scene:image
+  returns bool
+  intent  top_strip_orientation_differs_from_bottom_strip_perspective_tilt
+  body    gt(top_vs_bottom_orientation_difference(scene), 25.0)
+
+
+predicate has_atmospheric_haze
+  expects color_scene:color_image
+  returns bool
+  intent  top_desaturated_and_blue_shifted_relative_to_bottom
+  body    gt(atmospheric_haze_score(color_scene), 0.15)
+
+
+predicate has_shallow_depth_of_field
+  expects scene:image
+  returns bool
+  intent  high_spread_of_local_sharpness_across_image_tiles
+  body    gt(focus_blur_gradient(scene), 0.85)
+
+
+predicate has_uniform_focus
+  expects scene:image
+  returns bool
+  intent  low_spread_of_local_sharpness_uniform_focus_everywhere
+  body    lt(abs_s(focus_blur_gradient(scene)), 0.20)
+
+
+predicate has_many_corners
+  expects scene:image
+  returns bool
+  intent  many_local_2d_corners_dense_object_boundaries
+  body    gt_int(corner_count_thresh(scene, 0.04), 50)
+
+
+predicate has_texture_compression_gradient
+  expects scene:image
+  returns bool
+  intent  fine_texture_at_top_relative_to_bottom_perspective_recession
+  body    gt(texture_density_top_vs_bottom(scene), 0.05)
+
+
+predicate has_depth_indicators
+  expects scene:image, color_scene:color_image
+  returns bool
+  intent  any_strong_depth_cue_present_perspective_or_haze_or_dof
+  body    OR(OR(gt(perspective_convergence_strength(scene), 0.15), gt(atmospheric_haze_score(color_scene), 0.20)), gt(focus_blur_gradient(scene), 0.85))
+
+# ============================================================
+# Vocabulary v0.9 - Composition primitives
+#
+# What humans notice intuitively about photo composition:
+#   subject placement (rule of thirds intersections)
+#   horizontal / vertical balance of visual weight
+#   negative space (large uniform area around subject)
+#   horizon position (top / middle / bottom third)
+# ============================================================
+
+predicate has_subject_at_thirds_top_left
+  expects scene:image
+  returns bool
+  intent  gradient_energy_concentrated_at_top_left_thirds_intersection
+  body    gt(gradient_energy_at_thirds_point(scene, "tl"), 1.50)
+
+
+predicate has_subject_at_thirds_top_right
+  expects scene:image
+  returns bool
+  intent  gradient_energy_concentrated_at_top_right_thirds_intersection
+  body    gt(gradient_energy_at_thirds_point(scene, "tr"), 1.50)
+
+
+predicate has_subject_at_thirds_bottom_left
+  expects scene:image
+  returns bool
+  intent  gradient_energy_concentrated_at_bottom_left_thirds_intersection
+  body    gt(gradient_energy_at_thirds_point(scene, "bl"), 1.50)
+
+
+predicate has_subject_at_thirds_bottom_right
+  expects scene:image
+  returns bool
+  intent  gradient_energy_concentrated_at_bottom_right_thirds_intersection
+  body    gt(gradient_energy_at_thirds_point(scene, "br"), 1.50)
+
+
+predicate has_horizontal_balance
+  expects scene:image
+  returns bool
+  intent  top_and_bottom_halves_carry_similar_visual_weight
+  body    gt(horizontal_split_balance(scene), 0.70)
+
+
+predicate has_horizontal_imbalance
+  expects scene:image
+  returns bool
+  intent  one_half_carries_significantly_more_weight
+  body    lt(horizontal_split_balance(scene), 0.40)
+
+
+predicate has_vertical_balance
+  expects scene:image
+  returns bool
+  intent  left_and_right_halves_carry_similar_visual_weight
+  body    gt(vertical_split_balance(scene), 0.70)
+
+
+predicate has_vertical_imbalance
+  expects scene:image
+  returns bool
+  intent  one_side_carries_significantly_more_weight
+  body    lt(vertical_split_balance(scene), 0.40)
+
+
+predicate has_significant_negative_space
+  expects scene:image
+  returns bool
+  intent  large_low_gradient_area_subject_on_clean_background
+  body    gt(negative_space_fraction(scene), 0.60)
+
+
+predicate has_horizon_at_top_third
+  expects scene:image
+  returns bool
+  intent  strongest_horizontal_edge_in_upper_third_of_frame_low_horizon
+  body    AND(gt(horizon_position_estimate(scene), 0.10), lt(horizon_position_estimate(scene), 0.40))
+
+
+predicate has_horizon_at_middle
+  expects scene:image
+  returns bool
+  intent  strongest_horizontal_edge_near_centre_static_composition
+  body    AND(gt(horizon_position_estimate(scene), 0.40), lt(horizon_position_estimate(scene), 0.60))
+
+
+predicate has_horizon_at_bottom_third
+  expects scene:image
+  returns bool
+  intent  strongest_horizontal_edge_in_lower_third_of_frame_high_horizon
+  body    AND(gt(horizon_position_estimate(scene), 0.60), lt(horizon_position_estimate(scene), 0.90))
+
+# ============================================================
+# Vocabulary v0.10 - Motion direction (optical flow via phase correlation)
+#
+# Round 11's has_subframe_motion only detects PRESENCE of motion.
+# These predicates resolve DIRECTION: leftward, rightward, upward,
+# downward, plus coherence (panning vs shaking) and speed (fast).
+# Sign convention: positive shift = content moves in that direction.
+# ============================================================
+
+predicate has_motion_rightward
+  expects burst:image_stack
+  returns bool
+  intent  scene_content_drifts_to_the_right_camera_pans_left_or_subject_moves_right
+  body    gt(global_shift_estimate(burst, "x"), 1.0)
+
+
+predicate has_motion_leftward
+  expects burst:image_stack
+  returns bool
+  intent  scene_content_drifts_to_the_left
+  body    lt(global_shift_estimate(burst, "x"), -1.0)
+
+
+predicate has_motion_downward
+  expects burst:image_stack
+  returns bool
+  intent  scene_content_drifts_downward
+  body    gt(global_shift_estimate(burst, "y"), 1.0)
+
+
+predicate has_motion_upward
+  expects burst:image_stack
+  returns bool
+  intent  scene_content_drifts_upward
+  body    lt(global_shift_estimate(burst, "y"), -1.0)
+
+
+predicate has_coherent_motion
+  expects burst:image_stack
+  returns bool
+  intent  burst_pair_shifts_agree_in_direction_panning_not_shaking
+  body    AND(gt(motion_coherence(burst), 0.70), gt(motion_velocity_mean(burst), 0.50))
+
+
+predicate has_chaotic_motion
+  expects burst:image_stack
+  returns bool
+  intent  burst_pair_shifts_disagree_camera_shake_or_random_motion
+  body    AND(lt(motion_coherence(burst), 0.40), gt(motion_velocity_mean(burst), 1.0))
+
+
+predicate has_fast_motion
+  expects burst:image_stack
+  returns bool
+  intent  burst_mean_displacement_above_5_pixels_per_pair
+  body    gt(motion_velocity_mean(burst), 5.0)
+
+# ============================================================
+# Vocabulary v0.11 - Lighting / illumination
+# ============================================================
+
+predicate has_low_light_signature
+  expects scene:image
+  returns bool
+  intent  most_pixels_below_mid_grey_low_light_capture
+  body    gt(dark_pixel_fraction(scene, 0.30), 0.50)
+
+
+predicate has_high_key
+  expects scene:image
+  returns bool
+  intent  most_pixels_bright_overall_mean_above_mid
+  body    gt(mean(scene), 0.65)
+
+
+predicate has_low_key
+  expects scene:image
+  returns bool
+  intent  most_pixels_dark_overall_mean_below_mid
+  body    lt(mean(scene), 0.30)
+
+
+predicate has_specular_highlights
+  expects scene:image
+  returns bool
+  intent  multiple_small_very_bright_spots_specular_reflections
+  body    gt_int(bright_spot_count(scene, 0.92), 3)
+
+
+predicate has_center_weighted_lighting
+  expects scene:image
+  returns bool
+  intent  centre_brighter_than_edges_subject_lit_or_spotlight
+  body    gt(center_minus_edge_brightness(scene), 0.10)
+
+
+predicate has_edge_weighted_lighting
+  expects scene:image
+  returns bool
+  intent  edges_brighter_than_centre_vignette_or_rim_lighting
+  body    lt(center_minus_edge_brightness(scene), -0.10)
+
+
+predicate has_overexposed_regions
+  expects scene:image
+  returns bool
+  intent  significant_pixels_at_or_near_max_value_clipped_highlights
+  body    gt(bright_pixel_fraction(scene, 0.97), 0.05)
+
+
+predicate has_underexposed_regions
+  expects scene:image
+  returns bool
+  intent  significant_pixels_at_or_near_zero_clipped_shadows
+  body    gt(dark_pixel_fraction(scene, 0.03), 0.05)
+
+# ============================================================
+# Vocabulary v0.13 - Identity-LIKE composites (no ML, just patterns)
+#
+# These are NOT identity recognition. They are composite predicates
+# that approximate identity-like categories from existing
+# perceptual content. Real identity layer = IDENTITY_LAYER_DESIGN.md
+# ============================================================
+
+predicate has_human_subject_signature
+  expects scene:image, color_scene:color_image, patch_size:int
+  returns bool
+  intent  face_like_AND_centre_lit_AND_vertically_symmetric
+  body    AND(AND(gt(face_likeness_score(scene, patch_size), 0.45), gt(center_minus_edge_brightness(scene), 0.05)), gt(mirror_correlation(scene, "vertical"), 0.40))
+
+
+predicate has_indoor_scene_signature
+  expects scene:image, color_scene:color_image
+  returns bool
+  intent  low_light_or_centre_lit_AND_no_atmospheric_haze
+  body    AND(OR(lt(mean(scene), 0.45), gt(center_minus_edge_brightness(scene), 0.05)), lt(atmospheric_haze_score(color_scene), 0.10))
+
+
+predicate has_screen_subject_signature
+  expects scene:image, patch_size:int, row_y:int
+  returns bool
+  intent  screen_like_AND_centred_subject_signature
+  body    AND(gt(screen_likeness_score(scene, row_y), 0.50), gt(center_gradient_concentration(scene), 0.40))

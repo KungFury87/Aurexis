@@ -25,7 +25,8 @@ from typing import Any, Dict, List, Optional
 
 VALID_DTYPES = {"image", "scalar", "int", "bool",
                   "regions", "vector", "label",
-                  "image_stack"}
+                  "image_stack",
+                  "color_image"}
 
 
 @dataclass
