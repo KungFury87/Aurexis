@@ -58,8 +58,22 @@ def main(argv=None) -> int:
     col_w = max(len(n) for n in pred_names) + 2
 
     for sp in sessions:
+        # Polarization-pair sessions need both axes loaded; default
+        # max-frames=10 only catches the first axis. Auto-bump.
+        peek_max = args.max_frames
+        try:
+            import zipfile, json
+            with zipfile.ZipFile(sp, "r") as zf:
+                m_name = next((n for n in zf.namelist()
+                                  if n.endswith("manifest.json")), None)
+                if m_name:
+                    pm = json.loads(zf.read(m_name).decode("utf-8"))
+                    if pm.get("protocolId") == "polarization_pair":
+                        peek_max = max(peek_max, len(pm.get("frames", [])))
+        except Exception:
+            pass
         bundle, meta = load_session_bundle(sp,
-                                             max_frames=args.max_frames,
+                                             max_frames=peek_max,
                                              resize_to=args.resize_to)
         # Default row_y so row-based predicates can run on sessions too
         if "row_y" not in bundle.fields:

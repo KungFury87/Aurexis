@@ -1863,3 +1863,54 @@ These approximate identity categories at coarse-grained level.
 The vocabulary is empirically clean across every metric the IR
 loop measures. Future growth is additive vocabulary, hardware
 unlocks, or the identity layer when a model plugs in.
+
+---
+
+## Round 22: bulk corpus audit tool (2026-04-28)
+
+The Vision Language has been a research artifact for 21 rounds.
+Round 22 turned it into a tool that does something: bulk_audit.py
+runs the full 99-predicate vocabulary on every image in a folder
+and produces a structured report.
+
+### Usage
+
+  python -m aurexis_workbench.bulk_audit <FOLDER> \
+    [--out report.md] [--csv report.csv]
+
+### First real run on the Phone photos library
+
+13 images, ~18 seconds total (1.4 s/image), 99 predicates each.
+Saved as PHOXELIS_AUDIT_phone_photos.md + .csv at workspace root.
+
+### Real-photo findings the language surfaced WITHOUT being told
+
+  100% indoor_scene_signature
+  100% specular_highlights
+  85% center_weighted_lighting
+  77% genuine_text_not_screen
+  38% human_subject_signature
+  23% screen_displaying_text
+  Time-of-day clustering: morning=face/screen, afternoon=text/perspective,
+                           evening=screen
+
+That clustering matches what a human would describe about the photos.
+The language is now empirically describing real photo libraries at
+scale.
+
+### What's next
+
+The roadmap for autonomous (non-hardware) work:
+  - bulk audit on a wider corpus (your full photo library, not just 13)
+  - localization predicates (where in the image, not just whether)
+  - cross-frame predicates over the existing 4 .aurex-session files
+  - composite categorizations (selfie/landscape/portrait/night)
+
+For hardware unlocks (need harness v3.0 - software-only on existing
+S23):
+  - raw Bayer (DngCreator + RAW_SENSOR Camera2 capture)
+  - polarization-pair protocol button
+  - multi-WB capture mode
+  
+None of these need new hardware. The S23 supports them via
+Camera2 API. Just needs an Android Studio rebuild cycle.

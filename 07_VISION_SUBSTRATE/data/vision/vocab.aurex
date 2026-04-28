@@ -47,6 +47,34 @@ predicate has_polarization_signal
   body    gt(abs_s(rotated_pair_anisotropy(cap_axis_0, cap_axis_90)), 0.10)
 
 
+# RETIRED in Round 25.
+#
+# `has_local_polarization_signal` was added in Round 24 to catch
+# localized polarization signals (LCDs, glass at Brewster's angle)
+# that the global `has_polarization_signal` averages away. Round 25
+# captured a control session on a matte non-polarized blanket and
+# found that the local-aware predicate fired HARDER on the control
+# (p95 = 0.43) than on the actual glass+screen scene (p95 = 0.26).
+#
+# Cause: handheld rotation of the phone introduces several cm of
+# translation between the two bursts, and per-pixel anisotropy is
+# dominated by that translation noise rather than by axis-dependent
+# polarization. FFT phase-correlation registration did not close
+# the gap.
+#
+# Methodology lesson: per-pixel difference predicates over physically-
+# rotated handheld captures cannot be trusted without sub-pixel
+# alignment, which requires either a tripod / fixed mount or a
+# rotating polarization filter mounted on the lens (camera body
+# stays fixed).
+#
+#   predicate has_local_polarization_signal
+#     expects cap_axis_0:image, cap_axis_90:image
+#     returns bool
+#     intent  detect_local_polarization_after_alignment
+#     body    gt(aligned_local_polarization_max(cap_axis_0, cap_axis_90), 0.20)
+
+
 predicate has_subpixel_periodicity
   expects raw_bayer:image
   returns bool
@@ -343,6 +371,45 @@ predicate has_low_color_diversity
   returns bool
   intent  pixels_share_a_narrow_color_palette
   body    lt(rgb_palette_diversity(color_scene), 0.08)
+
+
+# ============================================================
+# Vocabulary Round 26 — narrow-band hue ratios for material detection
+#
+# Three predicates that name materials the older hue-bucket vocabulary
+# could only describe abstractly. Vegetation has a specific
+# (G > R, G > B) signature that VARI catches; skin has a specific
+# YCbCr chromaticity window; warm vs cool light source separates
+# from chroma intensity via R/B ratio.
+# ============================================================
+
+predicate has_vegetation_signature
+  expects color_scene:color_image
+  returns bool
+  intent  vari_index_positive_indicating_chlorophyll_reflectance
+  body    gt(vari_score(color_scene), 0.05)
+
+
+predicate has_skin_tone_signature
+  expects color_scene:color_image
+  returns bool
+  intent  meaningful_fraction_of_pixels_in_skin_chromaticity_window
+  body    gt(skin_tone_fraction(color_scene), 0.25)
+
+
+predicate has_warm_color_temperature
+  expects color_scene:color_image
+  returns bool
+  intent  red_to_blue_ratio_above_unity_warm_light_source_or_sunset
+  body    gt(red_blue_ratio(color_scene), 1.10)
+
+
+predicate has_cool_color_temperature
+  expects color_scene:color_image
+  returns bool
+  intent  red_to_blue_ratio_below_unity_overcast_or_open_sky_or_shade
+  body    lt(red_blue_ratio(color_scene), 0.95)
+
 
 # ============================================================
 # Vocabulary v0.6 - HSV hue identification (named wavelength buckets)
