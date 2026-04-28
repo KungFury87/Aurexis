@@ -1,0 +1,4873 @@
+{
+  "schema_version": "workbench-2.0",
+  "name": "phoxelis_vision_round_21",
+  "predicates": [
+    {
+      "name": "has_subframe_motion",
+      "intent": "detect_motion_within_subframe_integration",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "temporal_diff",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "burst"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.0045,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "temporal_diff_coherence",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "burst"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 8.0,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_global_brightness_drift",
+      "intent": "detect_isp_brightness_drift_confound",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "temporal_uniform_ratio",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "burst"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.55,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_anisotropy_in_brightest_patch",
+      "intent": "detect_local_oriented_structure_anywhere_in_frame",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "max_coherence_patch_coh",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "field_ref",
+                "name": "patch_size"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.6,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_structural_anisotropy_whole_image",
+      "intent": "whole_image_oriented_texture_test_legacy",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "structure_tensor_coherence",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.45,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_polarization_signal",
+      "intent": "detect_polarization_pair_anisotropy",
+      "expects": {
+        "cap_axis_0": "image",
+        "cap_axis_90": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "abs_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "rotated_pair_anisotropy",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "cap_axis_0"
+                  },
+                  {
+                    "kind": "field_ref",
+                    "name": "cap_axis_90"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_subpixel_periodicity",
+      "intent": "detect_periodicity_above_demosaic_nyquist",
+      "expects": {
+        "raw_bayer": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "fft_peak_to_floor",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "bayer_R",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "raw_bayer"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 5.0,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "div_s",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "fft_peak_to_floor",
+                    "args": [
+                      {
+                        "kind": "call",
+                        "op": "bayer_R",
+                        "args": [
+                          {
+                            "kind": "field_ref",
+                            "name": "raw_bayer"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "call",
+                    "op": "fft_peak_to_floor",
+                    "args": [
+                      {
+                        "kind": "call",
+                        "op": "block_avg_2x2",
+                        "args": [
+                          {
+                            "kind": "field_ref",
+                            "name": "raw_bayer"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 1.6,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_spectral_band_anomaly",
+      "intent": "detect_off_pipeline_spectral_response",
+      "expects": {
+        "raw_bayer": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "OR",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "green_imbalance",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "raw_bayer"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.02,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "channel_spread_norm",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "raw_bayer"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.05,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_gradient_energy",
+      "intent": "scene_contains_any_oriented_structure",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gradient_energy",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.0001,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "is_uniform_field",
+      "intent": "scene_is_blank_sky_wall_fog_or_out_of_focus",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gradient_energy",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.0001,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_repetitive_horizontal_structure",
+      "intent": "detect_periodicity_along_a_chosen_row",
+      "expects": {
+        "scene": "image",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "row_autocorr_peak",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "field_ref",
+                "name": "row_y"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.3,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_high_frequency_residual",
+      "intent": "detect_sharp_or_detailed_image_vs_blur_or_smooth",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "high_frequency_residual",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.3,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_centered_subject",
+      "intent": "detect_subject_concentrated_in_centre_of_frame",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "center_gradient_concentration",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.4,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_horizontal_dominant_edges",
+      "intent": "scene_dominated_by_horizontal_edges_horizon_floors",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "directional_gradient_energy",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": "horizontal",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "mul_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "directional_gradient_energy",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "vertical",
+                    "dtype": "label"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 1.5,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_vertical_dominant_edges",
+      "intent": "scene_dominated_by_vertical_edges_trees_columns",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "directional_gradient_energy",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": "vertical",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "mul_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "directional_gradient_energy",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "horizontal",
+                    "dtype": "label"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 1.5,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_high_edge_density",
+      "intent": "detect_high_complexity_busy_scene",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "edge_density",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": 1.0,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.2,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_low_edge_density",
+      "intent": "detect_low_complexity_simple_or_blurry_scene",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "edge_density",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": 1.0,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.05,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_high_dynamic_range",
+      "intent": "detect_high_contrast_scene",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "dynamic_range",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.65,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_mirror_symmetry_horizontal_axis",
+      "intent": "scene_mirrors_top_to_bottom",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "mirror_correlation",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": "horizontal",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.7,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_mirror_symmetry_vertical_axis",
+      "intent": "scene_mirrors_left_to_right",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "mirror_correlation",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": "vertical",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.7,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_face_like_signature",
+      "intent": "vertically_symmetric_centred_locally_oriented_subject",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "mirror_correlation",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "const",
+                        "value": "vertical",
+                        "dtype": "label"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.5,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "center_gradient_concentration",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.4,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "max_coherence_patch_coh",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "field_ref",
+                    "name": "patch_size"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.45,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_text_like_signature",
+      "intent": "fine_horizontal_repetition_with_high_frequency_and_dense_edges",
+      "expects": {
+        "scene": "image",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "row_autocorr_peak",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.3,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "high_frequency_residual",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.15,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "edge_density",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": 1.0,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.1,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_screen_like_signature",
+      "intent": "pixel_grid_signature_high_freq_high_periodicity_high_contrast",
+      "expects": {
+        "scene": "image",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "high_frequency_residual",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.3,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "row_autocorr_peak",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.5,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "dynamic_range",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.6,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_horizon_line_signature",
+      "intent": "landscape_with_horizontal_edge_dominance_no_mirror_required",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "horizon_likeness_score",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.3,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_real_motion_validated",
+      "intent": "motion_present_AND_coherent_AND_not_global_brightness_drift",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "temporal_diff",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "burst"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.0045,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "temporal_diff_coherence",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "burst"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 8.0,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "temporal_uniform_ratio",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "burst"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.55,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "face_is_dominant_concept",
+      "intent": "face_score_exceeds_text_screen_horizon",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "face_likeness_score",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "field_ref",
+                "name": "patch_size"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "max_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "text_likeness_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "field_ref",
+                    "name": "row_y"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "max_s",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "screen_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "call",
+                    "op": "horizon_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "text_is_dominant_concept",
+      "intent": "text_score_exceeds_face_screen_horizon",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "text_likeness_score",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "field_ref",
+                "name": "row_y"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "max_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "face_likeness_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "field_ref",
+                    "name": "patch_size"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "max_s",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "screen_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "call",
+                    "op": "horizon_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "screen_is_dominant_concept",
+      "intent": "screen_score_exceeds_face_text_horizon",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "screen_likeness_score",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "field_ref",
+                "name": "row_y"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "max_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "face_likeness_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "field_ref",
+                    "name": "patch_size"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "max_s",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "text_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "call",
+                    "op": "horizon_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "horizon_is_dominant_concept",
+      "intent": "horizon_score_exceeds_face_text_screen",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "horizon_likeness_score",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "max_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "face_likeness_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "field_ref",
+                    "name": "patch_size"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "max_s",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "text_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "call",
+                    "op": "screen_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_genuine_face_not_screen",
+      "intent": "face_score_clearly_higher_than_screen_score",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "face_likeness_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "field_ref",
+                    "name": "patch_size"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.5,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "sub_s",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "face_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "patch_size"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "call",
+                    "op": "screen_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.05,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_screen_displaying_face",
+      "intent": "face_and_screen_scores_both_high_and_within_margin",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "face_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "patch_size"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.6,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "screen_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.6,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "abs_s",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "sub_s",
+                    "args": [
+                      {
+                        "kind": "call",
+                        "op": "face_likeness_score",
+                        "args": [
+                          {
+                            "kind": "field_ref",
+                            "name": "scene"
+                          },
+                          {
+                            "kind": "field_ref",
+                            "name": "patch_size"
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "call",
+                        "op": "screen_likeness_score",
+                        "args": [
+                          {
+                            "kind": "field_ref",
+                            "name": "scene"
+                          },
+                          {
+                            "kind": "field_ref",
+                            "name": "row_y"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.05,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_genuine_text_not_screen",
+      "intent": "text_score_clearly_higher_than_screen_score",
+      "expects": {
+        "scene": "image",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "text_likeness_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "field_ref",
+                    "name": "row_y"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.5,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "sub_s",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "text_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "call",
+                    "op": "screen_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.05,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_screen_displaying_text",
+      "intent": "text_and_screen_scores_both_high_and_within_margin",
+      "expects": {
+        "scene": "image",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "text_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.6,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "screen_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.6,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "abs_s",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "sub_s",
+                    "args": [
+                      {
+                        "kind": "call",
+                        "op": "text_likeness_score",
+                        "args": [
+                          {
+                            "kind": "field_ref",
+                            "name": "scene"
+                          },
+                          {
+                            "kind": "field_ref",
+                            "name": "row_y"
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "call",
+                        "op": "screen_likeness_score",
+                        "args": [
+                          {
+                            "kind": "field_ref",
+                            "name": "scene"
+                          },
+                          {
+                            "kind": "field_ref",
+                            "name": "row_y"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.05,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "no_named_concept_dominant",
+      "intent": "all_concept_scores_below_recognition_threshold",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "lt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "face_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "patch_size"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.4,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "lt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "text_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.4,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "lt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "screen_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "row_y"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.4,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "lt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "horizon_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.4,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_red_dominant",
+      "intent": "red_channel_mean_exceeds_others_by_margin",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "r",
+                    "dtype": "label"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "g",
+                    "dtype": "label"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "r",
+                    "dtype": "label"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "b",
+                    "dtype": "label"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_green_dominant",
+      "intent": "green_channel_mean_exceeds_others",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "g",
+                    "dtype": "label"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "r",
+                    "dtype": "label"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "g",
+                    "dtype": "label"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "b",
+                    "dtype": "label"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_blue_dominant",
+      "intent": "blue_channel_mean_exceeds_others",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "b",
+                    "dtype": "label"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "r",
+                    "dtype": "label"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "b",
+                    "dtype": "label"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "rgb_channel_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "g",
+                    "dtype": "label"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_warm_palette",
+      "intent": "warmth_score_dominates_coolness",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "sub_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "rgb_warmth_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "rgb_coolness_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_cool_palette",
+      "intent": "coolness_score_dominates_warmth",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "sub_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "rgb_coolness_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "rgb_warmth_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_high_saturation",
+      "intent": "vivid_colors_overall_mean_saturation",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "rgb_saturation_mean",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.3,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_low_saturation",
+      "intent": "desaturated_or_near_grey",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "rgb_saturation_mean",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_monochrome",
+      "intent": "near_greyscale_R_eq_G_eq_B",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "rgb_monochrome_score",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.85,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_high_color_diversity",
+      "intent": "pixels_span_a_wide_range_of_colors",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "rgb_palette_diversity",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.2,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_low_color_diversity",
+      "intent": "pixels_share_a_narrow_color_palette",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "rgb_palette_diversity",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.08,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_significant_red_hue",
+      "intent": "red_wavelength_band_present",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "red",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_significant_orange_hue",
+      "intent": "orange_wavelength_band_present",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "orange",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_significant_yellow_hue",
+      "intent": "yellow_wavelength_band_present",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "yellow",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_significant_green_hue",
+      "intent": "green_wavelength_band_present",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "green",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_significant_cyan_hue",
+      "intent": "cyan_wavelength_band_present",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "cyan",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_significant_blue_hue",
+      "intent": "blue_wavelength_band_present",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "blue",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_significant_violet_hue",
+      "intent": "violet_wavelength_band_present",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "violet",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_significant_magenta_hue",
+      "intent": "magenta_band_present",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "magenta",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_dominant_red_hue",
+      "intent": "red_dominates_saturated_pixels",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "red",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.5,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_dominant_green_hue",
+      "intent": "green_dominates_saturated_pixels",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "green",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.5,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_dominant_blue_hue",
+      "intent": "blue_dominates_saturated_pixels",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              },
+              {
+                "kind": "const",
+                "value": "blue",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.5,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_polychromatic_palette",
+      "intent": "multiple_hue_buckets_above_threshold",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "hue_diversity_score",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.5,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_largely_achromatic_scene",
+      "intent": "most_pixels_grey_black_or_white_no_meaningful_color",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "meaningfully_colored_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_circular_signature",
+      "intent": "isotropic_gradient_orientation_distribution",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "orientation_uniformity",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.4,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gradient_energy",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.0005,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_rectilinear_signature",
+      "intent": "gradient_concentrated_at_h_AND_v_AND_LOW_diagonal",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "orientation_horizontal_mass",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.3,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "orientation_vertical_mass",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.3,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "orientation_diagonal_mass",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.3,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_diagonal_signature",
+      "intent": "diagonal_mass_high_AND_horizontal_vertical_LOW",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "orientation_diagonal_mass",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.5,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "lt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "orientation_horizontal_mass",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.2,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "orientation_vertical_mass",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.2,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_curved_signature",
+      "intent": "smooth_contiguous_arc_of_orientations_curve_signature",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "orientation_distribution_continuity",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.3,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_many_small_blobs",
+      "intent": "many_distinct_high_contrast_regions",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt_int",
+        "args": [
+          {
+            "kind": "call",
+            "op": "blob_count_thresh",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": 1.5,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 15,
+            "dtype": "int"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_few_large_blobs",
+      "intent": "small_number_of_distinct_high_contrast_regions",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt_int",
+            "args": [
+              {
+                "kind": "call",
+                "op": "blob_count_thresh",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": 1.5,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0,
+                "dtype": "int"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt_int",
+            "args": [
+              {
+                "kind": "call",
+                "op": "blob_count_thresh",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": 1.5,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 5,
+                "dtype": "int"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_perspective_convergence",
+      "intent": "top_strip_orientation_differs_from_bottom_strip_perspective_tilt",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "top_vs_bottom_orientation_difference",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 25.0,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_atmospheric_haze",
+      "intent": "top_desaturated_and_blue_shifted_relative_to_bottom",
+      "expects": {
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "atmospheric_haze_score",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "color_scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.15,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_shallow_depth_of_field",
+      "intent": "high_spread_of_local_sharpness_across_image_tiles",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "focus_blur_gradient",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.85,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_uniform_focus",
+      "intent": "low_spread_of_local_sharpness_uniform_focus_everywhere",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "abs_s",
+            "args": [
+              {
+                "kind": "call",
+                "op": "focus_blur_gradient",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.2,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_many_corners",
+      "intent": "many_local_2d_corners_dense_object_boundaries",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt_int",
+        "args": [
+          {
+            "kind": "call",
+            "op": "corner_count_thresh",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": 0.04,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 50,
+            "dtype": "int"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_texture_compression_gradient",
+      "intent": "fine_texture_at_top_relative_to_bottom_perspective_recession",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "texture_density_top_vs_bottom",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.05,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_depth_indicators",
+      "intent": "any_strong_depth_cue_present_perspective_or_haze_or_dof",
+      "expects": {
+        "scene": "image",
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "OR",
+        "args": [
+          {
+            "kind": "call",
+            "op": "OR",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "perspective_convergence_strength",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.15,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "atmospheric_haze_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "color_scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.2,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "focus_blur_gradient",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.85,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_subject_at_thirds_top_left",
+      "intent": "gradient_energy_concentrated_at_top_left_thirds_intersection",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gradient_energy_at_thirds_point",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": "tl",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 1.5,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_subject_at_thirds_top_right",
+      "intent": "gradient_energy_concentrated_at_top_right_thirds_intersection",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gradient_energy_at_thirds_point",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": "tr",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 1.5,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_subject_at_thirds_bottom_left",
+      "intent": "gradient_energy_concentrated_at_bottom_left_thirds_intersection",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gradient_energy_at_thirds_point",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": "bl",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 1.5,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_subject_at_thirds_bottom_right",
+      "intent": "gradient_energy_concentrated_at_bottom_right_thirds_intersection",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gradient_energy_at_thirds_point",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": "br",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 1.5,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_horizontal_balance",
+      "intent": "top_and_bottom_halves_carry_similar_visual_weight",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "horizontal_split_balance",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.7,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_horizontal_imbalance",
+      "intent": "one_half_carries_significantly_more_weight",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "horizontal_split_balance",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.4,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_vertical_balance",
+      "intent": "left_and_right_halves_carry_similar_visual_weight",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "vertical_split_balance",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.7,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_vertical_imbalance",
+      "intent": "one_side_carries_significantly_more_weight",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "vertical_split_balance",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.4,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_significant_negative_space",
+      "intent": "large_low_gradient_area_subject_on_clean_background",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "negative_space_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.6,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_horizon_at_top_third",
+      "intent": "strongest_horizontal_edge_in_upper_third_of_frame_low_horizon",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "horizon_position_estimate",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.1,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "horizon_position_estimate",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.4,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_horizon_at_middle",
+      "intent": "strongest_horizontal_edge_near_centre_static_composition",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "horizon_position_estimate",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.4,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "horizon_position_estimate",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.6,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_horizon_at_bottom_third",
+      "intent": "strongest_horizontal_edge_in_lower_third_of_frame_high_horizon",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "horizon_position_estimate",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.6,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "horizon_position_estimate",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.9,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_motion_rightward",
+      "intent": "scene_content_drifts_to_the_right_camera_pans_left_or_subject_moves_right",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "global_shift_estimate",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "burst"
+              },
+              {
+                "kind": "const",
+                "value": "x",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 1.0,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_motion_leftward",
+      "intent": "scene_content_drifts_to_the_left",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "global_shift_estimate",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "burst"
+              },
+              {
+                "kind": "const",
+                "value": "x",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": -1.0,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_motion_downward",
+      "intent": "scene_content_drifts_downward",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "global_shift_estimate",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "burst"
+              },
+              {
+                "kind": "const",
+                "value": "y",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 1.0,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_motion_upward",
+      "intent": "scene_content_drifts_upward",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "global_shift_estimate",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "burst"
+              },
+              {
+                "kind": "const",
+                "value": "y",
+                "dtype": "label"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": -1.0,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_coherent_motion",
+      "intent": "burst_pair_shifts_agree_in_direction_panning_not_shaking",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "motion_coherence",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "burst"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.7,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "motion_velocity_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "burst"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.5,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_chaotic_motion",
+      "intent": "burst_pair_shifts_disagree_camera_shake_or_random_motion",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "motion_coherence",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "burst"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.4,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "motion_velocity_mean",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "burst"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 1.0,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_fast_motion",
+      "intent": "burst_mean_displacement_above_5_pixels_per_pair",
+      "expects": {
+        "burst": "image_stack"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "motion_velocity_mean",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "burst"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 5.0,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_low_light_signature",
+      "intent": "most_pixels_below_mid_grey_low_light_capture",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "dark_pixel_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": 0.3,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.5,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_high_key",
+      "intent": "most_pixels_bright_overall_mean_above_mid",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "mean",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.65,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_low_key",
+      "intent": "most_pixels_dark_overall_mean_below_mid",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "mean",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.3,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_specular_highlights",
+      "intent": "multiple_small_very_bright_spots_specular_reflections",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt_int",
+        "args": [
+          {
+            "kind": "call",
+            "op": "bright_spot_count",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": 0.92,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 3,
+            "dtype": "int"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_center_weighted_lighting",
+      "intent": "centre_brighter_than_edges_subject_lit_or_spotlight",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "center_minus_edge_brightness",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_edge_weighted_lighting",
+      "intent": "edges_brighter_than_centre_vignette_or_rim_lighting",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "lt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "center_minus_edge_brightness",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": -0.1,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_overexposed_regions",
+      "intent": "significant_pixels_at_or_near_max_value_clipped_highlights",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "bright_pixel_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": 0.97,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.05,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_underexposed_regions",
+      "intent": "significant_pixels_at_or_near_zero_clipped_shadows",
+      "expects": {
+        "scene": "image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "gt",
+        "args": [
+          {
+            "kind": "call",
+            "op": "dark_pixel_fraction",
+            "args": [
+              {
+                "kind": "field_ref",
+                "name": "scene"
+              },
+              {
+                "kind": "const",
+                "value": 0.03,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "const",
+            "value": 0.05,
+            "dtype": "scalar"
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_human_subject_signature",
+      "intent": "face_like_AND_centre_lit_AND_vertically_symmetric",
+      "expects": {
+        "scene": "image",
+        "color_scene": "color_image",
+        "patch_size": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "AND",
+            "args": [
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "face_likeness_score",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      },
+                      {
+                        "kind": "field_ref",
+                        "name": "patch_size"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.45,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "center_minus_edge_brightness",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.05,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "mirror_correlation",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "const",
+                    "value": "vertical",
+                    "dtype": "label"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.4,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_indoor_scene_signature",
+      "intent": "low_light_or_centre_lit_AND_no_atmospheric_haze",
+      "expects": {
+        "scene": "image",
+        "color_scene": "color_image"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "OR",
+            "args": [
+              {
+                "kind": "call",
+                "op": "lt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "mean",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.45,
+                    "dtype": "scalar"
+                  }
+                ]
+              },
+              {
+                "kind": "call",
+                "op": "gt",
+                "args": [
+                  {
+                    "kind": "call",
+                    "op": "center_minus_edge_brightness",
+                    "args": [
+                      {
+                        "kind": "field_ref",
+                        "name": "scene"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "const",
+                    "value": 0.05,
+                    "dtype": "scalar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "lt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "atmospheric_haze_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "color_scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.1,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    },
+    {
+      "name": "has_screen_subject_signature",
+      "intent": "screen_like_AND_centred_subject_signature",
+      "expects": {
+        "scene": "image",
+        "patch_size": "int",
+        "row_y": "int"
+      },
+      "return_type": "bool",
+      "body": {
+        "kind": "call",
+        "op": "AND",
+        "args": [
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "screen_likeness_score",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  },
+                  {
+                    "kind": "field_ref",
+                    "name": "row_y"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.5,
+                "dtype": "scalar"
+              }
+            ]
+          },
+          {
+            "kind": "call",
+            "op": "gt",
+            "args": [
+              {
+                "kind": "call",
+                "op": "center_gradient_concentration",
+                "args": [
+                  {
+                    "kind": "field_ref",
+                    "name": "scene"
+                  }
+                ]
+              },
+              {
+                "kind": "const",
+                "value": 0.4,
+                "dtype": "scalar"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "surface_dsl"
+    }
+  ]
+}

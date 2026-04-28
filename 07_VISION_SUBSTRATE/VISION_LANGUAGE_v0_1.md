@@ -1696,3 +1696,170 @@ the perspective-specific predicate returns False.
 
   96 predicates / 91 operators / 37 synthetic scenes
   2 equivalence classes (unchanged)
+
+---
+
+## Round 19: vocabulary JSON round-trip (2026-04-28)
+
+This was a substrate-validation pass. The vocabulary.py module has
+shipped JSON serialise/deserialise since Round 0 but had never been
+exercised on the production vision vocab.
+
+### What ran
+
+  1. parse vocab.aurex -> 96 predicates -> Vocabulary
+  2. Vocabulary.save("vision_vocab.json")     113 KB
+  3. Vocabulary.load(path) in fresh Runtime
+  4. evaluate every predicate twice (DSL-loaded vs JSON-loaded)
+  5. compare verdicts
+
+### Result
+
+  93 / 93 type-checked predicates: IDENTICAL verdicts
+  0 mismatches
+
+### What this enables
+
+  - Ship the vocabulary as a versioned artifact independent of
+    the DSL parser (consumers only need the runtime).
+  - Snapshot a vocabulary at a specific round, archive it,
+    diff it against later versions.
+  - Run the same vocabulary in alternative runtimes that
+    consume the predicate AST without re-parsing DSL text.
+
+### Round 19 totals
+
+  96 predicates / 91 operators / 37 synthetic scenes
+  + vision_vocab.json (113 KB) round-trip-validated
+  2 equivalence classes (unchanged)
+
+---
+
+## Round 20: full IR re-run on optimized substrate (2026-04-28)
+
+Round 17 timed out at 45s. Round 18 made the slow operators 100x+
+faster via scipy.ndimage.label. This round is the empirical
+complement to Round 19's persistence proof: confirm the IR
+analysis still produces 2 equivalence classes and surface any
+new structural state.
+
+### Full IR run
+
+  corpus:    56 inputs (13 phone photos + 2 calibration PNGs +
+              4 sessions + 28 synthetic scenes + 9 burst dirs)
+  vocab:     96 predicates, all 96 type-checked, all installed
+  runtime:   36.2 seconds (was 45+ timeout in Round 17)
+  redundant pairs:    4
+  equivalence classes: 2 (unchanged from rounds 15-19)
+
+### Two findings I missed last round
+
+**has_perspective_convergence works.** Round 18 documented it as
+"weak" because the perspective_road SYNTHETIC didn't fire it (the
+symmetric converging lines from frame edges average to similar
+orientations top vs bottom). I only tested on the synthetic. On
+the full real-photo corpus the predicate fires 0.29 (16/56
+inputs). Real-world perspective is asymmetric in ways the
+synthetic was not. Methodology rule: **synthetic edge cases are
+not always representative of real-world distribution. A "weak"
+synthetic verdict warrants re-checking against the real corpus
+before declaring the predicate broken.**
+
+**has_curved_signature went from 0% to 2%.** Now fires on its
+target curve_scene synthetic. The Round 18 redesign closed the
+12-round 0%-firing gap.
+
+### Only 1 always-False predicate remains
+
+`has_edge_weighted_lighting` (vignette / rim lighting) - no real
+photo in the corpus has this signature. Could be unblocked with
+a single vignette synthetic. Filed for v0.13 corpus expansion.
+
+### Equivalence classes
+
+Same 2 as Round 15:
+  - {has_largely_achromatic_scene, has_low_saturation, has_monochrome}
+    tautological (all measure "no color presence")
+  - {has_global_brightness_drift, has_motion_upward}
+    corpus-size artifact (both fire on the dark cal grid only)
+
+### Real-photo firing rate distribution (lighting predicates)
+
+  has_specular_highlights:        0.46  (eyes, glints, screens, glass)
+  has_center_weighted_lighting:   0.38  (subject-centred, portrait convention)
+  has_low_light_signature:        0.18  (low-light captures)
+  has_overexposed_regions:        0.12  (blown highlights)
+  has_edge_weighted_lighting:     0.00  (no vignettes in this corpus)
+
+The lighting predicates from Round 17 are working - they fire at
+meaningful rates on real photos and 0% on synthetic scenes that
+shouldn't have those signatures.
+
+### Round 20 totals
+
+  96 predicates / 91 operators / 37 synthetic scenes
+  + vision_vocab.json round-trip-validated (Round 19)
+  2 equivalence classes (unchanged across rounds 15-20)
+  1 always-False predicate (down from 5 at round 14)
+  IR runner completes in 36s (was 45+ timeout)
+
+---
+
+## Round 21: A + B + C in one pass (2026-04-28)
+
+Three deliverables in one round:
+
+### A. vocab_diff tool
+
+`python -m aurexis_workbench.vocab_diff OLD.json NEW.json`
+
+Reports: predicates added, removed, body changed, intent renamed,
+expects/return-type changed. Demonstrated on a synthetic
+pre-lighting snapshot vs round 20: correctly identifies 8 lighting
+predicates as added.
+
+### B. Vignette synthetic - last always-False predicate retired
+
+`vignette_scene` synthetic added (radial darkening - edges brighter
+than centre). `has_edge_weighted_lighting` now fires on it.
+Vocabulary always-False count: 5 (round 14) -> 1 (round 17) -> 0 (round 21).
+
+### C. Identity recognition architecture (interface, no ML)
+
+IDENTITY_LAYER_DESIGN.md specifies:
+  - new dtype `identity_label` (open-vocabulary classifier output)
+  - operator `external_classifier(image, classifier_key, expected_label)`
+  - runtime hook `register_classifier(key, callable)` - host plugs ML
+  - BLOCKED verdict if no classifier registered (same convention as
+    Bayer-dependent predicates today)
+
+Substrate is prepared; no ML shipped, no model registered, no
+identity_label dtype activated. Implementation waits until a real
+model is ready to plug in.
+
+Three identity-LIKE composite predicates added (NOT ML - pattern
+composites over existing perceptual operators):
+
+  has_human_subject_signature       face_like + centre-lit + vertical-mirror
+  has_indoor_scene_signature        low-light or centre-lit, no haze
+  has_screen_subject_signature      screen_likeness + centred-subject
+
+These approximate identity categories at coarse-grained level.
+
+## Round 21 final state
+
+  99 predicates / 91 operators / 38 synthetic scenes
+  + vocab_diff tool
+  + IDENTITY_LAYER_DESIGN.md
+  + 2 versioned vocab JSON snapshots (round 20, round 21)
+  
+  Vocabulary cleanliness:
+    always-False predicates:                0  (was 5)
+    empirical structural redundancies:      0
+    tautological pairs:                     1
+    corpus-size artifact pairs:             1
+    hardware-blocked predicates:            3
+
+The vocabulary is empirically clean across every metric the IR
+loop measures. Future growth is additive vocabulary, hardware
+unlocks, or the identity layer when a model plugs in.

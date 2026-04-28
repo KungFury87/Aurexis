@@ -764,3 +764,31 @@ predicate has_underexposed_regions
   returns bool
   intent  significant_pixels_at_or_near_zero_clipped_shadows
   body    gt(dark_pixel_fraction(scene, 0.03), 0.05)
+
+# ============================================================
+# Vocabulary v0.13 - Identity-LIKE composites (no ML, just patterns)
+#
+# These are NOT identity recognition. They are composite predicates
+# that approximate identity-like categories from existing
+# perceptual content. Real identity layer = IDENTITY_LAYER_DESIGN.md
+# ============================================================
+
+predicate has_human_subject_signature
+  expects scene:image, color_scene:color_image, patch_size:int
+  returns bool
+  intent  face_like_AND_centre_lit_AND_vertically_symmetric
+  body    AND(AND(gt(face_likeness_score(scene, patch_size), 0.45), gt(center_minus_edge_brightness(scene), 0.05)), gt(mirror_correlation(scene, "vertical"), 0.40))
+
+
+predicate has_indoor_scene_signature
+  expects scene:image, color_scene:color_image
+  returns bool
+  intent  low_light_or_centre_lit_AND_no_atmospheric_haze
+  body    AND(OR(lt(mean(scene), 0.45), gt(center_minus_edge_brightness(scene), 0.05)), lt(atmospheric_haze_score(color_scene), 0.10))
+
+
+predicate has_screen_subject_signature
+  expects scene:image, patch_size:int, row_y:int
+  returns bool
+  intent  screen_like_AND_centred_subject_signature
+  body    AND(gt(screen_likeness_score(scene, row_y), 0.50), gt(center_gradient_concentration(scene), 0.40))

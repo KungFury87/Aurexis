@@ -716,3 +716,31 @@ def write_curve_scenes(out_dir):
         scene = gen()
         arr = (np.clip(scene, 0.0, 1.0) * 255).astype(np.uint8)
         Image.fromarray(arr, mode="L").save(out / (name + ".png"))
+
+
+# ---------- Vignette synthetic (v0.13) ----------
+
+def vignette_scene(size=256, seed=0):
+    """Edges brighter than center via radial darkening - tests
+    has_edge_weighted_lighting (the inverse of has_center_weighted_lighting).
+    Subject in centre is dark, surround is bright."""
+    rng = np.random.default_rng(seed)
+    yy, xx = np.indices((size, size)).astype(np.float64)
+    cx, cy = size / 2, size / 2
+    dist = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
+    # Inverse Gaussian: bright at edges, dark at centre
+    factor = 1.0 - np.exp(-(dist ** 2) / (2 * (size / 4) ** 2))
+    base = 0.20 + 0.60 * factor
+    return np.clip(base + rng.normal(0, 0.02, size=(size, size)), 0.0, 1.0)
+
+
+VIGNETTE_GENERATORS = {"vignette_scene": vignette_scene}
+
+
+def write_vignette_scenes(out_dir):
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    for name, gen in VIGNETTE_GENERATORS.items():
+        scene = gen()
+        arr = (np.clip(scene, 0.0, 1.0) * 255).astype(np.uint8)
+        Image.fromarray(arr, mode="L").save(out / (name + ".png"))
