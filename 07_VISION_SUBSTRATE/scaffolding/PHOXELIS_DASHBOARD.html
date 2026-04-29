@@ -15,10 +15,13 @@ th,td{text-align:left;padding:0.4em 0.6em;border-bottom:1px solid #eee;font-size
 .sev-WARN{background:#ffd}
 .sev-INFO{color:#666}
 .headline{padding:1em;background:#eef;border-left:4px solid #66f;margin:1em 0}
+.integrity-ok{padding:0.5em 1em;background:#dfd;border-left:4px solid #080;margin:1em 0;font-weight:bold}
+.integrity-fail{padding:0.5em 1em;background:#fdd;border-left:4px solid #c00;margin:1em 0;font-weight:bold}
 </style></head>
 <body>
 <h1>Phoxelis Dashboard</h1>
-<div class='timestamp'>audit timestamp: 2026-04-28T23:19:04Z</div>
+<div class='timestamp'>audit timestamp: 2026-04-29T00:02:47Z</div>
+<div class='integrity-ok'>integrity check: OK (95 ops, 103 predicates loaded from disk)</div>
 <div class='headline'>
 <strong>Categorical first (Round 44-45):</strong> Phoxelis is the first
 image-encoding system whose embedded data survives byte-exact recovery
@@ -29,19 +32,19 @@ filters preserve byte-exact recovery on a 604-byte payload through a
 <div class='row'>
   <div class='card'><div class='v'>103</div><div class='k'>predicates</div></div>
   <div class='card'><div class='v'>95</div><div class='k'>operators</div></div>
-  <div class='card'><div class='v'>R47</div><div class='k'>last round</div></div>
-  <div class='card'><div class='v'>12</div><div class='k'>round docs</div></div>
+  <div class='card'><div class='v'>R48</div><div class='k'>last round</div></div>
+  <div class='card'><div class='v'>13</div><div class='k'>round docs</div></div>
 </div>
 <div class='row'>
   <div class='card'><div class='v'>11</div><div class='k'>promises pending</div></div>
   <div class='card'><div class='v' style='color:#c00'>4</div><div class='k'>promises STALE (&gt;5 rounds)</div></div>
-  <div class='card'><div class='v'>16</div><div class='k'>promises completed</div></div>
+  <div class='card'><div class='v'>18</div><div class='k'>promises completed</div></div>
   <div class='card'><div class='v'>3</div><div class='k'>promises abandoned</div></div>
 </div>
 <div class='row'>
   <div class='card'><div class='v'>3</div><div class='k'>active scaffolding</div></div>
   <div class='card'><div class='v' style='color:#080'>0</div><div class='k'>stagnant tools</div></div>
-  <div class='card'><div class='v'>0</div><div class='k'>FATAL flags</div></div>
+  <div class='card'><div class='v' style='color:#080'>0</div><div class='k'>FATAL flags</div></div>
   <div class='card'><div class='v'>4</div><div class='k'>WARN flags</div></div>
 </div>
 <h2>Recent rounds (last 30)</h2>
@@ -58,13 +61,14 @@ filters preserve byte-exact recovery on a 604-byte payload through a
 <tr class='ok'><td>R35</td><td>Round 35 — `.phox` format v0.1 (Phoxelis-native image file)</td><td>yes</td></tr>
 <tr class='ok'><td>R42</td><td>Round 42 — End-to-end integration demo (the project as a working system)</td><td>yes</td></tr>
 <tr class='ok'><td>R47</td><td>Round 47 — Phoxelis Project Scaffolding</td><td>yes</td></tr>
+<tr class='ok'><td>R48</td><td>Round 48 — Integrity check, silent corruption found and repaired</td><td>yes</td></tr>
 </table>
 <h2>Flags</h2>
 <table><tr><th>severity</th><th>message</th></tr>
-<tr class='sev-WARN'><td>WARN</td><td>PROMISE P-02 pending since R21C design doc (>26 rounds): Wire L2 identity layer with external CV models</td></tr>
-<tr class='sev-WARN'><td>WARN</td><td>PROMISE P-03 pending since R28 plumbing (>19 rounds): Stage capture-stability benchmark on three scenes</td></tr>
-<tr class='sev-WARN'><td>WARN</td><td>PROMISE P-04 pending since R37 (>10 rounds): Phone-camera-in-the-loop test of Phoxelis encoding</td></tr>
-<tr class='sev-WARN'><td>WARN</td><td>PROMISE P-09 pending since R41/R46 finding (>6 rounds): Bit-level FEC (BCH or LDPC) for camera transit</td></tr>
+<tr class='sev-WARN'><td>WARN</td><td>PROMISE P-02 pending since R21C design doc (>27 rounds): Wire L2 identity layer with external CV models</td></tr>
+<tr class='sev-WARN'><td>WARN</td><td>PROMISE P-03 pending since R28 plumbing (>20 rounds): Stage capture-stability benchmark on three scenes</td></tr>
+<tr class='sev-WARN'><td>WARN</td><td>PROMISE P-04 pending since R37 (>11 rounds): Phone-camera-in-the-loop test of Phoxelis encoding</td></tr>
+<tr class='sev-WARN'><td>WARN</td><td>PROMISE P-09 pending since R41/R46 finding (>7 rounds): Bit-level FEC (BCH or LDPC) for camera transit</td></tr>
 <tr class='sev-INFO'><td>INFO</td><td>no ROUND_29_*.md in reports/</td></tr>
 <tr class='sev-INFO'><td>INFO</td><td>no ROUND_34_*.md in reports/</td></tr>
 <tr class='sev-INFO'><td>INFO</td><td>no ROUND_36_*.md in reports/</td></tr>

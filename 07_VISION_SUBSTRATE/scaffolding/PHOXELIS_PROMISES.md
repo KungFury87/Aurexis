@@ -50,6 +50,8 @@ or supersede).
 | C-44 | Filter gauntlet | R44 | R45 | R45 result: 11/12 named Instagram filters survive |
 | C-45 | Cell-as-symbol RS | R45 | R46 | R46 finding: same fundamental ceiling as byte-level RS |
 | C-46 | Project scaffolding (charter, benchmarks, promises, tool ladder, audit script, dashboard) | R46 | R47 | this round |
+| C-47 | Audit integrity check (real import + vocab parse) | R47 | R48 | `phoxelis_audit.py::integrity_check`, R48 doc; caught silent vision_ops.py + vocab.aurex truncation |
+| C-48 | Restore vision_ops.py + vocab.aurex from git HEAD blob | R48 (same round) | R48 | 1502 lines / 103 predicates parse cleanly; audit reports integrity OK |
 
 ## Abandoned promises
 

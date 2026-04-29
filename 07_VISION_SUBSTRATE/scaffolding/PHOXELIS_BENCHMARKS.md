@@ -13,8 +13,9 @@ prose has to point to a row here.
 
 | metric | round | value | corpus | status |
 |---|---|---|---|---|
-| total predicates | R26 | 103 | — | current |
-| total operators | R26 | 95 | — | current |
+| total predicates | R26 | 103 | — | current (verified R48 by audit `integrity_check`) |
+| total operators | R26 | 95 | — | current (verified R48 by audit `integrity_check`) |
+| silent on-disk corruption found + repaired | R48 | `vision_ops.py` truncated 1502→1452 lines; `vocab.aurex` truncated 103→93 predicates | working tree | restored from git HEAD blob; audit script extended with import-check |
 | always-False predicates | R27 | 1 (`has_polarization_signal`) | 57 inputs | superseded by R28 |
 | always-False predicates | R28 (IR at scale) | 12 (10 motion + 2 spatial) | 161 live-source images | current; motion predicates are corpus-type artifacts |
 | always-True predicates (saturated) | R28 | 0 | 161 inputs | current |

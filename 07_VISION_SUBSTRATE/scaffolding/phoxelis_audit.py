@@ -1,15 +1,23 @@
-"""Phoxelis project self-audit.
+"""Phoxelis project self-audit (R48: + integrity check).
 
 Walks the project's tracking files and recent round reports, surfaces drift,
-stale promises, untracked tools, and inconsistencies. Run this at the start
-of every round.
+stale promises, untracked tools, and inconsistencies. R48 addition:
+attempts a real import of the substrate modules and a real parse of the
+vocabulary, so silent file corruption is caught next round.
+
+Usage:
+    python phoxelis_audit.py
+    python phoxelis_audit.py --json
+    python phoxelis_audit.py --regenerate-dashboard
 """
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import re
-from dataclasses import dataclass, asdict
+import sys
+from dataclasses import dataclass, asdict, field
 from datetime import datetime
 from pathlib import Path
 
@@ -21,6 +29,17 @@ CHARTER     = ROOT / "PHOXELIS_CHARTER.md"
 BENCHMARKS  = ROOT / "PHOXELIS_BENCHMARKS.md"
 PROMISES    = ROOT / "PHOXELIS_PROMISES.md"
 TOOL_LADDER = ROOT / "PHOXELIS_TOOL_LADDER.md"
+
+VOCAB_PATH = CORE / "data" / "vision" / "vocab.aurex"
+WORKBENCH_PATH = CORE / "aurexis_workbench"
+
+CRITICAL_MODULES = [
+    ("aurexis_workbench.vision_ops",  "register_all"),
+    ("aurexis_workbench.operators",   "REGISTRY"),
+    ("aurexis_workbench.dsl",         "parse_source"),
+    ("aurexis_workbench.runtime",     "Runtime"),
+    ("aurexis_workbench.predicates",  "type_check"),
+]
 
 
 @dataclass
@@ -63,6 +82,10 @@ class AuditReport:
     rounds: list
     flags: list
     last_round: int
+    integrity_ok: bool = True
+    integrity_n_ops_loaded: int = 0
+    integrity_n_preds_loaded: int = 0
+    integrity_errors: list = field(default_factory=list)
 
 
 def _clean_md(s):
@@ -165,6 +188,47 @@ def parse_predicate_count_from_charter(text):
     return n_p, n_o
 
 
+def integrity_check():
+    """Load the substrate modules and parse the vocab.
+    Returns (ok, n_ops_loaded, n_preds_parsed, error_msgs)."""
+    errs = []
+    if not WORKBENCH_PATH.exists():
+        return False, 0, 0, [f"workbench dir missing: {WORKBENCH_PATH}"]
+    sys.path.insert(0, str(CORE))
+    try:
+        for mod_name, attr in CRITICAL_MODULES:
+            try:
+                m = importlib.import_module(mod_name)
+                if not hasattr(m, attr):
+                    errs.append(f"{mod_name} missing attribute `{attr}`")
+            except Exception as e:
+                errs.append(f"{mod_name} failed to import: {type(e).__name__}: {e}")
+                return False, 0, 0, errs
+        from aurexis_workbench import vision_ops, operators as OP, dsl
+        n_ops = 0; n_pred = 0
+        try:
+            vision_ops.register_all()
+            n_ops = len(OP.REGISTRY)
+        except Exception as e:
+            errs.append(f"vision_ops.register_all() raised: {type(e).__name__}: {e}")
+        if VOCAB_PATH.exists():
+            try:
+                parsed = dsl.parse_source(VOCAB_PATH.read_text(encoding="utf-8"))
+                ok_p = [p for p in parsed if p.ok]
+                bad_p = [p for p in parsed if not p.ok]
+                n_pred = len(ok_p)
+                if bad_p:
+                    errs.append(f"vocab.aurex: {len(bad_p)} parse errors")
+            except Exception as e:
+                errs.append(f"vocab.aurex parse raised: {type(e).__name__}: {e}")
+        else:
+            errs.append(f"vocab.aurex missing: {VOCAB_PATH}")
+        return (len(errs) == 0), n_ops, n_pred, errs
+    finally:
+        if str(CORE) in sys.path:
+            sys.path.remove(str(CORE))
+
+
 def audit():
     flags = []
     for f in (CHARTER, BENCHMARKS, PROMISES, TOOL_LADDER):
@@ -184,12 +248,26 @@ def audit():
     promises_text = PROMISES.read_text(encoding="utf-8")
     tools_text = TOOL_LADDER.read_text(encoding="utf-8")
 
-    n_pred, n_ops = parse_predicate_count_from_charter(charter_text)
+    n_pred_charter, n_ops_charter = parse_predicate_count_from_charter(charter_text)
     promises = parse_promises(promises_text)
     tools = parse_tools(tools_text)
     rounds = find_round_docs()
-
     last_round = max((r.n for r in rounds), default=0)
+
+    integrity_ok, n_ops_real, n_pred_real, integ_errs = integrity_check()
+    n_pred = n_pred_real if integrity_ok and n_pred_real > 0 else n_pred_charter
+    n_ops  = n_ops_real  if integrity_ok and n_ops_real  > 0 else n_ops_charter
+    if not integrity_ok:
+        for msg in integ_errs:
+            flags.append({"severity": "FATAL",
+                          "msg": f"INTEGRITY: {msg}"})
+    else:
+        if n_pred_charter and n_pred_real and n_pred_real != n_pred_charter:
+            flags.append({"severity": "WARN",
+                          "msg": f"INTEGRITY: charter says {n_pred_charter} predicates, vocab.aurex parses {n_pred_real}"})
+        if n_ops_charter and n_ops_real and n_ops_real != n_ops_charter:
+            flags.append({"severity": "WARN",
+                          "msg": f"INTEGRITY: charter says {n_ops_charter} operators, register_all() loaded {n_ops_real}"})
 
     n_pending = sum(1 for p in promises if p.status == "pending")
     n_done    = sum(1 for p in promises if p.status == "completed")
@@ -236,6 +314,10 @@ def audit():
         rounds=[asdict(r) for r in rounds],
         flags=flags,
         last_round=last_round,
+        integrity_ok=integrity_ok,
+        integrity_n_ops_loaded=n_ops_real,
+        integrity_n_preds_loaded=n_pred_real,
+        integrity_errors=integ_errs,
     )
 
 
@@ -245,6 +327,8 @@ def render_text(report):
     L.append(f"PHOXELIS AUDIT  -  {report.timestamp}")
     L.append("=" * 78)
     L.append("")
+    integ = "OK" if report.integrity_ok else "FAIL"
+    L.append(f"  integrity:   {integ}  (loaded {report.integrity_n_ops_loaded} ops, {report.integrity_n_preds_loaded} preds)")
     L.append(f"  vocabulary:  {report.n_predicates} predicates, {report.n_operators} operators")
     L.append(f"  rounds:      {len(report.rounds)} round docs found, last = R{report.last_round}")
     L.append(f"  promises:    {report.n_promises_pending} pending, "
@@ -289,10 +373,13 @@ th,td{text-align:left;padding:0.4em 0.6em;border-bottom:1px solid #eee;font-size
 .sev-WARN{background:#ffd}
 .sev-INFO{color:#666}
 .headline{padding:1em;background:#eef;border-left:4px solid #66f;margin:1em 0}
+.integrity-ok{padding:0.5em 1em;background:#dfd;border-left:4px solid #080;margin:1em 0;font-weight:bold}
+.integrity-fail{padding:0.5em 1em;background:#fdd;border-left:4px solid #c00;margin:1em 0;font-weight:bold}
 </style></head>
 <body>
 <h1>Phoxelis Dashboard</h1>
 <div class='timestamp'>audit timestamp: __TS__</div>
+<div class='__INTCLASS__'>integrity check: __INTSTATUS__ (__INTOPS__ ops, __INTPREDS__ predicates loaded from disk)</div>
 <div class='headline'>
 <strong>Categorical first (Round 44-45):</strong> Phoxelis is the first
 image-encoding system whose embedded data survives byte-exact recovery
@@ -315,7 +402,7 @@ filters preserve byte-exact recovery on a 604-byte payload through a
 <div class='row'>
   <div class='card'><div class='v'>__NACTIVE__</div><div class='k'>active scaffolding</div></div>
   <div class='card'><div class='v' style='color:__STAGCOL__'>__NSTAG__</div><div class='k'>stagnant tools</div></div>
-  <div class='card'><div class='v'>__NFATAL__</div><div class='k'>FATAL flags</div></div>
+  <div class='card'><div class='v' style='color:__FATALCOL__'>__NFATAL__</div><div class='k'>FATAL flags</div></div>
   <div class='card'><div class='v'>__NWARN__</div><div class='k'>WARN flags</div></div>
 </div>
 <h2>Recent rounds (last 30)</h2>
@@ -356,6 +443,10 @@ def render_dashboard_html(report):
     out = HTML_TEMPLATE
     repl = {
         "__TS__": report.timestamp,
+        "__INTCLASS__": "integrity-ok" if report.integrity_ok else "integrity-fail",
+        "__INTSTATUS__": "OK" if report.integrity_ok else "FAIL",
+        "__INTOPS__": str(report.integrity_n_ops_loaded),
+        "__INTPREDS__": str(report.integrity_n_preds_loaded),
         "__NPRED__": str(report.n_predicates),
         "__NOPS__": str(report.n_operators),
         "__LAST__": str(report.last_round),
@@ -369,6 +460,7 @@ def render_dashboard_html(report):
         "__NSTAG__": str(report.n_tools_stagnant),
         "__STAGCOL__": "#c00" if report.n_tools_stagnant else "#080",
         "__NFATAL__": str(len(fatal)),
+        "__FATALCOL__": "#c00" if len(fatal) else "#080",
         "__NWARN__": str(len(warn)),
         "__ROWS__": rows,
         "__FLAGROWS__": flag_rows,
