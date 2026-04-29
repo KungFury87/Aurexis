@@ -200,6 +200,40 @@ def _rotated_pair_anisotropy(image_a, image_b):
     return float((a - b) / (a + b + 1e-9))
 
 
+def _aligned_local_polarization_max(image_a, image_b):
+    """Local anisotropy after 90-deg pixel-frame rotation.
+
+    NOT a reliable polarization detector on handheld captures. Round
+    25 control session showed this returns higher values on a matte
+    blanket (p95=0.43) than on a real LCD+glass scene (p95=0.26),
+    because per-pixel anisotropy is dominated by handheld translation
+    noise rather than by polarization. FFT phase-correlation
+    registration did not close the gap. The corresponding predicate
+    `has_local_polarization_signal` was retired in vocab.aurex.
+
+    Kept as an operator (not deleted) because the same alignment +
+    smoothed-anisotropy primitive is useful for future protocols
+    that capture from a fixed mount, and for any predicate that
+    explicitly wants per-pixel comparison after a 90-deg rotation.
+    """
+    from scipy.ndimage import uniform_filter
+    a = np.asarray(image_a, dtype=np.float64)
+    b = np.asarray(image_b, dtype=np.float64)
+    b_aligned = np.rot90(b, k=-1)
+    side = min(a.shape[0], a.shape[1],
+                b_aligned.shape[0], b_aligned.shape[1])
+    ay = (a.shape[0] - side) // 2
+    ax = (a.shape[1] - side) // 2
+    by = (b_aligned.shape[0] - side) // 2
+    bx = (b_aligned.shape[1] - side) // 2
+    A = a[ay:ay + side, ax:ax + side]
+    B = b_aligned[by:by + side, bx:bx + side]
+    A_smooth = uniform_filter(A, size=5, mode="nearest")
+    B_smooth = uniform_filter(B, size=5, mode="nearest")
+    aniso = np.abs(A_smooth - B_smooth) / (A_smooth + B_smooth + 1e-6)
+    return float(np.percentile(aniso, 95))
+
+
 # ---------- Scalar arithmetic ----------
 
 def _abs_s(x): return float(abs(float(x)))
@@ -464,6 +498,60 @@ def _rgb_monochrome_score(color_image):
     mean_chroma = float(chroma.mean())
     # high mean_chroma -> low monochrome score
     return max(0.0, 1.0 - 4.0 * mean_chroma)
+
+
+# ---------- Narrow-band hue ratios (Round 26) ----------
+# Material-detection scalars built from RGB channel ratios. Deliberately
+# kept simple so they're robust across exposure / white-balance shifts:
+# they all use *ratios* of channel means rather than absolute values.
+
+def _vari_score(color_image):
+    """Visible Atmospherically Resistant Index, the visible-band stand-in
+    for NDVI when no near-infrared channel is available.
+
+        VARI = (G - R) / (G + R - B)
+
+    Vegetation reflects green more than red and absorbs blue, so leaves
+    push VARI positive. Sky / water / skin / pavement land near or below
+    zero. Returns the per-pixel mean, clipped to [-1, 1]."""
+    a = _ensure_color(color_image)
+    r = a[..., 0]; g = a[..., 1]; b = a[..., 2]
+    denom = g + r - b
+    safe = np.where(np.abs(denom) > 1e-3, denom, np.sign(denom) * 1e-3 + 1e-3)
+    vari = (g - r) / safe
+    vari = np.clip(vari, -1.0, 1.0)
+    return float(vari.mean())
+
+
+def _red_blue_ratio(color_image):
+    """Mean(R) / mean(B). > 1.0 = warm light source / sunset / incandescent.
+    < 1.0 = cool / overcast / shaded / open sky. Distinct from
+    rgb_warmth_score because it's a pure ratio rather than a weighted
+    sum, so it isolates color-temperature effects from chroma intensity."""
+    a = _ensure_color(color_image)
+    r = float(a[..., 0].mean())
+    b = float(a[..., 2].mean()) + 1e-6
+    return r / b
+
+
+def _skin_tone_fraction(color_image):
+    """Fraction of pixels matching skin chromaticity in YCbCr space.
+
+    Cr = 0.5*R - 0.4187*G - 0.0813*B + 0.5
+    Cb = -0.1687*R - 0.3313*G + 0.5*B + 0.5
+
+    Standard skin chroma window: Cr in [0.53, 0.70], Cb in [0.42, 0.55],
+    plus a mild luma floor so deep shadow pixels don't trigger.
+    Tuned to be permissive across skin tones — not a face detector,
+    just a "scene contains skin-like chromaticity" probe."""
+    a = _ensure_color(color_image)
+    r = a[..., 0]; g = a[..., 1]; b = a[..., 2]
+    y  = 0.299 * r + 0.587 * g + 0.114 * b
+    cr = 0.5 * r - 0.4187 * g - 0.0813 * b + 0.5
+    cb = -0.1687 * r - 0.3313 * g + 0.5 * b + 0.5
+    mask = (y > 0.20) & (cr > 0.53) & (cr < 0.70) \
+              & (cb > 0.42) & (cb < 0.55)
+    return float(mask.mean())
 
 
 def _rgb_dominant_channel_excess(color_image):
@@ -1245,6 +1333,10 @@ def register_all() -> None:
     R("rotated_pair_anisotropy", ("image", "image"), "scalar",
        _rotated_pair_anisotropy,
        "(I0 - I90) / (I0 + I90) for axis-pair captures.")
+    R("aligned_local_polarization_max", ("image", "image"), "scalar",
+       _aligned_local_polarization_max,
+       "95th percentile of local |I0 - I90'|/(I0+I90') after rotating "
+       "axis-90 capture into axis-0's pixel frame.")
     # Scalar arithmetic
     R("abs_s", ("scalar",), "scalar", _abs_s, "Absolute value.")
     R("div_s", ("scalar", "scalar"), "scalar", _div_s, "Scalar divide.")
@@ -1305,6 +1397,13 @@ def register_all() -> None:
     R("rgb_monochrome_score", ("color_image",), "scalar",
        _rgb_monochrome_score,
        "[0,1] greyscale-ness (1=R=G=B).")
+    # Round 26 narrow-band hue ratios for material detection
+    R("vari_score", ("color_image",), "scalar", _vari_score,
+       "Visible Atmospherically Resistant Index (G-R)/(G+R-B). >0 ~ vegetation.")
+    R("red_blue_ratio", ("color_image",), "scalar", _red_blue_ratio,
+       "mean(R)/mean(B). >1 warm light source, <1 cool light source.")
+    R("skin_tone_fraction", ("color_image",), "scalar", _skin_tone_fraction,
+       "Fraction of pixels matching skin chromaticity in YCbCr space.")
     R("rgb_dominant_channel_excess", ("color_image",), "scalar",
        _rgb_dominant_channel_excess,
        "Top channel mean minus average of others.")
@@ -1401,3 +1500,114 @@ def register_all() -> None:
     R("motion_velocity_mean", ("image_stack",), "scalar",
        _motion_velocity_mean,
        "Mean magnitude of frame-pair shifts in pixels.")
+
+    R("dct_block_boundary_energy", ("image",), "scalar",
+       _dct_block_boundary_energy,
+       "Ratio of gradient magnitude at 8x8 block boundaries vs interior; > 1.05 = JPEG signature.")
+
+    # R65: extend the sensor-provenance family started in R64.
+    R("chroma_to_luma_hf_ratio", ("color_image",), "scalar",
+       _chroma_to_luma_hf_ratio,
+       "Ratio of chroma high-frequency energy to luma high-frequency energy. "
+       "JPEG 4:2:0 chroma subsampling drives this <0.5; uncompressed RGB ~1.0.")
+    # R67: axis_aligned_hf_concentration registered but RETIRED as a predicate
+    # source — distributions on Wikimedia 'Screenshots' (median 0.038) and
+    # nature/art (median 0.036) overlap completely; best F1=0.64 useless.
+    # The operator measures axis-aligned-visual-structure generically, NOT
+    # pixel-grid Moiré specifically. Pure digital screenshots are pixel-perfect
+    # renders of underlying content (no Moiré); only camera-photographed-displays
+    # would exhibit the original target signal.  Operator stays registered for
+    # future composite use but no predicate uses it as of R67. See round67.
+    R("axis_aligned_hf_concentration", ("image",), "scalar",
+       _axis_aligned_hf_concentration,
+       "Fraction of FFT energy on the pure H/V axes. RETIRED for screen-"
+       "capture detection per R67 distribution analysis; kept as primitive.")
+    R("highlight_clipped_fraction", ("image",), "scalar",
+       _highlight_clipped_fraction,
+       "Fraction of luma pixels at or above 0.98 (sensor saturation / "
+       "highlight-clipping signature).")
+
+
+def _dct_block_boundary_energy(image):
+    """R64: detect JPEG 8x8 DCT block boundary discontinuities.
+
+    Returns ratio of mean gradient magnitude at 8x8 block boundaries vs
+    interior positions.  ~1.0 means no block structure (PNG / raw); > 1.05
+    typically means JPEG-compressed.  Larger ratio = stronger compression.
+    """
+    import numpy as np
+    arr = image
+    gx = np.abs(np.diff(arr, axis=1))
+    gy = np.abs(np.diff(arr, axis=0))
+    block_x = np.arange(7, gx.shape[1], 8)
+    block_y = np.arange(7, gy.shape[0], 8)
+    if len(block_x) < 1 or len(block_y) < 1:
+        return 1.0
+    interior_x = np.setdiff1d(np.arange(gx.shape[1]), block_x)
+    interior_y = np.setdiff1d(np.arange(gy.shape[0]), block_y)
+    block_mean = (gx[:, block_x].mean() + gy[block_y, :].mean()) / 2
+    interior_mean = (gx[:, interior_x].mean() + gy[interior_y, :].mean()) / 2
+    if interior_mean < 1e-9:
+        return 1.0
+    return float(block_mean / interior_mean)
+
+
+# ---------- R65: more sensor-provenance operators ----------
+
+def _chroma_to_luma_hf_ratio(color_image):
+    """R65: chroma-vs-luma high-frequency energy ratio.
+
+    JPEG 4:2:0 chroma subsampling halves chroma resolution before
+    reconstruction; the resulting Cb/Cr channels carry less high-frequency
+    energy than the Y channel.  Raw / uncompressed RGB has ratio ~1.0.
+    Heavily subsampled JPEG drives the ratio below ~0.5.
+
+    Returns ratio = chroma_HF / luma_HF, clamped to a finite scalar.
+    """
+    import numpy as np
+    a = _ensure_color(color_image)
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    # ITU-R BT.601 luma + chroma
+    Y  =  0.299 * R + 0.587 * G + 0.114 * B
+    Cb = -0.169 * R - 0.331 * G + 0.500 * B
+    Cr =  0.500 * R - 0.419 * G - 0.081 * B
+    # 3x3 Laplacian as high-frequency probe
+    def lap_std(ch):
+        c = ch[1:-1, 1:-1]
+        n = ch[:-2, 1:-1]; s = ch[2:, 1:-1]
+        e = ch[1:-1, 2:]; w = ch[1:-1, :-2]
+        return float(np.std(4 * c - n - s - e - w))
+    luma_hf  = lap_std(Y)
+    chroma_hf = (lap_std(Cb) + lap_std(Cr)) / 2.0
+    if luma_hf < 1e-6:
+        return 1.0
+    return float(chroma_hf / luma_hf)
+
+
+def _axis_aligned_hf_concentration(image):
+    """R65: FFT energy concentrated on the pure H/V axes.
+
+    Method: |FFT| of mean-subtracted image, zero out DC, then
+        fraction = (sum on row 0 + sum on column 0) / sum total.
+    Returns a fraction in [0, 1].
+    """
+    arr = np.asarray(image, dtype=np.float64)
+    H, W = arr.shape
+    if H < 16 or W < 16:
+        return 0.0
+    arr = arr - arr.mean()
+    magF = np.abs(np.fft.fft2(arr))
+    magF[0, 0] = 0.0
+    total = magF.sum()
+    if total < 1e-9:
+        return 0.0
+    on_axis = magF[0, :].sum() + magF[:, 0].sum()
+    return float(on_axis / total)
+
+
+def _highlight_clipped_fraction(image):
+    """R65: fraction of luma pixels at or above the saturation threshold (0.98)."""
+    arr = np.asarray(image, dtype=np.float64)
+    if arr.size == 0:
+        return 0.0
+    return float((arr >= 0.98).mean())

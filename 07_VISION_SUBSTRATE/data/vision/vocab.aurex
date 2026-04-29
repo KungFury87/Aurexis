@@ -47,6 +47,34 @@ predicate has_polarization_signal
   body    gt(abs_s(rotated_pair_anisotropy(cap_axis_0, cap_axis_90)), 0.10)
 
 
+# RETIRED in Round 25.
+#
+# `has_local_polarization_signal` was added in Round 24 to catch
+# localized polarization signals (LCDs, glass at Brewster's angle)
+# that the global `has_polarization_signal` averages away. Round 25
+# captured a control session on a matte non-polarized blanket and
+# found that the local-aware predicate fired HARDER on the control
+# (p95 = 0.43) than on the actual glass+screen scene (p95 = 0.26).
+#
+# Cause: handheld rotation of the phone introduces several cm of
+# translation between the two bursts, and per-pixel anisotropy is
+# dominated by that translation noise rather than by axis-dependent
+# polarization. FFT phase-correlation registration did not close
+# the gap.
+#
+# Methodology lesson: per-pixel difference predicates over physically-
+# rotated handheld captures cannot be trusted without sub-pixel
+# alignment, which requires either a tripod / fixed mount or a
+# rotating polarization filter mounted on the lens (camera body
+# stays fixed).
+#
+#   predicate has_local_polarization_signal
+#     expects cap_axis_0:image, cap_axis_90:image
+#     returns bool
+#     intent  detect_local_polarization_after_alignment
+#     body    gt(aligned_local_polarization_max(cap_axis_0, cap_axis_90), 0.20)
+
+
 predicate has_subpixel_periodicity
   expects raw_bayer:image
   returns bool
@@ -343,6 +371,45 @@ predicate has_low_color_diversity
   returns bool
   intent  pixels_share_a_narrow_color_palette
   body    lt(rgb_palette_diversity(color_scene), 0.08)
+
+
+# ============================================================
+# Vocabulary Round 26 — narrow-band hue ratios for material detection
+#
+# Three predicates that name materials the older hue-bucket vocabulary
+# could only describe abstractly. Vegetation has a specific
+# (G > R, G > B) signature that VARI catches; skin has a specific
+# YCbCr chromaticity window; warm vs cool light source separates
+# from chroma intensity via R/B ratio.
+# ============================================================
+
+predicate has_vegetation_signature
+  expects color_scene:color_image
+  returns bool
+  intent  vari_index_positive_indicating_chlorophyll_reflectance
+  body    gt(vari_score(color_scene), 0.05)
+
+
+predicate has_skin_tone_signature
+  expects color_scene:color_image
+  returns bool
+  intent  meaningful_fraction_of_pixels_in_skin_chromaticity_window
+  body    gt(skin_tone_fraction(color_scene), 0.25)
+
+
+predicate has_warm_color_temperature
+  expects color_scene:color_image
+  returns bool
+  intent  red_to_blue_ratio_above_unity_warm_light_source_or_sunset
+  body    gt(red_blue_ratio(color_scene), 1.10)
+
+
+predicate has_cool_color_temperature
+  expects color_scene:color_image
+  returns bool
+  intent  red_to_blue_ratio_below_unity_overcast_or_open_sky_or_shade
+  body    lt(red_blue_ratio(color_scene), 0.95)
+
 
 # ============================================================
 # Vocabulary v0.6 - HSV hue identification (named wavelength buckets)
@@ -792,3 +859,263 @@ predicate has_screen_subject_signature
   returns bool
   intent  screen_like_AND_centred_subject_signature
   body    AND(gt(screen_likeness_score(scene, row_y), 0.50), gt(center_gradient_concentration(scene), 0.40))
+
+
+# ============================================================
+# L4 compositional predicates (R56 -> R60 promotion)
+#
+# These are L4 predicates: their semantics is a composition over
+# verdicts of other predicates, but the DSL composes operators
+# over typed fields. So the L1 predicate bodies are *inlined*
+# below.  When the DSL eventually grows a predicate_verdict()
+# operator, these can be rewritten in their natural composite
+# form.
+#
+# Promotion criterion (R60): each was IR-clean against the 103-
+# predicate vocabulary on a 36-image web corpus (corpus_state.json,
+# 4 sessions).
+# ============================================================
+
+
+predicate is_indoor_warm_scene
+  expects scene:image, color_scene:color_image
+  returns bool
+  intent  composite_indoor_scene_AND_warm_palette
+  body    AND(AND(OR(lt(mean(scene), 0.45), gt(center_minus_edge_brightness(scene), 0.05)), lt(atmospheric_haze_score(color_scene), 0.10)), gt(sub_s(rgb_warmth_score(color_scene), rgb_coolness_score(color_scene)), 0.10))
+
+
+predicate is_text_dominant_subject
+  expects scene:image, row_y:int
+  returns bool
+  intent  composite_text_like_AND_genuine_text_not_screen
+  body    AND(AND(AND(gt(row_autocorr_peak(scene, row_y), 0.30), gt(high_frequency_residual(scene), 0.15)), gt(edge_density(scene, 1.0), 0.10)), AND(gt(text_likeness_score(scene, row_y), 0.50), gt(sub_s(text_likeness_score(scene, row_y), screen_likeness_score(scene, row_y)), 0.05)))
+
+
+predicate is_high_concept_diversity
+  expects scene:image, color_scene:color_image
+  returns bool
+  intent  composite_polychromatic_AND_many_small_blobs
+  body    AND(gt(hue_diversity_score(color_scene), 0.50), gt_int(blob_count_thresh(scene, 1.5), 15))
+
+
+# R63: LLM-authored predicate from R54, now IR-clean at N=30 cached images (was IR-collided at N=8).
+# This completes the LLM-author-then-validate-then-promote cycle end to end.
+
+predicate has_busy_textured_scene
+  expects scene:image
+  returns bool
+  intent  detect_high_variance_low_orientation_texture_LLM_authored
+  body    AND(gt(std(scene), 0.20), lt(structure_tensor_coherence(scene), 0.30))
+
+
+# R64: first sensor-provenance predicate.
+# Detects JPEG 8x8 DCT block-boundary discontinuities — a signature of
+# the capture/transmission pipeline rather than the scene content itself.
+# This opens a new measurement family: properties of HOW the image was
+# produced, not WHAT it depicts.
+
+predicate is_jpeg_compressed
+  expects scene:image
+  returns bool
+  intent  detect_capture_pipeline_jpeg_compression_signature
+  body    gt(dct_block_boundary_energy(scene), 1.05)
+
+
+# R65: sensor-provenance family extended.  Two new predicates from the
+# round (has_chroma_subsampled_signature, has_clipped_highlights) were
+# IR-clean against the N=42 cached corpus and are promoted here.
+#
+# R67 update: the third candidate (has_axis_aligned_pixel_grid, gated on
+# axis_aligned_hf_concentration > 0.30) is now RETIRED, not deferred.
+# R67 pulled 14 Wikimedia 'Screenshots' images and compared their
+# axis_aligned_hf distribution (range 0.024-0.104, median 0.038) to the
+# R66 native nature/art corpus (range 0.010-0.120, median 0.036).
+# Distributions overlap completely; best threshold gives 47% precision,
+# 100% recall, F1=0.64 — useless as a discriminator.  The operator
+# measures axis-aligned visual structure generically; pure digital
+# screenshots are pixel-perfect renders, not camera-of-display photos,
+# so the originally-imagined Moiré signature isn't actually present.
+# See round67_screen_capture/round67_audit.json + ROUND_67 doc.
+
+predicate has_chroma_subsampled_signature
+  expects color_scene:color_image
+  returns bool
+  intent  detect_capture_pipeline_chroma_subsampling_4_2_0
+  body    lt(chroma_to_luma_hf_ratio(color_scene), 0.50)
+
+
+predicate has_clipped_highlights
+  expects scene:image
+  returns bool
+  intent  detect_capture_pipeline_sensor_highlight_clipping
+  body    gt(highlight_clipped_fraction(scene), 0.05)
+
+
+# R68 — batch L3 author-loop. Six IR-clean promotions from a single round.
+# Two candidates deferred:
+#   - has_strongly_warm_palette: 42/42 saturated on R55 LANCZOS corpus; the
+#     threshold 0.20 is too lax for this picsum/iNat/MET mix.  Defer pending
+#     either a stricter threshold or a wider corpus.
+#   - is_likely_jpeg_pipeline_output (L4 composite, AND of dct_block_boundary
+#     > 1.05 AND chroma_to_luma_hf < 0.50): IR-collided with is_jpeg_compressed
+#     at the LANCZOS corpus because chroma subsampling is universal there;
+#     expected to dissolve at native + mixed corpus where JPEG-blocky is
+#     variable but chroma subsampling is universal — the AND should then
+#     equal is_jpeg_compressed, which IS the collision.  Predicate is
+#     architecturally redundant; not promoted, not retired.
+
+predicate is_low_contrast_image
+  expects scene:image
+  returns bool
+  intent  detect_flat_low_dynamic_range_scene
+  body    lt(std(scene), 0.10)
+
+
+predicate is_high_contrast_image
+  expects scene:image
+  returns bool
+  intent  detect_punchy_high_dynamic_range_scene
+  body    gt(std(scene), 0.30)
+
+
+predicate has_oversaturated_palette
+  expects color_scene:color_image
+  returns bool
+  intent  detect_vivid_or_cartoon_color_scenes
+  body    gt(rgb_saturation_mean(color_scene), 0.50)
+
+
+predicate has_strong_blur_signature
+  expects scene:image
+  returns bool
+  intent  detect_heavily_blurred_or_out_of_focus_scenes
+  body    lt(edge_density(scene, 1.0), 0.03)
+
+
+predicate is_overexposed_dominant
+  expects scene:image
+  returns bool
+  intent  detect_scene_dominated_by_bright_pixels
+  body    gt(bright_pixel_fraction(scene, 0.85), 0.50)
+
+
+predicate is_underexposed_dominant
+  expects scene:image
+  returns bool
+  intent  detect_scene_dominated_by_dark_pixels
+  body    gt(dark_pixel_fraction(scene, 0.15), 0.50)
+
+
+# R69 — has_strongly_warm_palette promoted with corrected threshold.
+# Original R68 threshold 0.20 saturated to 100% on the cached corpus
+# (corpus warmth distribution is min=0.40 max=0.61 — the threshold was
+# below the entire corpus floor). R69 swept thresholds 0.20..0.54;
+# 0.54 gives 28/76 = 36.84% fire rate, IR-clean. Promoted at this
+# value — see round69_combined_threshold/round69_audit.json.
+
+predicate has_strongly_warm_palette
+  expects color_scene:color_image
+  returns bool
+  intent  detect_sunset_or_strongly_warm_color_scenes
+  body    gt(rgb_warmth_score(color_scene), 0.54)
+
+
+# R70 — second batch L3 author-loop. 5/10 IR-clean promotions.
+# Five candidates deferred:
+#   - has_strong_vertical_orientation_mass: 2/76 below useful firing rate
+#   - has_diagonal_orientation_mass: IR-collides with existing has_diagonal_signature
+#   - has_bright_center_dark_edges: IR-collides with has_center_weighted_lighting (R17)
+#   - has_dark_center_bright_edges: IR-collides with has_edge_weighted_lighting (R17)
+#   - is_vivid_high_contrast_scene: 3/76 below useful rate + small-N borderline
+# The IR collisions are useful: they re-discovered R17 lighting predicates.
+# Substrate is denser than initially assumed; future LLM-author rounds
+# should consult existing vocabulary first.
+
+predicate has_pure_grayscale_palette
+  expects color_scene:color_image
+  returns bool
+  intent  detect_grayscale_or_near_monochrome_image
+  body    lt(rgb_saturation_mean(color_scene), 0.05)
+
+
+predicate has_dominant_blue_channel
+  expects color_scene:color_image
+  returns bool
+  intent  detect_blue_channel_dominance_sky_water
+  body    gt(rgb_channel_mean(color_scene, "b"), 0.55)
+
+
+predicate has_dominant_green_channel
+  expects color_scene:color_image
+  returns bool
+  intent  detect_green_channel_dominance_foliage
+  body    gt(rgb_channel_mean(color_scene, "g"), 0.55)
+
+
+predicate has_strong_horizontal_orientation_mass
+  expects scene:image
+  returns bool
+  intent  scene_orientation_histogram_dominated_by_horizontal_bin
+  body    gt(orientation_horizontal_mass(scene), 0.45)
+
+
+predicate is_blurry_low_contrast_scene
+  expects scene:image
+  returns bool
+  intent  L4_composite_blur_AND_low_contrast
+  body    AND(lt(edge_density(scene, 1.0), 0.05), lt(std(scene), 0.15))
+
+
+# R73 — third batch L3 author-loop. 6/14 IR-clean promotions.
+# Eight candidates deferred:
+#   - has_extreme_jpeg_compression (3/76 too low; dct_block threshold 1.30 too strict)
+#   - has_red_blue_imbalance_cool (3/76 corpus has few cool-dominant scenes)
+#   - has_high_corner_count (0/76; downsampled imagery doesn't cross threshold 60)
+#   - has_low_corner_count (76/76 saturated; threshold 5 too lax for downsampled)
+#   - has_extremely_saturated_palette (3/76 too low; threshold 0.65 corpus-extreme)
+#   - has_strong_focus (1/76 too low; high_freq_residual > 0.50 on downsampled rare)
+#   - has_strongly_uniform_field (3/76; very few uniform scenes in corpus)
+#   - is_dark_warm_scene (1/76; L4 composite needs more positive cases)
+# All eight are *threshold-mismatch* deferrals (not architectural problems);
+# could promote with calibrated thresholds in a future round.
+
+predicate has_extreme_chroma_subsampling
+  expects color_scene:color_image
+  returns bool
+  intent  detect_aggressive_chroma_subsampling_low_quality_jpeg
+  body    lt(chroma_to_luma_hf_ratio(color_scene), 0.20)
+
+
+predicate is_strongly_blue_dominated
+  expects color_scene:color_image
+  returns bool
+  intent  detect_strong_cool_blue_palette
+  body    gt(rgb_channel_mean(color_scene, "b"), 0.65)
+
+
+predicate has_red_blue_imbalance_warm
+  expects color_scene:color_image
+  returns bool
+  intent  detect_R_significantly_above_B_warm_or_sunset
+  body    gt(red_blue_ratio(color_scene), 1.40)
+
+
+predicate has_minimal_palette_diversity
+  expects color_scene:color_image
+  returns bool
+  intent  detect_strongly_limited_color_palette
+  body    lt(rgb_palette_diversity(color_scene), 0.20)
+
+
+predicate is_overexposed_low_saturation
+  expects scene:image, color_scene:color_image
+  returns bool
+  intent  L4_composite_blown_highlights_AND_desaturated
+  body    AND(gt(highlight_clipped_fraction(scene), 0.10), lt(rgb_saturation_mean(color_scene), 0.20))
+
+
+predicate is_textured_blue_dominant
+  expects scene:image, color_scene:color_image
+  returns bool
+  intent  L4_composite_busy_texture_AND_blue_dominance_water_or_sky
+  body    AND(gt(structure_tensor_coherence(scene), 0.30), gt(rgb_channel_mean(color_scene, "b"), 0.50))
