@@ -1500,3 +1500,114 @@ def register_all() -> None:
     R("motion_velocity_mean", ("image_stack",), "scalar",
        _motion_velocity_mean,
        "Mean magnitude of frame-pair shifts in pixels.")
+
+    R("dct_block_boundary_energy", ("image",), "scalar",
+       _dct_block_boundary_energy,
+       "Ratio of gradient magnitude at 8x8 block boundaries vs interior; > 1.05 = JPEG signature.")
+
+    # R65: extend the sensor-provenance family started in R64.
+    R("chroma_to_luma_hf_ratio", ("color_image",), "scalar",
+       _chroma_to_luma_hf_ratio,
+       "Ratio of chroma high-frequency energy to luma high-frequency energy. "
+       "JPEG 4:2:0 chroma subsampling drives this <0.5; uncompressed RGB ~1.0.")
+    # R67: axis_aligned_hf_concentration registered but RETIRED as a predicate
+    # source — distributions on Wikimedia 'Screenshots' (median 0.038) and
+    # nature/art (median 0.036) overlap completely; best F1=0.64 useless.
+    # The operator measures axis-aligned-visual-structure generically, NOT
+    # pixel-grid Moiré specifically. Pure digital screenshots are pixel-perfect
+    # renders of underlying content (no Moiré); only camera-photographed-displays
+    # would exhibit the original target signal.  Operator stays registered for
+    # future composite use but no predicate uses it as of R67. See round67.
+    R("axis_aligned_hf_concentration", ("image",), "scalar",
+       _axis_aligned_hf_concentration,
+       "Fraction of FFT energy on the pure H/V axes. RETIRED for screen-"
+       "capture detection per R67 distribution analysis; kept as primitive.")
+    R("highlight_clipped_fraction", ("image",), "scalar",
+       _highlight_clipped_fraction,
+       "Fraction of luma pixels at or above 0.98 (sensor saturation / "
+       "highlight-clipping signature).")
+
+
+def _dct_block_boundary_energy(image):
+    """R64: detect JPEG 8x8 DCT block boundary discontinuities.
+
+    Returns ratio of mean gradient magnitude at 8x8 block boundaries vs
+    interior positions.  ~1.0 means no block structure (PNG / raw); > 1.05
+    typically means JPEG-compressed.  Larger ratio = stronger compression.
+    """
+    import numpy as np
+    arr = image
+    gx = np.abs(np.diff(arr, axis=1))
+    gy = np.abs(np.diff(arr, axis=0))
+    block_x = np.arange(7, gx.shape[1], 8)
+    block_y = np.arange(7, gy.shape[0], 8)
+    if len(block_x) < 1 or len(block_y) < 1:
+        return 1.0
+    interior_x = np.setdiff1d(np.arange(gx.shape[1]), block_x)
+    interior_y = np.setdiff1d(np.arange(gy.shape[0]), block_y)
+    block_mean = (gx[:, block_x].mean() + gy[block_y, :].mean()) / 2
+    interior_mean = (gx[:, interior_x].mean() + gy[interior_y, :].mean()) / 2
+    if interior_mean < 1e-9:
+        return 1.0
+    return float(block_mean / interior_mean)
+
+
+# ---------- R65: more sensor-provenance operators ----------
+
+def _chroma_to_luma_hf_ratio(color_image):
+    """R65: chroma-vs-luma high-frequency energy ratio.
+
+    JPEG 4:2:0 chroma subsampling halves chroma resolution before
+    reconstruction; the resulting Cb/Cr channels carry less high-frequency
+    energy than the Y channel.  Raw / uncompressed RGB has ratio ~1.0.
+    Heavily subsampled JPEG drives the ratio below ~0.5.
+
+    Returns ratio = chroma_HF / luma_HF, clamped to a finite scalar.
+    """
+    import numpy as np
+    a = _ensure_color(color_image)
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    # ITU-R BT.601 luma + chroma
+    Y  =  0.299 * R + 0.587 * G + 0.114 * B
+    Cb = -0.169 * R - 0.331 * G + 0.500 * B
+    Cr =  0.500 * R - 0.419 * G - 0.081 * B
+    # 3x3 Laplacian as high-frequency probe
+    def lap_std(ch):
+        c = ch[1:-1, 1:-1]
+        n = ch[:-2, 1:-1]; s = ch[2:, 1:-1]
+        e = ch[1:-1, 2:]; w = ch[1:-1, :-2]
+        return float(np.std(4 * c - n - s - e - w))
+    luma_hf  = lap_std(Y)
+    chroma_hf = (lap_std(Cb) + lap_std(Cr)) / 2.0
+    if luma_hf < 1e-6:
+        return 1.0
+    return float(chroma_hf / luma_hf)
+
+
+def _axis_aligned_hf_concentration(image):
+    """R65: FFT energy concentrated on the pure H/V axes.
+
+    Method: |FFT| of mean-subtracted image, zero out DC, then
+        fraction = (sum on row 0 + sum on column 0) / sum total.
+    Returns a fraction in [0, 1].
+    """
+    arr = np.asarray(image, dtype=np.float64)
+    H, W = arr.shape
+    if H < 16 or W < 16:
+        return 0.0
+    arr = arr - arr.mean()
+    magF = np.abs(np.fft.fft2(arr))
+    magF[0, 0] = 0.0
+    total = magF.sum()
+    if total < 1e-9:
+        return 0.0
+    on_axis = magF[0, :].sum() + magF[:, 0].sum()
+    return float(on_axis / total)
+
+
+def _highlight_clipped_fraction(image):
+    """R65: fraction of luma pixels at or above the saturation threshold (0.98)."""
+    arr = np.asarray(image, dtype=np.float64)
+    if arr.size == 0:
+        return 0.0
+    return float((arr >= 0.98).mean())
