@@ -1119,3 +1119,139 @@ predicate is_textured_blue_dominant
   returns bool
   intent  L4_composite_busy_texture_AND_blue_dominance_water_or_sky
   body    AND(gt(structure_tensor_coherence(scene), 0.30), gt(rgb_channel_mean(color_scene, "b"), 0.50))
+
+
+# R79 — fourth batch L3 author-loop with CORPUS-CALIBRATED thresholds.
+# 8/8 candidates IR-clean — 100% promotion rate, dramatically better than
+# the 43-75% range of R68/R70/R73 batches. Methodology lesson: probe the
+# operator-value distribution on the actual corpus, then choose thresholds
+# at meaningful percentiles, before authoring.
+# See round79_low_coverage_targets/calibration.json for distributions.
+
+predicate has_high_red_channel
+  expects color_scene:color_image
+  returns bool
+  intent  detect_strong_red_channel_above_corpus_p75
+  body    gt(rgb_channel_mean(color_scene, "r"), 0.65)
+
+
+predicate has_pronounced_diagonal_orientation
+  expects scene:image
+  returns bool
+  intent  detect_strongly_diagonal_orientation_distribution
+  body    gt(orientation_diagonal_mass(scene), 0.40)
+
+
+predicate has_high_screen_likeness
+  expects scene:image, row_y:int
+  returns bool
+  intent  detect_high_screen_likeness_score_above_corpus_median
+  body    gt(screen_likeness_score(scene, row_y), 0.60)
+
+
+predicate has_many_bright_spots
+  expects scene:image
+  returns bool
+  intent  detect_dense_bright_spot_pattern
+  body    gt_int(bright_spot_count(scene, 0.92), 50)
+
+
+predicate has_negative_vari_palette
+  expects color_scene:color_image
+  returns bool
+  intent  detect_anti_vegetation_color_signature
+  body    lt(vari_score(color_scene), -0.05)
+
+
+predicate has_extreme_text_likeness
+  expects scene:image, row_y:int
+  returns bool
+  intent  detect_strongly_text_like_local_signal
+  body    gt(text_likeness_score(scene, row_y), 0.95)
+
+
+predicate has_balanced_diagonal_orientation
+  expects scene:image
+  returns bool
+  intent  detect_moderate_diagonal_mass_neither_dominant_nor_absent
+  body    AND(gt(orientation_diagonal_mass(scene), 0.30), lt(orientation_diagonal_mass(scene), 0.45))
+
+
+predicate is_high_red_warm_scene
+  expects scene:image, color_scene:color_image
+  returns bool
+  intent  L4_composite_strong_red_channel_AND_warm_palette
+  body    AND(gt(rgb_channel_mean(color_scene, "r"), 0.55), gt(rgb_warmth_score(color_scene), 0.54))
+
+
+# R82 — fifth calibrated batch L3 author-loop. 10/10 IR-clean (100%);
+# cumulative across 5 batches (R68/R70/R73/R79/R82) = 35/50 = 70%.
+
+predicate has_minimal_negative_space
+  expects scene:image
+  returns bool
+  intent  detect_busy_cluttered_scene_low_uniform_field
+  body    lt(negative_space_fraction(scene), 0.30)
+
+
+predicate has_dominant_negative_space
+  expects scene:image
+  returns bool
+  intent  detect_mostly_empty_scene
+  body    gt(negative_space_fraction(scene), 0.80)
+
+
+predicate has_skin_tone_presence
+  expects color_scene:color_image
+  returns bool
+  intent  detect_significant_skin_tone_pixel_fraction
+  body    gt(skin_tone_fraction(color_scene), 0.10)
+
+
+predicate has_meaningful_color
+  expects color_scene:color_image
+  returns bool
+  intent  detect_majority_pixels_with_meaningful_chroma
+  body    gt(meaningfully_colored_fraction(color_scene), 0.50)
+
+
+predicate has_strong_horizontal_balance
+  expects scene:image
+  returns bool
+  intent  detect_top_bottom_split_well_balanced
+  body    gt(horizontal_split_balance(scene), 0.90)
+
+
+predicate has_strong_vertical_balance
+  expects scene:image
+  returns bool
+  intent  detect_left_right_split_well_balanced
+  body    gt(vertical_split_balance(scene), 0.90)
+
+
+predicate has_strong_perspective
+  expects scene:image
+  returns bool
+  intent  detect_strong_perspective_convergence_above_corpus_p75
+  body    gt(perspective_convergence_strength(scene), 0.15)
+
+
+predicate has_clear_horizon
+  expects scene:image
+  returns bool
+  intent  detect_clear_horizon_signature_above_corpus_median
+  body    gt(horizon_likeness_score(scene), 0.60)
+
+
+predicate has_strong_channel_excess
+  expects color_scene:color_image
+  returns bool
+  intent  detect_strongly_dominant_channel_above_corpus_p75
+  body    gt(rgb_dominant_channel_excess(color_scene), 0.10)
+
+
+predicate has_top_to_bottom_focus_gradient
+  expects scene:image
+  returns bool
+  intent  detect_top_sharper_than_bottom_focus_drop
+  body    gt(focus_blur_gradient(scene), 0.20)
