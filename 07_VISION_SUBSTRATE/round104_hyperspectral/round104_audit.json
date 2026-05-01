@@ -1,0 +1,126 @@
+{
+  "round": "R104",
+  "date": "2026-05-01",
+  "method": "5 synthetic 31-band hyperspectral cubes (400-700nm, 10nm steps)",
+  "n_scenes": 5,
+  "n_bands": 31,
+  "n_base_predicates": 146,
+  "n_hyperspectral_predicates": 3,
+  "hyperspectral_predicates": [
+    "has_narrow_spectral_peak",
+    "has_broad_spectral_distribution",
+    "has_red_shifted_centroid"
+  ],
+  "discrimination": {
+    "has_narrow_spectral_peak": {
+      "fires_on": [
+        "green_plastic",
+        "red_paint"
+      ],
+      "n_fires": 2,
+      "ir_clean": true
+    },
+    "has_broad_spectral_distribution": {
+      "fires_on": [
+        "daylight"
+      ],
+      "n_fires": 1,
+      "ir_clean": true
+    },
+    "has_red_shifted_centroid": {
+      "fires_on": [
+        "red_paint"
+      ],
+      "n_fires": 1,
+      "ir_clean": true
+    }
+  },
+  "ir_clean_count": 3,
+  "pairwise_J_baseline_146": 0.6752780454315078,
+  "pairwise_J_with_hyperspectral_149": 0.6576916226737055,
+  "delta_J_mean": -0.017586422757802294,
+  "key_pair_vegetation_vs_green_plastic": {
+    "base_J": 0.897,
+    "full_J": 0.875,
+    "delta": -0.022
+  },
+  "all_pair_deltas": {
+    "vegetation vs green_plastic": {
+      "base_J": 0.897,
+      "full_J": 0.875,
+      "delta": -0.022
+    },
+    "vegetation vs red_paint": {
+      "base_J": 0.583,
+      "full_J": 0.56,
+      "delta": -0.023
+    },
+    "vegetation vs incandescent": {
+      "base_J": 0.733,
+      "full_J": 0.733,
+      "delta": 0.0
+    },
+    "vegetation vs daylight": {
+      "base_J": 0.646,
+      "full_J": 0.633,
+      "delta": -0.013
+    },
+    "green_plastic vs red_paint": {
+      "base_J": 0.583,
+      "full_J": 0.58,
+      "delta": -0.003
+    },
+    "green_plastic vs incandescent": {
+      "base_J": 0.696,
+      "full_J": 0.681,
+      "delta": -0.015
+    },
+    "green_plastic vs daylight": {
+      "base_J": 0.681,
+      "full_J": 0.653,
+      "delta": -0.028
+    },
+    "red_paint vs incandescent": {
+      "base_J": 0.739,
+      "full_J": 0.708,
+      "delta": -0.031
+    },
+    "red_paint vs daylight": {
+      "base_J": 0.5,
+      "full_J": 0.474,
+      "delta": -0.026
+    },
+    "incandescent vs daylight": {
+      "base_J": 0.694,
+      "full_J": 0.68,
+      "delta": -0.014
+    }
+  },
+  "rgb_means_per_scene": {
+    "vegetation": [
+      78,
+      104,
+      64
+    ],
+    "green_plastic": [
+      55,
+      99,
+      45
+    ],
+    "red_paint": [
+      99,
+      43,
+      36
+    ],
+    "incandescent": [
+      96,
+      76,
+      48
+    ],
+    "daylight": [
+      96,
+      96,
+      92
+    ]
+  }
+}
