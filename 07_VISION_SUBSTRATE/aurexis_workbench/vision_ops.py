@@ -1527,6 +1527,9 @@ def register_all() -> None:
        "Fraction of luma pixels at or above 0.98 (sensor saturation / "
        "highlight-clipping signature).")
 
+    # R107 promotions: depth + hyperspectral ops backing 5 IR-clean predicates
+    register_r107_ops()
+
 
 def _dct_block_boundary_energy(image):
     """R64: detect JPEG 8x8 DCT block boundary discontinuities.
@@ -1611,3 +1614,55 @@ def _highlight_clipped_fraction(image):
     if arr.size == 0:
         return 0.0
     return float((arr >= 0.98).mean())
+
+
+# ---------- R107: depth + hyperspectral primitives (vocabulary v0.13) ------
+# Promoted from R103/R104/R105 after N=20 corpus-scale audit (R107).
+# 4 of 9 candidate predicates passed IR-clean + fire-rate + collision tests;
+# these 4 operators back the 5 promoted predicates.
+
+def _mean_depth_op(depth_field):
+    """R103: mean depth value over the field [0,1]."""
+    return float(np.mean(depth_field))
+
+
+def _foreground_fraction_op(depth_field, threshold):
+    """R103: fraction of pixels closer than threshold."""
+    return float(np.mean(depth_field < float(threshold)))
+
+
+def _narrow_peak_score_op(spectral):
+    """R104: max-band-energy / total-band-energy. High = single dominant
+    wavelength; low = spread across many bands (broadband / flat)."""
+    band_energy = spectral.sum(axis=(0, 1))
+    return float(band_energy.max() / (band_energy.sum() + 1e-9))
+
+
+def _chlorophyll_red_edge_op(spectral):
+    """R105: red-edge step (NIR plateau - red_dip) / (NIR + red_dip).
+    Vegetation chlorophyll signature: ~0.83 (chlorophyll absorbs at 670nm,
+    reflects strongly past 680nm); incandescent ramp ~0.04; flat ~0.0.
+    Last 3 bands assumed ~680-700nm; bands 26-27 assumed ~660-670nm
+    for a 31-band 400-700nm cube."""
+    band_energy = spectral.sum(axis=(0, 1))
+    nir = band_energy[-3:].mean()
+    red_dip = band_energy[26:28].mean()
+    return float((nir - red_dip) / (nir + red_dip + 1e-9))
+
+
+def register_r107_ops() -> None:
+    """Register R107-promoted depth + hyperspectral operators.
+    Called automatically by register_all() — see end of register_all."""
+    R = ops.register
+    R("mean_depth", ("depth",), "scalar", _mean_depth_op,
+      "Mean depth value over the field [0,1]. R103.")
+    R("foreground_fraction", ("depth", "scalar"), "scalar",
+      _foreground_fraction_op,
+      "Fraction of pixels closer than threshold. R103.")
+    R("narrow_peak_score", ("hyperspectral",), "scalar",
+      _narrow_peak_score_op,
+      "max-band / total band energy. High = single dominant wavelength. R104.")
+    R("chlorophyll_red_edge", ("hyperspectral",), "scalar",
+      _chlorophyll_red_edge_op,
+      "Red-edge step (NIR - red_dip) / (NIR + red_dip). Vegetation "
+      "signature ~0.83, incandescent ~0.04, flat ~0.0. R105.")

@@ -1,0 +1,124 @@
+{
+  "round": "R109",
+  "date": "2026-05-01",
+  "method": "IR audit on N=76 cached real-world corpus (R55 + R85)",
+  "n_corpus": 76,
+  "n_failed_loads": 0,
+  "by_source": {
+    "inat": 4,
+    "met": 4,
+    "osm": 10,
+    "picsum": 13,
+    "wm": 11,
+    "diagrams": 7,
+    "histo": 5,
+    "microscopy": 8,
+    "naturalearth": 3,
+    "paintings": 6,
+    "sat": 5
+  },
+  "n_predicates_total": 151,
+  "fire_rate_distribution": {
+    "DEAD (0)": 35,
+    "LOW (1-5%)": 7,
+    "HEALTHY (5-95%)": 109,
+    "HIGH (95-100%)": 0,
+    "ALWAYS (100%)": 0
+  },
+  "n_dead_predicates": 35,
+  "dead_predicates": [
+    "has_subframe_motion",
+    "has_global_brightness_drift",
+    "has_polarization_signal",
+    "has_subpixel_periodicity",
+    "has_spectral_band_anomaly",
+    "has_repetitive_horizontal_structure",
+    "has_text_like_signature",
+    "has_screen_like_signature",
+    "has_real_motion_validated",
+    "face_is_dominant_concept",
+    "text_is_dominant_concept",
+    "screen_is_dominant_concept",
+    "horizon_is_dominant_concept",
+    "has_genuine_face_not_screen",
+    "has_screen_displaying_face",
+    "has_genuine_text_not_screen",
+    "has_screen_displaying_text",
+    "no_named_concept_dominant",
+    "has_shallow_depth_of_field",
+    "has_motion_rightward",
+    "has_motion_leftward",
+    "has_motion_downward",
+    "has_motion_upward",
+    "has_coherent_motion",
+    "has_chaotic_motion",
+    "has_fast_motion",
+    "has_screen_subject_signature",
+    "is_text_dominant_subject",
+    "has_high_screen_likeness",
+    "has_extreme_text_likeness"
+  ],
+  "n_always_firing": 0,
+  "always_firing_predicates": [],
+  "n_healthy_predicates": 109,
+  "n_equivalence_classes": 117,
+  "n_multi_member_eq_classes": 1,
+  "multi_member_eq_classes_largest": [
+    [
+      35,
+      [
+        "has_subframe_motion",
+        "has_global_brightness_drift",
+        "has_polarization_signal",
+        "has_subpixel_periodicity",
+        "has_spectral_band_anomaly",
+        "has_repetitive_horizontal_structure",
+        "has_text_like_signature",
+        "has_screen_like_signature"
+      ]
+    ]
+  ],
+  "n_near_collisions_J_geq_0_95": 5,
+  "near_collisions_top_5": [
+    [
+      "has_gradient_energy",
+      "has_circular_signature",
+      0.972
+    ],
+    [
+      "has_gradient_energy",
+      "has_many_corners",
+      0.986
+    ],
+    [
+      "has_gradient_energy",
+      "has_chroma_subsampled_signature",
+      0.972
+    ],
+    [
+      "has_circular_signature",
+      "has_many_corners",
+      0.958
+    ],
+    [
+      "has_many_corners",
+      "has_chroma_subsampled_signature",
+      0.959
+    ]
+  ],
+  "effective_rank_90pct_energy": 32,
+  "effective_rank_99pct_energy": 58,
+  "r107_predicates_fire_count_in_RGB_only_corpus": "all 0 expected \u2014 these need depth/hyperspectral fields",
+  "r107_fire": {
+    "has_far_field_dominance": 0,
+    "has_narrow_spectral_peak": 0,
+    "is_distant_vegetation": 0,
+    "is_close_chromatic_object": 0,
+    "is_uniform_lit_far_field": 0
+  },
+  "comparison": {
+    "R77_effective_rank_90pct": "31 / 76",
+    "R85_effective_rank_90pct": "39 / 110",
+    "R109_effective_rank_90pct": "32 / 76"
+  }
+}
