@@ -1,0 +1,55 @@
+{
+  "round": "R128",
+  "date": "2026-05-01",
+  "method": "phoxel_field combining cube (left, offset (-1, 0, 0)) + sphere (right, offset (+1, 0, 0)) \u2014 4-viewpoint test",
+  "phoxel_field_size": 2428,
+  "viewpoints_azimuth_deg": [
+    0,
+    45,
+    90,
+    135
+  ],
+  "n_predicates": 151,
+  "pairwise_jaccards_same_multiobj": [
+    [
+      0,
+      45,
+      0.571
+    ],
+    [
+      0,
+      90,
+      0.396
+    ],
+    [
+      0,
+      135,
+      0.432
+    ],
+    [
+      45,
+      90,
+      0.488
+    ],
+    [
+      45,
+      135,
+      0.541
+    ],
+    [
+      90,
+      135,
+      0.611
+    ]
+  ],
+  "mean_J": 0.5065,
+  "min_J": 0.396,
+  "max_J": 0.611,
+  "comparison": {
+    "R100_2d_affine": 0.758,
+    "R124_cube_3d": 0.706,
+    "R126_sphere_3d": 0.833,
+    "R128_cube_plus_sphere_3d": 0.5065
+  },
+  "verdict": "FAIL \u2014 multi-object scenes break the stability claim"
+}

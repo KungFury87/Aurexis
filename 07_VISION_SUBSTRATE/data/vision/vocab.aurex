@@ -101,7 +101,7 @@ predicate has_gradient_energy
   expects scene:image
   returns bool
   intent  scene_contains_any_oriented_structure
-  body    gt(gradient_energy(scene), 0.0001)
+  body    gt(gradient_energy(scene), 0.003)
 
 
 predicate is_uniform_field
@@ -607,7 +607,7 @@ predicate has_many_corners
   expects scene:image
   returns bool
   intent  many_local_2d_corners_dense_object_boundaries
-  body    gt_int(corner_count_thresh(scene, 0.04), 50)
+  body    gt_int(corner_count_thresh(scene, 0.04), 2000)
 
 
 predicate has_texture_compression_gradient
@@ -1255,3 +1255,56 @@ predicate has_top_to_bottom_focus_gradient
   returns bool
   intent  detect_top_sharper_than_bottom_focus_drop
   body    gt(focus_blur_gradient(scene), 0.20)
+
+
+# ============================================================
+# R107 PROMOTIONS (vocabulary v0.13)
+#
+# 5 of 9 candidate predicates from R103-R105 passed the N=20
+# corpus-scale audit (R107) on three tests:
+#   1. fire rate in [10%, 70%]
+#   2. equivalence-class clean (no other pred has identical fire pattern)
+#   3. max Jaccard with existing 146 < 0.95 (no near-collision)
+#
+# Retired with documented reason in R107 audit:
+#   has_shallow_depth_signal    — eq-class collision with has_dominant_foreground
+#   has_dominant_foreground     — eq-class collision with has_shallow_depth_signal
+#   has_broad_spectral_distribution — Jaccard 1.00 with has_low_saturation
+#   has_red_shifted_centroid    — Jaccard 1.00 with has_red_dominant
+#
+# Vocabulary count: 146 -> 151
+# ============================================================
+
+predicate has_far_field_dominance
+  expects depth_field:depth
+  returns bool
+  intent  detect_distant_dominant_scene_via_depth
+  body    gt(mean_depth(depth_field), 0.7)
+
+
+predicate has_narrow_spectral_peak
+  expects spectral:hyperspectral
+  returns bool
+  intent  detect_single_dominant_wavelength_signature
+  body    gt(narrow_peak_score(spectral), 0.075)
+
+
+predicate is_distant_vegetation
+  expects depth_field:depth, spectral:hyperspectral
+  returns bool
+  intent  cross_modal_far_depth_AND_chlorophyll_red_edge_for_vegetation
+  body    AND(gt(mean_depth(depth_field), 0.7), gt(chlorophyll_red_edge(spectral), 0.3))
+
+
+predicate is_close_chromatic_object
+  expects depth_field:depth, spectral:hyperspectral, foreground_threshold:scalar
+  returns bool
+  intent  cross_modal_close_subject_AND_narrow_spectral_peak
+  body    AND(gt(foreground_fraction(depth_field, foreground_threshold), 0.25), gt(narrow_peak_score(spectral), 0.075))
+
+
+predicate is_uniform_lit_far_field
+  expects depth_field:depth, spectral:hyperspectral
+  returns bool
+  intent  cross_modal_far_field_AND_broad_spectrum_for_diffuse_distant
+  body    AND(gt(mean_depth(depth_field), 0.7), lt(narrow_peak_score(spectral), 0.06))

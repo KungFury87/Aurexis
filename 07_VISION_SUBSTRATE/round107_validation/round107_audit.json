@@ -1,0 +1,296 @@
+{
+  "round": "R107",
+  "date": "2026-05-01",
+  "method": "4 depth \u00d7 5 spectral = 20 systematic scenes",
+  "n_scenes": 20,
+  "n_base_predicates": 146,
+  "n_experimental_predicates": 9,
+  "experimental_predicates": [
+    "has_shallow_depth_signal",
+    "has_dominant_foreground",
+    "has_far_field_dominance",
+    "has_narrow_spectral_peak",
+    "has_broad_spectral_distribution",
+    "has_red_shifted_centroid",
+    "is_distant_vegetation",
+    "is_close_chromatic_object",
+    "is_uniform_lit_far_field"
+  ],
+  "per_predicate_analysis": {
+    "has_shallow_depth_signal": {
+      "fire_rate": 0.25,
+      "n_fires": 5,
+      "fires_on": [
+        "close_chloro",
+        "close_n_green",
+        "close_n_red",
+        "close_warm",
+        "close_flat"
+      ],
+      "rate_in_band_10_to_70_pct": true,
+      "equivalence_class_collisions": [
+        "has_dominant_foreground"
+      ],
+      "ir_clean_no_eq_collision": false,
+      "max_jaccard_with_base": 0.273,
+      "max_jaccard_partner": "has_horizon_at_top_third",
+      "below_collision_threshold_0_95": true,
+      "passes_all_checks": false
+    },
+    "has_dominant_foreground": {
+      "fire_rate": 0.25,
+      "n_fires": 5,
+      "fires_on": [
+        "close_chloro",
+        "close_n_green",
+        "close_n_red",
+        "close_warm",
+        "close_flat"
+      ],
+      "rate_in_band_10_to_70_pct": true,
+      "equivalence_class_collisions": [
+        "has_shallow_depth_signal"
+      ],
+      "ir_clean_no_eq_collision": false,
+      "max_jaccard_with_base": 0.273,
+      "max_jaccard_partner": "has_horizon_at_top_third",
+      "below_collision_threshold_0_95": true,
+      "passes_all_checks": false
+    },
+    "has_far_field_dominance": {
+      "fire_rate": 0.5,
+      "n_fires": 10,
+      "fires_on": [
+        "far_chloro",
+        "far_n_green",
+        "far_n_red",
+        "far_warm",
+        "far_flat",
+        "grad_chloro",
+        "grad_n_green",
+        "grad_n_red",
+        "grad_warm",
+        "grad_flat"
+      ],
+      "rate_in_band_10_to_70_pct": true,
+      "equivalence_class_collisions": [],
+      "ir_clean_no_eq_collision": true,
+      "max_jaccard_with_base": 0.5,
+      "max_jaccard_partner": "has_anisotropy_in_brightest_patch",
+      "below_collision_threshold_0_95": true,
+      "passes_all_checks": true
+    },
+    "has_narrow_spectral_peak": {
+      "fire_rate": 0.4,
+      "n_fires": 8,
+      "fires_on": [
+        "far_n_green",
+        "far_n_red",
+        "close_n_green",
+        "close_n_red",
+        "uniform_n_green",
+        "uniform_n_red",
+        "grad_n_green",
+        "grad_n_red"
+      ],
+      "rate_in_band_10_to_70_pct": true,
+      "equivalence_class_collisions": [],
+      "ir_clean_no_eq_collision": true,
+      "max_jaccard_with_base": 0.5,
+      "max_jaccard_partner": "has_high_frequency_residual",
+      "below_collision_threshold_0_95": true,
+      "passes_all_checks": true
+    },
+    "has_broad_spectral_distribution": {
+      "fire_rate": 0.2,
+      "n_fires": 4,
+      "fires_on": [
+        "far_flat",
+        "close_flat",
+        "uniform_flat",
+        "grad_flat"
+      ],
+      "rate_in_band_10_to_70_pct": true,
+      "equivalence_class_collisions": [
+        "has_low_saturation",
+        "has_significant_yellow_hue",
+        "has_largely_achromatic_scene",
+        "is_overexposed_dominant",
+        "has_dominant_blue_channel",
+        "has_extreme_chroma_subsampling"
+      ],
+      "ir_clean_no_eq_collision": false,
+      "max_jaccard_with_base": 1.0,
+      "max_jaccard_partner": "has_low_saturation",
+      "below_collision_threshold_0_95": false,
+      "passes_all_checks": false
+    },
+    "has_red_shifted_centroid": {
+      "fire_rate": 0.4,
+      "n_fires": 8,
+      "fires_on": [
+        "far_n_red",
+        "far_warm",
+        "close_n_red",
+        "close_warm",
+        "uniform_n_red",
+        "uniform_warm",
+        "grad_n_red",
+        "grad_warm"
+      ],
+      "rate_in_band_10_to_70_pct": true,
+      "equivalence_class_collisions": [
+        "has_red_dominant",
+        "has_warm_palette",
+        "is_indoor_warm_scene",
+        "has_red_blue_imbalance_warm",
+        "has_negative_vari_palette",
+        "is_high_red_warm_scene"
+      ],
+      "ir_clean_no_eq_collision": false,
+      "max_jaccard_with_base": 1.0,
+      "max_jaccard_partner": "has_red_dominant",
+      "below_collision_threshold_0_95": false,
+      "passes_all_checks": false
+    },
+    "is_distant_vegetation": {
+      "fire_rate": 0.1,
+      "n_fires": 2,
+      "fires_on": [
+        "far_chloro",
+        "grad_chloro"
+      ],
+      "rate_in_band_10_to_70_pct": true,
+      "equivalence_class_collisions": [],
+      "ir_clean_no_eq_collision": true,
+      "max_jaccard_with_base": 0.25,
+      "max_jaccard_partner": "has_vegetation_signature",
+      "below_collision_threshold_0_95": true,
+      "passes_all_checks": true
+    },
+    "is_close_chromatic_object": {
+      "fire_rate": 0.1,
+      "n_fires": 2,
+      "fires_on": [
+        "close_n_green",
+        "close_n_red"
+      ],
+      "rate_in_band_10_to_70_pct": true,
+      "equivalence_class_collisions": [],
+      "ir_clean_no_eq_collision": true,
+      "max_jaccard_with_base": 0.2,
+      "max_jaccard_partner": "has_high_frequency_residual",
+      "below_collision_threshold_0_95": true,
+      "passes_all_checks": true
+    },
+    "is_uniform_lit_far_field": {
+      "fire_rate": 0.2,
+      "n_fires": 4,
+      "fires_on": [
+        "far_warm",
+        "far_flat",
+        "grad_warm",
+        "grad_flat"
+      ],
+      "rate_in_band_10_to_70_pct": true,
+      "equivalence_class_collisions": [],
+      "ir_clean_no_eq_collision": true,
+      "max_jaccard_with_base": 0.5,
+      "max_jaccard_partner": "has_high_dynamic_range",
+      "below_collision_threshold_0_95": true,
+      "passes_all_checks": true
+    }
+  },
+  "cross_modal_selectivity_at_scale": {
+    "is_distant_vegetation": {
+      "fires_on": [
+        "far_chloro",
+        "grad_chloro"
+      ],
+      "expected_pattern": [
+        "far_chloro"
+      ],
+      "matches_design": false,
+      "extra_fires": [
+        "grad_chloro"
+      ],
+      "missing_fires": []
+    },
+    "is_close_chromatic_object": {
+      "fires_on": [
+        "close_n_green",
+        "close_n_red"
+      ],
+      "expected_pattern": [
+        "close_n_green",
+        "close_n_red"
+      ],
+      "matches_design": true,
+      "extra_fires": [],
+      "missing_fires": []
+    },
+    "is_uniform_lit_far_field": {
+      "fires_on": [
+        "far_warm",
+        "far_flat",
+        "grad_warm",
+        "grad_flat"
+      ],
+      "expected_pattern": [
+        "far_warm",
+        "far_flat"
+      ],
+      "matches_design": false,
+      "extra_fires": [
+        "grad_warm",
+        "grad_flat"
+      ],
+      "missing_fires": []
+    }
+  },
+  "promotion_decisions": {
+    "has_shallow_depth_signal": {
+      "decision": "RETIRE",
+      "reasons": [
+        "equivalence-class collision with: ['has_dominant_foreground']"
+      ]
+    },
+    "has_dominant_foreground": {
+      "decision": "RETIRE",
+      "reasons": [
+        "equivalence-class collision with: ['has_shallow_depth_signal']"
+      ]
+    },
+    "has_far_field_dominance": {
+      "decision": "PROMOTE"
+    },
+    "has_narrow_spectral_peak": {
+      "decision": "PROMOTE"
+    },
+    "has_broad_spectral_distribution": {
+      "decision": "RETIRE",
+      "reasons": [
+        "equivalence-class collision with: ['has_low_saturation', 'has_significant_yellow_hue', 'has_largely_achromatic_scene', 'is_overexposed_dominant', 'has_dominant_blue_channel', 'has_extreme_chroma_subsampling']",
+        "max J=1.0 with has_low_saturation"
+      ]
+    },
+    "has_red_shifted_centroid": {
+      "decision": "RETIRE",
+      "reasons": [
+        "equivalence-class collision with: ['has_red_dominant', 'has_warm_palette', 'is_indoor_warm_scene', 'has_red_blue_imbalance_warm', 'has_negative_vari_palette', 'is_high_red_warm_scene']",
+        "max J=1.0 with has_red_dominant"
+      ]
+    },
+    "is_distant_vegetation": {
+      "decision": "PROMOTE"
+    },
+    "is_close_chromatic_object": {
+      "decision": "PROMOTE"
+    },
+    "is_uniform_lit_far_field": {
+      "decision": "PROMOTE"
+    }
+  },
+  "n_promote": 5,
+  "n_retire": 4
+}

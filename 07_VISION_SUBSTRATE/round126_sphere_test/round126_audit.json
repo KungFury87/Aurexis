@@ -1,0 +1,54 @@
+{
+  "round": "R126",
+  "date": "2026-05-01",
+  "method": "phoxel_field SPHERE (Fibonacci-spiral surface, normal-colored) + 4-viewpoint test",
+  "phoxel_field_size": 784,
+  "viewpoints_azimuth_deg": [
+    0,
+    45,
+    90,
+    135
+  ],
+  "n_predicates": 151,
+  "pairwise_jaccards_same_sphere": [
+    [
+      0,
+      45,
+      0.829
+    ],
+    [
+      0,
+      90,
+      0.85
+    ],
+    [
+      0,
+      135,
+      0.78
+    ],
+    [
+      45,
+      90,
+      0.921
+    ],
+    [
+      45,
+      135,
+      0.8
+    ],
+    [
+      90,
+      135,
+      0.821
+    ]
+  ],
+  "mean_J": 0.8334999999999999,
+  "min_J": 0.78,
+  "max_J": 0.921,
+  "comparison": {
+    "R100_2d_affine_proxy_mean_J": 0.758,
+    "R124_cube_3d_proj_mean_J": 0.706,
+    "R126_sphere_3d_proj_mean_J": 0.8334999999999999
+  },
+  "verdict": "PASS \u2014 multi-view stability generalizes across primitive shapes"
+}
