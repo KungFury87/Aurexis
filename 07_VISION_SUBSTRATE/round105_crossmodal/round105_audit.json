@@ -1,0 +1,86 @@
+{
+  "round": "R105",
+  "date": "2026-05-01",
+  "method": "5 scenes \u00d7 paired (depth, hyperspectral) \u2192 3 cross-modal predicates AND-composing across both modalities",
+  "n_scenes": 5,
+  "n_base_predicates": 146,
+  "n_cross_modal_predicates": 3,
+  "type_check_all_passed": true,
+  "scene_metrics": {
+    "far_vegetation": {
+      "depth_mean": 0.841,
+      "band_centroid": 0.53,
+      "narrow_peak": 0.072,
+      "red_edge": 0.635
+    },
+    "close_green_plastic": {
+      "depth_mean": 0.473,
+      "band_centroid": 0.487,
+      "narrow_peak": 0.098,
+      "red_edge": -0.0
+    },
+    "flat_daylit_wall": {
+      "depth_mean": 0.6,
+      "band_centroid": 0.499,
+      "narrow_peak": 0.035,
+      "red_edge": -0.011
+    },
+    "close_red_object": {
+      "depth_mean": 0.473,
+      "band_centroid": 0.657,
+      "narrow_peak": 0.099,
+      "red_edge": -0.399
+    },
+    "distant_dusk": {
+      "depth_mean": 0.876,
+      "band_centroid": 0.614,
+      "narrow_peak": 0.053,
+      "red_edge": 0.035
+    }
+  },
+  "correctness": {
+    "is_distant_vegetation": {
+      "fires_on": [
+        "far_vegetation"
+      ],
+      "expected": [
+        "far_vegetation"
+      ],
+      "matches_design": true,
+      "ir_clean": true
+    },
+    "is_close_chromatic_object": {
+      "fires_on": [
+        "close_green_plastic",
+        "close_red_object"
+      ],
+      "expected": [
+        "close_green_plastic",
+        "close_red_object"
+      ],
+      "matches_design": true,
+      "ir_clean": true
+    },
+    "is_uniform_lit_far_field": {
+      "fires_on": [
+        "distant_dusk"
+      ],
+      "expected": [
+        "distant_dusk"
+      ],
+      "matches_design": true,
+      "ir_clean": true
+    }
+  },
+  "all_match_design_count": 3,
+  "ir_clean_count": 3,
+  "specificity_test_distant_vegetation": {
+    "fires_on_far_vegetation": true,
+    "rejects_close_green_plastic_(spectral_confusable)": true,
+    "rejects_distant_dusk_(depth_confusable)": true
+  },
+  "specificity_passes_all_3": true,
+  "pairwise_J_baseline_146": 0.5854409677452612,
+  "pairwise_J_with_crossmodal_149": 0.5647360052668517,
+  "delta_J_mean": -0.02070496247840937
+}

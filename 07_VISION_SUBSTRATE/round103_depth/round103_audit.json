@@ -1,0 +1,42 @@
+{
+  "round": "R103",
+  "date": "2026-05-01",
+  "method": "5 synthetic scenes with hand-authored depth maps",
+  "n_scenes": 5,
+  "n_base_predicates": 146,
+  "n_depth_predicates": 3,
+  "depth_predicates": [
+    "has_shallow_depth_signal",
+    "has_dominant_foreground",
+    "has_far_field_dominance"
+  ],
+  "discrimination": {
+    "has_shallow_depth_signal": {
+      "fires_on": [
+        "layered"
+      ],
+      "n_fires": 1,
+      "ir_clean": true
+    },
+    "has_dominant_foreground": {
+      "fires_on": [
+        "layered"
+      ],
+      "n_fires": 1,
+      "ir_clean": true
+    },
+    "has_far_field_dominance": {
+      "fires_on": [
+        "indoor_close",
+        "landscape"
+      ],
+      "n_fires": 2,
+      "ir_clean": true
+    }
+  },
+  "ir_clean_count": 3,
+  "pairwise_J_baseline_146": 0.35396173977575546,
+  "pairwise_J_with_depth_149": 0.3440237196646696,
+  "delta_J_mean": -0.00993802011108583,
+  "n_pairs_changed_by_depth": 9
+}
