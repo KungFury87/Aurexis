@@ -1,0 +1,64 @@
+{
+  "round": "R133",
+  "date": "2026-05-01",
+  "method": "Cube+sphere phoxel field + Gaussian position perturbation at sigmas 0.005-0.10; pairwise Jaccard to baseline at fixed viewpoint az=0",
+  "phoxel_field_size": 2428,
+  "n_invariant_predicates": 115,
+  "n_sensitive_predicates": 36,
+  "perturbation_sigmas": [
+    0.005,
+    0.01,
+    0.02,
+    0.05,
+    0.1
+  ],
+  "n_seeds_per_sigma": 3,
+  "results": [
+    {
+      "sigma": 0.005,
+      "n_seeds": 3,
+      "mean_J_all": 0.928,
+      "mean_J_invariant": 0.976,
+      "std_J_invariant": 0.034,
+      "mean_J_sensitive": 0.899
+    },
+    {
+      "sigma": 0.01,
+      "n_seeds": 3,
+      "mean_J_all": 0.929,
+      "mean_J_invariant": 0.976,
+      "std_J_invariant": 0.034,
+      "mean_J_sensitive": 0.9
+    },
+    {
+      "sigma": 0.02,
+      "n_seeds": 3,
+      "mean_J_all": 0.819,
+      "mean_J_invariant": 0.952,
+      "std_J_invariant": 0.034,
+      "mean_J_sensitive": 0.743
+    },
+    {
+      "sigma": 0.05,
+      "n_seeds": 3,
+      "mean_J_all": 0.778,
+      "mean_J_invariant": 0.887,
+      "std_J_invariant": 0.029,
+      "mean_J_sensitive": 0.712
+    },
+    {
+      "sigma": 0.1,
+      "n_seeds": 3,
+      "mean_J_all": 0.772,
+      "mean_J_invariant": 0.908,
+      "std_J_invariant": 0.029,
+      "mean_J_sensitive": 0.695
+    }
+  ],
+  "criteria": {
+    "sigma_0.005_J_inv >= 0.95": true,
+    "sigma_0.010_J_inv >= 0.85": true,
+    "sigma_0.050_J_inv >= 0.70": true
+  },
+  "verdict": "PASS \u2014 substrate fingerprint (layout-invariant subset) is locally smooth under phoxel position perturbations; viable for Phase 3 gradient-descent training"
+}

@@ -1,0 +1,131 @@
+{
+  "round": "R131",
+  "date": "2026-05-01",
+  "method": "6 distinct phoxel scenes rendered from az=0; pairwise Jaccards on full + layout-invariant + layout-sensitive subsets",
+  "scenes": [
+    "cube_sphere",
+    "two_cubes",
+    "two_spheres",
+    "cube_pyramid",
+    "single_sphere",
+    "single_cube"
+  ],
+  "n_predicates_total": 151,
+  "n_layout_invariant": 116,
+  "n_layout_sensitive": 35,
+  "between_scene_pairs": [
+    [
+      "cube_sphere",
+      "two_cubes",
+      0.512,
+      0.526,
+      0.5
+    ],
+    [
+      "cube_sphere",
+      "two_spheres",
+      0.861,
+      0.867,
+      0.857
+    ],
+    [
+      "cube_sphere",
+      "cube_pyramid",
+      0.545,
+      0.476,
+      0.609
+    ],
+    [
+      "cube_sphere",
+      "single_sphere",
+      0.682,
+      0.706,
+      0.667
+    ],
+    [
+      "cube_sphere",
+      "single_cube",
+      0.423,
+      0.36,
+      0.481
+    ],
+    [
+      "two_cubes",
+      "two_spheres",
+      0.422,
+      0.476,
+      0.375
+    ],
+    [
+      "two_cubes",
+      "cube_pyramid",
+      0.585,
+      0.545,
+      0.632
+    ],
+    [
+      "two_cubes",
+      "single_sphere",
+      0.42,
+      0.455,
+      0.393
+    ],
+    [
+      "two_cubes",
+      "single_cube",
+      0.651,
+      0.682,
+      0.619
+    ],
+    [
+      "two_spheres",
+      "cube_pyramid",
+      0.457,
+      0.435,
+      0.478
+    ],
+    [
+      "two_spheres",
+      "single_sphere",
+      0.659,
+      0.722,
+      0.615
+    ],
+    [
+      "two_spheres",
+      "single_cube",
+      0.352,
+      0.333,
+      0.37
+    ],
+    [
+      "cube_pyramid",
+      "single_sphere",
+      0.574,
+      0.619,
+      0.538
+    ],
+    [
+      "cube_pyramid",
+      "single_cube",
+      0.574,
+      0.625,
+      0.522
+    ],
+    [
+      "single_sphere",
+      "single_cube",
+      0.481,
+      0.48,
+      0.483
+    ]
+  ],
+  "between_scene_J_all_mean": 0.5465333333333333,
+  "between_scene_J_invariant_mean": 0.5538000000000001,
+  "between_scene_J_sensitive_mean": 0.5426,
+  "between_scene_J_invariant_min": 0.333,
+  "between_scene_J_invariant_max": 0.867,
+  "invariant_subset_discriminates": true,
+  "invariant_subset_has_spread": true,
+  "verdict": "PASS \u2014 layout-invariant 115 subset DISCRIMINATES between scene types AND was multi-view stable per R130; viable Phase 3 splatting content-loss"
+}
