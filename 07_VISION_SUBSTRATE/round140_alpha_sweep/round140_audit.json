@@ -1,0 +1,65 @@
+{
+  "round": "R140",
+  "date": "2026-05-01",
+  "method": "\u03b1 sweep on Phase 4 Option D regularizer weight; \u03b1 \u2208 {0.0, 0.05, 0.2, 1.0}; 6 iters each; image_size=128",
+  "init_params": [
+    1.0,
+    0.5,
+    0.0
+  ],
+  "initial_distance": 1.118033988749895,
+  "alphas_tested": [
+    0.0,
+    0.05,
+    0.2,
+    1.0
+  ],
+  "summary_per_alpha": [
+    {
+      "alpha": 0.0,
+      "n_iters": 6,
+      "final_dist": 0.5276,
+      "final_photo": 0.01614,
+      "final_substr_loss": 0.0,
+      "final_J_invariant": 1.0,
+      "dist_reduction_pct": 52.8
+    },
+    {
+      "alpha": 0.05,
+      "n_iters": 6,
+      "final_dist": 0.3972,
+      "final_photo": 0.01686,
+      "final_substr_loss": 0.08,
+      "final_J_invariant": 0.92,
+      "dist_reduction_pct": 64.5
+    },
+    {
+      "alpha": 0.2,
+      "n_iters": 6,
+      "final_dist": 0.2399,
+      "final_photo": 0.01356,
+      "final_substr_loss": 0.12,
+      "final_J_invariant": 0.88,
+      "dist_reduction_pct": 78.5
+    },
+    {
+      "alpha": 1.0,
+      "n_iters": 6,
+      "final_dist": 4.5635,
+      "final_photo": 0.02413,
+      "final_substr_loss": 0.7,
+      "final_J_invariant": 0.3,
+      "dist_reduction_pct": -308.2
+    }
+  ],
+  "best_by_distance": {
+    "alpha": 0.2,
+    "n_iters": 6,
+    "final_dist": 0.2399,
+    "final_photo": 0.01356,
+    "final_substr_loss": 0.12,
+    "final_J_invariant": 0.88,
+    "dist_reduction_pct": 78.5
+  },
+  "verdict": "Best \u03b1 = 0.2 for this corpus + optimizer; \u03b1=0.2 achieves dist=0.240 with J_invariant=0.880"
+}
