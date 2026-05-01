@@ -1,0 +1,54 @@
+{
+  "round": "R124",
+  "date": "2026-05-01",
+  "method": "phoxel_field datatype + pinhole forward renderer + 4-viewpoint test",
+  "phoxel_field_size": 3456,
+  "viewpoints_azimuth_deg": [
+    0,
+    45,
+    90,
+    135
+  ],
+  "n_predicates": 151,
+  "pairwise_jaccards_same_cube": [
+    [
+      0,
+      45,
+      0.705
+    ],
+    [
+      0,
+      90,
+      0.689
+    ],
+    [
+      0,
+      135,
+      0.565
+    ],
+    [
+      45,
+      90,
+      0.744
+    ],
+    [
+      45,
+      135,
+      0.821
+    ],
+    [
+      90,
+      135,
+      0.714
+    ]
+  ],
+  "mean_J": 0.7063333333333333,
+  "min_J": 0.565,
+  "max_J": 0.821,
+  "R100_baseline": {
+    "same_scene_J_mean": 0.758,
+    "diff_scene_J_mean": 0.325
+  },
+  "verdict": "PASS \u2014 multi-view stable on real 3D projection",
+  "comparison_note": "R124 mean J 0.706 vs R100 same-scene J 0.758; R100 used 2D affine viewpoint proxy, R124 uses real 3D pinhole projection."
+}

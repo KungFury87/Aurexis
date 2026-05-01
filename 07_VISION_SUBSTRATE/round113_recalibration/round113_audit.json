@@ -1,0 +1,61 @@
+{
+  "round": "R113",
+  "date": "2026-05-01",
+  "method": "tighten 2 thresholds + re-audit on N=226 (same corpus as R111)",
+  "changes": {
+    "has_gradient_energy": {
+      "old": "gt(gradient_energy(scene), 0.0001)",
+      "new": "gt(gradient_energy(scene), 0.003)",
+      "target": "~55%"
+    },
+    "has_many_corners": {
+      "old": "gt_int(corner_count_thresh(scene, 0.04), 50)",
+      "new": "gt_int(corner_count_thresh(scene, 0.04), 2000)",
+      "target": "~60%"
+    },
+    "has_chroma_subsampled_signature": {
+      "change": "NOT recalibrated",
+      "reason": "physically justified per R110 \u2014 most natural photos are JPEG-subsampled"
+    }
+  },
+  "n_corpus": 226,
+  "n_predicates": 151,
+  "fire_buckets": {
+    "DEAD": 35,
+    "LOW": 11,
+    "HEALTHY": 104,
+    "HIGH": 1,
+    "ALWAYS": 0
+  },
+  "n_dead": 35,
+  "n_healthy": 104,
+  "n_always": 0,
+  "n_eq_classes": 117,
+  "n_multi_eq": 1,
+  "effective_rank_90": 49,
+  "effective_rank_99": 90,
+  "rank_per_N": 0.217,
+  "n_near_collisions": 0,
+  "near_collisions_top": [],
+  "retuned_rates_R111_to_R113": {
+    "has_gradient_energy": {
+      "R111": null,
+      "R113": 0.553
+    },
+    "has_many_corners": {
+      "R111": null,
+      "R113": 0.717
+    }
+  },
+  "unchanged_rates_at_R113": {
+    "has_chroma_subsampled_signature": 0.978,
+    "has_circular_signature": 0.925
+  },
+  "rank_evolution": {
+    "R77": "31/76",
+    "R85": "39/110",
+    "R109": "32/76",
+    "R111": "48/226",
+    "R113": "49/226"
+  }
+}

@@ -101,7 +101,7 @@ predicate has_gradient_energy
   expects scene:image
   returns bool
   intent  scene_contains_any_oriented_structure
-  body    gt(gradient_energy(scene), 0.0001)
+  body    gt(gradient_energy(scene), 0.003)
 
 
 predicate is_uniform_field
@@ -607,7 +607,7 @@ predicate has_many_corners
   expects scene:image
   returns bool
   intent  many_local_2d_corners_dense_object_boundaries
-  body    gt_int(corner_count_thresh(scene, 0.04), 50)
+  body    gt_int(corner_count_thresh(scene, 0.04), 2000)
 
 
 predicate has_texture_compression_gradient
