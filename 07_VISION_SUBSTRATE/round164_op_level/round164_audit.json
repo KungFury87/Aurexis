@@ -1,0 +1,48 @@
+{
+  "round": "R164",
+  "date": "2026-05-01",
+  "method": "Operator-level vocab expansion: 12 new predicates with novel thresholds on lightweight image stats (mean/std/gradient/sat/hue-diversity etc.)",
+  "n_corpus": 623,
+  "rank_90_baseline": 54,
+  "rank_90_extended": 58,
+  "rank_99_baseline": 95,
+  "rank_99_extended": 103,
+  "delta_rank_90": 4,
+  "delta_rank_99": 8,
+  "per_pred_rank_90_efficiency": 0.3333333333333333,
+  "L4_per_pred_efficiency_R160_R163": 0.2,
+  "ratio_op_vs_L4": 1.6666666666666665,
+  "buckets": {
+    "DEAD": 0,
+    "LOW": 2,
+    "HEALTHY": 10
+  },
+  "n_new_collisions": 2,
+  "new_collisions": [
+    [
+      "has_low_overall_brightness",
+      "has_low_key",
+      1.0
+    ],
+    [
+      "has_low_local_variance",
+      "is_low_contrast_image",
+      1.0
+    ]
+  ],
+  "verdict": "OPERATOR-LEVEL BEATS L4: 1.67x more efficient per predicate",
+  "fire_rates": {
+    "has_low_overall_brightness": 0.1476725521669342,
+    "has_high_overall_brightness": 0.10754414125200643,
+    "has_high_local_variance": 0.3739967897271268,
+    "has_low_local_variance": 0.04173354735152488,
+    "has_strong_gradient_magnitude": 0.0032102728731942215,
+    "has_top_brighter_than_bottom": 0.5264847512038523,
+    "has_bottom_brighter_than_top": 0.05457463884430177,
+    "has_centered_brightness": 0.2680577849117175,
+    "has_dim_center": 0.09470304975922954,
+    "has_saturated_image": 0.23113964686998395,
+    "has_desaturated_image": 0.21829855537720708,
+    "has_diverse_hues_5plus": 0.1797752808988764
+  }
+}

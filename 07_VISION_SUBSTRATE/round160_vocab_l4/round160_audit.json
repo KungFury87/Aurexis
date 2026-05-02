@@ -1,0 +1,38 @@
+{
+  "round": "R160",
+  "date": "2026-05-01",
+  "method": "L4 compositional vocab expansion test: 5 new predicates as boolean compositions of existing fingerprints; re-run IR on N=623 corpus; tests architectural claim 'substrate expressiveness bounded by VOCAB not DATA'.",
+  "n_corpus": 623,
+  "n_predicates_baseline": 151,
+  "n_predicates_extended": 156,
+  "new_predicates": [
+    "is_outdoor_horizon_scene",
+    "is_warm_indoor_low_key",
+    "is_high_contrast_centered",
+    "is_blue_dominant_outdoor",
+    "has_dramatic_lighting"
+  ],
+  "new_pred_fire_rates": {
+    "is_outdoor_horizon_scene": 0.23434991974317818,
+    "is_warm_indoor_low_key": 0.006420545746388443,
+    "is_high_contrast_centered": 0.03210272873194221,
+    "is_blue_dominant_outdoor": 0.10112359550561797,
+    "has_dramatic_lighting": 0.11396468699839486
+  },
+  "rank_90_baseline": 54,
+  "rank_90_extended": 55,
+  "delta_rank_90": 1,
+  "rank_99_baseline": 95,
+  "rank_99_extended": 99,
+  "delta_rank_99": 4,
+  "buckets_extended": {
+    "DEAD": 34,
+    "LOW": 19,
+    "HEALTHY": 102,
+    "HIGH": 1,
+    "ALWAYS": 0
+  },
+  "n_dead_new_preds": 0,
+  "near_collisions_new_vs_existing": [],
+  "verdict": "VOCAB-GROWTH-BUMPS-RANK CONFIRMED"
+}
