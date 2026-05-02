@@ -11,12 +11,15 @@ Implements MCP protocol version 2024-11-05:
   tools/call          — invoke a tool, return result envelope
   notifications/*     — silent ignore
 
-5 tools (per R115 design):
+8 tools (5 from R115 design + 3 R169 grounded-reasoning):
   phoxelis_list_predicates
   phoxelis_describe_predicate
   phoxelis_evaluate_image
   phoxelis_compare_images
   phoxelis_install_predicate
+  phoxelis_find_outlier_in_set     (R169)
+  phoxelis_cluster_property        (R169)
+  phoxelis_verify_claim            (R169)
 
 Usage:
   python3 mcp_server.py
@@ -231,8 +234,76 @@ TOOLS = [
                 "source": {"type": "string", "description": "DSL predicate source text."}
             }
         }
+    },
+    {
+        "name": "phoxelis_find_outlier_in_set",
+        "description": (
+            "Given a list of image paths, find the outlier (image whose substrate "
+            "fingerprint has lowest mean Jaccard to the others). Returns outlier "
+            "path, mean Jaccards per image, and the cluster (everything else). "
+            "Per R167 grounded-reasoning."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "required": ["image_paths"],
+            "properties": {
+                "image_paths": {"type": "array", "items": {"type": "string"},
+                                "description": "List of image paths (>= 3)."}
+            }
+        }
+    },
+    {
+        "name": "phoxelis_cluster_property",
+        "description": (
+            "Given a list of image paths, return predicates fired by ALL images "
+            "(cluster-shared) and predicates fired by NONE (cluster-rejected). "
+            "Per R167."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "required": ["image_paths"],
+            "properties": {
+                "image_paths": {"type": "array", "items": {"type": "string"},
+                                "description": "List of image paths (>= 2)."}
+            }
+        }
+    },
+    {
+        "name": "phoxelis_verify_claim",
+        "description": (
+            "Verify a natural-language claim about an image by mapping the claim "
+            "to a predicate constraint set and checking the substrate fingerprint. "
+            "Returns verdict (bool), evidence_predicates (fired), and missing_predicates. "
+            "Supports a fixed CLAIM_MAP (R168 vintage)."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "required": ["image_path", "claim"],
+            "properties": {
+                "image_path": {"type": "string"},
+                "claim": {"type": "string", "description": "One of: 'is outdoors', 'is indoors', 'contains a person', 'is monochrome', 'has a horizon', 'has warm tones', 'has cool tones', 'is high contrast', 'has blue tones', 'has low-key lighting', 'is centered', 'has high frequency detail', 'is largely empty', 'has vegetation'."}
+            }
+        }
     }
 ]
+
+# --- R168 CLAIM MAP -----------------------------------------------------------
+CLAIM_MAP = {
+    "is outdoors":              [('NOT_ANY', ['has_indoor_scene_signature'])],
+    "is indoors":               [('OR', ['has_indoor_scene_signature'])],
+    "contains a person":        [('OR', ['has_face_like_signature', 'has_human_subject_signature', 'has_skin_tone_signature'])],
+    "is monochrome":            [('OR', ['has_monochrome', 'has_pure_grayscale_palette'])],
+    "has a horizon":            [('OR', ['has_clear_horizon'])],
+    "has warm tones":           [('OR', ['has_warm_palette', 'has_strongly_warm_palette'])],
+    "has cool tones":           [('OR', ['has_cool_palette', 'has_dominant_blue_hue'])],
+    "is high contrast":         [('OR', ['is_high_contrast_image'])],
+    "has blue tones":           [('OR', ['has_dominant_blue_hue', 'has_significant_cyan_hue'])],
+    "has low-key lighting":     [('OR', ['has_low_key', 'has_low_light_signature'])],
+    "is centered":              [('OR', ['has_centered_subject'])],
+    "has high frequency detail":[('OR', ['has_high_frequency_residual'])],
+    "is largely empty":         [('OR', ['has_significant_negative_space'])],
+    "has vegetation":           [('OR', ['has_vegetation_signature', 'has_green_dominant'])],
+}
 
 # --- TOOL HANDLERS ----------------------------------------------------------
 def tool_list_predicates(args):
@@ -323,12 +394,108 @@ def tool_install_predicate(args):
         return {"name": pred.name, "type_check_passed": False,
                 "diagnostics": [{"code": "TYPE_FAIL", "message": str(e)}]}
 
+def tool_find_outlier_in_set(args):
+    paths = args.get("image_paths") or []
+    if len(paths) < 2:
+        raise ValueError("'image_paths' must contain at least 2 paths")
+    fingerprints = []
+    for p in paths:
+        e = tool_evaluate_image({"image_path": p})
+        fired = {n for n, v in e["fingerprint"].items() if v is True}
+        fingerprints.append(fired)
+    n = len(paths)
+    mean_J = []
+    for i in range(n):
+        others = [_jaccard(fingerprints[i], fingerprints[j]) for j in range(n) if j != i]
+        mean_J.append(sum(others) / len(others) if others else 0.0)
+    outlier_idx = mean_J.index(min(mean_J))
+    cluster = [paths[i] for i in range(n) if i != outlier_idx]
+    return {
+        "outlier": paths[outlier_idx],
+        "outlier_mean_jaccard": round(mean_J[outlier_idx], 4),
+        "mean_jaccard_per_image": [round(x, 4) for x in mean_J],
+        "cluster": cluster,
+        "cluster_mean_jaccard": round(sum(mean_J[i] for i in range(n) if i != outlier_idx) / max(1, n-1), 4),
+    }
+
+def tool_cluster_property(args):
+    paths = args.get("image_paths") or []
+    if len(paths) < 2:
+        raise ValueError("'image_paths' must contain at least 2 paths")
+    fingerprints = []
+    for p in paths:
+        e = tool_evaluate_image({"image_path": p})
+        fired = {n for n, v in e["fingerprint"].items() if v is True}
+        fingerprints.append(fired)
+    shared = set(fingerprints[0])
+    for fp in fingerprints[1:]:
+        shared = shared & fp
+    union_fired = set()
+    for fp in fingerprints:
+        union_fired = union_fired | fp
+    rejected = [p for p in INSTALLED if p not in union_fired]
+    return {
+        "shared_predicates": sorted(shared),
+        "rejected_predicates": sorted(rejected)[:20],
+        "n_shared": len(shared),
+        "n_rejected": len(rejected),
+        "n_images": len(paths),
+    }
+
+def tool_verify_claim(args):
+    path = args.get("image_path")
+    claim = args.get("claim")
+    if not path: raise ValueError("missing 'image_path'")
+    if not claim: raise ValueError("missing 'claim'")
+    if claim not in CLAIM_MAP:
+        return {
+            "verdict": None,
+            "error": f"unsupported claim: '{claim}'",
+            "supported_claims": list(CLAIM_MAP.keys()),
+        }
+    e = tool_evaluate_image({"image_path": path})
+    fp = e["fingerprint"]
+    constraints = CLAIM_MAP[claim]
+    overall = True
+    evidence = []
+    missing = []
+    for op, preds in constraints:
+        if op == 'OR':
+            satisfied = any(fp.get(p) is True for p in preds)
+            if satisfied:
+                evidence.extend([p for p in preds if fp.get(p) is True])
+            else:
+                missing.extend(preds); overall = False
+        elif op == 'AND':
+            satisfied = all(fp.get(p) is True for p in preds)
+            if satisfied:
+                evidence.extend(preds)
+            else:
+                missing.extend([p for p in preds if fp.get(p) is not True]); overall = False
+        elif op == 'NOT_ANY':
+            violations = [p for p in preds if fp.get(p) is True]
+            satisfied = not violations
+            if satisfied:
+                evidence.append(f"NOT_ANY({preds})")
+            else:
+                missing.extend(violations); overall = False
+    return {
+        "verdict": overall,
+        "claim": claim,
+        "image": path,
+        "evidence_predicates": evidence,
+        "missing_predicates": missing,
+    }
+
 TOOL_HANDLERS = {
     "phoxelis_list_predicates":     tool_list_predicates,
     "phoxelis_describe_predicate":  tool_describe_predicate,
     "phoxelis_evaluate_image":      tool_evaluate_image,
     "phoxelis_compare_images":      tool_compare_images,
     "phoxelis_install_predicate":   tool_install_predicate,
+    "phoxelis_find_outlier_in_set": tool_find_outlier_in_set,
+    "phoxelis_cluster_property":    tool_cluster_property,
+    "phoxelis_verify_claim":        tool_verify_claim,
 }
 
 # --- PROTOCOL HANDLERS ------------------------------------------------------

@@ -1,0 +1,271 @@
+{
+  "round": "R167",
+  "date": "2026-05-01",
+  "method": "T6 grounded-reasoning demo: multi-image comparative reasoning from substrate fingerprints alone \u2014 most-similar pair, outlier detection, distinguishing-property attribution.",
+  "n_corpus": 623,
+  "vocab_size": 151,
+  "demo_1_random_5": {
+    "images": [
+      "r111_picsum_r111_0054",
+      "r111_microscopy_1943_Device_for_micro-cinematography-_under_the_direction_of_Kurt_Mic",
+      "r158_picsum_148",
+      "r158_picsum_12",
+      "r158_picsum_10"
+    ],
+    "pairwise_jaccard": [
+      [
+        1.0,
+        0.13725490196078433,
+        0.22,
+        0.3611111111111111,
+        0.17777777777777778
+      ],
+      [
+        0.13725490196078433,
+        1.0,
+        0.16071428571428573,
+        0.23255813953488372,
+        0.29545454545454547
+      ],
+      [
+        0.22,
+        0.16071428571428573,
+        1.0,
+        0.4,
+        0.1320754716981132
+      ],
+      [
+        0.3611111111111111,
+        0.23255813953488372,
+        0.4,
+        1.0,
+        0.2
+      ],
+      [
+        0.17777777777777778,
+        0.29545454545454547,
+        0.1320754716981132,
+        0.2,
+        1.0
+      ]
+    ],
+    "most_similar_pair": [
+      "r158_picsum_148",
+      "r158_picsum_12",
+      0.4
+    ],
+    "mean_J_per_image": [
+      0.2240359477124183,
+      0.2064954681661248,
+      0.22819743935309972,
+      0.29841731266149873,
+      0.2013269487326091
+    ],
+    "outlier": "r158_picsum_10",
+    "cluster": [
+      "r111_picsum_r111_0054",
+      "r111_microscopy_1943_Device_for_micro-cinematography-_under_the_direction_of_Kurt_Mic",
+      "r158_picsum_148",
+      "r158_picsum_12"
+    ],
+    "distinguishing_cluster_has": [
+      "has_circular_signature",
+      "has_specular_highlights"
+    ],
+    "distinguishing_outlier_has": [
+      "has_busy_textured_scene",
+      "has_center_weighted_lighting",
+      "has_horizontal_imbalance",
+      "has_human_subject_signature",
+      "has_indoor_scene_signature",
+      "has_mirror_symmetry_vertical_axis",
+      "has_subject_at_thirds_bottom_left",
+      "is_uniform_field"
+    ]
+  },
+  "demo_2_top_5_similar": {
+    "images": [
+      "r111_diagrams_11vert.png",
+      "r111_picsum_r111_0008",
+      "r158_picsum_179",
+      "r159_picsum_134",
+      "r111_met_32108"
+    ],
+    "pairwise_jaccard": [
+      [
+        1.0,
+        0.52,
+        0.5,
+        0.5,
+        0.49019607843137253
+      ],
+      [
+        0.52,
+        1.0,
+        0.46938775510204084,
+        0.46938775510204084,
+        0.4074074074074074
+      ],
+      [
+        0.5,
+        0.46938775510204084,
+        1.0,
+        1.0,
+        0.38461538461538464
+      ],
+      [
+        0.5,
+        0.46938775510204084,
+        1.0,
+        1.0,
+        0.38461538461538464
+      ],
+      [
+        0.49019607843137253,
+        0.4074074074074074,
+        0.38461538461538464,
+        0.38461538461538464,
+        1.0
+      ]
+    ],
+    "most_similar_pair": [
+      "r158_picsum_179",
+      "r159_picsum_134",
+      1.0
+    ],
+    "mean_J_per_image": [
+      0.5025490196078432,
+      0.4665457294028723,
+      0.5885007849293564,
+      0.5885007849293564,
+      0.4167085637673873
+    ],
+    "outlier": "r111_met_32108",
+    "cluster": [
+      "r111_diagrams_11vert.png",
+      "r111_picsum_r111_0008",
+      "r158_picsum_179",
+      "r159_picsum_134"
+    ],
+    "distinguishing_cluster_has": [
+      "has_anisotropy_in_brightest_patch",
+      "has_green_dominant",
+      "has_significant_green_hue",
+      "has_significant_negative_space",
+      "has_uniform_focus",
+      "has_vegetation_signature"
+    ],
+    "distinguishing_outlier_has": [
+      "has_blue_dominant",
+      "has_centered_subject",
+      "has_edge_weighted_lighting",
+      "has_high_frequency_residual",
+      "has_horizon_at_bottom_third",
+      "has_largely_achromatic_scene",
+      "has_monochrome",
+      "has_pure_grayscale_palette",
+      "has_top_to_bottom_focus_gradient"
+    ]
+  },
+  "demo_3_planted_outlier": {
+    "images": [
+      "r158_picsum_193",
+      "r158_picsum_15",
+      "r111_picsum_r111_0109",
+      "r159_picsum_153",
+      "r111_picsum_9152391"
+    ],
+    "pairwise_jaccard": [
+      [
+        1.0,
+        1.0,
+        0.6666666666666666,
+        0.5882352941176471,
+        0.11320754716981132
+      ],
+      [
+        1.0,
+        1.0,
+        0.6666666666666666,
+        0.5882352941176471,
+        0.11320754716981132
+      ],
+      [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.5,
+        0.1568627450980392
+      ],
+      [
+        0.5882352941176471,
+        0.5882352941176471,
+        0.5,
+        1.0,
+        0.21153846153846154
+      ],
+      [
+        0.11320754716981132,
+        0.11320754716981132,
+        0.1568627450980392,
+        0.21153846153846154,
+        1.0
+      ]
+    ],
+    "most_similar_pair": [
+      "r158_picsum_193",
+      "r158_picsum_15",
+      1.0
+    ],
+    "mean_J_per_image": [
+      0.5920273769885313,
+      0.5920273769885313,
+      0.49754901960784315,
+      0.4720022624434389,
+      0.14870407524403084
+    ],
+    "outlier": "r111_picsum_9152391",
+    "cluster": [
+      "r158_picsum_193",
+      "r158_picsum_15",
+      "r111_picsum_r111_0109",
+      "r159_picsum_153"
+    ],
+    "distinguishing_cluster_has": [
+      "has_horizon_at_bottom_third",
+      "has_horizontal_balance",
+      "has_many_corners",
+      "has_meaningful_color",
+      "has_minimal_palette_diversity",
+      "has_red_dominant",
+      "has_significant_orange_hue",
+      "has_skin_tone_presence",
+      "has_skin_tone_signature",
+      "has_strong_horizontal_balance",
+      "has_warm_color_temperature"
+    ],
+    "distinguishing_outlier_has": [
+      "has_blue_dominant",
+      "has_clear_horizon",
+      "has_clipped_highlights",
+      "has_cool_color_temperature",
+      "has_dominant_blue_hue",
+      "has_edge_weighted_lighting",
+      "has_few_large_blobs",
+      "has_gradient_energy",
+      "has_high_color_diversity",
+      "has_high_dynamic_range",
+      "has_horizon_at_top_third",
+      "has_horizon_line_signature",
+      "has_horizontal_dominant_edges",
+      "has_low_key",
+      "has_low_light_signature",
+      "has_mirror_symmetry_vertical_axis",
+      "has_monochrome",
+      "has_overexposed_regions",
+      "has_subject_at_thirds_bottom_right",
+      "is_high_contrast_image",
+      "is_underexposed_dominant"
+    ]
+  }
+}

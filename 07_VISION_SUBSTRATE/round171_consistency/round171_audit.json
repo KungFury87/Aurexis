@@ -1,0 +1,105 @@
+{
+  "round": "R171",
+  "date": "2026-05-01",
+  "method": "Claim-verification self-consistency audit on N=623 corpus. Tests exclusivity violations and expected correlations as proxy for ground-truth accuracy (no manual labeling).",
+  "n_corpus": 623,
+  "claim_fire_rates": {
+    "is outdoors": 0.7897271268057785,
+    "is indoors": 0.2102728731942215,
+    "contains a person": 0.420545746388443,
+    "is monochrome": 0.12359550561797752,
+    "has a horizon": 0.2857142857142857,
+    "has warm tones": 0.28731942215088285,
+    "has cool tones": 0.2680577849117175,
+    "is high contrast": 0.13643659711075443,
+    "has blue tones": 0.3868378812199037,
+    "has low-key lighting": 0.2391653290529695,
+    "is centered": 0.27287319422150885,
+    "has high frequency detail": 0.18780096308186195,
+    "is largely empty": 0.2375601926163724,
+    "has vegetation": 0.35313001605136435
+  },
+  "exclusivity_check": [
+    {
+      "a": "is indoors",
+      "b": "is outdoors",
+      "n_both": 0,
+      "pct": 0.0
+    },
+    {
+      "a": "has warm tones",
+      "b": "has cool tones",
+      "n_both": 8,
+      "pct": 1.2841091492776886
+    },
+    {
+      "a": "is monochrome",
+      "b": "has warm tones",
+      "n_both": 15,
+      "pct": 2.407704654895666
+    },
+    {
+      "a": "is monochrome",
+      "b": "has cool tones",
+      "n_both": 16,
+      "pct": 2.568218298555377
+    },
+    {
+      "a": "is monochrome",
+      "b": "has blue tones",
+      "n_both": 20,
+      "pct": 3.2102728731942216
+    }
+  ],
+  "expected_correlations": [
+    {
+      "prior": "has a horizon",
+      "consequent": "is outdoors",
+      "P_cond": 0.8202247191011236,
+      "note": "horizons appear outside",
+      "flag": "STRONG"
+    },
+    {
+      "prior": "has vegetation",
+      "consequent": "is outdoors",
+      "P_cond": 0.8545454545454545,
+      "note": "vegetation appears outside",
+      "flag": "STRONG"
+    },
+    {
+      "prior": "contains a person",
+      "consequent": "has warm tones",
+      "P_cond": 0.3435114503816794,
+      "note": "human skin is warm \u2014 partial",
+      "flag": "WEAK"
+    },
+    {
+      "prior": "has blue tones",
+      "consequent": "has cool tones",
+      "P_cond": 0.6929460580912863,
+      "note": "blue is cool",
+      "flag": "GOOD"
+    },
+    {
+      "prior": "is monochrome",
+      "consequent": "has low-key lighting",
+      "P_cond": 0.37662337662337664,
+      "note": "monochrome darker often",
+      "flag": "WEAK"
+    },
+    {
+      "prior": "has high frequency detail",
+      "consequent": "is largely empty",
+      "P_cond": 0.17094017094017094,
+      "note": "should anti-correlate",
+      "flag": "NONE"
+    }
+  ],
+  "summary": {
+    "total_exclusivity_violations": 59,
+    "correlations_passing": 3,
+    "correlations_total": 6,
+    "indoors_outdoors_overlap_pct": 0.0,
+    "horizon_implies_outdoors_P": 0.8202247191011236
+  }
+}

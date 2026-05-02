@@ -1,0 +1,69 @@
+{
+  "round": "R195",
+  "method": "real public sensor data fusion into multimodal phoxel field",
+  "data_sources_real": {
+    "NASA_SDO": {
+      "bands_angstroms": [
+        94,
+        131,
+        171,
+        193,
+        211,
+        304,
+        335
+      ],
+      "temperatures_K": [
+        6000000,
+        10000000,
+        600000,
+        1000000,
+        2000000,
+        50000,
+        2500000
+      ],
+      "image_size": [
+        256,
+        256
+      ],
+      "note": "live solar atmosphere imaging - 7 ionization-state-specific EUV wavelengths"
+    },
+    "NASA_EPIC": {
+      "frames": 2,
+      "note": "Earth-from-L1 (DSCOVR satellite, ~1.5M km from Earth)"
+    },
+    "IRIS_seismic": {
+      "station": "IU.ANMO",
+      "channel": "BHZ",
+      "sample_rate_Hz": 40.0,
+      "n_samples": 2400,
+      "note": "real ground-motion sensor data via FDSN protocol"
+    },
+    "USGS_earthquakes": {
+      "n_events_24h": 231,
+      "mag_range": [
+        -0.09,
+        5.7
+      ],
+      "depth_range_km": [
+        -0.47,
+        532.819
+      ],
+      "note": "multi-station triangulated events from global seismic networks"
+    },
+    "GOES_xray": {
+      "n_samples_24h": 2876,
+      "flux_range_W_per_m2": [
+        3.3500393570307097e-09,
+        4.2588130781950895e-06
+      ],
+      "note": "NOAA SWPC real-time space weather sensor"
+    },
+    "NOAA_geomag": {
+      "note": "magnetometer-derived Kp index"
+    }
+  },
+  "phoxel_count": 131072,
+  "per_phoxel_floats": 14,
+  "output": "/sessions/wonderful-sharp-rubin/mnt/Aurexis evolved/Aurexis_Core_WORKING_20260414-1339/07_VISION_SUBSTRATE/round195_real_multimodal/output/r195_multimodal_phoxel.npz",
+  "output_size_mb": 1.13
+}

@@ -2,16 +2,19 @@
 
 Spawns mcp_server.py as a subprocess, sends MCP requests on stdin,
 reads JSON responses from stdout. Verifies:
-  1. initialize handshake returns correct protocol version + capabilities
-  2. tools/list returns 5 expected tools with valid schemas
-  3. tools/call phoxelis_list_predicates returns 151 predicates
-  4. tools/call phoxelis_evaluate_image on a cached image returns
-     fingerprint with expected shape
-  5. tools/call phoxelis_compare_images on two images returns Jaccard
-  6. tools/call phoxelis_install_predicate accepts a valid DSL predicate
-  7. tools/call with unknown tool name returns isError envelope
+  1.  initialize handshake returns correct protocol version + capabilities
+  2.  tools/list returns 8 expected tools with valid schemas
+  3.  tools/call phoxelis_list_predicates returns 151 predicates
+  4.  tools/call phoxelis_evaluate_image returns fingerprint with expected shape
+  5.  tools/call phoxelis_compare_images returns Jaccard
+  6.  tools/call phoxelis_install_predicate accepts a valid DSL predicate
+  7.  tools/call with unknown tool name returns isError envelope
+  8.  tools/call phoxelis_find_outlier_in_set returns outlier + cluster (R169)
+  9.  tools/call phoxelis_cluster_property returns shared + rejected predicates (R169)
+  10. tools/call phoxelis_verify_claim handles supported claim with evidence (R169)
+  11. tools/call phoxelis_verify_claim returns null verdict for unsupported claim (R169)
 
-Reports pass/fail counts and exits 0 only if all 7 pass.
+Reports pass/fail counts and exits 0 only if all 11 pass.
 """
 from __future__ import annotations
 import json, subprocess, sys, time
@@ -53,7 +56,10 @@ def run_test():
     tools = r["result"]["tools"] if r and "result" in r else []
     expected_names = {"phoxelis_list_predicates", "phoxelis_describe_predicate",
                        "phoxelis_evaluate_image", "phoxelis_compare_images",
-                       "phoxelis_install_predicate"}
+                       "phoxelis_install_predicate",
+                       "phoxelis_find_outlier_in_set",  # R169
+                       "phoxelis_cluster_property",     # R169
+                       "phoxelis_verify_claim"}         # R169
     actual_names = {t["name"] for t in tools}
     ok = expected_names == actual_names
     results.append(("T2_tools_list", ok, f"got={sorted(actual_names)}"))
@@ -113,6 +119,70 @@ predicate r118_smoke
               "params": {"name": "phoxelis_nonexistent", "arguments": {}}})
     ok = (r and r.get("result", {}).get("isError") is True)
     results.append(("T7_unknown_tool", ok, "got isError" if ok else "missing isError"))
+
+    # T8: phoxelis_find_outlier_in_set (R169) — needs >= 3 images
+    npys = sorted(R55_DIR.glob("*.npy"))
+    if len(npys) >= 3:
+        paths = [str(npys[0]), str(npys[1]), str(npys[2])]
+        r = call({"jsonrpc": "2.0", "id": 8, "method": "tools/call",
+                  "params": {"name": "phoxelis_find_outlier_in_set",
+                             "arguments": {"image_paths": paths}}})
+        body = json.loads(r["result"]["content"][0]["text"]) if r and "result" in r else {}
+        ok = (body.get("outlier") in paths
+                and isinstance(body.get("outlier_mean_jaccard"), (int, float))
+                and isinstance(body.get("cluster"), list)
+                and len(body.get("cluster", [])) == 2)
+        results.append(("T8_find_outlier_in_set", ok,
+                        f"outlier={Path(body.get('outlier','')).name} mean_J={body.get('outlier_mean_jaccard')}"))
+    else:
+        results.append(("T8_find_outlier_in_set", False, "<3 test images"))
+
+    # T9: phoxelis_cluster_property (R169)
+    if len(npys) >= 3:
+        paths = [str(npys[0]), str(npys[1]), str(npys[2])]
+        r = call({"jsonrpc": "2.0", "id": 9, "method": "tools/call",
+                  "params": {"name": "phoxelis_cluster_property",
+                             "arguments": {"image_paths": paths}}})
+        body = json.loads(r["result"]["content"][0]["text"]) if r and "result" in r else {}
+        ok = (isinstance(body.get("shared_predicates"), list)
+                and isinstance(body.get("n_shared"), int)
+                and isinstance(body.get("n_rejected"), int)
+                and body.get("n_images") == 3)
+        results.append(("T9_cluster_property", ok,
+                        f"n_shared={body.get('n_shared')} n_rejected={body.get('n_rejected')}"))
+    else:
+        results.append(("T9_cluster_property", False, "<3 test images"))
+
+    # T10: phoxelis_verify_claim — supported claim returns verdict + evidence (R169)
+    if TEST_IMG_A:
+        r = call({"jsonrpc": "2.0", "id": 10, "method": "tools/call",
+                  "params": {"name": "phoxelis_verify_claim",
+                             "arguments": {"image_path": str(TEST_IMG_A),
+                                           "claim": "is outdoors"}}})
+        body = json.loads(r["result"]["content"][0]["text"]) if r and "result" in r else {}
+        ok = (body.get("verdict") in (True, False)
+                and body.get("claim") == "is outdoors"
+                and isinstance(body.get("evidence_predicates"), list))
+        results.append(("T10_verify_claim_supported", ok,
+                        f"verdict={body.get('verdict')} n_evidence={len(body.get('evidence_predicates', []))}"))
+    else:
+        results.append(("T10_verify_claim_supported", False, "no test image"))
+
+    # T11: phoxelis_verify_claim — unsupported claim returns null + supported_claims (R169)
+    if TEST_IMG_A:
+        r = call({"jsonrpc": "2.0", "id": 11, "method": "tools/call",
+                  "params": {"name": "phoxelis_verify_claim",
+                             "arguments": {"image_path": str(TEST_IMG_A),
+                                           "claim": "is purple"}}})
+        body = json.loads(r["result"]["content"][0]["text"]) if r and "result" in r else {}
+        ok = (body.get("verdict") is None
+                and "error" in body
+                and isinstance(body.get("supported_claims"), list)
+                and len(body.get("supported_claims", [])) == 14)
+        results.append(("T11_verify_claim_unsupported", ok,
+                        f"supported_claims_count={len(body.get('supported_claims', []))}"))
+    else:
+        results.append(("T11_verify_claim_unsupported", False, "no test image"))
 
     # Cleanup
     proc.stdin.close()
