@@ -1,0 +1,278 @@
+{
+  "round": "R168",
+  "date": "2026-05-01",
+  "method": "T6 claim-verification demo: 14 natural-language claims mapped to predicate constraint sets; for each claim, find one verified + one refuted image from N=623 corpus.",
+  "n_corpus": 623,
+  "n_claims": 14,
+  "n_verifiable_and_refutable": 14,
+  "claim_map": {
+    "is outdoors": [
+      [
+        "NOT_ANY",
+        [
+          "has_indoor_scene_signature"
+        ]
+      ]
+    ],
+    "is indoors": [
+      [
+        "OR",
+        [
+          "has_indoor_scene_signature"
+        ]
+      ]
+    ],
+    "contains a person": [
+      [
+        "OR",
+        [
+          "has_face_like_signature",
+          "has_human_subject_signature",
+          "has_skin_tone_signature"
+        ]
+      ]
+    ],
+    "is monochrome": [
+      [
+        "OR",
+        [
+          "has_monochrome",
+          "has_pure_grayscale_palette"
+        ]
+      ]
+    ],
+    "has a horizon": [
+      [
+        "OR",
+        [
+          "has_clear_horizon"
+        ]
+      ]
+    ],
+    "has warm tones": [
+      [
+        "OR",
+        [
+          "has_warm_palette",
+          "has_strongly_warm_palette"
+        ]
+      ]
+    ],
+    "has cool tones": [
+      [
+        "OR",
+        [
+          "has_cool_palette",
+          "has_dominant_blue_hue"
+        ]
+      ]
+    ],
+    "is high contrast": [
+      [
+        "OR",
+        [
+          "is_high_contrast_image"
+        ]
+      ]
+    ],
+    "has blue tones": [
+      [
+        "OR",
+        [
+          "has_dominant_blue_hue",
+          "has_significant_cyan_hue"
+        ]
+      ]
+    ],
+    "has low-key lighting": [
+      [
+        "OR",
+        [
+          "has_low_key",
+          "has_low_light_signature"
+        ]
+      ]
+    ],
+    "is centered": [
+      [
+        "OR",
+        [
+          "has_centered_subject"
+        ]
+      ]
+    ],
+    "has high frequency detail": [
+      [
+        "OR",
+        [
+          "has_high_frequency_residual"
+        ]
+      ]
+    ],
+    "is largely empty": [
+      [
+        "OR",
+        [
+          "has_significant_negative_space"
+        ]
+      ]
+    ],
+    "has vegetation": [
+      [
+        "OR",
+        [
+          "has_vegetation_signature",
+          "has_green_dominant"
+        ]
+      ]
+    ]
+  },
+  "claim_fire_rates": {
+    "is outdoors": 492,
+    "is indoors": 131,
+    "contains a person": 262,
+    "is monochrome": 77,
+    "has a horizon": 178,
+    "has warm tones": 179,
+    "has cool tones": 167,
+    "is high contrast": 85,
+    "has blue tones": 241,
+    "has low-key lighting": 149,
+    "is centered": 170,
+    "has high frequency detail": 117,
+    "is largely empty": 148,
+    "has vegetation": 220
+  },
+  "results": [
+    {
+      "claim": "is outdoors",
+      "verified_image": "r158_picsum_74",
+      "verified_evidence": [
+        "NOT(has_indoor_scene_signature)"
+      ],
+      "refuted_image": "r159_picsum_122",
+      "consistent": true
+    },
+    {
+      "claim": "is indoors",
+      "verified_image": "r159_picsum_122",
+      "verified_evidence": [
+        "has_indoor_scene_signature"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "contains a person",
+      "verified_image": "r158_picsum_0",
+      "verified_evidence": [
+        "has_human_subject_signature"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "is monochrome",
+      "verified_image": "r158_picsum_74",
+      "verified_evidence": [
+        "has_monochrome",
+        "has_pure_grayscale_palette"
+      ],
+      "refuted_image": "r111_picsum_r111_0096",
+      "consistent": true
+    },
+    {
+      "claim": "has a horizon",
+      "verified_image": "r158_picsum_0",
+      "verified_evidence": [
+        "has_clear_horizon"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "has warm tones",
+      "verified_image": "r158_picsum_0",
+      "verified_evidence": [
+        "has_warm_palette",
+        "has_strongly_warm_palette"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "has cool tones",
+      "verified_image": "r159_picsum_57",
+      "verified_evidence": [
+        "has_cool_palette",
+        "has_dominant_blue_hue"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "is high contrast",
+      "verified_image": "r158_picsum_74",
+      "verified_evidence": [
+        "is_high_contrast_image"
+      ],
+      "refuted_image": "r111_picsum_r111_0096",
+      "consistent": true
+    },
+    {
+      "claim": "has blue tones",
+      "verified_image": "r159_picsum_57",
+      "verified_evidence": [
+        "has_dominant_blue_hue"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "has low-key lighting",
+      "verified_image": "r159_picsum_104",
+      "verified_evidence": [
+        "has_low_key",
+        "has_low_light_signature"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "is centered",
+      "verified_image": "r158_picsum_0",
+      "verified_evidence": [
+        "has_centered_subject"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "has high frequency detail",
+      "verified_image": "r111_picsum_r111_0096",
+      "verified_evidence": [
+        "has_high_frequency_residual"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "is largely empty",
+      "verified_image": "r159_picsum_57",
+      "verified_evidence": [
+        "has_significant_negative_space"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    },
+    {
+      "claim": "has vegetation",
+      "verified_image": "r159_picsum_57",
+      "verified_evidence": [
+        "has_vegetation_signature"
+      ],
+      "refuted_image": "r158_picsum_74",
+      "consistent": true
+    }
+  ]
+}

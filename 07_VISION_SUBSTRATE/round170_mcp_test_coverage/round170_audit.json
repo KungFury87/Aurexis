@@ -1,0 +1,22 @@
+{
+  "round": "R170",
+  "date": "2026-05-01",
+  "method": "Extended R72/R116-R119 vintage test_mcp_server.py from 7 tests to 11 tests, adding coverage for R169's 3 new grounded-reasoning tools. All tests run as subprocess against live mcp_server.py with MCP protocol JSON-RPC over stdio.",
+  "tests_before": 7,
+  "tests_after": 11,
+  "smoke_test_results": "11/11 PASS",
+  "new_tests": {
+    "T8_find_outlier_in_set": "PASS — outlier identified at mean_J=0.6184, cluster size 2",
+    "T9_cluster_property": "PASS — 22 shared predicates, 109 rejected predicates, n_images=3",
+    "T10_verify_claim_supported": "PASS — supported claim returns verdict (False) + evidence list",
+    "T11_verify_claim_unsupported": "PASS — unsupported claim returns null verdict + 14 supported_claims list"
+  },
+  "all_tests_passing": [
+    "T1_initialize", "T2_tools_list (8 tools)", "T3_list_predicates (151 preds)",
+    "T4_evaluate_image (30 fired)", "T5_compare_images (J=0.1923)",
+    "T6_install_predicate (r118_smoke)", "T7_unknown_tool (isError)",
+    "T8_find_outlier_in_set (R169)", "T9_cluster_property (R169)",
+    "T10_verify_claim_supported (R169)", "T11_verify_claim_unsupported (R169)"
+  ],
+  "production_state": "T6 MCP server LIVE + 11/11 tested with grounded-reasoning tools"
+}

@@ -1,0 +1,24 @@
+{
+  "round": "R169",
+  "date": "2026-05-01",
+  "method": "Extended T6 MCP server (R72/R116-R119 vintage) with 3 new tools from R167+R168 grounded-reasoning demos: phoxelis_find_outlier_in_set, phoxelis_cluster_property, phoxelis_verify_claim. All tool handlers and schema entries added. Smoke-tested with 5 real picsum images.",
+  "mcp_server_size_lines_before": 405,
+  "mcp_server_size_lines_after": 572,
+  "tools_before": 5,
+  "tools_after": 8,
+  "new_tools": [
+    "phoxelis_find_outlier_in_set",
+    "phoxelis_cluster_property",
+    "phoxelis_verify_claim"
+  ],
+  "claim_map_size": 14,
+  "smoke_test_results": {
+    "import": "OK (151 predicates installed)",
+    "tools_count": 8,
+    "find_outlier_test": "PASS (5 images, identified outlier at mean_J=0.2624)",
+    "cluster_property_test": "PASS (3 images, 9 shared / 80 rejected)",
+    "verify_claim_supported": "4/4 claims correctly verified with evidence",
+    "verify_claim_unsupported": "gracefully returns null verdict + supported list"
+  },
+  "production_ready": true
+}
